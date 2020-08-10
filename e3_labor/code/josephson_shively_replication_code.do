@@ -425,8 +425,22 @@ summarize
 	label 			variable shadow_offfarm "\hspace{0.1cm} Off-Farm Wages"
 	label 			variable shadow_farmlabor "\hspace{0.1cm} On-Farm Wages"	
 	
-* shock exogeneity 		
-			
+* **********************************************************************
+* 3a - shock exogeneity 
+* **********************************************************************
+	
+	reg 			workdeath ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
+
+	reg 			commworkdeath ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+	reg 			shocktotal ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+		
+	reg 			pershock ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+				
 * *********************************************************************
 * 4 - end matter
 * **********************************************************************
