@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created on: August 2020
 * Created by: alj
-* Last edit: 10 August 2020 
+* Last edit: 13 August 2020 
 * Stata v.16.1
 
 * does
@@ -12,7 +12,6 @@
 
 * to do 
 	* rename all variables for clarification in data file 
-	* ADD NON PARTICIPATION TO tobit 
 
 * **********************************************************************
 * 0 - setup
@@ -1157,8 +1156,6 @@
 * 3d - robust - analysis with CRE tobit 
 * **********************************************************************						
 
-*** NEED TO ADD NON PARTICIPATION
-
 * **********************************************************************
 * 3di - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
@@ -1176,6 +1173,10 @@
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 
 	bootstrap 		_b, reps(1000): share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+						ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
+
+	bootstrap 		_b, reps(1000): share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 						ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 						
@@ -1199,6 +1200,9 @@
 							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock
 
+	bootstrap 		_b, reps(1000): tobit share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock							
 
 * **********************************************************************
 * 3diii - allocation of labor (perceived rainfall) control for dif. 
@@ -1221,7 +1225,11 @@
 	bootstrap 		_b, reps(1000): tobit share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
-			
+
+	bootstrap 		_b, reps(1000): tobit share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
+							
 * *********************************************************************
 * 4 - end matter
 * **********************************************************************
