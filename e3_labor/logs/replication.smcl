@@ -20432,4 +20432,2047 @@ mshadow_mi~t {c |}{res}        753    301.7105    83.53759  -187.0733   473.6835
  {txt}closed on:  {res}10 Aug 2020, 12:35:40
 {txt}{.-}
 {smcl}
-{txt}{sf}{ul off}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Aug 2020, 09:43:33
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. compress
+{err}no dataset in use
+{txt}{search r(3), local:r(3);}
+
+end of do-file
+
+{search r(3), local:r(3);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * Project: Zimbabwe Labor Shocks
+. * Created on: August 2020
+. * Created by: alj
+. * Last edit: 10 August 2020 
+. * Stata v.16.1
+. 
+. * does
+.         * 
+. 
+. * assumes
+.         * 
+. 
+. * to do 
+.         * pretty much everything
+.         * rename all variables for clarification in data file 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e3_labor\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Aug 2020, 09:43:41
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * define constraint + run regression 
+. 
+.         constraint              def 1 [share_off]lnshadow_farm-[share_off]lnshadow_offfarm-[share_off]lnshadow_migrant- ///
+>                                                 [share_farm]lnshadow_farm-[share_farm]lnshadow_offfarm-[share_farm]lnshadow_migrant- ///
+>                                                 [share_mig]lnshadow_farm-[share_mig]lnshadow_offfarm-[share_mig]lnshadow_migrant- ///                           
+>                                                 [share_non]lnshadow_farm-[share_non]lnshadow_offfarm-[share_non]lnshadow_migrant = 0  
+{txt}
+{com}.                                                 
+.         bootstrap               _b, reps(500): /// 
+>                                                 sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                 ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                 femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr) ///
+>                                                 (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                 ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                 femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr) /// 
+>                                                 (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                 ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                 femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr), isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+
+Bootstrap replications ({res}500{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+..................................................   250
+..................................................   300
+..................................................   350
+..................................................   400
+..................................................   450
+..................................................   500
+{res}
+{txt}Three-stage least-squares regression, iterated 
+{hline 74}
+Equation             Obs   Parms        RMSE    "R-sq"       chi2        P
+{hline 74}
+{res}share_mig            872      22    .1075124    0.3385     385.88   0.0000
+share_farm           872      21    .1829324    0.2024     221.28   0.0000
+share_off            872      22    .1247738    0.4201     596.02   0.0000
+{txt}{hline 74}
+
+{res}{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 22}{c |}   Observed{col 34}   Bootstrap{col 62}         Norm{col 75}al-based
+{col 22}{c |}      Coef.{col 34}   Std. Err.{col 46}      z{col 54}   P>|z|{col 62}     [95% Con{col 75}f. Interval]
+{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_mig            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0004779{col 34}{space 2} .0026806{col 45}{space 1}    0.18{col 54}{space 3}0.859{col 62}{space 4}-.0047759{col 75}{space 3} .0057317
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2}-.6446219{col 34}{space 2} .5702445{col 45}{space 1}   -1.13{col 54}{space 3}0.258{col 62}{space 4}-1.762281{col 75}{space 3} .4730367
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2}  .006532{col 34}{space 2} .0030235{col 45}{space 1}    2.16{col 54}{space 3}0.031{col 62}{space 4} .0006061{col 75}{space 3} .0124579
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0003954{col 34}{space 2} .0007132{col 45}{space 1}   -0.55{col 54}{space 3}0.579{col 62}{space 4}-.0017933{col 75}{space 3} .0010025
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} .0435545{col 34}{space 2} .0370485{col 45}{space 1}    1.18{col 54}{space 3}0.240{col 62}{space 4}-.0290593{col 75}{space 3} .1161683
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0079738{col 34}{space 2} .0017829{col 45}{space 1}    4.47{col 54}{space 3}0.000{col 62}{space 4} .0044793{col 75}{space 3} .0114682
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0065123{col 34}{space 2} .0018017{col 45}{space 1}   -3.61{col 54}{space 3}0.000{col 62}{space 4}-.0100436{col 75}{space 3} -.002981
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0004883{col 34}{space 2} .0003511{col 45}{space 1}   -1.39{col 54}{space 3}0.164{col 62}{space 4}-.0011766{col 75}{space 3} .0001999
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2} .0026575{col 34}{space 2} .0023333{col 45}{space 1}    1.14{col 54}{space 3}0.255{col 62}{space 4}-.0019156{col 75}{space 3} .0072306
+{txt}{space 8}multiple_mig {c |}{col 22}{res}{space 2} .1145725{col 34}{space 2} .0153555{col 45}{space 1}    7.46{col 54}{space 3}0.000{col 62}{space 4} .0844762{col 75}{space 3} .1446688
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}-.0001758{col 34}{space 2}  .000088{col 45}{space 1}   -2.00{col 54}{space 3}0.046{col 62}{space 4}-.0003483{col 75}{space 3}-3.29e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0001256{col 34}{space 2} .0000703{col 45}{space 1}   -1.79{col 54}{space 3}0.074{col 62}{space 4}-.0002634{col 75}{space 3} .0000122
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0000319{col 34}{space 2} .0001107{col 45}{space 1}   -0.29{col 54}{space 3}0.773{col 62}{space 4}-.0002489{col 75}{space 3} .0001851
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}-.0001112{col 34}{space 2} .0000453{col 45}{space 1}   -2.45{col 54}{space 3}0.014{col 62}{space 4}   -.0002{col 75}{space 3}-.0000223
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0212427{col 34}{space 2} .0094656{col 45}{space 1}    2.24{col 54}{space 3}0.025{col 62}{space 4} .0026905{col 75}{space 3} .0397948
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2} .0247818{col 34}{space 2}  .020363{col 45}{space 1}    1.22{col 54}{space 3}0.224{col 62}{space 4}-.0151289{col 75}{space 3} .0646926
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .2469247{col 34}{space 2} .2749403{col 45}{space 1}    0.90{col 54}{space 3}0.369{col 62}{space 4}-.2919483{col 75}{space 3} .7857978
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2} .0132007{col 34}{space 2} .0070901{col 45}{space 1}    1.86{col 54}{space 3}0.063{col 62}{space 4}-.0006955{col 75}{space 3}  .027097
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2} .2858769{col 34}{space 2} 1.174463{col 45}{space 1}    0.24{col 54}{space 3}0.808{col 62}{space 4}-2.016029{col 75}{space 3} 2.587783
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0241091{col 34}{space 2}  .081786{col 45}{space 1}   -0.29{col 54}{space 3}0.768{col 62}{space 4}-.1844068{col 75}{space 3} .1361886
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.2565029{col 34}{space 2}  1.17116{col 45}{space 1}   -0.22{col 54}{space 3}0.827{col 62}{space 4}-2.551934{col 75}{space 3} 2.038929
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} -.032552{col 34}{space 2} .0203898{col 45}{space 1}   -1.60{col 54}{space 3}0.110{col 62}{space 4}-.0725152{col 75}{space 3} .0074112
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2} 2.379392{col 34}{space 2}  2.18629{col 45}{space 1}    1.09{col 54}{space 3}0.276{col 62}{space 4}-1.905658{col 75}{space 3} 6.664442
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_farm           {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2}  -.00624{col 34}{space 2} .0058848{col 45}{space 1}   -1.06{col 54}{space 3}0.289{col 62}{space 4}-.0177741{col 75}{space 3}  .005294
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} 1.931755{col 34}{space 2} 1.148632{col 45}{space 1}    1.68{col 54}{space 3}0.093{col 62}{space 4}-.3195232{col 75}{space 3} 4.183032
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0232071{col 34}{space 2} .0061489{col 45}{space 1}   -3.77{col 54}{space 3}0.000{col 62}{space 4}-.0352587{col 75}{space 3}-.0111555
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2} .0008168{col 34}{space 2} .0012177{col 45}{space 1}    0.67{col 54}{space 3}0.502{col 62}{space 4}-.0015698{col 75}{space 3} .0032035
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} -.142832{col 34}{space 2} .0740795{col 45}{space 1}   -1.93{col 54}{space 3}0.054{col 62}{space 4}-.2880251{col 75}{space 3} .0023612
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0100213{col 34}{space 2}  .003408{col 45}{space 1}   -2.94{col 54}{space 3}0.003{col 62}{space 4}-.0167009{col 75}{space 3}-.0033417
+{txt}{space 18}ae {c |}{col 22}{res}{space 2} .0045277{col 34}{space 2} .0029354{col 45}{space 1}    1.54{col 54}{space 3}0.123{col 62}{space 4}-.0012255{col 75}{space 3} .0102809
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0001067{col 34}{space 2} .0006088{col 45}{space 1}   -0.18{col 54}{space 3}0.861{col 62}{space 4}   -.0013{col 75}{space 3} .0010865
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}-.0018673{col 34}{space 2} .0037121{col 45}{space 1}   -0.50{col 54}{space 3}0.615{col 62}{space 4}-.0091428{col 75}{space 3} .0054083
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}  .000356{col 34}{space 2} .0001416{col 45}{space 1}    2.51{col 54}{space 3}0.012{col 62}{space 4} .0000784{col 75}{space 3} .0006336
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2} .0004637{col 34}{space 2} .0001301{col 45}{space 1}    3.56{col 54}{space 3}0.000{col 62}{space 4} .0002087{col 75}{space 3} .0007187
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0004114{col 34}{space 2} .0001744{col 45}{space 1}   -2.36{col 54}{space 3}0.018{col 62}{space 4}-.0007533{col 75}{space 3}-.0000696
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2} .0000657{col 34}{space 2} .0000831{col 45}{space 1}    0.79{col 54}{space 3}0.429{col 62}{space 4}-.0000973{col 75}{space 3} .0002287
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0251966{col 34}{space 2} .0147982{col 45}{space 1}    1.70{col 54}{space 3}0.089{col 62}{space 4}-.0038073{col 75}{space 3} .0542005
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0148487{col 34}{space 2} .0348719{col 45}{space 1}   -0.43{col 54}{space 3}0.670{col 62}{space 4}-.0831964{col 75}{space 3}  .053499
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2}-.3069025{col 34}{space 2} .4544227{col 45}{space 1}   -0.68{col 54}{space 3}0.499{col 62}{space 4}-1.197555{col 75}{space 3} .5837497
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}-.0216866{col 34}{space 2} .0128845{col 45}{space 1}   -1.68{col 54}{space 3}0.092{col 62}{space 4}-.0469398{col 75}{space 3} .0035665
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}-.0018556{col 34}{space 2} 1.522538{col 45}{space 1}   -0.00{col 54}{space 3}0.999{col 62}{space 4}-2.985976{col 75}{space 3} 2.982265
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0035509{col 34}{space 2} .1114845{col 45}{space 1}   -0.03{col 54}{space 3}0.975{col 62}{space 4}-.2220564{col 75}{space 3} .2149547
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.0508117{col 34}{space 2} 1.520423{col 45}{space 1}   -0.03{col 54}{space 3}0.973{col 62}{space 4}-3.030787{col 75}{space 3} 2.929163
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2}  .064406{col 34}{space 2} .0277693{col 45}{space 1}    2.32{col 54}{space 3}0.020{col 62}{space 4} .0099791{col 75}{space 3} .1188329
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}-5.527892{col 34}{space 2} 4.423217{col 45}{space 1}   -1.25{col 54}{space 3}0.211{col 62}{space 4}-14.19724{col 75}{space 3} 3.141455
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_off            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0051686{col 34}{space 2} .0034489{col 45}{space 1}    1.50{col 54}{space 3}0.134{col 62}{space 4}-.0015912{col 75}{space 3} .0119284
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2}-1.531611{col 34}{space 2} .6914396{col 45}{space 1}   -2.22{col 54}{space 3}0.027{col 62}{space 4}-2.886807{col 75}{space 3}-.1764139
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0149637{col 34}{space 2} .0044592{col 45}{space 1}    3.36{col 54}{space 3}0.001{col 62}{space 4} .0062238{col 75}{space 3} .0237036
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0003958{col 34}{space 2} .0008338{col 45}{space 1}   -0.47{col 54}{space 3}0.635{col 62}{space 4}  -.00203{col 75}{space 3} .0012385
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} .1151391{col 34}{space 2} .0447576{col 45}{space 1}    2.57{col 54}{space 3}0.010{col 62}{space 4} .0274158{col 75}{space 3} .2028624
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0027264{col 34}{space 2}  .002336{col 45}{space 1}    1.17{col 54}{space 3}0.243{col 62}{space 4}-.0018521{col 75}{space 3} .0073048
+{txt}{space 18}ae {c |}{col 22}{res}{space 2} -.003757{col 34}{space 2} .0019532{col 45}{space 1}   -1.92{col 54}{space 3}0.054{col 62}{space 4}-.0075851{col 75}{space 3} .0000711
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2} .0001703{col 34}{space 2} .0004647{col 45}{space 1}    0.37{col 54}{space 3}0.714{col 62}{space 4}-.0007404{col 75}{space 3} .0010811
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}-.0018988{col 34}{space 2} .0026871{col 45}{space 1}   -0.71{col 54}{space 3}0.480{col 62}{space 4}-.0071654{col 75}{space 3} .0033678
+{txt}{space 8}multiple_off {c |}{col 22}{res}{space 2} .0975328{col 34}{space 2}  .012753{col 45}{space 1}    7.65{col 54}{space 3}0.000{col 62}{space 4} .0725374{col 75}{space 3} .1225283
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2} -.000184{col 34}{space 2} .0000965{col 45}{space 1}   -1.91{col 54}{space 3}0.057{col 62}{space 4}-.0003732{col 75}{space 3} 5.11e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0003641{col 34}{space 2} .0000849{col 45}{space 1}   -4.29{col 54}{space 3}0.000{col 62}{space 4}-.0005304{col 75}{space 3}-.0001978
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2} .0004742{col 34}{space 2} .0001242{col 45}{space 1}    3.82{col 54}{space 3}0.000{col 62}{space 4} .0002309{col 75}{space 3} .0007176
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2} .0000429{col 34}{space 2} .0000568{col 45}{space 1}    0.76{col 54}{space 3}0.450{col 62}{space 4}-.0000685{col 75}{space 3} .0001544
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2}-.0313433{col 34}{space 2} .0103781{col 45}{space 1}   -3.02{col 54}{space 3}0.003{col 62}{space 4} -.051684{col 75}{space 3}-.0110027
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0100817{col 34}{space 2} .0218108{col 45}{space 1}   -0.46{col 54}{space 3}0.644{col 62}{space 4}-.0528301{col 75}{space 3} .0326667
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .0661044{col 34}{space 2}  .419398{col 45}{space 1}    0.16{col 54}{space 3}0.875{col 62}{space 4}-.7559006{col 75}{space 3} .8881095
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2} .0047992{col 34}{space 2} .0085529{col 45}{space 1}    0.56{col 54}{space 3}0.575{col 62}{space 4}-.0119643{col 75}{space 3} .0215626
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2} .1806457{col 34}{space 2} .8114712{col 45}{space 1}    0.22{col 54}{space 3}0.824{col 62}{space 4}-1.409809{col 75}{space 3}   1.7711
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2} .0029672{col 34}{space 2} .0521836{col 45}{space 1}    0.06{col 54}{space 3}0.955{col 62}{space 4}-.0993107{col 75}{space 3} .1052451
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.1645547{col 34}{space 2} .8110433{col 45}{space 1}   -0.20{col 54}{space 3}0.839{col 62}{space 4} -1.75417{col 75}{space 3} 1.425061
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2}-.0406317{col 34}{space 2} .0213014{col 45}{space 1}   -1.91{col 54}{space 3}0.056{col 62}{space 4}-.0823817{col 75}{space 3} .0011182
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2} 5.087509{col 34}{space 2} 2.663496{col 45}{space 1}    1.91{col 54}{space 3}0.056{col 62}{space 4}-.1328467{col 75}{space 3} 10.30786
+{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * Project: Zimbabwe Labor Shocks
+. * Created on: August 2020
+. * Created by: alj
+. * Last edit: 10 August 2020 
+. * Stata v.16.1
+. 
+. * does
+.         * 
+. 
+. * assumes
+.         * 
+. 
+. * to do 
+.         * pretty much everything
+.         * rename all variables for clarification in data file 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e3_labor\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Aug 2020, 10:10:28
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. sum pershock shock
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 3}pershock2 {c |}{res}      1,153    .5247181    .4996053          0          1
+{txt}{space 2}shocktotal {c |}{res}        977     1.08755    .6292056   .2359423   2.796823
+
+{com}. gen shockperint = pershock*shocktotal
+{txt}(176 missing values generated)
+
+{com}. label var shockperint "interaction of perceived shock and shock total"
+
+. gen did_shockperint = shockperint*yearpanel
+{txt}(176 missing values generated)
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. 
+.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shock pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shock pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shock pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{bf}{err}shock{sf} ambiguous abbreviation
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * run regression 
+. * constraint set above 
+. 
+.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{err}variable {bf}pershockint{sf} not found
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. tab pershockint
+{err}variable {bf}pershockint{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * Project: Zimbabwe Labor Shocks
+. * Created on: August 2020
+. * Created by: alj
+. * Last edit: 10 August 2020 
+. * Stata v.16.1
+. 
+. * does
+.         * 
+. 
+. * assumes
+.         * 
+. 
+. * to do 
+.         * pretty much everything
+.         * rename all variables for clarification in data file 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e3_labor\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Aug 2020, 10:21:40
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. gen shockperint = pershock*shocktotal
+{err}variable {bf}shockperint{sf} already defined
+{txt}{search r(110), local:r(110);}
+
+{com}. label var shockperint "interaction of perceived shock and shock total"
+
+. gen did_shockperint = shockperint*yearpanel
+{err}variable {bf}did_shockperint{sf} already defined
+{txt}{search r(110), local:r(110);}
+
+{com}. rename shockperint pershockint
+{res}
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{bf}{err}pershock{sf} ambiguous abbreviation
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. rename pershock2 pershock
+{res}
+{com}. rename shockperint pershockint
+{res}{err}variable {bf}shockperint{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{bf}{err}did_shock{sf} ambiguous abbreviation
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shock did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{bf}{err}did_shock{sf} ambiguous abbreviation
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+{err}variable {bf}did_pershockint{sf} not found
+an error occurred when {bf:bootstrap} executed {bf:sureg}
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * Project: Zimbabwe Labor Shocks
+. * Created on: August 2020
+. * Created by: alj
+. * Last edit: 10 August 2020 
+. * Stata v.16.1
+. 
+. * does
+.         * 
+. 
+. * assumes
+.         * 
+. 
+. * to do 
+.         * pretty much everything
+.         * rename all variables for clarification in data file 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e3_labor\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Aug 2020, 10:25:08
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. rename pershock2 pershock
+{res}
+{com}. rename shockperint pershockint
+{res}
+{com}. rename did_shockperint did_pershockint
+{res}
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. 
+. 
+. * run regression 
+. * constraint set above 
+. 
+.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+
+Bootstrap replications ({res}1000{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+..................................................   250
+..................................................   300
+..................................................   350
+..................................................   400
+..................................................   450
+..................................................   500
+..................................................   550
+..................................................   600
+..................................................   650
+..................................................   700
+..................................................   750
+..................................................   800
+..................................................   850
+..................................................   900
+..................................................   950
+..................................................  1000
+{res}
+{txt}Three-stage least-squares regression, iterated 
+{hline 74}
+Equation             Obs   Parms        RMSE    "R-sq"       chi2        P
+{hline 74}
+{res}share_mig            872      26    .1068017    0.3472     403.09   0.0000
+share_farm           872      25    .1826032    0.2053     225.23   0.0000
+share_off            872      26    .1240584    0.4268     609.78   0.0000
+{txt}{hline 74}
+
+{res}{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 22}{c |}   Observed{col 34}   Bootstrap{col 62}         Norm{col 75}al-based
+{col 22}{c |}      Coef.{col 34}   Std. Err.{col 46}      z{col 54}   P>|z|{col 62}     [95% Con{col 75}f. Interval]
+{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_mig            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0012739{col 34}{space 2} .0027458{col 45}{space 1}    0.46{col 54}{space 3}0.643{col 62}{space 4}-.0041078{col 75}{space 3} .0066555
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} -.048434{col 34}{space 2} .6183933{col 45}{space 1}   -0.08{col 54}{space 3}0.938{col 62}{space 4}-1.260463{col 75}{space 3} 1.163595
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0065285{col 34}{space 2} .0032401{col 45}{space 1}    2.01{col 54}{space 3}0.044{col 62}{space 4}  .000178{col 75}{space 3}  .012879
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0008069{col 34}{space 2} .0007147{col 45}{space 1}   -1.13{col 54}{space 3}0.259{col 62}{space 4}-.0022078{col 75}{space 3} .0005939
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} .0041323{col 34}{space 2} .0403794{col 45}{space 1}    0.10{col 54}{space 3}0.918{col 62}{space 4}-.0750099{col 75}{space 3} .0832745
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0090937{col 34}{space 2} .0019226{col 45}{space 1}    4.73{col 54}{space 3}0.000{col 62}{space 4} .0053255{col 75}{space 3}  .012862
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0069381{col 34}{space 2} .0018078{col 45}{space 1}   -3.84{col 54}{space 3}0.000{col 62}{space 4}-.0104813{col 75}{space 3}-.0033949
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0005267{col 34}{space 2} .0003471{col 45}{space 1}   -1.52{col 54}{space 3}0.129{col 62}{space 4}-.0012071{col 75}{space 3} .0001537
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2} .0024266{col 34}{space 2} .0025123{col 45}{space 1}    0.97{col 54}{space 3}0.334{col 62}{space 4}-.0024974{col 75}{space 3} .0073506
+{txt}{space 8}multiple_mig {c |}{col 22}{res}{space 2} .1144929{col 34}{space 2} .0149245{col 45}{space 1}    7.67{col 54}{space 3}0.000{col 62}{space 4} .0852414{col 75}{space 3} .1437444
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}-.0001685{col 34}{space 2} .0000811{col 45}{space 1}   -2.08{col 54}{space 3}0.038{col 62}{space 4}-.0003275{col 75}{space 3}-9.42e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0000516{col 34}{space 2} .0000752{col 45}{space 1}   -0.69{col 54}{space 3}0.492{col 62}{space 4} -.000199{col 75}{space 3} .0000957
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0000972{col 34}{space 2} .0001166{col 45}{space 1}   -0.83{col 54}{space 3}0.405{col 62}{space 4}-.0003256{col 75}{space 3} .0001313
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}-.0000728{col 34}{space 2} .0000485{col 45}{space 1}   -1.50{col 54}{space 3}0.133{col 62}{space 4}-.0001678{col 75}{space 3} .0000222
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0255356{col 34}{space 2} .0096082{col 45}{space 1}    2.66{col 54}{space 3}0.008{col 62}{space 4}  .006704{col 75}{space 3} .0443673
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2} .0250426{col 34}{space 2} .0208636{col 45}{space 1}    1.20{col 54}{space 3}0.230{col 62}{space 4}-.0158492{col 75}{space 3} .0659345
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .2534361{col 34}{space 2} .2530197{col 45}{space 1}    1.00{col 54}{space 3}0.317{col 62}{space 4}-.2424734{col 75}{space 3} .7493455
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.0923846{col 34}{space 2} .0561445{col 45}{space 1}   -1.65{col 54}{space 3}0.100{col 62}{space 4}-.2024258{col 75}{space 3} .0176566
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2} .0025228{col 34}{space 2} .0090138{col 45}{space 1}    0.28{col 54}{space 3}0.780{col 62}{space 4}-.0151439{col 75}{space 3} .0201895
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0845235{col 34}{space 2} .0525367{col 45}{space 1}    1.61{col 54}{space 3}0.108{col 62}{space 4}-.0184465{col 75}{space 3} .1874936
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}  .246697{col 34}{space 2} 1.131952{col 45}{space 1}    0.22{col 54}{space 3}0.827{col 62}{space 4}-1.971888{col 75}{space 3} 2.465282
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0249376{col 34}{space 2} .0771208{col 45}{space 1}   -0.32{col 54}{space 3}0.746{col 62}{space 4}-.1760916{col 75}{space 3} .1262165
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.2857859{col 34}{space 2} 1.129609{col 45}{space 1}   -0.25{col 54}{space 3}0.800{col 62}{space 4}-2.499779{col 75}{space 3} 1.928207
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0863246{col 34}{space 2} .0469008{col 45}{space 1}    1.84{col 54}{space 3}0.066{col 62}{space 4}-.0055993{col 75}{space 3} .1782485
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0141987{col 34}{space 2} .0357187{col 45}{space 1}    0.40{col 54}{space 3}0.691{col 62}{space 4}-.0558086{col 75}{space 3} .0842061
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0619379{col 34}{space 2} .0461527{col 45}{space 1}   -1.34{col 54}{space 3}0.180{col 62}{space 4}-.1523955{col 75}{space 3} .0285197
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  .110104{col 34}{space 2} 2.370713{col 45}{space 1}    0.05{col 54}{space 3}0.963{col 62}{space 4}-4.536409{col 75}{space 3} 4.756617
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_farm           {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2}-.0053622{col 34}{space 2} .0060564{col 45}{space 1}   -0.89{col 54}{space 3}0.376{col 62}{space 4}-.0172326{col 75}{space 3} .0065081
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} 1.937442{col 34}{space 2} 1.133961{col 45}{space 1}    1.71{col 54}{space 3}0.088{col 62}{space 4}-.2850819{col 75}{space 3} 4.159965
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0235034{col 34}{space 2} .0066294{col 45}{space 1}   -3.55{col 54}{space 3}0.000{col 62}{space 4}-.0364969{col 75}{space 3}  -.01051
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2} .0009083{col 34}{space 2} .0012847{col 45}{space 1}    0.71{col 54}{space 3}0.480{col 62}{space 4}-.0016097{col 75}{space 3} .0034262
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}-.1439954{col 34}{space 2} .0730992{col 45}{space 1}   -1.97{col 54}{space 3}0.049{col 62}{space 4}-.2872672{col 75}{space 3}-.0007237
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0100531{col 34}{space 2} .0036206{col 45}{space 1}   -2.78{col 54}{space 3}0.005{col 62}{space 4}-.0171494{col 75}{space 3}-.0029568
+{txt}{space 18}ae {c |}{col 22}{res}{space 2} .0047544{col 34}{space 2} .0030231{col 45}{space 1}    1.57{col 54}{space 3}0.116{col 62}{space 4}-.0011708{col 75}{space 3} .0106796
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0001371{col 34}{space 2} .0006517{col 45}{space 1}   -0.21{col 54}{space 3}0.833{col 62}{space 4}-.0014144{col 75}{space 3} .0011403
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}  -.00186{col 34}{space 2} .0037404{col 45}{space 1}   -0.50{col 54}{space 3}0.619{col 62}{space 4} -.009191{col 75}{space 3}  .005471
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2} .0003506{col 34}{space 2} .0001327{col 45}{space 1}    2.64{col 54}{space 3}0.008{col 62}{space 4} .0000906{col 75}{space 3} .0006106
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2} .0004801{col 34}{space 2} .0001243{col 45}{space 1}    3.86{col 54}{space 3}0.000{col 62}{space 4} .0002365{col 75}{space 3} .0007237
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0004547{col 34}{space 2} .0001738{col 45}{space 1}   -2.62{col 54}{space 3}0.009{col 62}{space 4}-.0007953{col 75}{space 3} -.000114
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}  .000043{col 34}{space 2} .0000873{col 45}{space 1}    0.49{col 54}{space 3}0.623{col 62}{space 4}-.0001282{col 75}{space 3} .0002141
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0233129{col 34}{space 2} .0148239{col 45}{space 1}    1.57{col 54}{space 3}0.116{col 62}{space 4}-.0057414{col 75}{space 3} .0523672
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0129324{col 34}{space 2}  .033808{col 45}{space 1}   -0.38{col 54}{space 3}0.702{col 62}{space 4}-.0791949{col 75}{space 3}   .05333
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2}-.3264662{col 34}{space 2} .4191494{col 45}{space 1}   -0.78{col 54}{space 3}0.436{col 62}{space 4}-1.147984{col 75}{space 3} .4950516
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.1161455{col 34}{space 2} .1006479{col 45}{space 1}   -1.15{col 54}{space 3}0.249{col 62}{space 4}-.3134118{col 75}{space 3} .0811208
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}-.0413246{col 34}{space 2} .0183299{col 45}{space 1}   -2.25{col 54}{space 3}0.024{col 62}{space 4}-.0772505{col 75}{space 3}-.0053986
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0821473{col 34}{space 2} .0834839{col 45}{space 1}    0.98{col 54}{space 3}0.325{col 62}{space 4} -.081478{col 75}{space 3} .2457727
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}-.0854822{col 34}{space 2} 1.521734{col 45}{space 1}   -0.06{col 54}{space 3}0.955{col 62}{space 4}-3.068026{col 75}{space 3} 2.897062
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0034649{col 34}{space 2}  .109642{col 45}{space 1}   -0.03{col 54}{space 3}0.975{col 62}{space 4}-.2183594{col 75}{space 3} .2114295
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2} .0122847{col 34}{space 2}   1.5142{col 45}{space 1}    0.01{col 54}{space 3}0.994{col 62}{space 4}-2.955493{col 75}{space 3} 2.980062
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0553759{col 34}{space 2} .0780873{col 45}{space 1}    0.71{col 54}{space 3}0.478{col 62}{space 4}-.0976724{col 75}{space 3} .2084243
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0827145{col 34}{space 2} .0542291{col 45}{space 1}    1.53{col 54}{space 3}0.127{col 62}{space 4}-.0235726{col 75}{space 3} .1890016
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0425192{col 34}{space 2} .0695495{col 45}{space 1}   -0.61{col 54}{space 3}0.541{col 62}{space 4}-.1788337{col 75}{space 3} .0937953
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}-5.445495{col 34}{space 2} 4.420101{col 45}{space 1}   -1.23{col 54}{space 3}0.218{col 62}{space 4}-14.10873{col 75}{space 3} 3.217744
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_off            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0038092{col 34}{space 2}  .003404{col 45}{space 1}    1.12{col 54}{space 3}0.263{col 62}{space 4}-.0028625{col 75}{space 3} .0104808
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2}-1.971851{col 34}{space 2} .6653322{col 45}{space 1}   -2.96{col 54}{space 3}0.003{col 62}{space 4}-3.275878{col 75}{space 3}-.6678239
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0159079{col 34}{space 2} .0043946{col 45}{space 1}    3.62{col 54}{space 3}0.000{col 62}{space 4} .0072946{col 75}{space 3} .0245211
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0001797{col 34}{space 2} .0008519{col 45}{space 1}   -0.21{col 54}{space 3}0.833{col 62}{space 4}-.0018493{col 75}{space 3} .0014899
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}  .144858{col 34}{space 2} .0430707{col 45}{space 1}    3.36{col 54}{space 3}0.001{col 62}{space 4} .0604409{col 75}{space 3} .2292751
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0016631{col 34}{space 2} .0023404{col 45}{space 1}    0.71{col 54}{space 3}0.477{col 62}{space 4} -.002924{col 75}{space 3} .0062502
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0035582{col 34}{space 2} .0019855{col 45}{space 1}   -1.79{col 54}{space 3}0.073{col 62}{space 4}-.0074497{col 75}{space 3} .0003333
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2} .0002129{col 34}{space 2} .0005043{col 45}{space 1}    0.42{col 54}{space 3}0.673{col 62}{space 4}-.0007754{col 75}{space 3} .0012013
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}-.0019327{col 34}{space 2} .0026889{col 45}{space 1}   -0.72{col 54}{space 3}0.472{col 62}{space 4}-.0072028{col 75}{space 3} .0033374
+{txt}{space 8}multiple_off {c |}{col 22}{res}{space 2} .0973878{col 34}{space 2}  .012656{col 45}{space 1}    7.69{col 54}{space 3}0.000{col 62}{space 4} .0725825{col 75}{space 3} .1221931
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}  -.00019{col 34}{space 2} .0000927{col 45}{space 1}   -2.05{col 54}{space 3}0.040{col 62}{space 4}-.0003716{col 75}{space 3}-8.31e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0004305{col 34}{space 2} .0000922{col 45}{space 1}   -4.67{col 54}{space 3}0.000{col 62}{space 4}-.0006112{col 75}{space 3}-.0002498
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2} .0005519{col 34}{space 2}  .000129{col 45}{space 1}    4.28{col 54}{space 3}0.000{col 62}{space 4}  .000299{col 75}{space 3} .0008047
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2} .0000269{col 34}{space 2} .0000615{col 45}{space 1}    0.44{col 54}{space 3}0.662{col 62}{space 4}-.0000936{col 75}{space 3} .0001473
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2}-.0326693{col 34}{space 2} .0105305{col 45}{space 1}   -3.10{col 54}{space 3}0.002{col 62}{space 4}-.0533087{col 75}{space 3}-.0120298
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0128755{col 34}{space 2} .0204929{col 45}{space 1}   -0.63{col 54}{space 3}0.530{col 62}{space 4}-.0530407{col 75}{space 3} .0272898
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .0672332{col 34}{space 2} .3245846{col 45}{space 1}    0.21{col 54}{space 3}0.836{col 62}{space 4}-.5689411{col 75}{space 3} .7034074
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2} .1416786{col 34}{space 2} .0733573{col 45}{space 1}    1.93{col 54}{space 3}0.053{col 62}{space 4}-.0020991{col 75}{space 3} .2854563
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}  .027078{col 34}{space 2} .0101488{col 45}{space 1}    2.67{col 54}{space 3}0.008{col 62}{space 4} .0071867{col 75}{space 3} .0469693
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2}-.0979246{col 34}{space 2} .0623854{col 45}{space 1}   -1.57{col 54}{space 3}0.116{col 62}{space 4}-.2201977{col 75}{space 3} .0243484
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2} .2300748{col 34}{space 2}  .925146{col 45}{space 1}    0.25{col 54}{space 3}0.804{col 62}{space 4}-1.583178{col 75}{space 3} 2.043328
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2} .0053436{col 34}{space 2} .0599096{col 45}{space 1}    0.09{col 54}{space 3}0.929{col 62}{space 4} -.112077{col 75}{space 3} .1227642
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.1572242{col 34}{space 2} .9186411{col 45}{space 1}   -0.17{col 54}{space 3}0.864{col 62}{space 4}-1.957728{col 75}{space 3} 1.643279
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2}-.0901431{col 34}{space 2} .0599391{col 45}{space 1}   -1.50{col 54}{space 3}0.133{col 62}{space 4}-.2076217{col 75}{space 3} .0273354
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2}-.0755499{col 34}{space 2} .0462843{col 45}{space 1}   -1.63{col 54}{space 3}0.103{col 62}{space 4}-.1662654{col 75}{space 3} .0151656
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2} .0525699{col 34}{space 2} .0544939{col 45}{space 1}    0.96{col 54}{space 3}0.335{col 62}{space 4}-.0542362{col 75}{space 3}  .159376
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  6.69974{col 34}{space 2} 2.605857{col 45}{space 1}    2.57{col 54}{space 3}0.010{col 62}{space 4} 1.592355{col 75}{space 3} 11.80713
+{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. * recover missing values 
+. * recover predicted shares as well as coefficients and standard errors   
+. * for omitted (non) share equation for model    
+.         
+.         drop                            shat_*
+{err}variable shat_* not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. 
+.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+
+Bootstrap replications ({res}1000{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+..................................................   250
+..................................................   300
+..................................................   350
+..................................................   400
+..................................................   450
+..................................................   500
+..................................................   550
+..................................................   600
+..................................................   650
+..................................................   700
+..................................................   750
+..................................................   800
+..................................................   850
+..................................................   900
+..................................................   950
+..................................................  1000
+{res}
+{txt}Three-stage least-squares regression, iterated 
+{hline 74}
+Equation             Obs   Parms        RMSE    "R-sq"       chi2        P
+{hline 74}
+{res}share_mig            872      26    .1068017    0.3472     403.09   0.0000
+share_farm           872      25    .1826032    0.2053     225.23   0.0000
+share_off            872      26    .1240584    0.4268     609.78   0.0000
+{txt}{hline 74}
+
+{res}{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 22}{c |}   Observed{col 34}   Bootstrap{col 62}         Norm{col 75}al-based
+{col 22}{c |}      Coef.{col 34}   Std. Err.{col 46}      z{col 54}   P>|z|{col 62}     [95% Con{col 75}f. Interval]
+{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_mig            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0012739{col 34}{space 2} .0027444{col 45}{space 1}    0.46{col 54}{space 3}0.643{col 62}{space 4}-.0041051{col 75}{space 3} .0066529
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} -.048434{col 34}{space 2} .5989524{col 45}{space 1}   -0.08{col 54}{space 3}0.936{col 62}{space 4}-1.222359{col 75}{space 3} 1.125491
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0065285{col 34}{space 2} .0032275{col 45}{space 1}    2.02{col 54}{space 3}0.043{col 62}{space 4} .0002027{col 75}{space 3} .0128543
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0008069{col 34}{space 2} .0007142{col 45}{space 1}   -1.13{col 54}{space 3}0.259{col 62}{space 4}-.0022068{col 75}{space 3} .0005929
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} .0041323{col 34}{space 2} .0391004{col 45}{space 1}    0.11{col 54}{space 3}0.916{col 62}{space 4}-.0725031{col 75}{space 3} .0807677
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0090937{col 34}{space 2} .0019255{col 45}{space 1}    4.72{col 54}{space 3}0.000{col 62}{space 4} .0053198{col 75}{space 3} .0128676
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0069381{col 34}{space 2} .0019066{col 45}{space 1}   -3.64{col 54}{space 3}0.000{col 62}{space 4}-.0106749{col 75}{space 3}-.0032013
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0005267{col 34}{space 2}  .000358{col 45}{space 1}   -1.47{col 54}{space 3}0.141{col 62}{space 4}-.0012283{col 75}{space 3} .0001749
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2} .0024266{col 34}{space 2} .0024705{col 45}{space 1}    0.98{col 54}{space 3}0.326{col 62}{space 4}-.0024155{col 75}{space 3} .0072687
+{txt}{space 8}multiple_mig {c |}{col 22}{res}{space 2} .1144929{col 34}{space 2} .0152237{col 45}{space 1}    7.52{col 54}{space 3}0.000{col 62}{space 4} .0846549{col 75}{space 3} .1443309
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}-.0001685{col 34}{space 2} .0000792{col 45}{space 1}   -2.13{col 54}{space 3}0.033{col 62}{space 4}-.0003237{col 75}{space 3}-.0000132
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0000516{col 34}{space 2} .0000727{col 45}{space 1}   -0.71{col 54}{space 3}0.478{col 62}{space 4}-.0001941{col 75}{space 3} .0000909
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0000972{col 34}{space 2} .0001123{col 45}{space 1}   -0.87{col 54}{space 3}0.387{col 62}{space 4}-.0003172{col 75}{space 3} .0001229
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}-.0000728{col 34}{space 2} .0000478{col 45}{space 1}   -1.52{col 54}{space 3}0.128{col 62}{space 4}-.0001665{col 75}{space 3} .0000209
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0255356{col 34}{space 2} .0094619{col 45}{space 1}    2.70{col 54}{space 3}0.007{col 62}{space 4} .0069906{col 75}{space 3} .0440806
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2} .0250426{col 34}{space 2} .0202492{col 45}{space 1}    1.24{col 54}{space 3}0.216{col 62}{space 4}-.0146451{col 75}{space 3} .0647304
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .2534361{col 34}{space 2} .2735717{col 45}{space 1}    0.93{col 54}{space 3}0.354{col 62}{space 4}-.2827547{col 75}{space 3} .7896268
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.0923846{col 34}{space 2} .0573066{col 45}{space 1}   -1.61{col 54}{space 3}0.107{col 62}{space 4}-.2047036{col 75}{space 3} .0199343
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2} .0025228{col 34}{space 2} .0087752{col 45}{space 1}    0.29{col 54}{space 3}0.774{col 62}{space 4}-.0146762{col 75}{space 3} .0197218
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0845235{col 34}{space 2} .0536927{col 45}{space 1}    1.57{col 54}{space 3}0.115{col 62}{space 4}-.0207123{col 75}{space 3} .1897593
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}  .246697{col 34}{space 2}  1.09778{col 45}{space 1}    0.22{col 54}{space 3}0.822{col 62}{space 4}-1.904912{col 75}{space 3} 2.398306
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0249376{col 34}{space 2} .0731699{col 45}{space 1}   -0.34{col 54}{space 3}0.733{col 62}{space 4} -.168348{col 75}{space 3} .1184729
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.2857859{col 34}{space 2} 1.097454{col 45}{space 1}   -0.26{col 54}{space 3}0.795{col 62}{space 4}-2.436755{col 75}{space 3} 1.865184
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0863246{col 34}{space 2} .0489392{col 45}{space 1}    1.76{col 54}{space 3}0.078{col 62}{space 4}-.0095945{col 75}{space 3} .1822436
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0141987{col 34}{space 2} .0373525{col 45}{space 1}    0.38{col 54}{space 3}0.704{col 62}{space 4}-.0590108{col 75}{space 3} .0874083
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0619379{col 34}{space 2} .0479507{col 45}{space 1}   -1.29{col 54}{space 3}0.196{col 62}{space 4}-.1559196{col 75}{space 3} .0320437
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  .110104{col 34}{space 2} 2.301354{col 45}{space 1}    0.05{col 54}{space 3}0.962{col 62}{space 4}-4.400467{col 75}{space 3} 4.620675
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_farm           {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2}-.0053622{col 34}{space 2} .0060859{col 45}{space 1}   -0.88{col 54}{space 3}0.378{col 62}{space 4}-.0172904{col 75}{space 3} .0065659
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} 1.937442{col 34}{space 2} 1.113253{col 45}{space 1}    1.74{col 54}{space 3}0.082{col 62}{space 4}-.2444952{col 75}{space 3} 4.119378
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0235034{col 34}{space 2} .0065685{col 45}{space 1}   -3.58{col 54}{space 3}0.000{col 62}{space 4}-.0363774{col 75}{space 3}-.0106295
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2} .0009083{col 34}{space 2} .0013128{col 45}{space 1}    0.69{col 54}{space 3}0.489{col 62}{space 4}-.0016649{col 75}{space 3} .0034814
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}-.1439954{col 34}{space 2} .0717487{col 45}{space 1}   -2.01{col 54}{space 3}0.045{col 62}{space 4}-.2846202{col 75}{space 3}-.0033706
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0100531{col 34}{space 2} .0035863{col 45}{space 1}   -2.80{col 54}{space 3}0.005{col 62}{space 4}-.0170822{col 75}{space 3} -.003024
+{txt}{space 18}ae {c |}{col 22}{res}{space 2} .0047544{col 34}{space 2} .0031013{col 45}{space 1}    1.53{col 54}{space 3}0.125{col 62}{space 4} -.001324{col 75}{space 3} .0108328
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0001371{col 34}{space 2} .0006561{col 45}{space 1}   -0.21{col 54}{space 3}0.835{col 62}{space 4} -.001423{col 75}{space 3} .0011488
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}  -.00186{col 34}{space 2} .0036597{col 45}{space 1}   -0.51{col 54}{space 3}0.611{col 62}{space 4}-.0090328{col 75}{space 3} .0053128
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2} .0003506{col 34}{space 2} .0001277{col 45}{space 1}    2.75{col 54}{space 3}0.006{col 62}{space 4} .0001004{col 75}{space 3} .0006008
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2} .0004801{col 34}{space 2} .0001306{col 45}{space 1}    3.68{col 54}{space 3}0.000{col 62}{space 4} .0002241{col 75}{space 3}  .000736
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0004547{col 34}{space 2} .0001751{col 45}{space 1}   -2.60{col 54}{space 3}0.009{col 62}{space 4}-.0007978{col 75}{space 3}-.0001116
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}  .000043{col 34}{space 2} .0000856{col 45}{space 1}    0.50{col 54}{space 3}0.616{col 62}{space 4}-.0001247{col 75}{space 3} .0002107
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0233129{col 34}{space 2} .0146276{col 45}{space 1}    1.59{col 54}{space 3}0.111{col 62}{space 4}-.0053566{col 75}{space 3} .0519825
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0129324{col 34}{space 2} .0361088{col 45}{space 1}   -0.36{col 54}{space 3}0.720{col 62}{space 4}-.0837044{col 75}{space 3} .0578395
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2}-.3264662{col 34}{space 2}  .459659{col 45}{space 1}   -0.71{col 54}{space 3}0.478{col 62}{space 4}-1.227381{col 75}{space 3} .5744489
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.1161455{col 34}{space 2} .0964762{col 45}{space 1}   -1.20{col 54}{space 3}0.229{col 62}{space 4}-.3052355{col 75}{space 3} .0729445
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}-.0413246{col 34}{space 2} .0175808{col 45}{space 1}   -2.35{col 54}{space 3}0.019{col 62}{space 4}-.0757822{col 75}{space 3}-.0068669
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0821473{col 34}{space 2} .0775317{col 45}{space 1}    1.06{col 54}{space 3}0.289{col 62}{space 4} -.069812{col 75}{space 3} .2341067
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}-.0854822{col 34}{space 2} 1.498554{col 45}{space 1}   -0.06{col 54}{space 3}0.955{col 62}{space 4}-3.022594{col 75}{space 3}  2.85163
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0034649{col 34}{space 2}  .105285{col 45}{space 1}   -0.03{col 54}{space 3}0.974{col 62}{space 4}-.2098197{col 75}{space 3} .2028898
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2} .0122847{col 34}{space 2}  1.49826{col 45}{space 1}    0.01{col 54}{space 3}0.993{col 62}{space 4} -2.92425{col 75}{space 3}  2.94882
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0553759{col 34}{space 2} .0718194{col 45}{space 1}    0.77{col 54}{space 3}0.441{col 62}{space 4}-.0853875{col 75}{space 3} .1961394
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0827145{col 34}{space 2} .0532302{col 45}{space 1}    1.55{col 54}{space 3}0.120{col 62}{space 4}-.0216148{col 75}{space 3} .1870438
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0425192{col 34}{space 2}  .062976{col 45}{space 1}   -0.68{col 54}{space 3}0.500{col 62}{space 4}-.1659498{col 75}{space 3} .0809114
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}-5.445495{col 34}{space 2} 4.314402{col 45}{space 1}   -1.26{col 54}{space 3}0.207{col 62}{space 4}-13.90157{col 75}{space 3} 3.010578
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_off            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0038092{col 34}{space 2} .0034864{col 45}{space 1}    1.09{col 54}{space 3}0.275{col 62}{space 4} -.003024{col 75}{space 3} .0106424
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2}-1.971851{col 34}{space 2} .7042391{col 45}{space 1}   -2.80{col 54}{space 3}0.005{col 62}{space 4}-3.352134{col 75}{space 3}-.5915676
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0159079{col 34}{space 2} .0043608{col 45}{space 1}    3.65{col 54}{space 3}0.000{col 62}{space 4} .0073608{col 75}{space 3} .0244549
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0001797{col 34}{space 2} .0008856{col 45}{space 1}   -0.20{col 54}{space 3}0.839{col 62}{space 4}-.0019154{col 75}{space 3}  .001556
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}  .144858{col 34}{space 2} .0456102{col 45}{space 1}    3.18{col 54}{space 3}0.001{col 62}{space 4} .0554638{col 75}{space 3} .2342523
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0016631{col 34}{space 2} .0023556{col 45}{space 1}    0.71{col 54}{space 3}0.480{col 62}{space 4}-.0029539{col 75}{space 3}   .00628
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0035582{col 34}{space 2}  .001981{col 45}{space 1}   -1.80{col 54}{space 3}0.072{col 62}{space 4}-.0074408{col 75}{space 3} .0003245
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2} .0002129{col 34}{space 2}  .000498{col 45}{space 1}    0.43{col 54}{space 3}0.669{col 62}{space 4}-.0007632{col 75}{space 3} .0011891
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}-.0019327{col 34}{space 2} .0027529{col 45}{space 1}   -0.70{col 54}{space 3}0.483{col 62}{space 4}-.0073283{col 75}{space 3}  .003463
+{txt}{space 8}multiple_off {c |}{col 22}{res}{space 2} .0973878{col 34}{space 2} .0125688{col 45}{space 1}    7.75{col 54}{space 3}0.000{col 62}{space 4} .0727534{col 75}{space 3} .1220222
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}  -.00019{col 34}{space 2} .0000898{col 45}{space 1}   -2.12{col 54}{space 3}0.034{col 62}{space 4}-.0003659{col 75}{space 3} -.000014
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0004305{col 34}{space 2} .0000925{col 45}{space 1}   -4.65{col 54}{space 3}0.000{col 62}{space 4}-.0006119{col 75}{space 3}-.0002491
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2} .0005519{col 34}{space 2} .0001349{col 45}{space 1}    4.09{col 54}{space 3}0.000{col 62}{space 4} .0002874{col 75}{space 3} .0008163
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2} .0000269{col 34}{space 2} .0000606{col 45}{space 1}    0.44{col 54}{space 3}0.657{col 62}{space 4}-.0000918{col 75}{space 3} .0001455
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2}-.0326693{col 34}{space 2} .0102073{col 45}{space 1}   -3.20{col 54}{space 3}0.001{col 62}{space 4}-.0526752{col 75}{space 3}-.0126633
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0128755{col 34}{space 2} .0211125{col 45}{space 1}   -0.61{col 54}{space 3}0.542{col 62}{space 4}-.0542552{col 75}{space 3} .0285042
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .0672332{col 34}{space 2} .3635111{col 45}{space 1}    0.18{col 54}{space 3}0.853{col 62}{space 4}-.6452356{col 75}{space 3} .7797019
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2} .1416786{col 34}{space 2} .0736294{col 45}{space 1}    1.92{col 54}{space 3}0.054{col 62}{space 4}-.0026323{col 75}{space 3} .2859896
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}  .027078{col 34}{space 2} .0104685{col 45}{space 1}    2.59{col 54}{space 3}0.010{col 62}{space 4} .0065601{col 75}{space 3} .0475958
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2}-.0979246{col 34}{space 2} .0601003{col 45}{space 1}   -1.63{col 54}{space 3}0.103{col 62}{space 4} -.215719{col 75}{space 3} .0198697
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2} .2300748{col 34}{space 2} .8964471{col 45}{space 1}    0.26{col 54}{space 3}0.797{col 62}{space 4}-1.526929{col 75}{space 3} 1.987079
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2} .0053436{col 34}{space 2} .0565466{col 45}{space 1}    0.09{col 54}{space 3}0.925{col 62}{space 4}-.1054857{col 75}{space 3} .1161729
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.1572242{col 34}{space 2} .8919584{col 45}{space 1}   -0.18{col 54}{space 3}0.860{col 62}{space 4}-1.905431{col 75}{space 3} 1.590982
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2}-.0901431{col 34}{space 2} .0580266{col 45}{space 1}   -1.55{col 54}{space 3}0.120{col 62}{space 4}-.2038731{col 75}{space 3} .0235869
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2}-.0755499{col 34}{space 2} .0446802{col 45}{space 1}   -1.69{col 54}{space 3}0.091{col 62}{space 4}-.1631215{col 75}{space 3} .0120217
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2} .0525699{col 34}{space 2} .0517238{col 45}{space 1}    1.02{col 54}{space 3}0.309{col 62}{space 4}-.0488068{col 75}{space 3} .1539466
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  6.69974{col 34}{space 2}  2.73666{col 45}{space 1}    2.45{col 54}{space 3}0.014{col 62}{space 4} 1.335984{col 75}{space 3}  12.0635
+{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. * recover missing values 
+. * recover predicted shares as well as coefficients and standard errors   
+. * for omitted (non) share equation for model    
+.         
+.         *drop                           shat_*
+.                    
+.         predict                         shat_off, equation(share_off)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         predict                         shat_mig, equation(share_mig)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         predict                         shat_farm, equation(share_farm)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         generate                        shat_non = 1 - shat_off - shat_mig - shat_farm
+{txt}(281 missing values generated)
+
+{com}.         sum                                     shat_non shat_off shat_mig shat_farm share_non share_off share_mig share_farm
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 4}shat_non {c |}{res}        872    .0209935    .0517775  -.1840698   .1468082
+{txt}{space 4}shat_off {c |}{res}        872    .1694135      .07757  -.0831097   .3906443
+{txt}{space 4}shat_mig {c |}{res}        872    .0788704    .0580732   -.092097   .2904677
+{txt}{space 3}shat_farm {c |}{res}        872    .7307226    .0928564   .4689176   .9982036
+{txt}{space 3}share_non {c |}{res}        977    .0184575    .0630156          0         .5
+{txt}{hline 13}{c +}{hline 57}
+{space 3}share_off {c |}{res}        977    .1705107    .1626316          0   .8571429
+{txt}{space 3}share_mig {c |}{res}        977    .0779009    .1322719          0   .6666667
+{txt}{space 2}share_farm {c |}{res}        977    .7301973    .2049169          0          1
+{txt}
+{com}. 
+.         quietly                         lincom 1-[share_off]_cons - [share_mig]_cons - [share_farm]_cons
+{txt}
+{com}.                                                         scalar b0=r(estimate)
+{txt}
+{com}.                                                         scalar e0=r(se)
+{txt}
+{com}.                                                         scalar t0=b0/e0
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_farmlabor + [share_mig]lnshadow_farmlabor + [share_farm]lnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b1=r(estimate)
+{txt}
+{com}.                                                         scalar e1=r(se)
+{txt}
+{com}.                                                         scalar t1=b1/e1
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_migrant + [share_mig]lnshadow_migrant + [share_farm]lnshadow_migrant)
+{txt}
+{com}.                                                         scalar b2=r(estimate)
+{txt}
+{com}.                                                         scalar e2=r(se)
+{txt}
+{com}.                                                         scalar t2=b2/e2
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_offfarm + [share_mig]lnshadow_offfarm + [share_farm]lnshadow_offfarm)
+{txt}
+{com}.                                                         scalar b3=r(estimate)
+{txt}
+{com}.                                                         scalar e3=r(se)
+{txt}
+{com}.                                                         scalar t3=b3/e3
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_farmlabor + [share_mig]sqlnshadow_farmlabor + [share_farm]sqlnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b25=r(estimate)
+{txt}
+{com}.                                                         scalar e25=r(se)
+{txt}
+{com}.                                                         scalar t25=b25/e25
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_migrant + [share_mig]sqlnshadow_migrant + [share_farm]sqlnshadow_migrant)
+{txt}
+{com}.                                                         scalar b26=r(estimate)
+{txt}
+{com}.                                                         scalar e26=r(se)
+{txt}
+{com}.                                                         scalar t26=b26/e26
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_offfarm + [share_mig]sqlnshadow_offfarm + [share_farm]sqlnshadow_offfarm)
+{txt}
+{com}.                                                         scalar b27=r(estimate)
+{txt}
+{com}.                                                         scalar e27=r(se)
+{txt}
+{com}.                                                         scalar t27=b27/e27                                                      
+{txt}
+{com}.         quietly                         lincom  -([share_off]ae + [share_mig]ae + [share_farm]ae)
+{txt}
+{com}.                                                         scalar b4=r(estimate)
+{txt}
+{com}.                                                         scalar e4=r(se)
+{txt}
+{com}.                                                         scalar t4=b4/e4
+{txt}
+{com}.         quietly                         lincom  -([share_off]hhage + [share_mig]hhage + [share_farm]hhage)
+{txt}
+{com}.                                                         scalar b5=r(estimate)
+{txt}
+{com}.                                                         scalar e5=r(se)
+{txt}
+{com}.                                                         scalar t5=b5/e5
+{txt}
+{com}.         quietly                         lincom  -([share_off]hhedu + [share_mig]hhedu + [share_farm]hhedu)
+{txt}
+{com}.                                                         scalar b6=r(estimate)
+{txt}
+{com}.                                                         scalar e6=r(se)
+{txt}
+{com}.                                                         scalar t6=b6/e6 
+{txt}
+{com}.         quietly                         lincom  -([share_off]workdeath + [share_mig]workdeath + [share_farm]workdeath)
+{txt}
+{com}.                                                         scalar b9=r(estimate)
+{txt}
+{com}.                                                         scalar e9=r(se)
+{txt}
+{com}.                                                         scalar t9=b9/e9                  
+{txt}
+{com}.         quietly                         lincom  -([share_off]commworkdeath + [share_mig]commworkdeath + [share_farm]commworkdeath)
+{txt}
+{com}.                                                         scalar b10=r(estimate)
+{txt}
+{com}.                                                         scalar e10=r(se)
+{txt}
+{com}.                                                         scalar t10=b10/e10
+{txt}
+{com}.         quietly                         lincom  -([share_off]pershock + [share_mig]pershock + [share_farm]pershock)
+{txt}
+{com}.                                                         scalar b11=r(estimate)
+{txt}
+{com}.                                                         scalar e11=r(se)
+{txt}
+{com}.                                                         scalar t11=b11/e11
+{txt}
+{com}.         quietly                         lincom  -([share_off]shocktotal + [share_mig]shocktotal + [share_farm]shocktotal)
+{txt}
+{com}.                                                         scalar b28=r(estimate)
+{txt}
+{com}.                                                         scalar e28=r(se)
+{txt}
+{com}.                                                         scalar t28=b28/e28
+{txt}
+{com}.         quietly                         lincom  -([share_off]shockperint + [share_mig]shockperint + [share_farm]shockperint)
+{err}[shockperint] not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. sum shat(
+{bf}{err}shat{sf} ambiguous abbreviation
+{txt}{search r(111), local:r(111);}
+
+{com}. tab shat8
+{err}variable {bf}shat8{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. sum shat*
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 4}shat_off {c |}{res}        872    .1694135      .07757  -.0831097   .3906443
+{txt}{space 4}shat_mig {c |}{res}        872    .0788704    .0580732   -.092097   .2904677
+{txt}{space 3}shat_farm {c |}{res}        872    .7307226    .0928564   .4689176   .9982036
+{txt}{space 4}shat_non {c |}{res}        872    .0209935    .0517775  -.1840698   .1468082
+
+{com}. drop shat*
+
+. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * run regression 
+. * constraint set above 
+. 
+.                 bootstrap               _b, reps(1000): /// 
+>                                                         sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) ///
+>                                                         (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint) /// 
+>                                                         (share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+>                                                         ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+>                                                         femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint), ///
+>                                                         isure constraint (1)
+{txt}(running {bf:sureg} on estimation sample)
+
+Bootstrap replications ({res}1000{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+..................................................   250
+..................................................   300
+..................................................   350
+..................................................   400
+..................................................   450
+..................................................   500
+..................................................   550
+..................................................   600
+..................................................   650
+..................................................   700
+..................................................   750
+..................................................   800
+..................................................   850
+..................................................   900
+..................................................   950
+..................................................  1000
+{res}
+{txt}Three-stage least-squares regression, iterated 
+{hline 74}
+Equation             Obs   Parms        RMSE    "R-sq"       chi2        P
+{hline 74}
+{res}share_mig            872      26    .1068017    0.3472     403.09   0.0000
+share_farm           872      25    .1826032    0.2053     225.23   0.0000
+share_off            872      26    .1240584    0.4268     609.78   0.0000
+{txt}{hline 74}
+
+{res}{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 22}{c |}   Observed{col 34}   Bootstrap{col 62}         Norm{col 75}al-based
+{col 22}{c |}      Coef.{col 34}   Std. Err.{col 46}      z{col 54}   P>|z|{col 62}     [95% Con{col 75}f. Interval]
+{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_mig            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0012739{col 34}{space 2} .0027647{col 45}{space 1}    0.46{col 54}{space 3}0.645{col 62}{space 4}-.0041449{col 75}{space 3} .0066926
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} -.048434{col 34}{space 2} .6082467{col 45}{space 1}   -0.08{col 54}{space 3}0.937{col 62}{space 4}-1.240576{col 75}{space 3} 1.143708
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0065285{col 34}{space 2} .0031036{col 45}{space 1}    2.10{col 54}{space 3}0.035{col 62}{space 4} .0004456{col 75}{space 3} .0126114
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0008069{col 34}{space 2} .0007164{col 45}{space 1}   -1.13{col 54}{space 3}0.260{col 62}{space 4}-.0022111{col 75}{space 3} .0005972
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2} .0041323{col 34}{space 2} .0396331{col 45}{space 1}    0.10{col 54}{space 3}0.917{col 62}{space 4}-.0735472{col 75}{space 3} .0818118
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0090937{col 34}{space 2} .0019201{col 45}{space 1}    4.74{col 54}{space 3}0.000{col 62}{space 4} .0053303{col 75}{space 3} .0128571
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0069381{col 34}{space 2} .0018103{col 45}{space 1}   -3.83{col 54}{space 3}0.000{col 62}{space 4}-.0104862{col 75}{space 3}  -.00339
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0005267{col 34}{space 2} .0003513{col 45}{space 1}   -1.50{col 54}{space 3}0.134{col 62}{space 4}-.0012152{col 75}{space 3} .0001618
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2} .0024266{col 34}{space 2} .0024435{col 45}{space 1}    0.99{col 54}{space 3}0.321{col 62}{space 4}-.0023625{col 75}{space 3} .0072157
+{txt}{space 8}multiple_mig {c |}{col 22}{res}{space 2} .1144929{col 34}{space 2} .0149493{col 45}{space 1}    7.66{col 54}{space 3}0.000{col 62}{space 4} .0851929{col 75}{space 3} .1437929
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}-.0001685{col 34}{space 2} .0000829{col 45}{space 1}   -2.03{col 54}{space 3}0.042{col 62}{space 4} -.000331{col 75}{space 3}-5.96e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0000516{col 34}{space 2} .0000737{col 45}{space 1}   -0.70{col 54}{space 3}0.483{col 62}{space 4} -.000196{col 75}{space 3} .0000927
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0000972{col 34}{space 2} .0001177{col 45}{space 1}   -0.83{col 54}{space 3}0.409{col 62}{space 4}-.0003278{col 75}{space 3} .0001335
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}-.0000728{col 34}{space 2} .0000494{col 45}{space 1}   -1.47{col 54}{space 3}0.140{col 62}{space 4}-.0001696{col 75}{space 3} .0000239
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0255356{col 34}{space 2} .0094978{col 45}{space 1}    2.69{col 54}{space 3}0.007{col 62}{space 4} .0069202{col 75}{space 3}  .044151
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2} .0250426{col 34}{space 2} .0215936{col 45}{space 1}    1.16{col 54}{space 3}0.246{col 62}{space 4}-.0172801{col 75}{space 3} .0673654
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .2534361{col 34}{space 2} .2674713{col 45}{space 1}    0.95{col 54}{space 3}0.343{col 62}{space 4}-.2707981{col 75}{space 3} .7776702
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.0923846{col 34}{space 2}  .055781{col 45}{space 1}   -1.66{col 54}{space 3}0.098{col 62}{space 4}-.2017133{col 75}{space 3}  .016944
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2} .0025228{col 34}{space 2} .0089737{col 45}{space 1}    0.28{col 54}{space 3}0.779{col 62}{space 4}-.0150653{col 75}{space 3} .0201109
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0845235{col 34}{space 2} .0517444{col 45}{space 1}    1.63{col 54}{space 3}0.102{col 62}{space 4}-.0168937{col 75}{space 3} .1859408
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}  .246697{col 34}{space 2} 1.161264{col 45}{space 1}    0.21{col 54}{space 3}0.832{col 62}{space 4} -2.02934{col 75}{space 3} 2.522734
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0249376{col 34}{space 2} .0797292{col 45}{space 1}   -0.31{col 54}{space 3}0.754{col 62}{space 4}-.1812038{col 75}{space 3} .1313287
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.2857859{col 34}{space 2} 1.160433{col 45}{space 1}   -0.25{col 54}{space 3}0.805{col 62}{space 4}-2.560192{col 75}{space 3}  1.98862
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0863246{col 34}{space 2}  .047151{col 45}{space 1}    1.83{col 54}{space 3}0.067{col 62}{space 4}-.0060896{col 75}{space 3} .1787388
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0141987{col 34}{space 2} .0358268{col 45}{space 1}    0.40{col 54}{space 3}0.692{col 62}{space 4}-.0560206{col 75}{space 3}  .084418
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0619379{col 34}{space 2} .0458436{col 45}{space 1}   -1.35{col 54}{space 3}0.177{col 62}{space 4}-.1517897{col 75}{space 3} .0279138
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  .110104{col 34}{space 2} 2.340055{col 45}{space 1}    0.05{col 54}{space 3}0.962{col 62}{space 4} -4.47632{col 75}{space 3} 4.696528
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_farm           {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2}-.0053622{col 34}{space 2} .0061552{col 45}{space 1}   -0.87{col 54}{space 3}0.384{col 62}{space 4}-.0174263{col 75}{space 3} .0067018
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2} 1.937442{col 34}{space 2} 1.163976{col 45}{space 1}    1.66{col 54}{space 3}0.096{col 62}{space 4}-.3439102{col 75}{space 3} 4.218793
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0235034{col 34}{space 2} .0066695{col 45}{space 1}   -3.52{col 54}{space 3}0.000{col 62}{space 4}-.0365755{col 75}{space 3}-.0104314
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2} .0009083{col 34}{space 2} .0013468{col 45}{space 1}    0.67{col 54}{space 3}0.500{col 62}{space 4}-.0017315{col 75}{space 3}  .003548
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}-.1439954{col 34}{space 2} .0751528{col 45}{space 1}   -1.92{col 54}{space 3}0.055{col 62}{space 4}-.2912922{col 75}{space 3} .0033013
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2}-.0100531{col 34}{space 2} .0036316{col 45}{space 1}   -2.77{col 54}{space 3}0.006{col 62}{space 4}-.0171709{col 75}{space 3}-.0029352
+{txt}{space 18}ae {c |}{col 22}{res}{space 2} .0047544{col 34}{space 2} .0029127{col 45}{space 1}    1.63{col 54}{space 3}0.103{col 62}{space 4}-.0009544{col 75}{space 3} .0104632
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2}-.0001371{col 34}{space 2} .0006376{col 45}{space 1}   -0.21{col 54}{space 3}0.830{col 62}{space 4}-.0013867{col 75}{space 3} .0011126
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}  -.00186{col 34}{space 2} .0036412{col 45}{space 1}   -0.51{col 54}{space 3}0.609{col 62}{space 4}-.0089966{col 75}{space 3} .0052767
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2} .0003506{col 34}{space 2}  .000127{col 45}{space 1}    2.76{col 54}{space 3}0.006{col 62}{space 4} .0001017{col 75}{space 3} .0005995
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2} .0004801{col 34}{space 2} .0001278{col 45}{space 1}    3.76{col 54}{space 3}0.000{col 62}{space 4} .0002296{col 75}{space 3} .0007306
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2}-.0004547{col 34}{space 2} .0001791{col 45}{space 1}   -2.54{col 54}{space 3}0.011{col 62}{space 4}-.0008058{col 75}{space 3}-.0001036
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2}  .000043{col 34}{space 2} .0000838{col 45}{space 1}    0.51{col 54}{space 3}0.608{col 62}{space 4}-.0001214{col 75}{space 3} .0002073
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2} .0233129{col 34}{space 2} .0145308{col 45}{space 1}    1.60{col 54}{space 3}0.109{col 62}{space 4}-.0051669{col 75}{space 3} .0517927
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0129324{col 34}{space 2} .0352495{col 45}{space 1}   -0.37{col 54}{space 3}0.714{col 62}{space 4}-.0820202{col 75}{space 3} .0561553
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2}-.3264662{col 34}{space 2} .4717682{col 45}{space 1}   -0.69{col 54}{space 3}0.489{col 62}{space 4}-1.251115{col 75}{space 3} .5981826
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2}-.1161455{col 34}{space 2} .1004339{col 45}{space 1}   -1.16{col 54}{space 3}0.248{col 62}{space 4}-.3129923{col 75}{space 3} .0807013
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}-.0413246{col 34}{space 2}  .017842{col 45}{space 1}   -2.32{col 54}{space 3}0.021{col 62}{space 4}-.0762942{col 75}{space 3}-.0063549
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2} .0821473{col 34}{space 2} .0794437{col 45}{space 1}    1.03{col 54}{space 3}0.301{col 62}{space 4}-.0735594{col 75}{space 3} .2378541
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2}-.0854822{col 34}{space 2} 1.553272{col 45}{space 1}   -0.06{col 54}{space 3}0.956{col 62}{space 4}-3.129839{col 75}{space 3} 2.958875
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2}-.0034649{col 34}{space 2} .1078544{col 45}{space 1}   -0.03{col 54}{space 3}0.974{col 62}{space 4}-.2148557{col 75}{space 3} .2079258
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2} .0122847{col 34}{space 2} 1.549027{col 45}{space 1}    0.01{col 54}{space 3}0.994{col 62}{space 4}-3.023752{col 75}{space 3} 3.048321
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2} .0553759{col 34}{space 2} .0754096{col 45}{space 1}    0.73{col 54}{space 3}0.463{col 62}{space 4}-.0924242{col 75}{space 3}  .203176
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2} .0827145{col 34}{space 2} .0534062{col 45}{space 1}    1.55{col 54}{space 3}0.121{col 62}{space 4}-.0219598{col 75}{space 3} .1873888
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2}-.0425192{col 34}{space 2}  .065557{col 45}{space 1}   -0.65{col 54}{space 3}0.517{col 62}{space 4}-.1710085{col 75}{space 3} .0859701
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}-5.445495{col 34}{space 2} 4.519982{col 45}{space 1}   -1.20{col 54}{space 3}0.228{col 62}{space 4} -14.3045{col 75}{space 3} 3.413506
+{txt}{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}share_off            {txt}{c |}
+{space 4}lnshadow_migrant {c |}{col 22}{res}{space 2} .0038092{col 34}{space 2} .0035907{col 45}{space 1}    1.06{col 54}{space 3}0.289{col 62}{space 4}-.0032285{col 75}{space 3} .0108469
+{txt}{space 4}lnshadow_offfarm {c |}{col 22}{res}{space 2}-1.971851{col 34}{space 2} .7183742{col 45}{space 1}   -2.74{col 54}{space 3}0.006{col 62}{space 4}-3.379839{col 75}{space 3}-.5638634
+{txt}{space 2}lnshadow_farmlabor {c |}{col 22}{res}{space 2} .0159079{col 34}{space 2}   .00435{col 45}{space 1}    3.66{col 54}{space 3}0.000{col 62}{space 4} .0073821{col 75}{space 3} .0244336
+{txt}{space 2}sqlnshadow_migrant {c |}{col 22}{res}{space 2}-.0001797{col 34}{space 2}  .000894{col 45}{space 1}   -0.20{col 54}{space 3}0.841{col 62}{space 4}-.0019318{col 75}{space 3} .0015724
+{txt}{space 2}sqlnshadow_offfarm {c |}{col 22}{res}{space 2}  .144858{col 34}{space 2} .0465568{col 45}{space 1}    3.11{col 54}{space 3}0.002{col 62}{space 4} .0536084{col 75}{space 3} .2361076
+{txt}sqlnshadow_farmlabor {c |}{col 22}{res}{space 2} .0016631{col 34}{space 2} .0023636{col 45}{space 1}    0.70{col 54}{space 3}0.482{col 62}{space 4}-.0029695{col 75}{space 3} .0062956
+{txt}{space 18}ae {c |}{col 22}{res}{space 2}-.0035582{col 34}{space 2} .0018581{col 45}{space 1}   -1.91{col 54}{space 3}0.055{col 62}{space 4}   -.0072{col 75}{space 3} .0000836
+{txt}{space 15}hhage {c |}{col 22}{res}{space 2} .0002129{col 34}{space 2}  .000485{col 45}{space 1}    0.44{col 54}{space 3}0.661{col 62}{space 4}-.0007376{col 75}{space 3} .0011635
+{txt}{space 15}hhedu {c |}{col 22}{res}{space 2}-.0019327{col 34}{space 2} .0026676{col 45}{space 1}   -0.72{col 54}{space 3}0.469{col 62}{space 4}-.0071611{col 75}{space 3} .0032957
+{txt}{space 8}multiple_off {c |}{col 22}{res}{space 2} .0973878{col 34}{space 2} .0125351{col 45}{space 1}    7.77{col 54}{space 3}0.000{col 62}{space 4} .0728194{col 75}{space 3} .1219562
+{txt}{space 7}dist_VicFalls {c |}{col 22}{res}{space 2}  -.00019{col 34}{space 2} .0000923{col 45}{space 1}   -2.06{col 54}{space 3}0.040{col 62}{space 4}-.0003708{col 75}{space 3}-9.09e-06
+{txt}{space 9}dist_Mutare {c |}{col 22}{res}{space 2}-.0004305{col 34}{space 2} .0000906{col 45}{space 1}   -4.75{col 54}{space 3}0.000{col 62}{space 4}-.0006082{col 75}{space 3}-.0002528
+{txt}{space 5}dist_Beitbridge {c |}{col 22}{res}{space 2} .0005519{col 34}{space 2} .0001282{col 45}{space 1}    4.31{col 54}{space 3}0.000{col 62}{space 4} .0003007{col 75}{space 3} .0008031
+{txt}{space 7}dist_Plumtree {c |}{col 22}{res}{space 2} .0000269{col 34}{space 2} .0000603{col 45}{space 1}    0.45{col 54}{space 3}0.656{col 62}{space 4}-.0000913{col 75}{space 3}  .000145
+{txt}{space 13}femhead {c |}{col 22}{res}{space 2}-.0326693{col 34}{space 2} .0105357{col 45}{space 1}   -3.10{col 54}{space 3}0.002{col 62}{space 4}-.0533188{col 75}{space 3}-.0120198
+{txt}{space 11}workdeath {c |}{col 22}{res}{space 2}-.0128755{col 34}{space 2} .0216598{col 45}{space 1}   -0.59{col 54}{space 3}0.552{col 62}{space 4}-.0553279{col 75}{space 3} .0295769
+{txt}{space 7}commworkdeath {c |}{col 22}{res}{space 2} .0672332{col 34}{space 2} .3755841{col 45}{space 1}    0.18{col 54}{space 3}0.858{col 62}{space 4}-.6688981{col 75}{space 3} .8033644
+{txt}{space 12}pershock {c |}{col 22}{res}{space 2} .1416786{col 34}{space 2} .0737073{col 45}{space 1}    1.92{col 54}{space 3}0.055{col 62}{space 4}-.0027851{col 75}{space 3} .2861423
+{txt}{space 10}shocktotal {c |}{col 22}{res}{space 2}  .027078{col 34}{space 2} .0105761{col 45}{space 1}    2.56{col 54}{space 3}0.010{col 62}{space 4} .0063492{col 75}{space 3} .0478067
+{txt}{space 9}pershockint {c |}{col 22}{res}{space 2}-.0979246{col 34}{space 2} .0609487{col 45}{space 1}   -1.61{col 54}{space 3}0.108{col 62}{space 4} -.217382{col 75}{space 3} .0215327
+{txt}{space 13}yearbin {c |}{col 22}{res}{space 2} .2300748{col 34}{space 2} .9341516{col 45}{space 1}    0.25{col 54}{space 3}0.805{col 62}{space 4}-1.600829{col 75}{space 3} 2.060978
+{txt}{space 5}did_workdeathyr {c |}{col 22}{res}{space 2} .0053436{col 34}{space 2} .0587406{col 45}{space 1}    0.09{col 54}{space 3}0.928{col 62}{space 4}-.1097858{col 75}{space 3}  .120473
+{txt}{space 2}did_comworkdeathyr {c |}{col 22}{res}{space 2}-.1572242{col 34}{space 2} .9279803{col 45}{space 1}   -0.17{col 54}{space 3}0.865{col 62}{space 4}-1.976032{col 75}{space 3} 1.661584
+{txt}{space 8}did_pershock {c |}{col 22}{res}{space 2}-.0901431{col 34}{space 2} .0590446{col 45}{space 1}   -1.53{col 54}{space 3}0.127{col 62}{space 4}-.2058684{col 75}{space 3} .0255821
+{txt}{space 9}did_shockyr {c |}{col 22}{res}{space 2}-.0755499{col 34}{space 2} .0445502{col 45}{space 1}   -1.70{col 54}{space 3}0.090{col 62}{space 4}-.1628666{col 75}{space 3} .0117668
+{txt}{space 5}did_pershockint {c |}{col 22}{res}{space 2} .0525699{col 34}{space 2} .0531973{col 45}{space 1}    0.99{col 54}{space 3}0.323{col 62}{space 4} -.051695{col 75}{space 3} .1568348
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2}  6.69974{col 34}{space 2} 2.811641{col 45}{space 1}    2.38{col 54}{space 3}0.017{col 62}{space 4} 1.189024{col 75}{space 3} 12.21046
+{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. * recover missing values 
+. * recover predicted shares as well as coefficients and standard errors   
+. * for omitted (non) share equation for model    
+.         
+.         *drop                           shat_*
+.                    
+.         predict                         shat_off, equation(share_off)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         predict                         shat_mig, equation(share_mig)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         predict                         shat_farm, equation(share_farm)
+{txt}(option {bf:xb} assumed; fitted values)
+(281 missing values generated)
+
+{com}.         generate                        shat_non = 1 - shat_off - shat_mig - shat_farm
+{txt}(281 missing values generated)
+
+{com}.         sum                                     shat_non shat_off shat_mig shat_farm share_non share_off share_mig share_farm
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 4}shat_non {c |}{res}        872    .0209935    .0517775  -.1840698   .1468082
+{txt}{space 4}shat_off {c |}{res}        872    .1694135      .07757  -.0831097   .3906443
+{txt}{space 4}shat_mig {c |}{res}        872    .0788704    .0580732   -.092097   .2904677
+{txt}{space 3}shat_farm {c |}{res}        872    .7307226    .0928564   .4689176   .9982036
+{txt}{space 3}share_non {c |}{res}        977    .0184575    .0630156          0         .5
+{txt}{hline 13}{c +}{hline 57}
+{space 3}share_off {c |}{res}        977    .1705107    .1626316          0   .8571429
+{txt}{space 3}share_mig {c |}{res}        977    .0779009    .1322719          0   .6666667
+{txt}{space 2}share_farm {c |}{res}        977    .7301973    .2049169          0          1
+{txt}
+{com}. 
+.         quietly                         lincom 1-[share_off]_cons - [share_mig]_cons - [share_farm]_cons
+{txt}
+{com}.                                                         scalar b0=r(estimate)
+{txt}
+{com}.                                                         scalar e0=r(se)
+{txt}
+{com}.                                                         scalar t0=b0/e0
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_farmlabor + [share_mig]lnshadow_farmlabor + [share_farm]lnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b1=r(estimate)
+{txt}
+{com}.                                                         scalar e1=r(se)
+{txt}
+{com}.                                                         scalar t1=b1/e1
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_migrant + [share_mig]lnshadow_migrant + [share_farm]lnshadow_migrant)
+{txt}
+{com}.                                                         scalar b2=r(estimate)
+{txt}
+{com}.                                                         scalar e2=r(se)
+{txt}
+{com}.                                                         scalar t2=b2/e2
+{txt}
+{com}.         quietly                         lincom  -([share_off]lnshadow_offfarm + [share_mig]lnshadow_offfarm + [share_farm]lnshadow_offfarm)
+{txt}
+{com}.                                                         scalar b3=r(estimate)
+{txt}
+{com}.                                                         scalar e3=r(se)
+{txt}
+{com}.                                                         scalar t3=b3/e3
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_farmlabor + [share_mig]sqlnshadow_farmlabor + [share_farm]sqlnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b25=r(estimate)
+{txt}
+{com}.                                                         scalar e25=r(se)
+{txt}
+{com}.                                                         scalar t25=b25/e25
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_migrant + [share_mig]sqlnshadow_migrant + [share_farm]sqlnshadow_migrant)
+{txt}
+{com}.                                                         scalar b26=r(estimate)
+{txt}
+{com}.                                                         scalar e26=r(se)
+{txt}
+{com}.                                                         scalar t26=b26/e26
+{txt}
+{com}.         quietly                         lincom  -([share_off]sqlnshadow_offfarm + [share_mig]sqlnshadow_offfarm + [share_farm]sqlnshadow_offfarm)
+{txt}
+{com}.                                                         scalar b27=r(estimate)
+{txt}
+{com}.                                                         scalar e27=r(se)
+{txt}
+{com}.                                                         scalar t27=b27/e27                                                      
+{txt}
+{com}.         quietly                         lincom  -([share_off]ae + [share_mig]ae + [share_farm]ae)
+{txt}
+{com}.                                                         scalar b4=r(estimate)
+{txt}
+{com}.                                                         scalar e4=r(se)
+{txt}
+{com}.                                                         scalar t4=b4/e4
+{txt}
+{com}.         quietly                         lincom  -([share_off]hhage + [share_mig]hhage + [share_farm]hhage)
+{txt}
+{com}.                                                         scalar b5=r(estimate)
+{txt}
+{com}.                                                         scalar e5=r(se)
+{txt}
+{com}.                                                         scalar t5=b5/e5
+{txt}
+{com}.         quietly                         lincom  -([share_off]hhedu + [share_mig]hhedu + [share_farm]hhedu)
+{txt}
+{com}.                                                         scalar b6=r(estimate)
+{txt}
+{com}.                                                         scalar e6=r(se)
+{txt}
+{com}.                                                         scalar t6=b6/e6 
+{txt}
+{com}.         quietly                         lincom  -([share_off]workdeath + [share_mig]workdeath + [share_farm]workdeath)
+{txt}
+{com}.                                                         scalar b9=r(estimate)
+{txt}
+{com}.                                                         scalar e9=r(se)
+{txt}
+{com}.                                                         scalar t9=b9/e9                  
+{txt}
+{com}.         quietly                         lincom  -([share_off]commworkdeath + [share_mig]commworkdeath + [share_farm]commworkdeath)
+{txt}
+{com}.                                                         scalar b10=r(estimate)
+{txt}
+{com}.                                                         scalar e10=r(se)
+{txt}
+{com}.                                                         scalar t10=b10/e10
+{txt}
+{com}.         quietly                         lincom  -([share_off]pershock + [share_mig]pershock + [share_farm]pershock)
+{txt}
+{com}.                                                         scalar b11=r(estimate)
+{txt}
+{com}.                                                         scalar e11=r(se)
+{txt}
+{com}.                                                         scalar t11=b11/e11
+{txt}
+{com}.         quietly                         lincom  -([share_off]shocktotal + [share_mig]shocktotal + [share_farm]shocktotal)
+{txt}
+{com}.                                                         scalar b28=r(estimate)
+{txt}
+{com}.                                                         scalar e28=r(se)
+{txt}
+{com}.                                                         scalar t28=b28/e28
+{txt}
+{com}.         quietly                         lincom  -([share_off]pershockint + [share_mig]pershockint + [share_farm]pershockint)
+{txt}
+{com}.                                                         scalar b29=r(estimate)
+{txt}
+{com}.                                                         scalar e29=r(se)
+{txt}
+{com}.                                                         scalar t29=b29/e29      
+{txt}
+{com}.         quietly                         lincom  -([share_off]dist_Plumtree + [share_mig]dist_Plumtree + [share_farm]dist_Plumtree)
+{txt}
+{com}.                                                         scalar b12=r(estimate)
+{txt}
+{com}.                                                         scalar e12=r(se)
+{txt}
+{com}.                                                         scalar t12=b12/e12
+{txt}
+{com}.         quietly                         lincom  -([share_off]dist_Mutare+ [share_mig]dist_Mutare + [share_farm]dist_Mutare)
+{txt}
+{com}.                                                         scalar b13=r(estimate)
+{txt}
+{com}.                                                         scalar e13=r(se)
+{txt}
+{com}.                                                         scalar t13=b13/e13      
+{txt}
+{com}.         quietly                         lincom  -([share_off]dist_Beitbridge + [share_mig]dist_Beitbridge + [share_farm]dist_Beitbridge)
+{txt}
+{com}.                                                         scalar b14=r(estimate)
+{txt}
+{com}.                                                         scalar e14=r(se)
+{txt}
+{com}.                                                         scalar t14=b14/e14               
+{txt}
+{com}.         quietly                         lincom  -([share_off]dist_VicFalls + [share_mig]dist_VicFalls + [share_farm]dist_VicFalls)
+{txt}
+{com}.                                                         scalar b15=r(estimate)
+{txt}
+{com}.                                                         scalar e15=r(se)
+{txt}
+{com}.                                                         scalar t15=b15/e15
+{txt}
+{com}.         quietly                         lincom  -([share_off]yearbin + [share_mig]yearbin + [share_farm]yearbin)
+{txt}
+{com}.                                                         scalar b16=r(estimate)
+{txt}
+{com}.                                                         scalar e16=r(se)
+{txt}
+{com}.                                                         scalar t16=b16/e16      
+{txt}
+{com}.         quietly                         lincom -([share_off]did_workdeathyr + [share_mig]did_workdeathyr + [share_farm]did_workdeathyr)
+{txt}
+{com}.                                                         scalar b17=r(estimate)
+{txt}
+{com}.                                                         scalar e17=r(se)
+{txt}
+{com}.                                                         scalar t17=b17/e17      
+{txt}
+{com}.         quietly                         lincom -([share_off]did_comworkdeathyr + [share_mig]did_comworkdeathyr + [share_farm]did_comworkdeathyr)
+{txt}
+{com}.                                                         scalar b18=r(estimate)
+{txt}
+{com}.                                                         scalar e18=r(se)
+{txt}
+{com}.                                                         scalar t18=b18/e18      
+{txt}
+{com}.         quietly                         lincom -([share_off]did_pershock + [share_mig]did_pershock + [share_farm]did_pershock)
+{txt}
+{com}.                                                         scalar b19=r(estimate)
+{txt}
+{com}.                                                         scalar e19=r(se)
+{txt}
+{com}.                                                         scalar t19=b19/e19                                                              
+{txt}
+{com}.         quietly                         lincom -([share_off]did_shockyr + [share_mig]did_shockyr + [share_farm]did_shockyr)
+{txt}
+{com}.                                                         scalar b30=r(estimate)
+{txt}
+{com}.                                                         scalar e30=r(se)
+{txt}
+{com}.                                                         scalar t30=b30/e30                                                      
+{txt}
+{com}.         quietly                         lincom -([share_off]did_pershockint + [share_mig]did_pershockint + [share_farm]did_pershockint)
+{txt}
+{com}.                                                         scalar b31=r(estimate)
+{txt}
+{com}.                                                         scalar e31=r(se)
+{txt}
+{com}.                                                         scalar t31=b31/e31                                                                                              
+{txt}
+{com}.         quietly                         lincom -([share_off]femhead + [share_mig]femhead + [share_farm]femhead)
+{txt}
+{com}.                                                         scalar b23=r(estimate)
+{txt}
+{com}.                                                         scalar e23=r(se)
+{txt}
+{com}.                                                         scalar t23=b23/e23      
+{txt}
+{com}.                                                 
+. * recover coefs and standard errors from restrictions *  
+.         quietly                         lincom  -([share_off]lnshadow_offfarm + [share_off]lnshadow_migrant + [share_off]lnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b20=r(estimate)
+{txt}
+{com}.                                                         scalar e20=r(se)
+{txt}
+{com}.                                                         scalar t20=b20/e20
+{txt}
+{com}.         quietly                         lincom  -([share_mig]lnshadow_offfarm + [share_mig]lnshadow_migrant + [share_mig]lnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b21=r(estimate)
+{txt}
+{com}.                                                         scalar e21=r(se)
+{txt}
+{com}.                                                         scalar t21=b21/e21
+{txt}
+{com}.         quietly                         lincom  -([share_farm]lnshadow_offfarm + [share_farm]lnshadow_migrant + [share_farm]lnshadow_farmlabor)
+{txt}
+{com}.                                                         scalar b24=r(estimate)
+{txt}
+{com}.                                                         scalar e24=r(se)
+{txt}
+{com}.                                                         scalar t24=b24/e24
+{txt}
+{com}.         quietly                         lincom   [share_off]lnshadow_offfarm + [share_off]lnshadow_migrant + [share_off]lnshadow_farmlabor ///
+>                                                         +[share_mig]lnshadow_offfarm + [share_mig]lnshadow_migrant + [share_mig]lnshadow_farmlabor  /// 
+>                                                         +[share_farm]lnshadow_offfarm + [share_farm]lnshadow_migrant + [share_farm]lnshadow_farmlabor 
+{txt}
+{com}.                                                                 scalar b22=r(estimate)
+{txt}
+{com}.                                                                 scalar e22=r(se)
+{txt}
+{com}.                                                                 scalar t22=b22/e22
+{txt}
+{com}. 
+.         matrix                          define eq1=(b0\b1\b2\b3\b4\b5\b6\b9\b10\b11\b12\b13\b14\b15\b16\b17\b18\b19\b20\b21\b22\b23\b24\b25\b26\b27\b28\b29\b30\b31),(e0\e1\e2\e3\e4\e5\e6\e9\e10\e11\e12\e13\e14\e15\e16\e17\e18\e19\e20\e21\e22\e23\e24\e25\e26\e27\e28\e29\e30\e31),(t0\t1\t2\t3\t4\t5\t6\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31)
+{txt}
+{com}. 
+.         *matname                        eq1 beta se t, col(.) 
+.         matname                         eq1 _con lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ae hhage hhedu femhead ///
+>                                                         workdeath commworkdeath pershock shock pershockint dist_Plumtree dist_Mutare dist_Beitbridge dist_VicFalls yearbin ///
+>                                                         did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint /// 
+>                                                         b_onfarm_offfarm b_onfarm_migrant b_onfarm_non b_onfarm_onfarm, row(.) e
+{txt}
+{com}. 
+.         matrix                          list eq1
+{res}
+{txt}eq1[30,3]
+                      c1          c2          c3
+        _con {res} -.36434918   2.2553269  -.16155049
+{txt}lnshadow_m~t {res}  .00106708   .00336584   .31703132
+{txt}lnshadow_o~m {res}   .0002792   .00247007   .11303388
+{txt}lnshadow_f~r {res}  .08284342   .58109126   .14256524
+{txt}sqlnshadow~t {res}  .00574188   .00120635   4.7597307
+{txt}sqlnshadow~m {res}  .00045082   .00025291   1.7825799
+{txt}sqlnshadow~r {res}  .00136608   .00167939   .81344218
+{txt}          ae {res}  .00076528     .018375   .04164798
+{txt}       hhage {res}  .00579699   .32107545    .0180549
+{txt}       hhedu {res}   .0668515   .04590856   1.4561883
+{txt}     femhead {res}  3.003e-06   .00004288   .07003232
+{txt}   workdeath {res}  2.063e-06    .0000621   .03322217
+{txt}commworkde~h {res} -2.954e-08   .00008854  -.00033364
+{txt}    pershock {res}  7.798e-06   .00005856   .13317174
+{txt}       shock {res} -.39128961   .50785803  -.77047047
+{txt} pershockint {res}  .02305891   .03558281   .64803509
+{txt}dist_Plumt~e {res}   .4307253   .50554832   .85199631
+{txt} dist_Mutare {res} -.05155738   .03397149  -1.5176663
+{txt}dist_Beitb~e {res}  1.9521339   .71746554   2.7208748
+{txt}dist_VicFa~s {res}  .04063165   .60740161   .06689421
+{txt}     yearbin {res}  -.0841897    .5805764  -.14501054
+{txt}did_workde~r {res} -.01617929   .00705915  -2.2919616
+{txt}did_comwor~r {res} -1.9085759   1.1618969  -1.6426379
+{txt}did_pershock {res} -.00070369   .00184838  -.38070858
+{txt} did_shockyr {res}  .00007841   .00058699   .13357407
+{txt}did_persho~t {res} -.00499491   .03745137  -.13337061
+{txt}b_onfarm_o~m {res}  .01172379   .00894481   1.3106806
+{txt}b_onfarm_m~t {res} -.06874625    .0380141  -1.8084409
+{txt}b_onfarm_non {res} -.02136329   .02087575  -1.0233547
+{txt}b_onfarm_o~m {res}   .0518872   .03183696   1.6297786
+{reset}
+{com}. 
+{txt}end of do-file
+
+{com}. tab pershock
+
+   {txt}pershock {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        548       47.53       47.53
+{txt}          1 {c |}{res}        605       52.47      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,153      100.00
+
+{com}. tab shock
+
+      {txt}(max) {c |}
+ shocktotal {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+   .2359423 {c |}{res}          4        0.41        0.41
+{txt}    .246251 {c |}{res}         10        1.02        1.43
+{txt}   .2572537 {c |}{res}          1        0.10        1.54
+{txt}    .263317 {c |}{res}          9        0.92        2.46
+{txt}   .2757241 {c |}{res}         26        2.66        5.12
+{txt}   .2910134 {c |}{res}          1        0.10        5.22
+{txt}   .2968973 {c |}{res}          1        0.10        5.32
+{txt}   .3094534 {c |}{res}          7        0.72        6.04
+{txt}   .3298662 {c |}{res}         28        2.87        8.90
+{txt}   .3522142 {c |}{res}         13        1.33       10.24
+{txt}   .3968793 {c |}{res}         25        2.56       12.79
+{txt}   .3987581 {c |}{res}          1        0.10       12.90
+{txt}   .4076195 {c |}{res}          1        0.10       13.00
+{txt}   .4158309 {c |}{res}          1        0.10       13.10
+{txt}   .4283851 {c |}{res}          1        0.10       13.20
+{txt}   .4343688 {c |}{res}         13        1.33       14.53
+{txt}   .4495518 {c |}{res}          1        0.10       14.64
+{txt}   .4697873 {c |}{res}         18        1.84       16.48
+{txt}    .471768 {c |}{res}          1        0.10       16.58
+{txt}   .4802771 {c |}{res}          1        0.10       16.68
+{txt}   .5427318 {c |}{res}          1        0.10       16.79
+{txt}   .5605426 {c |}{res}          1        0.10       16.89
+{txt}   .5649673 {c |}{res}          1        0.10       16.99
+{txt}   .5776093 {c |}{res}          1        0.10       17.09
+{txt}   .5781134 {c |}{res}         22        2.25       19.34
+{txt}   .5955985 {c |}{res}          1        0.10       19.45
+{txt}   .6006377 {c |}{res}         12        1.23       20.68
+{txt}   .6102848 {c |}{res}          1        0.10       20.78
+{txt}   .6143017 {c |}{res}         20        2.05       22.82
+{txt}    .621419 {c |}{res}         26        2.66       25.49
+{txt}   .6300817 {c |}{res}          1        0.10       25.59
+{txt}   .6383693 {c |}{res}          1        0.10       25.69
+{txt}   .6484932 {c |}{res}          2        0.20       25.90
+{txt}   .6524026 {c |}{res}          1        0.10       26.00
+{txt}     .65844 {c |}{res}          1        0.10       26.10
+{txt}   .6742607 {c |}{res}          1        0.10       26.20
+{txt}   .6882911 {c |}{res}         20        2.05       28.25
+{txt}   .6999477 {c |}{res}          1        0.10       28.35
+{txt}   .7080712 {c |}{res}          2        0.20       28.56
+{txt}   .7469851 {c |}{res}         13        1.33       29.89
+{txt}   .7651482 {c |}{res}          1        0.10       29.99
+{txt}   .7660882 {c |}{res}          1        0.10       30.09
+{txt}   .7752852 {c |}{res}          1        0.10       30.19
+{txt}   .7832069 {c |}{res}          1        0.10       30.30
+{txt}   .7881075 {c |}{res}          1        0.10       30.40
+{txt}   .8105091 {c |}{res}         10        1.02       31.42
+{txt}   .8122272 {c |}{res}         28        2.87       34.29
+{txt}   .8269553 {c |}{res}          1        0.10       34.39
+{txt}   .8275788 {c |}{res}         38        3.89       38.28
+{txt}   .8376788 {c |}{res}          3        0.31       38.59
+{txt}   .8388453 {c |}{res}          1        0.10       38.69
+{txt}   .8462284 {c |}{res}          1        0.10       38.79
+{txt}   .8509592 {c |}{res}          1        0.10       38.89
+{txt}   .8563102 {c |}{res}         18        1.84       40.74
+{txt}    .857137 {c |}{res}         10        1.02       41.76
+{txt}   .8621074 {c |}{res}          1        0.10       41.86
+{txt}   .8693569 {c |}{res}          1        0.10       41.97
+{txt}   .8779596 {c |}{res}          1        0.10       42.07
+{txt}   .8931499 {c |}{res}          1        0.10       42.17
+{txt}    .900297 {c |}{res}          1        0.10       42.27
+{txt}   .9061886 {c |}{res}          1        0.10       42.37
+{txt}   .9254469 {c |}{res}         21        2.15       44.52
+{txt}   .9279181 {c |}{res}          1        0.10       44.63
+{txt}   .9313203 {c |}{res}          1        0.10       44.73
+{txt}   .9317138 {c |}{res}          1        0.10       44.83
+{txt}   .9445566 {c |}{res}          1        0.10       44.93
+{txt}    .953594 {c |}{res}         42        4.30       49.23
+{txt}   .9611982 {c |}{res}          1        0.10       49.33
+{txt}   .9636857 {c |}{res}          1        0.10       49.44
+{txt}   .9713001 {c |}{res}          2        0.20       49.64
+{txt}   .9770364 {c |}{res}          1        0.10       49.74
+{txt}   1.001209 {c |}{res}          1        0.10       49.85
+{txt}   1.005244 {c |}{res}         19        1.94       51.79
+{txt}   1.014523 {c |}{res}          1        0.10       51.89
+{txt}     1.0195 {c |}{res}          1        0.10       52.00
+{txt}   1.020947 {c |}{res}          1        0.10       52.10
+{txt}   1.024112 {c |}{res}          1        0.10       52.20
+{txt}   1.035508 {c |}{res}          1        0.10       52.30
+{txt}   1.041618 {c |}{res}         32        3.28       55.58
+{txt}   1.042929 {c |}{res}          1        0.10       55.68
+{txt}   1.052625 {c |}{res}          1        0.10       55.78
+{txt}   1.054374 {c |}{res}          1        0.10       55.89
+{txt}   1.055654 {c |}{res}          1        0.10       55.99
+{txt}   1.063065 {c |}{res}          1        0.10       56.09
+{txt}   1.068539 {c |}{res}          1        0.10       56.19
+{txt}   1.068971 {c |}{res}          1        0.10       56.29
+{txt}   1.070091 {c |}{res}          1        0.10       56.40
+{txt}   1.083787 {c |}{res}          1        0.10       56.50
+{txt}   1.086386 {c |}{res}          1        0.10       56.60
+{txt}   1.087125 {c |}{res}          1        0.10       56.70
+{txt}   1.102608 {c |}{res}         24        2.46       59.16
+{txt}   1.102674 {c |}{res}          1        0.10       59.26
+{txt}   1.117956 {c |}{res}          1        0.10       59.37
+{txt}   1.123383 {c |}{res}         25        2.56       61.92
+{txt}   1.126563 {c |}{res}          1        0.10       62.03
+{txt}   1.126772 {c |}{res}          2        0.20       62.23
+{txt}   1.151532 {c |}{res}          1        0.10       62.33
+{txt}   1.154871 {c |}{res}          1        0.10       62.44
+{txt}    1.15519 {c |}{res}          1        0.10       62.54
+{txt}   1.156386 {c |}{res}          1        0.10       62.64
+{txt}   1.160817 {c |}{res}         37        3.79       66.43
+{txt}   1.174538 {c |}{res}          1        0.10       66.53
+{txt}   1.181202 {c |}{res}          1        0.10       66.63
+{txt}   1.184746 {c |}{res}          1        0.10       66.73
+{txt}   1.187173 {c |}{res}         53        5.42       72.16
+{txt}   1.192182 {c |}{res}          1        0.10       72.26
+{txt}   1.197877 {c |}{res}          1        0.10       72.36
+{txt}   1.201749 {c |}{res}          1        0.10       72.47
+{txt}   1.204355 {c |}{res}          1        0.10       72.57
+{txt}   1.215503 {c |}{res}          1        0.10       72.67
+{txt}   1.222311 {c |}{res}         27        2.76       75.44
+{txt}   1.226362 {c |}{res}         20        2.05       77.48
+{txt}   1.226543 {c |}{res}          1        0.10       77.58
+{txt}   1.231199 {c |}{res}          1        0.10       77.69
+{txt}   1.233461 {c |}{res}          1        0.10       77.79
+{txt}   1.259275 {c |}{res}          1        0.10       77.89
+{txt}   1.261312 {c |}{res}          1        0.10       77.99
+{txt}   1.270778 {c |}{res}          1        0.10       78.10
+{txt}   1.272499 {c |}{res}          1        0.10       78.20
+{txt}   1.274978 {c |}{res}          4        0.41       78.61
+{txt}    1.28505 {c |}{res}          1        0.10       78.71
+{txt}   1.292596 {c |}{res}          1        0.10       78.81
+{txt}     1.3008 {c |}{res}          1        0.10       78.92
+{txt}   1.301861 {c |}{res}          1        0.10       79.02
+{txt}   1.318472 {c |}{res}          1        0.10       79.12
+{txt}   1.322711 {c |}{res}          1        0.10       79.22
+{txt}   1.326853 {c |}{res}          1        0.10       79.32
+{txt}   1.328556 {c |}{res}          1        0.10       79.43
+{txt}   1.329625 {c |}{res}          1        0.10       79.53
+{txt}   1.338695 {c |}{res}          1        0.10       79.63
+{txt}   1.344854 {c |}{res}          1        0.10       79.73
+{txt}   1.359724 {c |}{res}          1        0.10       79.84
+{txt}   1.378716 {c |}{res}          1        0.10       79.94
+{txt}   1.403911 {c |}{res}          1        0.10       80.04
+{txt}   1.413951 {c |}{res}          1        0.10       80.14
+{txt}   1.422129 {c |}{res}          1        0.10       80.25
+{txt}   1.435893 {c |}{res}          1        0.10       80.35
+{txt}   1.450392 {c |}{res}          1        0.10       80.45
+{txt}   1.470924 {c |}{res}         21        2.15       82.60
+{txt}   1.474435 {c |}{res}          2        0.20       82.80
+{txt}   1.483738 {c |}{res}          1        0.10       82.91
+{txt}   1.489836 {c |}{res}         27        2.76       85.67
+{txt}    1.49918 {c |}{res}          1        0.10       85.77
+{txt}   1.513778 {c |}{res}          1        0.10       85.88
+{txt}   1.517338 {c |}{res}          1        0.10       85.98
+{txt}   1.558749 {c |}{res}          1        0.10       86.08
+{txt}   1.559092 {c |}{res}          1        0.10       86.18
+{txt}   1.598345 {c |}{res}          1        0.10       86.28
+{txt}   1.653182 {c |}{res}          1        0.10       86.39
+{txt}   1.697138 {c |}{res}          1        0.10       86.49
+{txt}   1.698371 {c |}{res}          3        0.31       86.80
+{txt}   1.717695 {c |}{res}          1        0.10       86.90
+{txt}   1.756102 {c |}{res}          1        0.10       87.00
+{txt}   1.799303 {c |}{res}          1        0.10       87.10
+{txt}   1.834187 {c |}{res}          1        0.10       87.21
+{txt}   1.849662 {c |}{res}          1        0.10       87.31
+{txt}   1.883771 {c |}{res}          1        0.10       87.41
+{txt}   1.917577 {c |}{res}          1        0.10       87.51
+{txt}   1.994789 {c |}{res}          1        0.10       87.62
+{txt}   2.053655 {c |}{res}          1        0.10       87.72
+{txt}   2.074389 {c |}{res}          1        0.10       87.82
+{txt}   2.088572 {c |}{res}          1        0.10       87.92
+{txt}   2.150037 {c |}{res}          1        0.10       88.02
+{txt}   2.170929 {c |}{res}          1        0.10       88.13
+{txt}    2.22308 {c |}{res}         25        2.56       90.69
+{txt}    2.22658 {c |}{res}          1        0.10       90.79
+{txt}   2.309778 {c |}{res}          1        0.10       90.89
+{txt}   2.313252 {c |}{res}         28        2.87       93.76
+{txt}   2.495175 {c |}{res}          1        0.10       93.86
+{txt}   2.543909 {c |}{res}          1        0.10       93.96
+{txt}    2.56216 {c |}{res}          1        0.10       94.06
+{txt}   2.588273 {c |}{res}          1        0.10       94.17
+{txt}   2.588777 {c |}{res}          1        0.10       94.27
+{txt}   2.672189 {c |}{res}          1        0.10       94.37
+{txt}   2.711943 {c |}{res}         54        5.53       99.90
+{txt}   2.796823 {c |}{res}          1        0.10      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. reg pershock shock
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       977
+{txt}{hline 13}{c +}{hline 34}   F(1, 975)       = {res}     4.51
+{txt}       Model {c |} {res}  1.1079896         1   1.1079896   {txt}Prob > F        ={res}    0.0339
+{txt}    Residual {c |} {res} 239.518418       975  .245659916   {txt}R-squared       ={res}    0.0046
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0036
+{txt}       Total {c |} {res} 240.626407       976   .24654345   {txt}Root MSE        =   {res} .49564
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    pershock{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}shocktotal {c |}{col 14}{res}{space 2}-.0535489{col 26}{space 2} .0252145{col 37}{space 1}   -2.12{col 46}{space 3}0.034{col 54}{space 4}-.1030297{col 67}{space 3} -.004068
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .4973364{col 26}{space 2} .0316766{col 37}{space 1}   15.70{col 46}{space 3}0.000{col 54}{space 4} .4351742{col 67}{space 3} .5594986
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. tabstat hhage hhedu share_mig share_off share_non share_farm, by (pershock)
+
+{txt}Summary statistics: mean
+  by categories of: pershock 
+
+{ralign 8:pershock} {...}
+{c |}{...}
+     hhage     hhedu  share_~g  share_~f  share_~n  share_~m
+{hline 9}{c +}{hline 60}
+{ralign 8:0} {...}
+{c |}{...}
+ {res} 26.80491  5.111269  .0649355  .1604184  .0187796  .7526408
+{txt}{ralign 8:1} {...}
+{c |}{...}
+ {res}  25.8905   5.12317  .0944627  .1834024   .018046  .7015283
+{txt}{hline 9}{c +}{hline 60}
+{ralign 8:Total} {...}
+{c |}{...}
+ {res} 26.40174  5.116511  .0779009  .1705107  .0184575  .7301973
+{txt}{hline 9}{c BT}{hline 60}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. 
+.         tabstat                 share_mig share_off share_non share_farm ///
+>                                                 ae hhage hhedu femhead workdeath commworkdeath shocktotal, by (yearpanel pershock)       
+{err}by():  too many variables specified
+{txt}{search r(103), local:r(103);}
+
+end of do-file
+
+{search r(103), local:r(103);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. 
+.         tabstat                 share_mig share_off share_non share_farm ///
+>                                                 ae hhage hhedu femhead workdeath commworkdeath shocktotal, by (pershock)         
+
+{txt}Summary statistics: mean
+  by categories of: pershock 
+
+{ralign 8:pershock} {...}
+{c |}{...}
+  share_~g  share_~f  share_~n  share_~m        ae     hhage     hhedu   femhead  workde~h  commwo~h  shockt~l
+{hline 9}{c +}{hline 110}
+{ralign 8:0} {...}
+{c |}{...}
+ {res} .0649355  .1604184  .0187796  .7526408  4.974307  26.80491  5.111269  .3321168  .0694698   .994514  1.125308
+{txt}{ralign 8:1} {...}
+{c |}{...}
+ {res} .0944627  .1834024   .018046  .7015283  5.437296   25.8905   5.12317  .3100233  .1100703  .9961843  1.039319
+{txt}{hline 9}{c +}{hline 110}
+{ralign 8:Total} {...}
+{c |}{...}
+ {res} .0779009  .1705107  .0184575  .7301973  5.177605  26.40174  5.116511  .3224156   .087269  .9953092   1.08755
+{txt}{hline 9}{c BT}{hline 110}
+
+{com}. 
+{txt}end of do-file
+
+{com}. reg shocktotal share_mig share_off share_non share_farm ae hhage hhedu femhead workdeath commworkdeath
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       872
+{txt}{hline 13}{c +}{hline 34}   F(10, 861)      = {res}     2.29
+{txt}       Model {c |} {res} 8.50431842        10  .850431842   {txt}Prob > F        ={res}    0.0120
+{txt}    Residual {c |} {res} 320.293165       861  .372001353   {txt}R-squared       ={res}    0.0259
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0146
+{txt}       Total {c |} {res} 328.797483       871   .37749424   {txt}Root MSE        =   {res} .60992
+
+{txt}{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}   shocktotal{col 15}{c |}      Coef.{col 27}   Std. Err.{col 39}      t{col 47}   P>|t|{col 55}     [95% Con{col 68}f. Interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}share_mig {c |}{col 15}{res}{space 2}-1.217423{col 27}{space 2} .8961338{col 38}{space 1}   -1.36{col 47}{space 3}0.175{col 55}{space 4}-2.976285{col 68}{space 3} .5414398
+{txt}{space 4}share_off {c |}{col 15}{res}{space 2}-1.374232{col 27}{space 2} .8889201{col 38}{space 1}   -1.55{col 47}{space 3}0.122{col 55}{space 4}-3.118936{col 68}{space 3} .3704722
+{txt}{space 4}share_non {c |}{col 15}{res}{space 2}-1.284499{col 27}{space 2} 1.009653{col 38}{space 1}   -1.27{col 47}{space 3}0.204{col 55}{space 4}-3.266169{col 68}{space 3} .6971709
+{txt}{space 3}share_farm {c |}{col 15}{res}{space 2}-1.271844{col 27}{space 2} .8859204{col 38}{space 1}   -1.44{col 47}{space 3}0.151{col 55}{space 4} -3.01066{col 68}{space 3} .4669724
+{txt}{space 11}ae {c |}{col 15}{res}{space 2} .0164836{col 27}{space 2} .0094296{col 38}{space 1}    1.75{col 47}{space 3}0.081{col 55}{space 4}-.0020242{col 68}{space 3} .0349914
+{txt}{space 8}hhage {c |}{col 15}{res}{space 2}-.0021938{col 27}{space 2}  .001885{col 38}{space 1}   -1.16{col 47}{space 3}0.245{col 55}{space 4}-.0058937{col 68}{space 3}  .001506
+{txt}{space 8}hhedu {c |}{col 15}{res}{space 2} .0294855{col 27}{space 2}  .011266{col 38}{space 1}    2.62{col 47}{space 3}0.009{col 55}{space 4} .0073734{col 68}{space 3} .0515976
+{txt}{space 6}femhead {c |}{col 15}{res}{space 2}-.0208102{col 27}{space 2} .0452692{col 38}{space 1}   -0.46{col 47}{space 3}0.646{col 55}{space 4} -.109661{col 68}{space 3} .0680407
+{txt}{space 4}workdeath {c |}{col 15}{res}{space 2} .0270696{col 27}{space 2} .0896446{col 38}{space 1}    0.30{col 47}{space 3}0.763{col 55}{space 4} -.148878{col 68}{space 3} .2030171
+{txt}commworkdeath {c |}{col 15}{res}{space 2} .2479612{col 27}{space 2} 1.148106{col 38}{space 1}    0.22{col 47}{space 3}0.829{col 55}{space 4}-2.005453{col 68}{space 3} 2.501376
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2}  1.94811{col 27}{space 2} 1.468483{col 38}{space 1}    1.33{col 47}{space 3}0.185{col 55}{space 4}-.9341151{col 68}{space 3} 4.830335
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. reg shocktotal share_mig share_off share_non share_farm ae hhage hhedu femhead workdeath commworkdeath, vce(robust)
+
+{txt}Linear regression                               Number of obs     = {res}       872
+                                                {txt}F(10, 861)        =  {res}     2.67
+                                                {txt}Prob > F          = {res}    0.0032
+                                                {txt}R-squared         = {res}    0.0259
+                                                {txt}Root MSE          =    {res} .60992
+
+{txt}{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 15}{c |}{col 27}    Robust
+{col 1}   shocktotal{col 15}{c |}      Coef.{col 27}   Std. Err.{col 39}      t{col 47}   P>|t|{col 55}     [95% Con{col 68}f. Interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}share_mig {c |}{col 15}{res}{space 2}-1.217423{col 27}{space 2}  1.25058{col 38}{space 1}   -0.97{col 47}{space 3}0.331{col 55}{space 4}-3.671964{col 68}{space 3} 1.237119
+{txt}{space 4}share_off {c |}{col 15}{res}{space 2}-1.374232{col 27}{space 2} 1.243136{col 38}{space 1}   -1.11{col 47}{space 3}0.269{col 55}{space 4}-3.814163{col 68}{space 3} 1.065699
+{txt}{space 4}share_non {c |}{col 15}{res}{space 2}-1.284499{col 27}{space 2} 1.322156{col 38}{space 1}   -0.97{col 47}{space 3}0.332{col 55}{space 4}-3.879524{col 68}{space 3} 1.310526
+{txt}{space 3}share_farm {c |}{col 15}{res}{space 2}-1.271844{col 27}{space 2} 1.243123{col 38}{space 1}   -1.02{col 47}{space 3}0.307{col 55}{space 4}-3.711751{col 68}{space 3} 1.168063
+{txt}{space 11}ae {c |}{col 15}{res}{space 2} .0164836{col 27}{space 2} .0093162{col 38}{space 1}    1.77{col 47}{space 3}0.077{col 55}{space 4}-.0018016{col 68}{space 3} .0347688
+{txt}{space 8}hhage {c |}{col 15}{res}{space 2}-.0021938{col 27}{space 2} .0016735{col 38}{space 1}   -1.31{col 47}{space 3}0.190{col 55}{space 4}-.0054785{col 68}{space 3} .0010909
+{txt}{space 8}hhedu {c |}{col 15}{res}{space 2} .0294855{col 27}{space 2} .0104845{col 38}{space 1}    2.81{col 47}{space 3}0.005{col 55}{space 4} .0089073{col 68}{space 3} .0500637
+{txt}{space 6}femhead {c |}{col 15}{res}{space 2}-.0208102{col 27}{space 2} .0447901{col 38}{space 1}   -0.46{col 47}{space 3}0.642{col 55}{space 4}-.1087207{col 68}{space 3} .0671004
+{txt}{space 4}workdeath {c |}{col 15}{res}{space 2} .0270696{col 27}{space 2} .0979008{col 38}{space 1}    0.28{col 47}{space 3}0.782{col 55}{space 4}-.1650826{col 68}{space 3} .2192217
+{txt}commworkdeath {c |}{col 15}{res}{space 2} .2479612{col 27}{space 2} 1.387397{col 38}{space 1}    0.18{col 47}{space 3}0.858{col 55}{space 4}-2.475115{col 68}{space 3} 2.971038
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2}  1.94811{col 27}{space 2} 1.874036{col 38}{space 1}    1.04{col 47}{space 3}0.299{col 55}{space 4}-1.730104{col 68}{space 3} 5.626324
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD3f14_000000.tmp"
+{txt}
+{com}. * set panel 
+.         xtset                   yearpanel 
+{txt}{col 8}panel variable:  {res}yearpanel (unbalanced)
+{txt}
+{com}. 
+. * estimate shadow wage for farm labor 
+.         xtreg                   wages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+>                                                 no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
+>                                                 mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
+{txt}note: mintercrop omitted because of collinearity
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       369
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1248                                         {txt}min = {res}        44
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     184.5
+{txt}     overall = {res}0.1280                                         {txt}max = {res}       325
+
+                                                {txt}Wald chi2({res}17{txt})     =  {res}    51.53
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}  wages_farmlabor{col 19}{c |}      Coef.{col 31}   Std. Err.{col 43}      z{col 51}   P>|z|{col 59}     [95% Con{col 72}f. Interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}plough {c |}{col 19}{res}{space 2} 92.54046{col 31}{space 2} 57.83001{col 42}{space 1}    1.60{col 51}{space 3}0.110{col 59}{space 4}-20.80428{col 72}{space 3} 205.8852
+{txt}{space 10}femhead {c |}{col 19}{res}{space 2} -30.4118{col 31}{space 2}  47.6413{col 42}{space 1}   -0.64{col 51}{space 3}0.523{col 59}{space 4} -123.787{col 72}{space 3} 62.96343
+{txt}{space 7}own_cattle {c |}{col 19}{res}{space 2}-46.54666{col 31}{space 2} 44.27894{col 42}{space 1}   -1.05{col 51}{space 3}0.293{col 59}{space 4}-133.3318{col 72}{space 3} 40.23846
+{txt}{space 8}free_seed {c |}{col 19}{res}{space 2}-52.73854{col 31}{space 2} 32.75686{col 42}{space 1}   -1.61{col 51}{space 3}0.107{col 59}{space 4}-116.9408{col 72}{space 3} 11.46372
+{txt}{space 8}intercrop {c |}{col 19}{res}{space 2}-65.95106{col 31}{space 2} 28.11841{col 42}{space 1}   -2.35{col 51}{space 3}0.019{col 59}{space 4}-121.0621{col 72}{space 3}-10.83998
+{txt}{space 10}fertqty {c |}{col 19}{res}{space 2} .1478275{col 31}{space 2}   .49748{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-.8272154{col 72}{space 3}  1.12287
+{txt}{space 13}area {c |}{col 19}{res}{space 2} 16.62538{col 31}{space 2} 10.31261{col 42}{space 1}    1.61{col 51}{space 3}0.107{col 59}{space 4}-3.586969{col 72}{space 3} 36.83772
+{txt}{space 1}no_farm_fulltime {c |}{col 19}{res}{space 2}-34.28423{col 31}{space 2} 11.08848{col 42}{space 1}   -3.09{col 51}{space 3}0.002{col 59}{space 4}-56.01725{col 72}{space 3}-12.55121
+{txt}{space 1}no_farm_parttime {c |}{col 19}{res}{space 2}-8.617937{col 31}{space 2} 10.81943{col 42}{space 1}   -0.80{col 51}{space 3}0.426{col 59}{space 4}-29.82363{col 72}{space 3} 12.58775
+{txt}{space 10}mplough {c |}{col 19}{res}{space 2}-6.244184{col 31}{space 2}  67.9472{col 42}{space 1}   -0.09{col 51}{space 3}0.927{col 59}{space 4}-139.4182{col 72}{space 3} 126.9299
+{txt}{space 9}mfemhead {c |}{col 19}{res}{space 2} 37.66537{col 31}{space 2} 52.87961{col 42}{space 1}    0.71{col 51}{space 3}0.476{col 59}{space 4}-65.97676{col 72}{space 3} 141.3075
+{txt}{space 6}mown_cattle {c |}{col 19}{res}{space 2}  76.7148{col 31}{space 2} 53.69904{col 42}{space 1}    1.43{col 51}{space 3}0.153{col 59}{space 4}-28.53339{col 72}{space 3}  181.963
+{txt}{space 7}mfree_seed {c |}{col 19}{res}{space 2} 13.83779{col 31}{space 2} 46.45593{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-77.21417{col 72}{space 3} 104.8897
+{txt}{space 7}mintercrop {c |}{col 19}{res}{space 2}        0{col 31}{txt}  (omitted)
+{space 9}mfertqty {c |}{col 19}{res}{space 2}  1.05257{col 31}{space 2} .7096263{col 42}{space 1}    1.48{col 51}{space 3}0.138{col 59}{space 4}-.3382719{col 72}{space 3} 2.443412
+{txt}{space 12}marea {c |}{col 19}{res}{space 2}-18.84572{col 31}{space 2}  15.9066{col 42}{space 1}   -1.18{col 51}{space 3}0.236{col 59}{space 4}-50.02207{col 72}{space 3} 12.33064
+{txt}mno_farm_fulltime {c |}{col 19}{res}{space 2} 5.239206{col 31}{space 2} 15.04475{col 42}{space 1}    0.35{col 51}{space 3}0.728{col 59}{space 4}-24.24796{col 72}{space 3} 34.72637
+{txt}mno_farm_parttime {c |}{col 19}{res}{space 2}  5.56886{col 31}{space 2} 14.96971{col 42}{space 1}    0.37{col 51}{space 3}0.710{col 59}{space 4}-23.77124{col 72}{space 3} 34.90896
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} 119.7254{col 31}{space 2} 41.52035{col 42}{space 1}    2.88{col 51}{space 3}0.004{col 59}{space 4} 38.34701{col 72}{space 3} 201.1038
+{txt}{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+          sigma_u {c |} {res}         0
+          {txt}sigma_e {c |} {res} 211.61537
+              {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 18}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb1, xb
+{txt}(441 missing values generated)
+
+{com}.         egen                    xb1mean = mean (xb1), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb1 = xb1mean if xb1 == .
+{txt}(41 real changes made)
+
+{com}.         gen                     x_farm = _b[no_farm_fulltime]
+{txt}
+{com}. 
+. * estimate shadow wage for migrant labor 
+.         xtreg                   wages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+>                                                 o_migrant_international o_migrant_domestic no_migrants ///
+>                                                 comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
+>                                                 mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mo_migrant_international ///
+>                                                 mo_migrant_domestic mno_migrants mcomm_migrantratio
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}        97
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.4584                                         {txt}min = {res}        38
+{txt}     between = {res}1.0000                                         {txt}avg = {res}      48.5
+{txt}     overall = {res}0.4485                                         {txt}max = {res}        59
+
+                                                {txt}Wald chi2({res}20{txt})     =  {res}    61.81
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}           wages_migrant{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      z{col 58}   P>|z|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}avgmig_gender {c |}{col 26}{res}{space 2} -87.2806{col 38}{space 2} 50.13883{col 49}{space 1}   -1.74{col 58}{space 3}0.082{col 66}{space 4}-185.5509{col 79}{space 3} 10.98971
+{txt}{space 14}avgmig_age {c |}{col 26}{res}{space 2}-1.604538{col 38}{space 2} .7926393{col 49}{space 1}   -2.02{col 58}{space 3}0.043{col 66}{space 4}-3.158083{col 79}{space 3}-.0509941
+{txt}{space 13}avgmig_yred {c |}{col 26}{res}{space 2}-14.65491{col 38}{space 2} 6.383472{col 49}{space 1}   -2.30{col 58}{space 3}0.022{col 66}{space 4}-27.16628{col 79}{space 3}-2.143531
+{txt}{space 12}multiple_mig {c |}{col 26}{res}{space 2}-45.74977{col 38}{space 2} 13.04337{col 49}{space 1}   -3.51{col 58}{space 3}0.000{col 66}{space 4}-71.31431{col 79}{space 3}-20.18523
+{txt}{space 1}o_migrant_international {c |}{col 26}{res}{space 2}-24.13431{col 38}{space 2} 11.11223{col 49}{space 1}   -2.17{col 58}{space 3}0.030{col 66}{space 4}-45.91389{col 79}{space 3}-2.354742
+{txt}{space 6}o_migrant_domestic {c |}{col 26}{res}{space 2} 10.10782{col 38}{space 2} 12.98566{col 49}{space 1}    0.78{col 58}{space 3}0.436{col 66}{space 4}-15.34361{col 79}{space 3} 35.55925
+{txt}{space 13}no_migrants {c |}{col 26}{res}{space 2} 7.542985{col 38}{space 2} 4.737308{col 49}{space 1}    1.59{col 58}{space 3}0.111{col 66}{space 4}-1.741968{col 79}{space 3} 16.82794
+{txt}{space 7}comm_migrantratio {c |}{col 26}{res}{space 2} 8724.797{col 38}{space 2}  2792.95{col 49}{space 1}    3.12{col 58}{space 3}0.002{col 66}{space 4} 3250.716{col 79}{space 3} 14198.88
+{txt}{space 11}dist_VicFalls {c |}{col 26}{res}{space 2} .0636244{col 38}{space 2} .0592223{col 49}{space 1}    1.07{col 58}{space 3}0.283{col 66}{space 4}-.0524492{col 79}{space 3}  .179698
+{txt}{space 9}dist_Beitbridge {c |}{col 26}{res}{space 2} .0790154{col 38}{space 2} .0844845{col 49}{space 1}    0.94{col 58}{space 3}0.350{col 66}{space 4}-.0865712{col 79}{space 3}  .244602
+{txt}{space 13}dist_Mutare {c |}{col 26}{res}{space 2} .0040219{col 38}{space 2} .0677444{col 49}{space 1}    0.06{col 58}{space 3}0.953{col 66}{space 4}-.1287547{col 79}{space 3} .1367985
+{txt}{space 11}dist_Plumtree {c |}{col 26}{res}{space 2}-.0586691{col 38}{space 2} .0487138{col 49}{space 1}   -1.20{col 58}{space 3}0.228{col 66}{space 4}-.1541464{col 79}{space 3} .0368081
+{txt}{space 10}mavgmig_gender {c |}{col 26}{res}{space 2} 82.36858{col 38}{space 2} 50.98982{col 49}{space 1}    1.62{col 58}{space 3}0.106{col 66}{space 4}-17.56963{col 79}{space 3} 182.3068
+{txt}{space 13}mavgmig_age {c |}{col 26}{res}{space 2} 1.279269{col 38}{space 2} .8329047{col 49}{space 1}    1.54{col 58}{space 3}0.125{col 66}{space 4}-.3531945{col 79}{space 3} 2.911732
+{txt}{space 12}mavgmig_yred {c |}{col 26}{res}{space 2} 17.00673{col 38}{space 2} 6.548484{col 49}{space 1}    2.60{col 58}{space 3}0.009{col 66}{space 4} 4.171942{col 79}{space 3} 29.84153
+{txt}{space 11}mmultiple_mig {c |}{col 26}{res}{space 2} 104.1167{col 38}{space 2} 21.55155{col 49}{space 1}    4.83{col 58}{space 3}0.000{col 66}{space 4} 61.87641{col 79}{space 3} 146.3569
+{txt}mo_migrant_international {c |}{col 26}{res}{space 2} 10.47128{col 38}{space 2} 21.90795{col 49}{space 1}    0.48{col 58}{space 3}0.633{col 66}{space 4}-32.46752{col 79}{space 3} 53.41008
+{txt}{space 5}mo_migrant_domestic {c |}{col 26}{res}{space 2}-18.80763{col 38}{space 2} 21.35702{col 49}{space 1}   -0.88{col 58}{space 3}0.379{col 66}{space 4}-60.66661{col 79}{space 3} 23.05136
+{txt}{space 12}mno_migrants {c |}{col 26}{res}{space 2}-9.671007{col 38}{space 2}   8.5863{col 49}{space 1}   -1.13{col 58}{space 3}0.260{col 66}{space 4}-26.49985{col 79}{space 3} 7.157832
+{txt}{space 6}mcomm_migrantratio {c |}{col 26}{res}{space 2}-9406.989{col 38}{space 2} 2907.347{col 49}{space 1}   -3.24{col 58}{space 3}0.001{col 66}{space 4}-15105.28{col 79}{space 3}-3708.693
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2}-5.430517{col 38}{space 2} 66.37494{col 49}{space 1}   -0.08{col 58}{space 3}0.935{col 66}{space 4} -135.523{col 79}{space 3}  124.662
+{txt}{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+                 sigma_u {c |} {res}         0
+                 {txt}sigma_e {c |} {res} 32.466951
+                     {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 25}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb2, xb
+{txt}(999 missing values generated)
+
+{com}.         egen                    xb2mean = mean (xb2), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb2 = xb2mean if xb2 == .
+{txt}(599 real changes made)
+
+{com}.         gen                     x_migrant = _b[no_migrants]
+{txt}
+{com}. 
+. * estimate shadow wage for wage labor 
+.         xtreg                   wages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+>                                                 no_offfarm o_informal o_formal comm_offfarm /// 
+>                                                 mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
+>                                                 mno_offfarm mo_informal mo_formal mcomm_offfarm
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       582
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1421                                         {txt}min = {res}       201
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     291.0
+{txt}     overall = {res}0.1730                                         {txt}max = {res}       381
+
+                                                {txt}Wald chi2({res}16{txt})     =  {res}   118.19
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} wages_offfarm{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      z{col 48}   P>|z|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}avgoff_gender {c |}{col 16}{res}{space 2} 5.446851{col 28}{space 2} 11.00827{col 39}{space 1}    0.49{col 48}{space 3}0.621{col 56}{space 4}-16.12896{col 69}{space 3} 27.02267
+{txt}{space 4}avgoff_age {c |}{col 16}{res}{space 2}-.5180425{col 28}{space 2} .2414571{col 39}{space 1}   -2.15{col 48}{space 3}0.032{col 56}{space 4}-.9912898{col 69}{space 3}-.0447952
+{txt}{space 3}avgoff_yred {c |}{col 16}{res}{space 2}-.9689129{col 28}{space 2}  1.36758{col 39}{space 1}   -0.71{col 48}{space 3}0.479{col 56}{space 4} -3.64932{col 69}{space 3} 1.711494
+{txt}{space 2}multiple_off {c |}{col 16}{res}{space 2}-.8545303{col 28}{space 2} 4.535848{col 39}{space 1}   -0.19{col 48}{space 3}0.851{col 56}{space 4}-9.744629{col 69}{space 3} 8.035569
+{txt}{space 4}no_offfarm {c |}{col 16}{res}{space 2}-1.892211{col 28}{space 2}  4.15196{col 39}{space 1}   -0.46{col 48}{space 3}0.649{col 56}{space 4} -10.0299{col 69}{space 3} 6.245481
+{txt}{space 4}o_informal {c |}{col 16}{res}{space 2}-.6426172{col 28}{space 2} 6.233663{col 39}{space 1}   -0.10{col 48}{space 3}0.918{col 56}{space 4}-12.86037{col 69}{space 3} 11.57514
+{txt}{space 6}o_formal {c |}{col 16}{res}{space 2} 4.891296{col 28}{space 2} 9.654151{col 39}{space 1}    0.51{col 48}{space 3}0.612{col 56}{space 4}-14.03049{col 69}{space 3} 23.81308
+{txt}{space 2}comm_offfarm {c |}{col 16}{res}{space 2} 158.2058{col 28}{space 2} 507.7367{col 39}{space 1}    0.31{col 48}{space 3}0.755{col 56}{space 4}-836.9399{col 69}{space 3} 1153.352
+{txt}mavgoff_gender {c |}{col 16}{res}{space 2} 3.771514{col 28}{space 2} 14.29696{col 39}{space 1}    0.26{col 48}{space 3}0.792{col 56}{space 4}-24.25001{col 69}{space 3} 31.79304
+{txt}{space 3}mavgoff_age {c |}{col 16}{res}{space 2}-.2092995{col 28}{space 2}  .301867{col 39}{space 1}   -0.69{col 48}{space 3}0.488{col 56}{space 4}-.8009479{col 69}{space 3} .3823489
+{txt}{space 2}mavgoff_yred {c |}{col 16}{res}{space 2}-4.245968{col 28}{space 2}  1.66523{col 39}{space 1}   -2.55{col 48}{space 3}0.011{col 56}{space 4}-7.509758{col 69}{space 3}-.9821784
+{txt}{space 1}mmultiple_off {c |}{col 16}{res}{space 2}-.8857702{col 28}{space 2} 12.68832{col 39}{space 1}   -0.07{col 48}{space 3}0.944{col 56}{space 4}-25.75442{col 69}{space 3} 23.98288
+{txt}{space 3}mno_offfarm {c |}{col 16}{res}{space 2}-8.747296{col 28}{space 2} 10.48332{col 39}{space 1}   -0.83{col 48}{space 3}0.404{col 56}{space 4}-29.29423{col 69}{space 3} 11.79964
+{txt}{space 3}mo_informal {c |}{col 16}{res}{space 2}-12.83142{col 28}{space 2} 12.15246{col 39}{space 1}   -1.06{col 48}{space 3}0.291{col 56}{space 4}-36.64981{col 69}{space 3} 10.98696
+{txt}{space 5}mo_formal {c |}{col 16}{res}{space 2} -20.3231{col 28}{space 2} 14.72884{col 39}{space 1}   -1.38{col 48}{space 3}0.168{col 56}{space 4} -49.1911{col 69}{space 3} 8.544897
+{txt}{space 1}mcomm_offfarm {c |}{col 16}{res}{space 2} 1618.631{col 28}{space 2} 695.4477{col 39}{space 1}    2.33{col 48}{space 3}0.020{col 56}{space 4} 255.5787{col 69}{space 3} 2981.683
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 196.9586{col 28}{space 2} 17.24083{col 39}{space 1}   11.42{col 48}{space 3}0.000{col 56}{space 4} 163.1672{col 69}{space 3}   230.75
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res}         0
+       {txt}sigma_e {c |} {res} 48.706448
+           {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb3, xb
+{txt}(571 missing values generated)
+
+{com}.         egen                    xb3mean = mean (xb3), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb3 = xb3mean if xb3 == .
+{txt}(171 real changes made)
+
+{com}.         gen                     x_offfarm = _b[no_offfarm]
+{txt}
+{com}. 
+. * calculate shadow wages 
+.         gen                     shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_migrant = (xb2 / no_migrant1)*(x_migrant)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_offfarm = (xb3 / no_offfarm1)*(x_offfarm)
+{txt}(400 missing values generated)
+
+{com}. 
+.         egen                    mshadow_farmlabor = mean(shadow_farmlabor), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_migrant = mean(shadow_migrant), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_offfarm  = mean(shadow_offfarm), by (rc id)
+{txt}(400 missing values generated)
+
+{com}. 
+.         label                   variable shadow_migrant "\hspace{c -(}0.1cm{c )-} Migration Wages"
+{txt}
+{com}.         label                   variable shadow_offfarm "\hspace{c -(}0.1cm{c )-} Off-Farm Wages"
+{txt}
+{com}.         label                   variable shadow_farmlabor "\hspace{c -(}0.1cm{c )-} On-Farm Wages"        
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. tabstat wages_migrant wages_farmlabor wages_offfarm shadow_farmlabor shadow_migrant shadow_offfarm
+
+{txt}   stats {...}
+{c |}{...}
+  wages_~t  wages_~r  wages_~m  shadow~r  shadow~t  shadow~m
+{hline 9}{c +}{hline 60}
+{ralign 8:mean} {...}
+{c |}{...}
+ {res}  44.3456  91.68258  149.9193 -1834.135  301.7105 -262.8512
+{txt}{hline 9}{c BT}{hline 60}
+
+{com}. sum wages_migrant wages_farmlabor wages_offfarm shadow_farmlabor shadow_migrant shadow_offfarm
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+wages_migr~t {c |}{res}        227     44.3456    34.99345        3.4   230.7692
+{txt}wages_farm~r {c |}{res}        370    91.68258     220.744          0       2250
+{txt}wages_offf~m {c |}{res}        753    149.9193    51.32726   60.39204        200
+{txt}shadow_far~r {c |}{res}        753   -1834.135    1926.907   -10760.7   2386.019
+{txt}shadow_mig~t {c |}{res}        753    301.7105    102.4685  -445.7095   765.6851
+{txt}{hline 13}{c +}{hline 57}
+shadow_off~m {c |}{res}        753   -262.8512    70.46714  -443.8516   -54.8906
+
+{com}. 
