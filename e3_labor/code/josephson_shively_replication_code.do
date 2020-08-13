@@ -11,8 +11,8 @@
 	* 
 
 * to do 
-	* pretty much everything
 	* rename all variables for clarification in data file 
+	* ADD NON PARTICIPATION TO tobit 
 
 * **********************************************************************
 * 0 - setup
@@ -1156,6 +1156,8 @@
 * **********************************************************************
 * 3d - robust - analysis with CRE tobit 
 * **********************************************************************						
+
+*** NEED TO ADD NON PARTICIPATION
 
 * **********************************************************************
 * 3di - allocation of labor (z-score rainfall)	
