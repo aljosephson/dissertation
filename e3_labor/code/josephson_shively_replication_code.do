@@ -1,14 +1,14 @@
 * Project: Zimbabwe Labor Shocks
-* Created on: August 2020
+* Created: August 2020
 * Created by: alj
-* Last edit: 13 August 2020 
+* Last edit: 24 August 2020 
 * Stata v.16.1
 
 * does
-	* 
+	* replicates all tables from Josephson and Shively 
 
 * assumes
-	* 
+	* access to data file "data"
 
 * to do 
 	* rename all variables for clarification in data file 
