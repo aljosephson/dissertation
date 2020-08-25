@@ -46,27 +46,27 @@
 
 * panel A
 	tabstat 		wages_farmlabor femhead plough own_cattle free_seed intercrop fertqty area /// 
-						no_farm_fulltime no_farm_parttime, by (yearpanel)	
+						no_farm_fulltime no_farm_parttime, stats (mean sd) by (yearpanel)	
 * panel B
 	tabstat 		wages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
 						o_migrant_international o_migrant_domestic no_migrants ///
-						comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree, by (yearpanel)	
+						comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree, stats (mean sd) by (yearpanel)	
 * panel C 
 	tabstat 		wages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
-						no_offfarm o_informal o_formal comm_offfarm, by (yearpanel)	 
+						no_offfarm o_informal o_formal comm_offfarm, stats (mean sd) by (yearpanel)	 
 
 * **********************************************************************
 * 2b - summary statistics - labor share equations 
 * **********************************************************************
 
 * panel A
-	tabstat 		share_mig share_off share_non share_farm, by (yearpanel)	 
+	tabstat 		share_mig share_off share_non share_farm, stats (mean sd) by (yearpanel)	 
 
 * panel B
-	tabstat 		ae hhage hhedu femhead, by (yearpanel)	 
+	tabstat 		ae hhage hhedu femhead, stats (mean sd) by (yearpanel)	 
 
 * panel C
-	tabstat 		workdeath commworkdeath shocktotal pershock, by (yearpanel)	 
+	tabstat 		workdeath commworkdeath shocktotal pershock, stats (mean sd) by (yearpanel)	 
 
 
 * **********************************************************************
