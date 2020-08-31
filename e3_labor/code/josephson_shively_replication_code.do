@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 26 August 2020 
+* Last edit: 31 August 2020 
 * Stata v.16.1
 
 * does
@@ -226,7 +226,11 @@
 	use				"$fil/data", clear
 
 * run regression 
-* constraint set above 
+
+		constraint 		def 1 [share_off]lnshadow_farm-[share_off]lnshadow_offfarm-[share_off]lnshadow_migrant- ///
+							[share_farm]lnshadow_farm-[share_farm]lnshadow_offfarm-[share_farm]lnshadow_migrant- ///
+							[share_mig]lnshadow_farm-[share_mig]lnshadow_offfarm-[share_mig]lnshadow_migrant- ///				
+							[share_non]lnshadow_farm-[share_non]lnshadow_offfarm-[share_non]lnshadow_migrant = 0  
 
 		bootstrap 		_b, reps(1000): /// 
 							sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
@@ -379,7 +383,12 @@
 	use				"$fil/data", clear
 
 * run regression 
-* constraint set above 
+
+		constraint 		def 1 [share_off]lnshadow_farm-[share_off]lnshadow_offfarm-[share_off]lnshadow_migrant- ///
+						[share_farm]lnshadow_farm-[share_farm]lnshadow_offfarm-[share_farm]lnshadow_migrant- ///
+						[share_mig]lnshadow_farm-[share_mig]lnshadow_offfarm-[share_mig]lnshadow_migrant- ///				
+						[share_non]lnshadow_farm-[share_non]lnshadow_offfarm-[share_non]lnshadow_migrant = 0  
+						
 
 		bootstrap 		_b, reps(1000): /// 
 							sureg (share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
@@ -538,15 +547,6 @@
 
 	matrix 				list eq1
 	
-* examine differences across groups - with summary statistics 
-* not sure where to include this yet 
-* maybe move to appendix 
-
-	tabstat 		share_mig share_off share_non share_farm ///
-						ae hhage hhedu femhead workdeath commworkdeath shocktotal, by (pershock)	 
-						
-	reg shocktotal share_mig share_off share_non share_farm ae hhage hhedu femhead workdeath commworkdeath, vce(robust)
-
 
 * **********************************************************************
 * 3 - replication of tables: supplemental text
@@ -620,19 +620,31 @@
 		
 	reg 			pershock ae hhage hhedu femhead plough own_cattle ///
 						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
-						
 
 * **********************************************************************
-* 3c - robust - analysis with market wages
+* 3c - shock exogeneity 
+* **********************************************************************						
+
+* examine differences across groups - with summary statistics 
+* reference in main text 
+
+	tabstat 		share_mig share_off share_non share_farm ///
+						ae hhage hhedu femhead workdeath commworkdeath shocktotal, by (pershock)	 
+						
+	reg shocktotal share_mig share_off share_non share_farm ae hhage hhedu femhead workdeath commworkdeath, vce(robust)
+
+						
+						
+* **********************************************************************
+* 3d - robust - analysis with market wages
 * **********************************************************************
 
 * regressions using market wages
 * reload data set
 * rename variables so not necessary to re-write all code 
 
-
 * **********************************************************************
-* 3ci - allocation of labor (z-score rainfall)	
+* 3di - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
 
 * read in data
@@ -802,7 +814,7 @@
 	matrix 				list eq1
 
 * **********************************************************************
-* 3cii - allocation of labor (perceived rainfall)
+* 3dii - allocation of labor (perceived rainfall)
 * **********************************************************************
 * read in data
 	use				"$fil/data", clear
@@ -967,7 +979,7 @@
 
 
 * **********************************************************************
-* 3ciii - allocation of labor (perceived rainfall) control for dif. 
+* 3diii - allocation of labor (perceived rainfall) control for dif. 
 * **********************************************************************
 
 * examine interaction between perceived shock and actual shock 
@@ -1153,11 +1165,11 @@
 	matrix 				list eq1
 
 * **********************************************************************
-* 3d - robust - analysis with CRE tobit 
+* 3e - robust - analysis with CRE tobit 
 * **********************************************************************						
 
 * **********************************************************************
-* 3di - allocation of labor (z-score rainfall)	
+* 3ei - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
 
 		
@@ -1182,7 +1194,7 @@
 						
 
 * **********************************************************************
-* 3dii - allocation of labor (perceived rainfall)
+* 3eii - allocation of labor (perceived rainfall)
 * **********************************************************************
 * read in data
 	use				"$fil/data", clear
