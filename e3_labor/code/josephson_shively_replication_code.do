@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 31 August 2020 
+* Last edit: 14 September 2020 
 * Stata v.16.1
 
 * does
@@ -556,6 +556,12 @@
 * 3a - calculation of shadow wages 
 * **********************************************************************
 
+* read in data
+	use				"$fil/data", clear
+	
+	drop 			shadow_farmlabor shadow_migrant shadow_offfarm /// 
+					mshadow_farmlabor mshadow_migrant mshadow_offfarm
+
 * set panel 
 	xtset 			yearpanel 
 
@@ -608,6 +614,11 @@
 * **********************************************************************
 * 3b - shock exogeneity 
 * **********************************************************************
+
+* read in data
+	use				"$fil/data", clear
+	
+* regressions for each of the four shocks 
 	
 	reg 			workdeath ae hhage hhedu femhead plough own_cattle ///
 						mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
