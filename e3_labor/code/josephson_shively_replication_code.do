@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 14 September 2020 
+* Last edit: 15 September 2020 
 * Stata v.16.1
 
 * does
@@ -564,9 +564,13 @@
 
 * set panel 
 	xtset 			yearpanel 
+	
+	gen 			lnwages_farmlabor = asinh(wages_farmlabor)
+	gen			lnwages_migrant = asinh(wages_migrant)
+	gen 			lnwages_offfarm = asinh(wages_offfarm)
 
 * estimate shadow wage for farm labor 
-	xtreg 			wages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+	xtreg 			lnwages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
 						no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
 						mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
 
@@ -576,7 +580,7 @@
 	gen 			x_farm = _b[no_farm_fulltime]
 
 * estimate shadow wage for migrant labor 
-	xtreg 			wages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+	xtreg 			lnwages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
 						o_migrant_international o_migrant_domestic no_migrants ///
 						comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
 						mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mo_migrant_international ///
@@ -588,7 +592,7 @@
 	gen 			x_migrant = _b[no_migrants]
 
 * estimate shadow wage for wage labor 
-	xtreg 			wages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+	xtreg 			lnwages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
 						no_offfarm o_informal o_formal comm_offfarm /// 
 						mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
 						mno_offfarm mo_informal mo_formal mcomm_offfarm
@@ -632,22 +636,9 @@
 	reg 			pershock ae hhage hhedu femhead plough own_cattle ///
 						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
 
-* **********************************************************************
-* 3c - shock exogeneity 
-* **********************************************************************						
-
-* examine differences across groups - with summary statistics 
-* reference in main text 
-
-	tabstat 		share_mig share_off share_non share_farm ///
-						ae hhage hhedu femhead workdeath commworkdeath shocktotal, by (pershock)	 
-						
-	reg shocktotal share_mig share_off share_non share_farm ae hhage hhedu femhead workdeath commworkdeath, vce(robust)
-
-						
 						
 * **********************************************************************
-* 3d - robust - analysis with market wages
+* 3c - robust - analysis with market wages
 * **********************************************************************
 
 * regressions using market wages
@@ -655,7 +646,7 @@
 * rename variables so not necessary to re-write all code 
 
 * **********************************************************************
-* 3di - allocation of labor (z-score rainfall)	
+* 3ci - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
 
 * read in data
@@ -825,7 +816,7 @@
 	matrix 				list eq1
 
 * **********************************************************************
-* 3dii - allocation of labor (perceived rainfall)
+* 3cii - allocation of labor (perceived rainfall)
 * **********************************************************************
 * read in data
 	use				"$fil/data", clear
@@ -990,7 +981,7 @@
 
 
 * **********************************************************************
-* 3diii - allocation of labor (perceived rainfall) control for dif. 
+* 3ciii - allocation of labor (perceived rainfall) control for dif. 
 * **********************************************************************
 
 * examine interaction between perceived shock and actual shock 
@@ -1176,11 +1167,11 @@
 	matrix 				list eq1
 
 * **********************************************************************
-* 3e - robust - analysis with CRE tobit 
+* 3d - robust - analysis with CRE tobit 
 * **********************************************************************						
 
 * **********************************************************************
-* 3ei - allocation of labor (z-score rainfall)	
+* 3di - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
 
 		
@@ -1205,7 +1196,7 @@
 						
 
 * **********************************************************************
-* 3eii - allocation of labor (perceived rainfall)
+* 3dii - allocation of labor (perceived rainfall)
 * **********************************************************************
 * read in data
 	use				"$fil/data", clear
