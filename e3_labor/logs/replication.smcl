@@ -26722,3 +26722,585 @@ share_off            872      26    .1240584    0.4268     609.78   0.0000
 {txt}end of do-file
 
 {com}. exit, clear
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}14 Sep 2020, 10:08:31
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7a90_000000.tmp"
+{txt}
+{com}. 
+. * set panel 
+.         xtset                   yearpanel 
+{txt}{col 8}panel variable:  {res}yearpanel (unbalanced)
+{txt}
+{com}. 
+. * estimate shadow wage for farm labor 
+.         xtreg                   wages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+>                                                 no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
+>                                                 mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
+{txt}note: mintercrop omitted because of collinearity
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       369
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1248                                         {txt}min = {res}        44
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     184.5
+{txt}     overall = {res}0.1280                                         {txt}max = {res}       325
+
+                                                {txt}Wald chi2({res}17{txt})     =  {res}    51.53
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}  wages_farmlabor{col 19}{c |}      Coef.{col 31}   Std. Err.{col 43}      z{col 51}   P>|z|{col 59}     [95% Con{col 72}f. Interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}plough {c |}{col 19}{res}{space 2} 92.54046{col 31}{space 2} 57.83001{col 42}{space 1}    1.60{col 51}{space 3}0.110{col 59}{space 4}-20.80428{col 72}{space 3} 205.8852
+{txt}{space 10}femhead {c |}{col 19}{res}{space 2} -30.4118{col 31}{space 2}  47.6413{col 42}{space 1}   -0.64{col 51}{space 3}0.523{col 59}{space 4} -123.787{col 72}{space 3} 62.96343
+{txt}{space 7}own_cattle {c |}{col 19}{res}{space 2}-46.54666{col 31}{space 2} 44.27894{col 42}{space 1}   -1.05{col 51}{space 3}0.293{col 59}{space 4}-133.3318{col 72}{space 3} 40.23846
+{txt}{space 8}free_seed {c |}{col 19}{res}{space 2}-52.73854{col 31}{space 2} 32.75686{col 42}{space 1}   -1.61{col 51}{space 3}0.107{col 59}{space 4}-116.9408{col 72}{space 3} 11.46372
+{txt}{space 8}intercrop {c |}{col 19}{res}{space 2}-65.95106{col 31}{space 2} 28.11841{col 42}{space 1}   -2.35{col 51}{space 3}0.019{col 59}{space 4}-121.0621{col 72}{space 3}-10.83998
+{txt}{space 10}fertqty {c |}{col 19}{res}{space 2} .1478275{col 31}{space 2}   .49748{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-.8272154{col 72}{space 3}  1.12287
+{txt}{space 13}area {c |}{col 19}{res}{space 2} 16.62538{col 31}{space 2} 10.31261{col 42}{space 1}    1.61{col 51}{space 3}0.107{col 59}{space 4}-3.586969{col 72}{space 3} 36.83772
+{txt}{space 1}no_farm_fulltime {c |}{col 19}{res}{space 2}-34.28423{col 31}{space 2} 11.08848{col 42}{space 1}   -3.09{col 51}{space 3}0.002{col 59}{space 4}-56.01725{col 72}{space 3}-12.55121
+{txt}{space 1}no_farm_parttime {c |}{col 19}{res}{space 2}-8.617937{col 31}{space 2} 10.81943{col 42}{space 1}   -0.80{col 51}{space 3}0.426{col 59}{space 4}-29.82363{col 72}{space 3} 12.58775
+{txt}{space 10}mplough {c |}{col 19}{res}{space 2}-6.244184{col 31}{space 2}  67.9472{col 42}{space 1}   -0.09{col 51}{space 3}0.927{col 59}{space 4}-139.4182{col 72}{space 3} 126.9299
+{txt}{space 9}mfemhead {c |}{col 19}{res}{space 2} 37.66537{col 31}{space 2} 52.87961{col 42}{space 1}    0.71{col 51}{space 3}0.476{col 59}{space 4}-65.97676{col 72}{space 3} 141.3075
+{txt}{space 6}mown_cattle {c |}{col 19}{res}{space 2}  76.7148{col 31}{space 2} 53.69904{col 42}{space 1}    1.43{col 51}{space 3}0.153{col 59}{space 4}-28.53339{col 72}{space 3}  181.963
+{txt}{space 7}mfree_seed {c |}{col 19}{res}{space 2} 13.83779{col 31}{space 2} 46.45593{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-77.21417{col 72}{space 3} 104.8897
+{txt}{space 7}mintercrop {c |}{col 19}{res}{space 2}        0{col 31}{txt}  (omitted)
+{space 9}mfertqty {c |}{col 19}{res}{space 2}  1.05257{col 31}{space 2} .7096263{col 42}{space 1}    1.48{col 51}{space 3}0.138{col 59}{space 4}-.3382719{col 72}{space 3} 2.443412
+{txt}{space 12}marea {c |}{col 19}{res}{space 2}-18.84572{col 31}{space 2}  15.9066{col 42}{space 1}   -1.18{col 51}{space 3}0.236{col 59}{space 4}-50.02207{col 72}{space 3} 12.33064
+{txt}mno_farm_fulltime {c |}{col 19}{res}{space 2} 5.239206{col 31}{space 2} 15.04475{col 42}{space 1}    0.35{col 51}{space 3}0.728{col 59}{space 4}-24.24796{col 72}{space 3} 34.72637
+{txt}mno_farm_parttime {c |}{col 19}{res}{space 2}  5.56886{col 31}{space 2} 14.96971{col 42}{space 1}    0.37{col 51}{space 3}0.710{col 59}{space 4}-23.77124{col 72}{space 3} 34.90896
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} 119.7254{col 31}{space 2} 41.52035{col 42}{space 1}    2.88{col 51}{space 3}0.004{col 59}{space 4} 38.34701{col 72}{space 3} 201.1038
+{txt}{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+          sigma_u {c |} {res}         0
+          {txt}sigma_e {c |} {res} 211.61537
+              {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 18}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb1, xb
+{txt}(441 missing values generated)
+
+{com}.         egen                    xb1mean = mean (xb1), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb1 = xb1mean if xb1 == .
+{txt}(41 real changes made)
+
+{com}.         gen                     x_farm = _b[no_farm_fulltime]
+{txt}
+{com}. 
+. * estimate shadow wage for migrant labor 
+.         xtreg                   wages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+>                                                 o_migrant_international o_migrant_domestic no_migrants ///
+>                                                 comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
+>                                                 mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mo_migrant_international ///
+>                                                 mo_migrant_domestic mno_migrants mcomm_migrantratio
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}        97
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.4584                                         {txt}min = {res}        38
+{txt}     between = {res}1.0000                                         {txt}avg = {res}      48.5
+{txt}     overall = {res}0.4485                                         {txt}max = {res}        59
+
+                                                {txt}Wald chi2({res}20{txt})     =  {res}    61.81
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}           wages_migrant{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      z{col 58}   P>|z|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}avgmig_gender {c |}{col 26}{res}{space 2} -87.2806{col 38}{space 2} 50.13883{col 49}{space 1}   -1.74{col 58}{space 3}0.082{col 66}{space 4}-185.5509{col 79}{space 3} 10.98971
+{txt}{space 14}avgmig_age {c |}{col 26}{res}{space 2}-1.604538{col 38}{space 2} .7926393{col 49}{space 1}   -2.02{col 58}{space 3}0.043{col 66}{space 4}-3.158083{col 79}{space 3}-.0509941
+{txt}{space 13}avgmig_yred {c |}{col 26}{res}{space 2}-14.65491{col 38}{space 2} 6.383472{col 49}{space 1}   -2.30{col 58}{space 3}0.022{col 66}{space 4}-27.16628{col 79}{space 3}-2.143531
+{txt}{space 12}multiple_mig {c |}{col 26}{res}{space 2}-45.74977{col 38}{space 2} 13.04337{col 49}{space 1}   -3.51{col 58}{space 3}0.000{col 66}{space 4}-71.31431{col 79}{space 3}-20.18523
+{txt}{space 1}o_migrant_international {c |}{col 26}{res}{space 2}-24.13431{col 38}{space 2} 11.11223{col 49}{space 1}   -2.17{col 58}{space 3}0.030{col 66}{space 4}-45.91389{col 79}{space 3}-2.354742
+{txt}{space 6}o_migrant_domestic {c |}{col 26}{res}{space 2} 10.10782{col 38}{space 2} 12.98566{col 49}{space 1}    0.78{col 58}{space 3}0.436{col 66}{space 4}-15.34361{col 79}{space 3} 35.55925
+{txt}{space 13}no_migrants {c |}{col 26}{res}{space 2} 7.542985{col 38}{space 2} 4.737308{col 49}{space 1}    1.59{col 58}{space 3}0.111{col 66}{space 4}-1.741968{col 79}{space 3} 16.82794
+{txt}{space 7}comm_migrantratio {c |}{col 26}{res}{space 2} 8724.797{col 38}{space 2}  2792.95{col 49}{space 1}    3.12{col 58}{space 3}0.002{col 66}{space 4} 3250.716{col 79}{space 3} 14198.88
+{txt}{space 11}dist_VicFalls {c |}{col 26}{res}{space 2} .0636244{col 38}{space 2} .0592223{col 49}{space 1}    1.07{col 58}{space 3}0.283{col 66}{space 4}-.0524492{col 79}{space 3}  .179698
+{txt}{space 9}dist_Beitbridge {c |}{col 26}{res}{space 2} .0790154{col 38}{space 2} .0844845{col 49}{space 1}    0.94{col 58}{space 3}0.350{col 66}{space 4}-.0865712{col 79}{space 3}  .244602
+{txt}{space 13}dist_Mutare {c |}{col 26}{res}{space 2} .0040219{col 38}{space 2} .0677444{col 49}{space 1}    0.06{col 58}{space 3}0.953{col 66}{space 4}-.1287547{col 79}{space 3} .1367985
+{txt}{space 11}dist_Plumtree {c |}{col 26}{res}{space 2}-.0586691{col 38}{space 2} .0487138{col 49}{space 1}   -1.20{col 58}{space 3}0.228{col 66}{space 4}-.1541464{col 79}{space 3} .0368081
+{txt}{space 10}mavgmig_gender {c |}{col 26}{res}{space 2} 82.36858{col 38}{space 2} 50.98982{col 49}{space 1}    1.62{col 58}{space 3}0.106{col 66}{space 4}-17.56963{col 79}{space 3} 182.3068
+{txt}{space 13}mavgmig_age {c |}{col 26}{res}{space 2} 1.279269{col 38}{space 2} .8329047{col 49}{space 1}    1.54{col 58}{space 3}0.125{col 66}{space 4}-.3531945{col 79}{space 3} 2.911732
+{txt}{space 12}mavgmig_yred {c |}{col 26}{res}{space 2} 17.00673{col 38}{space 2} 6.548484{col 49}{space 1}    2.60{col 58}{space 3}0.009{col 66}{space 4} 4.171942{col 79}{space 3} 29.84153
+{txt}{space 11}mmultiple_mig {c |}{col 26}{res}{space 2} 104.1167{col 38}{space 2} 21.55155{col 49}{space 1}    4.83{col 58}{space 3}0.000{col 66}{space 4} 61.87641{col 79}{space 3} 146.3569
+{txt}mo_migrant_international {c |}{col 26}{res}{space 2} 10.47128{col 38}{space 2} 21.90795{col 49}{space 1}    0.48{col 58}{space 3}0.633{col 66}{space 4}-32.46752{col 79}{space 3} 53.41008
+{txt}{space 5}mo_migrant_domestic {c |}{col 26}{res}{space 2}-18.80763{col 38}{space 2} 21.35702{col 49}{space 1}   -0.88{col 58}{space 3}0.379{col 66}{space 4}-60.66661{col 79}{space 3} 23.05136
+{txt}{space 12}mno_migrants {c |}{col 26}{res}{space 2}-9.671007{col 38}{space 2}   8.5863{col 49}{space 1}   -1.13{col 58}{space 3}0.260{col 66}{space 4}-26.49985{col 79}{space 3} 7.157832
+{txt}{space 6}mcomm_migrantratio {c |}{col 26}{res}{space 2}-9406.989{col 38}{space 2} 2907.347{col 49}{space 1}   -3.24{col 58}{space 3}0.001{col 66}{space 4}-15105.28{col 79}{space 3}-3708.693
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2}-5.430517{col 38}{space 2} 66.37494{col 49}{space 1}   -0.08{col 58}{space 3}0.935{col 66}{space 4} -135.523{col 79}{space 3}  124.662
+{txt}{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+                 sigma_u {c |} {res}         0
+                 {txt}sigma_e {c |} {res} 32.466951
+                     {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 25}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb2, xb
+{txt}(999 missing values generated)
+
+{com}.         egen                    xb2mean = mean (xb2), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb2 = xb2mean if xb2 == .
+{txt}(599 real changes made)
+
+{com}.         gen                     x_migrant = _b[no_migrants]
+{txt}
+{com}. 
+. * estimate shadow wage for wage labor 
+.         xtreg                   wages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+>                                                 no_offfarm o_informal o_formal comm_offfarm /// 
+>                                                 mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
+>                                                 mno_offfarm mo_informal mo_formal mcomm_offfarm
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       582
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1421                                         {txt}min = {res}       201
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     291.0
+{txt}     overall = {res}0.1730                                         {txt}max = {res}       381
+
+                                                {txt}Wald chi2({res}16{txt})     =  {res}   118.19
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} wages_offfarm{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      z{col 48}   P>|z|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}avgoff_gender {c |}{col 16}{res}{space 2} 5.446851{col 28}{space 2} 11.00827{col 39}{space 1}    0.49{col 48}{space 3}0.621{col 56}{space 4}-16.12896{col 69}{space 3} 27.02267
+{txt}{space 4}avgoff_age {c |}{col 16}{res}{space 2}-.5180425{col 28}{space 2} .2414571{col 39}{space 1}   -2.15{col 48}{space 3}0.032{col 56}{space 4}-.9912898{col 69}{space 3}-.0447952
+{txt}{space 3}avgoff_yred {c |}{col 16}{res}{space 2}-.9689129{col 28}{space 2}  1.36758{col 39}{space 1}   -0.71{col 48}{space 3}0.479{col 56}{space 4} -3.64932{col 69}{space 3} 1.711494
+{txt}{space 2}multiple_off {c |}{col 16}{res}{space 2}-.8545303{col 28}{space 2} 4.535848{col 39}{space 1}   -0.19{col 48}{space 3}0.851{col 56}{space 4}-9.744629{col 69}{space 3} 8.035569
+{txt}{space 4}no_offfarm {c |}{col 16}{res}{space 2}-1.892211{col 28}{space 2}  4.15196{col 39}{space 1}   -0.46{col 48}{space 3}0.649{col 56}{space 4} -10.0299{col 69}{space 3} 6.245481
+{txt}{space 4}o_informal {c |}{col 16}{res}{space 2}-.6426172{col 28}{space 2} 6.233663{col 39}{space 1}   -0.10{col 48}{space 3}0.918{col 56}{space 4}-12.86037{col 69}{space 3} 11.57514
+{txt}{space 6}o_formal {c |}{col 16}{res}{space 2} 4.891296{col 28}{space 2} 9.654151{col 39}{space 1}    0.51{col 48}{space 3}0.612{col 56}{space 4}-14.03049{col 69}{space 3} 23.81308
+{txt}{space 2}comm_offfarm {c |}{col 16}{res}{space 2} 158.2058{col 28}{space 2} 507.7367{col 39}{space 1}    0.31{col 48}{space 3}0.755{col 56}{space 4}-836.9399{col 69}{space 3} 1153.352
+{txt}mavgoff_gender {c |}{col 16}{res}{space 2} 3.771514{col 28}{space 2} 14.29696{col 39}{space 1}    0.26{col 48}{space 3}0.792{col 56}{space 4}-24.25001{col 69}{space 3} 31.79304
+{txt}{space 3}mavgoff_age {c |}{col 16}{res}{space 2}-.2092995{col 28}{space 2}  .301867{col 39}{space 1}   -0.69{col 48}{space 3}0.488{col 56}{space 4}-.8009479{col 69}{space 3} .3823489
+{txt}{space 2}mavgoff_yred {c |}{col 16}{res}{space 2}-4.245968{col 28}{space 2}  1.66523{col 39}{space 1}   -2.55{col 48}{space 3}0.011{col 56}{space 4}-7.509758{col 69}{space 3}-.9821784
+{txt}{space 1}mmultiple_off {c |}{col 16}{res}{space 2}-.8857702{col 28}{space 2} 12.68832{col 39}{space 1}   -0.07{col 48}{space 3}0.944{col 56}{space 4}-25.75442{col 69}{space 3} 23.98288
+{txt}{space 3}mno_offfarm {c |}{col 16}{res}{space 2}-8.747296{col 28}{space 2} 10.48332{col 39}{space 1}   -0.83{col 48}{space 3}0.404{col 56}{space 4}-29.29423{col 69}{space 3} 11.79964
+{txt}{space 3}mo_informal {c |}{col 16}{res}{space 2}-12.83142{col 28}{space 2} 12.15246{col 39}{space 1}   -1.06{col 48}{space 3}0.291{col 56}{space 4}-36.64981{col 69}{space 3} 10.98696
+{txt}{space 5}mo_formal {c |}{col 16}{res}{space 2} -20.3231{col 28}{space 2} 14.72884{col 39}{space 1}   -1.38{col 48}{space 3}0.168{col 56}{space 4} -49.1911{col 69}{space 3} 8.544897
+{txt}{space 1}mcomm_offfarm {c |}{col 16}{res}{space 2} 1618.631{col 28}{space 2} 695.4477{col 39}{space 1}    2.33{col 48}{space 3}0.020{col 56}{space 4} 255.5787{col 69}{space 3} 2981.683
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 196.9586{col 28}{space 2} 17.24083{col 39}{space 1}   11.42{col 48}{space 3}0.000{col 56}{space 4} 163.1672{col 69}{space 3}   230.75
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res}         0
+       {txt}sigma_e {c |} {res} 48.706448
+           {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb3, xb
+{txt}(571 missing values generated)
+
+{com}.         egen                    xb3mean = mean (xb3), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb3 = xb3mean if xb3 == .
+{txt}(171 real changes made)
+
+{com}.         gen                     x_offfarm = _b[no_offfarm]
+{txt}
+{com}. 
+. * calculate shadow wages 
+.         gen                     shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
+{err}variable {bf}shadow_farmlabor{sf} already defined
+{txt}{search r(110), local:r(110);}
+
+end of do-file
+
+{search r(110), local:r(110);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7a90_000000.tmp"
+{txt}
+{com}. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+.         drop                    shadow_farmlabor shadow_migrant shadow_offfarm /// 
+>                                         mshadow_farmlabor mshadow_migrant mshadow_offfarm
+{txt}
+{com}. 
+. * set panel 
+.         xtset                   yearpanel 
+{txt}{col 8}panel variable:  {res}yearpanel (unbalanced)
+{txt}
+{com}. 
+. * estimate shadow wage for farm labor 
+.         xtreg                   wages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+>                                                 no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
+>                                                 mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
+{txt}note: mintercrop omitted because of collinearity
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       369
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1248                                         {txt}min = {res}        44
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     184.5
+{txt}     overall = {res}0.1280                                         {txt}max = {res}       325
+
+                                                {txt}Wald chi2({res}17{txt})     =  {res}    51.53
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}  wages_farmlabor{col 19}{c |}      Coef.{col 31}   Std. Err.{col 43}      z{col 51}   P>|z|{col 59}     [95% Con{col 72}f. Interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}plough {c |}{col 19}{res}{space 2} 92.54046{col 31}{space 2} 57.83001{col 42}{space 1}    1.60{col 51}{space 3}0.110{col 59}{space 4}-20.80428{col 72}{space 3} 205.8852
+{txt}{space 10}femhead {c |}{col 19}{res}{space 2} -30.4118{col 31}{space 2}  47.6413{col 42}{space 1}   -0.64{col 51}{space 3}0.523{col 59}{space 4} -123.787{col 72}{space 3} 62.96343
+{txt}{space 7}own_cattle {c |}{col 19}{res}{space 2}-46.54666{col 31}{space 2} 44.27894{col 42}{space 1}   -1.05{col 51}{space 3}0.293{col 59}{space 4}-133.3318{col 72}{space 3} 40.23846
+{txt}{space 8}free_seed {c |}{col 19}{res}{space 2}-52.73854{col 31}{space 2} 32.75686{col 42}{space 1}   -1.61{col 51}{space 3}0.107{col 59}{space 4}-116.9408{col 72}{space 3} 11.46372
+{txt}{space 8}intercrop {c |}{col 19}{res}{space 2}-65.95106{col 31}{space 2} 28.11841{col 42}{space 1}   -2.35{col 51}{space 3}0.019{col 59}{space 4}-121.0621{col 72}{space 3}-10.83998
+{txt}{space 10}fertqty {c |}{col 19}{res}{space 2} .1478275{col 31}{space 2}   .49748{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-.8272154{col 72}{space 3}  1.12287
+{txt}{space 13}area {c |}{col 19}{res}{space 2} 16.62538{col 31}{space 2} 10.31261{col 42}{space 1}    1.61{col 51}{space 3}0.107{col 59}{space 4}-3.586969{col 72}{space 3} 36.83772
+{txt}{space 1}no_farm_fulltime {c |}{col 19}{res}{space 2}-34.28423{col 31}{space 2} 11.08848{col 42}{space 1}   -3.09{col 51}{space 3}0.002{col 59}{space 4}-56.01725{col 72}{space 3}-12.55121
+{txt}{space 1}no_farm_parttime {c |}{col 19}{res}{space 2}-8.617937{col 31}{space 2} 10.81943{col 42}{space 1}   -0.80{col 51}{space 3}0.426{col 59}{space 4}-29.82363{col 72}{space 3} 12.58775
+{txt}{space 10}mplough {c |}{col 19}{res}{space 2}-6.244184{col 31}{space 2}  67.9472{col 42}{space 1}   -0.09{col 51}{space 3}0.927{col 59}{space 4}-139.4182{col 72}{space 3} 126.9299
+{txt}{space 9}mfemhead {c |}{col 19}{res}{space 2} 37.66537{col 31}{space 2} 52.87961{col 42}{space 1}    0.71{col 51}{space 3}0.476{col 59}{space 4}-65.97676{col 72}{space 3} 141.3075
+{txt}{space 6}mown_cattle {c |}{col 19}{res}{space 2}  76.7148{col 31}{space 2} 53.69904{col 42}{space 1}    1.43{col 51}{space 3}0.153{col 59}{space 4}-28.53339{col 72}{space 3}  181.963
+{txt}{space 7}mfree_seed {c |}{col 19}{res}{space 2} 13.83779{col 31}{space 2} 46.45593{col 42}{space 1}    0.30{col 51}{space 3}0.766{col 59}{space 4}-77.21417{col 72}{space 3} 104.8897
+{txt}{space 7}mintercrop {c |}{col 19}{res}{space 2}        0{col 31}{txt}  (omitted)
+{space 9}mfertqty {c |}{col 19}{res}{space 2}  1.05257{col 31}{space 2} .7096263{col 42}{space 1}    1.48{col 51}{space 3}0.138{col 59}{space 4}-.3382719{col 72}{space 3} 2.443412
+{txt}{space 12}marea {c |}{col 19}{res}{space 2}-18.84572{col 31}{space 2}  15.9066{col 42}{space 1}   -1.18{col 51}{space 3}0.236{col 59}{space 4}-50.02207{col 72}{space 3} 12.33064
+{txt}mno_farm_fulltime {c |}{col 19}{res}{space 2} 5.239206{col 31}{space 2} 15.04475{col 42}{space 1}    0.35{col 51}{space 3}0.728{col 59}{space 4}-24.24796{col 72}{space 3} 34.72637
+{txt}mno_farm_parttime {c |}{col 19}{res}{space 2}  5.56886{col 31}{space 2} 14.96971{col 42}{space 1}    0.37{col 51}{space 3}0.710{col 59}{space 4}-23.77124{col 72}{space 3} 34.90896
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} 119.7254{col 31}{space 2} 41.52035{col 42}{space 1}    2.88{col 51}{space 3}0.004{col 59}{space 4} 38.34701{col 72}{space 3} 201.1038
+{txt}{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+          sigma_u {c |} {res}         0
+          {txt}sigma_e {c |} {res} 211.61537
+              {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 18}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb1, xb
+{txt}(441 missing values generated)
+
+{com}.         egen                    xb1mean = mean (xb1), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb1 = xb1mean if xb1 == .
+{txt}(41 real changes made)
+
+{com}.         gen                     x_farm = _b[no_farm_fulltime]
+{txt}
+{com}. 
+. * estimate shadow wage for migrant labor 
+.         xtreg                   wages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+>                                                 o_migrant_international o_migrant_domestic no_migrants ///
+>                                                 comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
+>                                                 mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mo_migrant_international ///
+>                                                 mo_migrant_domestic mno_migrants mcomm_migrantratio
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}        97
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.4584                                         {txt}min = {res}        38
+{txt}     between = {res}1.0000                                         {txt}avg = {res}      48.5
+{txt}     overall = {res}0.4485                                         {txt}max = {res}        59
+
+                                                {txt}Wald chi2({res}20{txt})     =  {res}    61.81
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}           wages_migrant{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      z{col 58}   P>|z|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}avgmig_gender {c |}{col 26}{res}{space 2} -87.2806{col 38}{space 2} 50.13883{col 49}{space 1}   -1.74{col 58}{space 3}0.082{col 66}{space 4}-185.5509{col 79}{space 3} 10.98971
+{txt}{space 14}avgmig_age {c |}{col 26}{res}{space 2}-1.604538{col 38}{space 2} .7926393{col 49}{space 1}   -2.02{col 58}{space 3}0.043{col 66}{space 4}-3.158083{col 79}{space 3}-.0509941
+{txt}{space 13}avgmig_yred {c |}{col 26}{res}{space 2}-14.65491{col 38}{space 2} 6.383472{col 49}{space 1}   -2.30{col 58}{space 3}0.022{col 66}{space 4}-27.16628{col 79}{space 3}-2.143531
+{txt}{space 12}multiple_mig {c |}{col 26}{res}{space 2}-45.74977{col 38}{space 2} 13.04337{col 49}{space 1}   -3.51{col 58}{space 3}0.000{col 66}{space 4}-71.31431{col 79}{space 3}-20.18523
+{txt}{space 1}o_migrant_international {c |}{col 26}{res}{space 2}-24.13431{col 38}{space 2} 11.11223{col 49}{space 1}   -2.17{col 58}{space 3}0.030{col 66}{space 4}-45.91389{col 79}{space 3}-2.354742
+{txt}{space 6}o_migrant_domestic {c |}{col 26}{res}{space 2} 10.10782{col 38}{space 2} 12.98566{col 49}{space 1}    0.78{col 58}{space 3}0.436{col 66}{space 4}-15.34361{col 79}{space 3} 35.55925
+{txt}{space 13}no_migrants {c |}{col 26}{res}{space 2} 7.542985{col 38}{space 2} 4.737308{col 49}{space 1}    1.59{col 58}{space 3}0.111{col 66}{space 4}-1.741968{col 79}{space 3} 16.82794
+{txt}{space 7}comm_migrantratio {c |}{col 26}{res}{space 2} 8724.797{col 38}{space 2}  2792.95{col 49}{space 1}    3.12{col 58}{space 3}0.002{col 66}{space 4} 3250.716{col 79}{space 3} 14198.88
+{txt}{space 11}dist_VicFalls {c |}{col 26}{res}{space 2} .0636244{col 38}{space 2} .0592223{col 49}{space 1}    1.07{col 58}{space 3}0.283{col 66}{space 4}-.0524492{col 79}{space 3}  .179698
+{txt}{space 9}dist_Beitbridge {c |}{col 26}{res}{space 2} .0790154{col 38}{space 2} .0844845{col 49}{space 1}    0.94{col 58}{space 3}0.350{col 66}{space 4}-.0865712{col 79}{space 3}  .244602
+{txt}{space 13}dist_Mutare {c |}{col 26}{res}{space 2} .0040219{col 38}{space 2} .0677444{col 49}{space 1}    0.06{col 58}{space 3}0.953{col 66}{space 4}-.1287547{col 79}{space 3} .1367985
+{txt}{space 11}dist_Plumtree {c |}{col 26}{res}{space 2}-.0586691{col 38}{space 2} .0487138{col 49}{space 1}   -1.20{col 58}{space 3}0.228{col 66}{space 4}-.1541464{col 79}{space 3} .0368081
+{txt}{space 10}mavgmig_gender {c |}{col 26}{res}{space 2} 82.36858{col 38}{space 2} 50.98982{col 49}{space 1}    1.62{col 58}{space 3}0.106{col 66}{space 4}-17.56963{col 79}{space 3} 182.3068
+{txt}{space 13}mavgmig_age {c |}{col 26}{res}{space 2} 1.279269{col 38}{space 2} .8329047{col 49}{space 1}    1.54{col 58}{space 3}0.125{col 66}{space 4}-.3531945{col 79}{space 3} 2.911732
+{txt}{space 12}mavgmig_yred {c |}{col 26}{res}{space 2} 17.00673{col 38}{space 2} 6.548484{col 49}{space 1}    2.60{col 58}{space 3}0.009{col 66}{space 4} 4.171942{col 79}{space 3} 29.84153
+{txt}{space 11}mmultiple_mig {c |}{col 26}{res}{space 2} 104.1167{col 38}{space 2} 21.55155{col 49}{space 1}    4.83{col 58}{space 3}0.000{col 66}{space 4} 61.87641{col 79}{space 3} 146.3569
+{txt}mo_migrant_international {c |}{col 26}{res}{space 2} 10.47128{col 38}{space 2} 21.90795{col 49}{space 1}    0.48{col 58}{space 3}0.633{col 66}{space 4}-32.46752{col 79}{space 3} 53.41008
+{txt}{space 5}mo_migrant_domestic {c |}{col 26}{res}{space 2}-18.80763{col 38}{space 2} 21.35702{col 49}{space 1}   -0.88{col 58}{space 3}0.379{col 66}{space 4}-60.66661{col 79}{space 3} 23.05136
+{txt}{space 12}mno_migrants {c |}{col 26}{res}{space 2}-9.671007{col 38}{space 2}   8.5863{col 49}{space 1}   -1.13{col 58}{space 3}0.260{col 66}{space 4}-26.49985{col 79}{space 3} 7.157832
+{txt}{space 6}mcomm_migrantratio {c |}{col 26}{res}{space 2}-9406.989{col 38}{space 2} 2907.347{col 49}{space 1}   -3.24{col 58}{space 3}0.001{col 66}{space 4}-15105.28{col 79}{space 3}-3708.693
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2}-5.430517{col 38}{space 2} 66.37494{col 49}{space 1}   -0.08{col 58}{space 3}0.935{col 66}{space 4} -135.523{col 79}{space 3}  124.662
+{txt}{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+                 sigma_u {c |} {res}         0
+                 {txt}sigma_e {c |} {res} 32.466951
+                     {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 25}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb2, xb
+{txt}(999 missing values generated)
+
+{com}.         egen                    xb2mean = mean (xb2), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb2 = xb2mean if xb2 == .
+{txt}(599 real changes made)
+
+{com}.         gen                     x_migrant = _b[no_migrants]
+{txt}
+{com}. 
+. * estimate shadow wage for wage labor 
+.         xtreg                   wages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+>                                                 no_offfarm o_informal o_formal comm_offfarm /// 
+>                                                 mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
+>                                                 mno_offfarm mo_informal mo_formal mcomm_offfarm
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       582
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1421                                         {txt}min = {res}       201
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     291.0
+{txt}     overall = {res}0.1730                                         {txt}max = {res}       381
+
+                                                {txt}Wald chi2({res}16{txt})     =  {res}   118.19
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1} wages_offfarm{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      z{col 48}   P>|z|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}avgoff_gender {c |}{col 16}{res}{space 2} 5.446851{col 28}{space 2} 11.00827{col 39}{space 1}    0.49{col 48}{space 3}0.621{col 56}{space 4}-16.12896{col 69}{space 3} 27.02267
+{txt}{space 4}avgoff_age {c |}{col 16}{res}{space 2}-.5180425{col 28}{space 2} .2414571{col 39}{space 1}   -2.15{col 48}{space 3}0.032{col 56}{space 4}-.9912898{col 69}{space 3}-.0447952
+{txt}{space 3}avgoff_yred {c |}{col 16}{res}{space 2}-.9689129{col 28}{space 2}  1.36758{col 39}{space 1}   -0.71{col 48}{space 3}0.479{col 56}{space 4} -3.64932{col 69}{space 3} 1.711494
+{txt}{space 2}multiple_off {c |}{col 16}{res}{space 2}-.8545303{col 28}{space 2} 4.535848{col 39}{space 1}   -0.19{col 48}{space 3}0.851{col 56}{space 4}-9.744629{col 69}{space 3} 8.035569
+{txt}{space 4}no_offfarm {c |}{col 16}{res}{space 2}-1.892211{col 28}{space 2}  4.15196{col 39}{space 1}   -0.46{col 48}{space 3}0.649{col 56}{space 4} -10.0299{col 69}{space 3} 6.245481
+{txt}{space 4}o_informal {c |}{col 16}{res}{space 2}-.6426172{col 28}{space 2} 6.233663{col 39}{space 1}   -0.10{col 48}{space 3}0.918{col 56}{space 4}-12.86037{col 69}{space 3} 11.57514
+{txt}{space 6}o_formal {c |}{col 16}{res}{space 2} 4.891296{col 28}{space 2} 9.654151{col 39}{space 1}    0.51{col 48}{space 3}0.612{col 56}{space 4}-14.03049{col 69}{space 3} 23.81308
+{txt}{space 2}comm_offfarm {c |}{col 16}{res}{space 2} 158.2058{col 28}{space 2} 507.7367{col 39}{space 1}    0.31{col 48}{space 3}0.755{col 56}{space 4}-836.9399{col 69}{space 3} 1153.352
+{txt}mavgoff_gender {c |}{col 16}{res}{space 2} 3.771514{col 28}{space 2} 14.29696{col 39}{space 1}    0.26{col 48}{space 3}0.792{col 56}{space 4}-24.25001{col 69}{space 3} 31.79304
+{txt}{space 3}mavgoff_age {c |}{col 16}{res}{space 2}-.2092995{col 28}{space 2}  .301867{col 39}{space 1}   -0.69{col 48}{space 3}0.488{col 56}{space 4}-.8009479{col 69}{space 3} .3823489
+{txt}{space 2}mavgoff_yred {c |}{col 16}{res}{space 2}-4.245968{col 28}{space 2}  1.66523{col 39}{space 1}   -2.55{col 48}{space 3}0.011{col 56}{space 4}-7.509758{col 69}{space 3}-.9821784
+{txt}{space 1}mmultiple_off {c |}{col 16}{res}{space 2}-.8857702{col 28}{space 2} 12.68832{col 39}{space 1}   -0.07{col 48}{space 3}0.944{col 56}{space 4}-25.75442{col 69}{space 3} 23.98288
+{txt}{space 3}mno_offfarm {c |}{col 16}{res}{space 2}-8.747296{col 28}{space 2} 10.48332{col 39}{space 1}   -0.83{col 48}{space 3}0.404{col 56}{space 4}-29.29423{col 69}{space 3} 11.79964
+{txt}{space 3}mo_informal {c |}{col 16}{res}{space 2}-12.83142{col 28}{space 2} 12.15246{col 39}{space 1}   -1.06{col 48}{space 3}0.291{col 56}{space 4}-36.64981{col 69}{space 3} 10.98696
+{txt}{space 5}mo_formal {c |}{col 16}{res}{space 2} -20.3231{col 28}{space 2} 14.72884{col 39}{space 1}   -1.38{col 48}{space 3}0.168{col 56}{space 4} -49.1911{col 69}{space 3} 8.544897
+{txt}{space 1}mcomm_offfarm {c |}{col 16}{res}{space 2} 1618.631{col 28}{space 2} 695.4477{col 39}{space 1}    2.33{col 48}{space 3}0.020{col 56}{space 4} 255.5787{col 69}{space 3} 2981.683
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 196.9586{col 28}{space 2} 17.24083{col 39}{space 1}   11.42{col 48}{space 3}0.000{col 56}{space 4} 163.1672{col 69}{space 3}   230.75
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res}         0
+       {txt}sigma_e {c |} {res} 48.706448
+           {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb3, xb
+{txt}(571 missing values generated)
+
+{com}.         egen                    xb3mean = mean (xb3), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb3 = xb3mean if xb3 == .
+{txt}(171 real changes made)
+
+{com}.         gen                     x_offfarm = _b[no_offfarm]
+{txt}
+{com}. 
+. * calculate shadow wages 
+.         gen                     shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_migrant = (xb2 / no_migrant1)*(x_migrant)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_offfarm = (xb3 / no_offfarm1)*(x_offfarm)
+{txt}(400 missing values generated)
+
+{com}. 
+.         egen                    mshadow_farmlabor = mean(shadow_farmlabor), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_migrant = mean(shadow_migrant), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_offfarm  = mean(shadow_offfarm), by (rc id)
+{txt}(400 missing values generated)
+
+{com}. 
+.         label                   variable shadow_migrant "\hspace{c -(}0.1cm{c )-} Migration Wages"
+{txt}
+{com}.         label                   variable shadow_offfarm "\hspace{c -(}0.1cm{c )-} Off-Farm Wages"
+{txt}
+{com}.         label                   variable shadow_farmlabor "\hspace{c -(}0.1cm{c )-} On-Farm Wages"        
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. count
+  {res}1,153
+
+{com}. tab yearpanel
+
+{txt}year panel, {c |}
+        1 = {c |}
+ 2004/05, 2 {c |}
+  = 2012/13 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        578       59.16       59.16
+{txt}          2 {c |}{res}        399       40.84      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7a90_000000.tmp"
+{txt}
+{com}. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. * regressions for each of the four shocks 
+.         
+.         reg                     workdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       705
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0422
+                                                {txt}Root MSE          =    {res} .27771
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}   workdeath{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0217265{col 26}{space 2} .0220632{col 37}{space 1}    0.98{col 46}{space 3}0.363{col 54}{space 4}-.0322601{col 67}{space 3} .0757132
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2}-.0023173{col 26}{space 2} .0019317{col 37}{space 1}   -1.20{col 46}{space 3}0.276{col 54}{space 4} -.007044{col 67}{space 3} .0024094
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0009004{col 26}{space 2} .0047705{col 37}{space 1}    0.19{col 46}{space 3}0.857{col 54}{space 4}-.0107725{col 67}{space 3} .0125733
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} .0770892{col 26}{space 2} .0440368{col 37}{space 1}    1.75{col 46}{space 3}0.131{col 54}{space 4}-.0306649{col 67}{space 3} .1848433
+{txt}{space 6}plough {c |}{col 14}{res}{space 2} .1229777{col 26}{space 2} .0762367{col 37}{space 1}    1.61{col 46}{space 3}0.158{col 54}{space 4}-.0635669{col 67}{space 3} .3095223
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0122752{col 26}{space 2} .0274236{col 37}{space 1}   -0.45{col 46}{space 3}0.670{col 54}{space 4}-.0793784{col 67}{space 3} .0548279
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0292843{col 26}{space 2} .0181728{col 37}{space 1}   -1.61{col 46}{space 3}0.158{col 54}{space 4}-.0737515{col 67}{space 3} .0151829
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0024999{col 26}{space 2} .0029327{col 37}{space 1}    0.85{col 46}{space 3}0.427{col 54}{space 4}-.0046762{col 67}{space 3} .0096761
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0084147{col 26}{space 2} .0083315{col 37}{space 1}   -1.01{col 46}{space 3}0.351{col 54}{space 4}-.0288011{col 67}{space 3} .0119716
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}-.0189766{col 26}{space 2} .0584304{col 37}{space 1}   -0.32{col 46}{space 3}0.756{col 54}{space 4}-.1619505{col 67}{space 3} .1239974
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2}-.0516143{col 26}{space 2} .0970116{col 37}{space 1}   -0.53{col 46}{space 3}0.614{col 54}{space 4}-.2889932{col 67}{space 3} .1857646
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2} .0228367{col 26}{space 2} .0686169{col 37}{space 1}    0.33{col 46}{space 3}0.751{col 54}{space 4}-.1450627{col 67}{space 3} .1907362
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0843832{col 26}{space 2} .0748197{col 37}{space 1}    1.13{col 46}{space 3}0.302{col 54}{space 4} -.098694{col 67}{space 3} .2674604
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     commworkdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       630
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0251
+                                                {txt}Root MSE          =    {res} .02015
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}commworkde~h{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2}-.0005174{col 26}{space 2}  .000696{col 37}{space 1}   -0.74{col 46}{space 3}0.485{col 54}{space 4}-.0022204{col 67}{space 3} .0011855
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0000471{col 26}{space 2} .0001692{col 37}{space 1}    0.28{col 46}{space 3}0.790{col 54}{space 4}-.0003669{col 67}{space 3} .0004611
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0006435{col 26}{space 2} .0003369{col 37}{space 1}    1.91{col 46}{space 3}0.105{col 54}{space 4}-.0001808{col 67}{space 3} .0014679
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0057684{col 26}{space 2} .0027209{col 37}{space 1}   -2.12{col 46}{space 3}0.078{col 54}{space 4}-.0124261{col 67}{space 3} .0008894
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0079159{col 26}{space 2} .0066518{col 37}{space 1}   -1.19{col 46}{space 3}0.279{col 54}{space 4}-.0241923{col 67}{space 3} .0083605
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0019126{col 26}{space 2} .0029893{col 37}{space 1}   -0.64{col 46}{space 3}0.546{col 54}{space 4}-.0092271{col 67}{space 3} .0054018
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0012445{col 26}{space 2} .0007254{col 37}{space 1}    1.72{col 46}{space 3}0.137{col 54}{space 4}-.0005306{col 67}{space 3} .0030195
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0000511{col 26}{space 2} .0001165{col 37}{space 1}   -0.44{col 46}{space 3}0.676{col 54}{space 4}-.0003361{col 67}{space 3} .0002339
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} -.000131{col 26}{space 2} .0004531{col 37}{space 1}   -0.29{col 46}{space 3}0.782{col 54}{space 4}-.0012397{col 67}{space 3} .0009778
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}   .00427{col 26}{space 2} .0034979{col 37}{space 1}    1.22{col 46}{space 3}0.268{col 54}{space 4} -.004289{col 67}{space 3} .0128289
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0056349{col 26}{space 2} .0087657{col 37}{space 1}    0.64{col 46}{space 3}0.544{col 54}{space 4}-.0158142{col 67}{space 3} .0270839
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0000991{col 26}{space 2} .0030857{col 37}{space 1}   -0.03{col 46}{space 3}0.975{col 54}{space 4}-.0076496{col 67}{space 3} .0074513
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9925062{col 26}{space 2} .0034905{col 37}{space 1}  284.34{col 46}{space 3}0.000{col 54}{space 4} .9839652{col 67}{space 3} 1.001047
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     shocktotal ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0321
+                                                {txt}Root MSE          =    {res} .63089
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}  shocktotal{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0296584{col 26}{space 2}  .014378{col 37}{space 1}    2.06{col 46}{space 3}0.085{col 54}{space 4}-.0055233{col 67}{space 3}   .06484
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} -.004341{col 26}{space 2} .0057755{col 37}{space 1}   -0.75{col 46}{space 3}0.481{col 54}{space 4}-.0184731{col 67}{space 3} .0097912
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0304581{col 26}{space 2} .0195367{col 37}{space 1}    1.56{col 46}{space 3}0.170{col 54}{space 4}-.0173464{col 67}{space 3} .0782627
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} -.074822{col 26}{space 2} .1397617{col 37}{space 1}   -0.54{col 46}{space 3}0.612{col 54}{space 4}-.4168065{col 67}{space 3} .2671626
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.1327479{col 26}{space 2} .2123442{col 37}{space 1}   -0.63{col 46}{space 3}0.555{col 54}{space 4}-.6523354{col 67}{space 3} .3868396
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2} .1775978{col 26}{space 2} .0944631{col 37}{space 1}    1.88{col 46}{space 3}0.109{col 54}{space 4}-.0535451{col 67}{space 3} .4087408
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0126306{col 26}{space 2} .0245965{col 37}{space 1}   -0.51{col 46}{space 3}0.626{col 54}{space 4} -.072816{col 67}{space 3} .0475547
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0033554{col 26}{space 2} .0073674{col 37}{space 1}    0.46{col 46}{space 3}0.665{col 54}{space 4}-.0146721{col 67}{space 3} .0213829
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} .0070641{col 26}{space 2} .0258313{col 37}{space 1}    0.27{col 46}{space 3}0.794{col 54}{space 4}-.0561428{col 67}{space 3} .0702709
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2} .0155437{col 26}{space 2} .1877412{col 37}{space 1}    0.08{col 46}{space 3}0.937{col 54}{space 4}-.4438426{col 67}{space 3}   .47493
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0140521{col 26}{space 2} .3265279{col 37}{space 1}    0.04{col 46}{space 3}0.967{col 54}{space 4}-.7849328{col 67}{space 3}  .813037
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.1207252{col 26}{space 2} .1357876{col 37}{space 1}   -0.89{col 46}{space 3}0.408{col 54}{space 4}-.4529855{col 67}{space 3} .2115352
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9022768{col 26}{space 2} .2228389{col 37}{space 1}    4.05{col 46}{space 3}0.007{col 54}{space 4} .3570096{col 67}{space 3} 1.447544
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.                 
+.         reg                     pershock ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0830
+                                                {txt}Root MSE          =    {res} .47958
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}    pershock{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0019548{col 26}{space 2} .0046111{col 37}{space 1}    0.42{col 46}{space 3}0.686{col 54}{space 4}-.0093283{col 67}{space 3} .0132379
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0015171{col 26}{space 2} .0008985{col 37}{space 1}    1.69{col 46}{space 3}0.142{col 54}{space 4}-.0006816{col 67}{space 3} .0037157
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0025514{col 26}{space 2} .0025998{col 37}{space 1}    0.98{col 46}{space 3}0.364{col 54}{space 4}-.0038101{col 67}{space 3} .0089129
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0242613{col 26}{space 2} .0138985{col 37}{space 1}   -1.75{col 46}{space 3}0.131{col 54}{space 4}-.0582696{col 67}{space 3} .0097471
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0059973{col 26}{space 2} .0091589{col 37}{space 1}   -0.65{col 46}{space 3}0.537{col 54}{space 4}-.0284084{col 67}{space 3} .0164138
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}  .008212{col 26}{space 2} .0226618{col 37}{space 1}    0.36{col 46}{space 3}0.729{col 54}{space 4}-.0472394{col 67}{space 3} .0636633
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0127619{col 26}{space 2} .0151514{col 37}{space 1}    0.84{col 46}{space 3}0.432{col 54}{space 4}-.0243121{col 67}{space 3}  .049836
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0040321{col 26}{space 2} .0032665{col 37}{space 1}   -1.23{col 46}{space 3}0.263{col 54}{space 4} -.012025{col 67}{space 3} .0039608
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0359406{col 26}{space 2} .0478993{col 37}{space 1}   -0.75{col 46}{space 3}0.481{col 54}{space 4}-.1531461{col 67}{space 3} .0812648
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}  .040442{col 26}{space 2} .1109441{col 37}{space 1}    0.36{col 46}{space 3}0.728{col 54}{space 4}-.2310285{col 67}{space 3} .3119125
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .3700596{col 26}{space 2} .0982351{col 37}{space 1}    3.77{col 46}{space 3}0.009{col 54}{space 4} .1296869{col 67}{space 3} .6104322
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0933067{col 26}{space 2} .1007443{col 37}{space 1}   -0.93{col 46}{space 3}0.390{col 54}{space 4}-.3398192{col 67}{space 3} .1532058
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  .517275{col 26}{space 2} .3072796{col 37}{space 1}    1.68{col 46}{space 3}0.143{col 54}{space 4} -.234611{col 67}{space 3} 1.269161
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. exit, clear
