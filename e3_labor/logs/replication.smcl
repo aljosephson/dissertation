@@ -27304,3 +27304,1670 @@ end of do-file
 {txt}end of do-file
 
 {com}. exit, clear
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e3_labor\logs/replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Sep 2020, 14:03:44
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+.         drop                    shadow_farmlabor shadow_migrant shadow_offfarm /// 
+>                                         mshadow_farmlabor mshadow_migrant mshadow_offfarm
+{txt}
+{com}. 
+. * set panel 
+.         xtset                   yearpanel 
+{txt}{col 8}panel variable:  {res}yearpanel (unbalanced)
+{txt}
+{com}.         
+.         egen                    lnwages_farmlabor = asinh(wages_farmlabor)
+{err}unknown {bf:egen} function {bf:asinh()}
+{txt}{search r(133), local:r(133);}
+
+end of do-file
+
+{search r(133), local:r(133);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+.         drop                    shadow_farmlabor shadow_migrant shadow_offfarm /// 
+>                                         mshadow_farmlabor mshadow_migrant mshadow_offfarm
+{txt}
+{com}. 
+. * set panel 
+.         xtset                   yearpanel 
+{txt}{col 8}panel variable:  {res}yearpanel (unbalanced)
+{txt}
+{com}.         
+.         gen                     lnwages_farmlabor = asinh(wages_farmlabor)
+{txt}(783 missing values generated)
+
+{com}.         gen                     lnwages_migrant = asinh(wages_migrant)
+{txt}(926 missing values generated)
+
+{com}.         gen                     lnwages_offfarm = asinh(wages_offfarm)
+{txt}(400 missing values generated)
+
+{com}. 
+. * estimate shadow wage for farm labor 
+.         xtreg                   lnwages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+>                                                 no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
+>                                                 mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
+{txt}note: mintercrop omitted because of collinearity
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       369
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1437                                         {txt}min = {res}        44
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     184.5
+{txt}     overall = {res}0.1401                                         {txt}max = {res}       325
+
+                                                {txt}Wald chi2({res}17{txt})     =  {res}    57.20
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}lnwages_farmlabor{col 19}{c |}      Coef.{col 31}   Std. Err.{col 43}      z{col 51}   P>|z|{col 59}     [95% Con{col 72}f. Interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}plough {c |}{col 19}{res}{space 2} .6815614{col 31}{space 2} .7034198{col 42}{space 1}    0.97{col 51}{space 3}0.333{col 59}{space 4}-.6971161{col 72}{space 3} 2.060239
+{txt}{space 10}femhead {c |}{col 19}{res}{space 2}-.3970101{col 31}{space 2} .5794886{col 42}{space 1}   -0.69{col 51}{space 3}0.493{col 59}{space 4}-1.532787{col 72}{space 3} .7387667
+{txt}{space 7}own_cattle {c |}{col 19}{res}{space 2}-.5218288{col 31}{space 2} .5385902{col 42}{space 1}   -0.97{col 51}{space 3}0.333{col 59}{space 4}-1.577446{col 72}{space 3} .5337886
+{txt}{space 8}free_seed {c |}{col 19}{res}{space 2}-.4504835{col 31}{space 2} .3984405{col 42}{space 1}   -1.13{col 51}{space 3}0.258{col 59}{space 4}-1.231413{col 72}{space 3} .3304456
+{txt}{space 8}intercrop {c |}{col 19}{res}{space 2}-1.126724{col 31}{space 2} .3420205{col 42}{space 1}   -3.29{col 51}{space 3}0.001{col 59}{space 4}-1.797072{col 72}{space 3}-.4563765
+{txt}{space 10}fertqty {c |}{col 19}{res}{space 2}  -.00215{col 31}{space 2} .0060511{col 42}{space 1}   -0.36{col 51}{space 3}0.722{col 59}{space 4}  -.01401{col 72}{space 3}   .00971
+{txt}{space 13}area {c |}{col 19}{res}{space 2} .2399437{col 31}{space 2} .1254382{col 42}{space 1}    1.91{col 51}{space 3}0.056{col 59}{space 4}-.0059107{col 72}{space 3} .4857981
+{txt}{space 1}no_farm_fulltime {c |}{col 19}{res}{space 2}-.4691811{col 31}{space 2} .1348756{col 42}{space 1}   -3.48{col 51}{space 3}0.001{col 59}{space 4}-.7335324{col 72}{space 3}-.2048299
+{txt}{space 1}no_farm_parttime {c |}{col 19}{res}{space 2}-.0312867{col 31}{space 2}  .131603{col 42}{space 1}   -0.24{col 51}{space 3}0.812{col 59}{space 4}-.2892238{col 72}{space 3} .2266503
+{txt}{space 10}mplough {c |}{col 19}{res}{space 2} .7294218{col 31}{space 2} .8264809{col 42}{space 1}    0.88{col 51}{space 3}0.377{col 59}{space 4} -.890451{col 72}{space 3} 2.349295
+{txt}{space 9}mfemhead {c |}{col 19}{res}{space 2} .7606844{col 31}{space 2} .6432052{col 42}{space 1}    1.18{col 51}{space 3}0.237{col 59}{space 4}-.4999745{col 72}{space 3} 2.021343
+{txt}{space 6}mown_cattle {c |}{col 19}{res}{space 2} 1.153211{col 31}{space 2} .6531724{col 42}{space 1}    1.77{col 51}{space 3}0.077{col 59}{space 4} -.126983{col 72}{space 3} 2.433406
+{txt}{space 7}mfree_seed {c |}{col 19}{res}{space 2} .8553895{col 31}{space 2} .5650703{col 42}{space 1}    1.51{col 51}{space 3}0.130{col 59}{space 4} -.252128{col 72}{space 3} 1.962907
+{txt}{space 7}mintercrop {c |}{col 19}{res}{space 2}        0{col 31}{txt}  (omitted)
+{space 9}mfertqty {c |}{col 19}{res}{space 2} .0101069{col 31}{space 2} .0086316{col 42}{space 1}    1.17{col 51}{space 3}0.242{col 59}{space 4}-.0068108{col 72}{space 3} .0270245
+{txt}{space 12}marea {c |}{col 19}{res}{space 2}-.3427747{col 31}{space 2} .1934811{col 42}{space 1}   -1.77{col 51}{space 3}0.076{col 59}{space 4}-.7219908{col 72}{space 3} .0364413
+{txt}mno_farm_fulltime {c |}{col 19}{res}{space 2} .1869364{col 31}{space 2}  .182998{col 42}{space 1}    1.02{col 51}{space 3}0.307{col 59}{space 4} -.171733{col 72}{space 3} .5456059
+{txt}mno_farm_parttime {c |}{col 19}{res}{space 2} .1477758{col 31}{space 2} .1820853{col 42}{space 1}    0.81{col 51}{space 3}0.417{col 59}{space 4}-.2091048{col 72}{space 3} .5046564
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2} 1.794249{col 31}{space 2}  .505036{col 42}{space 1}    3.55{col 51}{space 3}0.000{col 59}{space 4}  .804397{col 72}{space 3} 2.784102
+{txt}{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+          sigma_u {c |} {res}         0
+          {txt}sigma_e {c |} {res} 2.5669268
+              {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 18}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb1, xb
+{txt}(441 missing values generated)
+
+{com}.         egen                    xb1mean = mean (xb1), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb1 = xb1mean if xb1 == .
+{txt}(41 real changes made)
+
+{com}.         gen                     x_farm = _b[no_farm_fulltime]
+{txt}
+{com}. 
+. * estimate shadow wage for migrant labor 
+.         xtreg                   lnwages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+>                                                 o_migrant_international o_migrant_domestic no_migrants ///
+>                                                 comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
+>                                                 mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mo_migrant_international ///
+>                                                 mo_migrant_domestic mno_migrants mcomm_migrantratio
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}        97
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.3541                                         {txt}min = {res}        38
+{txt}     between = {res}1.0000                                         {txt}avg = {res}      48.5
+{txt}     overall = {res}0.3444                                         {txt}max = {res}        59
+
+                                                {txt}Wald chi2({res}20{txt})     =  {res}    39.93
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0051
+
+{txt}{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}         lnwages_migrant{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      z{col 58}   P>|z|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}avgmig_gender {c |}{col 26}{res}{space 2}-1.517463{col 38}{space 2} 1.110741{col 49}{space 1}   -1.37{col 58}{space 3}0.172{col 66}{space 4}-3.694475{col 79}{space 3} .6595498
+{txt}{space 14}avgmig_age {c |}{col 26}{res}{space 2} -.022444{col 38}{space 2} .0175596{col 49}{space 1}   -1.28{col 58}{space 3}0.201{col 66}{space 4}-.0568601{col 79}{space 3} .0119722
+{txt}{space 13}avgmig_yred {c |}{col 26}{res}{space 2}-.1237131{col 38}{space 2}  .141415{col 49}{space 1}   -0.87{col 58}{space 3}0.382{col 66}{space 4}-.4008815{col 79}{space 3} .1534552
+{txt}{space 12}multiple_mig {c |}{col 26}{res}{space 2}-.7523397{col 38}{space 2} .2889538{col 49}{space 1}   -2.60{col 58}{space 3}0.009{col 66}{space 4}-1.318679{col 79}{space 3}-.1860006
+{txt}{space 1}o_migrant_international {c |}{col 26}{res}{space 2}-.4041379{col 38}{space 2} .2461727{col 49}{space 1}   -1.64{col 58}{space 3}0.101{col 66}{space 4}-.8866275{col 79}{space 3} .0783517
+{txt}{space 6}o_migrant_domestic {c |}{col 26}{res}{space 2} .1626419{col 38}{space 2} .2876754{col 49}{space 1}    0.57{col 58}{space 3}0.572{col 66}{space 4}-.4011915{col 79}{space 3} .7264753
+{txt}{space 13}no_migrants {c |}{col 26}{res}{space 2} .1413434{col 38}{space 2}  .104947{col 49}{space 1}    1.35{col 58}{space 3}0.178{col 66}{space 4} -.064349{col 79}{space 3} .3470358
+{txt}{space 7}comm_migrantratio {c |}{col 26}{res}{space 2} 136.6923{col 38}{space 2} 61.87308{col 49}{space 1}    2.21{col 58}{space 3}0.027{col 66}{space 4} 15.42325{col 79}{space 3} 257.9613
+{txt}{space 11}dist_VicFalls {c |}{col 26}{res}{space 2} .0014618{col 38}{space 2}  .001312{col 49}{space 1}    1.11{col 58}{space 3}0.265{col 66}{space 4}-.0011096{col 79}{space 3} .0040332
+{txt}{space 9}dist_Beitbridge {c |}{col 26}{res}{space 2} .0024559{col 38}{space 2} .0018716{col 49}{space 1}    1.31{col 58}{space 3}0.189{col 66}{space 4}-.0012124{col 79}{space 3} .0061242
+{txt}{space 13}dist_Mutare {c |}{col 26}{res}{space 2}-.0002528{col 38}{space 2} .0015008{col 49}{space 1}   -0.17{col 58}{space 3}0.866{col 66}{space 4}-.0031943{col 79}{space 3} .0026886
+{txt}{space 11}dist_Plumtree {c |}{col 26}{res}{space 2}-.0013175{col 38}{space 2} .0010792{col 49}{space 1}   -1.22{col 58}{space 3}0.222{col 66}{space 4}-.0034326{col 79}{space 3} .0007977
+{txt}{space 10}mavgmig_gender {c |}{col 26}{res}{space 2} 1.348071{col 38}{space 2} 1.129593{col 49}{space 1}    1.19{col 58}{space 3}0.233{col 66}{space 4}-.8658909{col 79}{space 3} 3.562033
+{txt}{space 13}mavgmig_age {c |}{col 26}{res}{space 2}  .020492{col 38}{space 2} .0184516{col 49}{space 1}    1.11{col 58}{space 3}0.267{col 66}{space 4}-.0156725{col 79}{space 3} .0566564
+{txt}{space 12}mavgmig_yred {c |}{col 26}{res}{space 2} .1698081{col 38}{space 2} .1450706{col 49}{space 1}    1.17{col 58}{space 3}0.242{col 66}{space 4} -.114525{col 79}{space 3} .4541412
+{txt}{space 11}mmultiple_mig {c |}{col 26}{res}{space 2} 1.443207{col 38}{space 2} .4774382{col 49}{space 1}    3.02{col 58}{space 3}0.003{col 66}{space 4} .5074451{col 79}{space 3} 2.378968
+{txt}mo_migrant_international {c |}{col 26}{res}{space 2} .3172188{col 38}{space 2} .4853336{col 49}{space 1}    0.65{col 58}{space 3}0.513{col 66}{space 4}-.6340177{col 79}{space 3} 1.268455
+{txt}{space 5}mo_migrant_domestic {c |}{col 26}{res}{space 2}-.6423205{col 38}{space 2} .4731286{col 49}{space 1}   -1.36{col 58}{space 3}0.175{col 66}{space 4}-1.569635{col 79}{space 3} .2849945
+{txt}{space 12}mno_migrants {c |}{col 26}{res}{space 2}-.0208401{col 38}{space 2} .1902149{col 49}{space 1}   -0.11{col 58}{space 3}0.913{col 66}{space 4}-.3936546{col 79}{space 3} .3519743
+{txt}{space 6}mcomm_migrantratio {c |}{col 26}{res}{space 2}-147.7795{col 38}{space 2} 64.40736{col 49}{space 1}   -2.29{col 58}{space 3}0.022{col 66}{space 4}-274.0156{col 79}{space 3}-21.54338
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2} 2.887757{col 38}{space 2} 1.470425{col 49}{space 1}    1.96{col 58}{space 3}0.050{col 66}{space 4} .0057783{col 79}{space 3} 5.769737
+{txt}{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+                 sigma_u {c |} {res}         0
+                 {txt}sigma_e {c |} {res} .69471828
+                     {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 25}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb2, xb
+{txt}(999 missing values generated)
+
+{com}.         egen                    xb2mean = mean (xb2), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb2 = xb2mean if xb2 == .
+{txt}(599 real changes made)
+
+{com}.         gen                     x_migrant = _b[no_migrants]
+{txt}
+{com}. 
+. * estimate shadow wage for wage labor 
+.         xtreg                   lnwages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+>                                                 no_offfarm o_informal o_formal comm_offfarm /// 
+>                                                 mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
+>                                                 mno_offfarm mo_informal mo_formal mcomm_offfarm
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       582
+{txt}Group variable: {res}yearpanel                       {txt}Number of groups  = {res}         2
+
+{txt}R-sq:                                           Obs per group:
+     within  = {res}0.1405                                         {txt}min = {res}       201
+{txt}     between = {res}1.0000                                         {txt}avg = {res}     291.0
+{txt}     overall = {res}0.1676                                         {txt}max = {res}       381
+
+                                                {txt}Wald chi2({res}16{txt})     =  {res}   113.77
+{txt}corr(u_i, X)   = {res}0{txt} (assumed)                    Prob > chi2       =     {res}0.0000
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}lnwages_offf~m{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      z{col 48}   P>|z|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}avgoff_gender {c |}{col 16}{res}{space 2} .0376718{col 28}{space 2} .0854361{col 39}{space 1}    0.44{col 48}{space 3}0.659{col 56}{space 4}-.1297797{col 69}{space 3} .2051234
+{txt}{space 4}avgoff_age {c |}{col 16}{res}{space 2}-.0038756{col 28}{space 2}  .001874{col 39}{space 1}   -2.07{col 48}{space 3}0.039{col 56}{space 4}-.0075485{col 69}{space 3}-.0002027
+{txt}{space 3}avgoff_yred {c |}{col 16}{res}{space 2}-.0080692{col 28}{space 2} .0106139{col 39}{space 1}   -0.76{col 48}{space 3}0.447{col 56}{space 4} -.028872{col 69}{space 3} .0127337
+{txt}{space 2}multiple_off {c |}{col 16}{res}{space 2}-.0096608{col 28}{space 2} .0352031{col 39}{space 1}   -0.27{col 48}{space 3}0.784{col 56}{space 4}-.0786576{col 69}{space 3} .0593359
+{txt}{space 4}no_offfarm {c |}{col 16}{res}{space 2}-.0118591{col 28}{space 2} .0322237{col 39}{space 1}   -0.37{col 48}{space 3}0.713{col 56}{space 4}-.0750164{col 69}{space 3} .0512982
+{txt}{space 4}o_informal {c |}{col 16}{res}{space 2}-.0075648{col 28}{space 2} .0483799{col 39}{space 1}   -0.16{col 48}{space 3}0.876{col 56}{space 4}-.1023877{col 69}{space 3} .0872582
+{txt}{space 6}o_formal {c |}{col 16}{res}{space 2} .0400922{col 28}{space 2} .0749266{col 39}{space 1}    0.54{col 48}{space 3}0.593{col 56}{space 4}-.1067613{col 69}{space 3} .1869457
+{txt}{space 2}comm_offfarm {c |}{col 16}{res}{space 2}-.7211496{col 28}{space 2} 3.940585{col 39}{space 1}   -0.18{col 48}{space 3}0.855{col 56}{space 4}-8.444554{col 69}{space 3} 7.002254
+{txt}mavgoff_gender {c |}{col 16}{res}{space 2} .0342304{col 28}{space 2} .1109598{col 39}{space 1}    0.31{col 48}{space 3}0.758{col 56}{space 4}-.1832469{col 69}{space 3} .2517077
+{txt}{space 3}mavgoff_age {c |}{col 16}{res}{space 2}-.0015649{col 28}{space 2} .0023428{col 39}{space 1}   -0.67{col 48}{space 3}0.504{col 56}{space 4}-.0061567{col 69}{space 3}  .003027
+{txt}{space 2}mavgoff_yred {c |}{col 16}{res}{space 2}-.0292385{col 28}{space 2}  .012924{col 39}{space 1}   -2.26{col 48}{space 3}0.024{col 56}{space 4} -.054569{col 69}{space 3} -.003908
+{txt}{space 1}mmultiple_off {c |}{col 16}{res}{space 2} -.003233{col 28}{space 2} .0984751{col 39}{space 1}   -0.03{col 48}{space 3}0.974{col 56}{space 4}-.1962405{col 69}{space 3} .1897746
+{txt}{space 3}mno_offfarm {c |}{col 16}{res}{space 2} -.076408{col 28}{space 2} .0813619{col 39}{space 1}   -0.94{col 48}{space 3}0.348{col 56}{space 4}-.2358744{col 69}{space 3} .0830583
+{txt}{space 3}mo_informal {c |}{col 16}{res}{space 2}-.0992419{col 28}{space 2} .0943162{col 39}{space 1}   -1.05{col 48}{space 3}0.293{col 56}{space 4}-.2840983{col 69}{space 3} .0856145
+{txt}{space 5}mo_formal {c |}{col 16}{res}{space 2}-.1551947{col 28}{space 2} .1143117{col 39}{space 1}   -1.36{col 48}{space 3}0.175{col 56}{space 4}-.3792415{col 69}{space 3} .0688521
+{txt}{space 1}mcomm_offfarm {c |}{col 16}{res}{space 2} 14.95317{col 28}{space 2} 5.397424{col 39}{space 1}    2.77{col 48}{space 3}0.006{col 56}{space 4} 4.374411{col 69}{space 3} 25.53192
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 5.970757{col 28}{space 2} .1338075{col 39}{space 1}   44.62{col 48}{space 3}0.000{col 56}{space 4}   5.7085{col 69}{space 3} 6.233015
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+       sigma_u {c |} {res}         0
+       {txt}sigma_e {c |} {res} .37845766
+           {txt}rho {c |} {res}         0{txt}   (fraction of variance due to u_i)
+{hline 15}{c BT}{hline 64}
+
+{com}. 
+.         predict                 xb3, xb
+{txt}(571 missing values generated)
+
+{com}.         egen                    xb3mean = mean (xb3), by (district ward)
+{txt}(400 missing values generated)
+
+{com}.         replace                 xb3 = xb3mean if xb3 == .
+{txt}(171 real changes made)
+
+{com}.         gen                     x_offfarm = _b[no_offfarm]
+{txt}
+{com}. 
+. * calculate shadow wages 
+.         gen                     shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_migrant = (xb2 / no_migrant1)*(x_migrant)
+{txt}(400 missing values generated)
+
+{com}.         gen                     shadow_offfarm = (xb3 / no_offfarm1)*(x_offfarm)
+{txt}(400 missing values generated)
+
+{com}. 
+.         egen                    mshadow_farmlabor = mean(shadow_farmlabor), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_migrant = mean(shadow_migrant), by (rc id)
+{txt}(400 missing values generated)
+
+{com}.         egen                    mshadow_offfarm  = mean(shadow_offfarm), by (rc id)
+{txt}(400 missing values generated)
+
+{com}. 
+.         label                   variable shadow_migrant "\hspace{c -(}0.1cm{c )-} Migration Wages"
+{txt}
+{com}.         label                   variable shadow_offfarm "\hspace{c -(}0.1cm{c )-} Off-Farm Wages"
+{txt}
+{com}.         label                   variable shadow_farmlabor "\hspace{c -(}0.1cm{c )-} On-Farm Wages"        
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. * regressions for each of the four shocks 
+.         
+.         reg                     workdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       705
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0422
+                                                {txt}Root MSE          =    {res} .27771
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}   workdeath{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0217265{col 26}{space 2} .0220632{col 37}{space 1}    0.98{col 46}{space 3}0.363{col 54}{space 4}-.0322601{col 67}{space 3} .0757132
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2}-.0023173{col 26}{space 2} .0019317{col 37}{space 1}   -1.20{col 46}{space 3}0.276{col 54}{space 4} -.007044{col 67}{space 3} .0024094
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0009004{col 26}{space 2} .0047705{col 37}{space 1}    0.19{col 46}{space 3}0.857{col 54}{space 4}-.0107725{col 67}{space 3} .0125733
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} .0770892{col 26}{space 2} .0440368{col 37}{space 1}    1.75{col 46}{space 3}0.131{col 54}{space 4}-.0306649{col 67}{space 3} .1848433
+{txt}{space 6}plough {c |}{col 14}{res}{space 2} .1229777{col 26}{space 2} .0762367{col 37}{space 1}    1.61{col 46}{space 3}0.158{col 54}{space 4}-.0635669{col 67}{space 3} .3095223
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0122752{col 26}{space 2} .0274236{col 37}{space 1}   -0.45{col 46}{space 3}0.670{col 54}{space 4}-.0793784{col 67}{space 3} .0548279
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0292843{col 26}{space 2} .0181728{col 37}{space 1}   -1.61{col 46}{space 3}0.158{col 54}{space 4}-.0737515{col 67}{space 3} .0151829
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0024999{col 26}{space 2} .0029327{col 37}{space 1}    0.85{col 46}{space 3}0.427{col 54}{space 4}-.0046762{col 67}{space 3} .0096761
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0084147{col 26}{space 2} .0083315{col 37}{space 1}   -1.01{col 46}{space 3}0.351{col 54}{space 4}-.0288011{col 67}{space 3} .0119716
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}-.0189766{col 26}{space 2} .0584304{col 37}{space 1}   -0.32{col 46}{space 3}0.756{col 54}{space 4}-.1619505{col 67}{space 3} .1239974
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2}-.0516143{col 26}{space 2} .0970116{col 37}{space 1}   -0.53{col 46}{space 3}0.614{col 54}{space 4}-.2889932{col 67}{space 3} .1857646
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2} .0228367{col 26}{space 2} .0686169{col 37}{space 1}    0.33{col 46}{space 3}0.751{col 54}{space 4}-.1450627{col 67}{space 3} .1907362
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0843832{col 26}{space 2} .0748197{col 37}{space 1}    1.13{col 46}{space 3}0.302{col 54}{space 4} -.098694{col 67}{space 3} .2674604
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     commworkdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       630
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0251
+                                                {txt}Root MSE          =    {res} .02015
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}commworkde~h{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2}-.0005174{col 26}{space 2}  .000696{col 37}{space 1}   -0.74{col 46}{space 3}0.485{col 54}{space 4}-.0022204{col 67}{space 3} .0011855
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0000471{col 26}{space 2} .0001692{col 37}{space 1}    0.28{col 46}{space 3}0.790{col 54}{space 4}-.0003669{col 67}{space 3} .0004611
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0006435{col 26}{space 2} .0003369{col 37}{space 1}    1.91{col 46}{space 3}0.105{col 54}{space 4}-.0001808{col 67}{space 3} .0014679
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0057684{col 26}{space 2} .0027209{col 37}{space 1}   -2.12{col 46}{space 3}0.078{col 54}{space 4}-.0124261{col 67}{space 3} .0008894
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0079159{col 26}{space 2} .0066518{col 37}{space 1}   -1.19{col 46}{space 3}0.279{col 54}{space 4}-.0241923{col 67}{space 3} .0083605
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0019126{col 26}{space 2} .0029893{col 37}{space 1}   -0.64{col 46}{space 3}0.546{col 54}{space 4}-.0092271{col 67}{space 3} .0054018
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0012445{col 26}{space 2} .0007254{col 37}{space 1}    1.72{col 46}{space 3}0.137{col 54}{space 4}-.0005306{col 67}{space 3} .0030195
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0000511{col 26}{space 2} .0001165{col 37}{space 1}   -0.44{col 46}{space 3}0.676{col 54}{space 4}-.0003361{col 67}{space 3} .0002339
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} -.000131{col 26}{space 2} .0004531{col 37}{space 1}   -0.29{col 46}{space 3}0.782{col 54}{space 4}-.0012397{col 67}{space 3} .0009778
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}   .00427{col 26}{space 2} .0034979{col 37}{space 1}    1.22{col 46}{space 3}0.268{col 54}{space 4} -.004289{col 67}{space 3} .0128289
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0056349{col 26}{space 2} .0087657{col 37}{space 1}    0.64{col 46}{space 3}0.544{col 54}{space 4}-.0158142{col 67}{space 3} .0270839
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0000991{col 26}{space 2} .0030857{col 37}{space 1}   -0.03{col 46}{space 3}0.975{col 54}{space 4}-.0076496{col 67}{space 3} .0074513
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9925062{col 26}{space 2} .0034905{col 37}{space 1}  284.34{col 46}{space 3}0.000{col 54}{space 4} .9839652{col 67}{space 3} 1.001047
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     shocktotal ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0321
+                                                {txt}Root MSE          =    {res} .63089
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}  shocktotal{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0296584{col 26}{space 2}  .014378{col 37}{space 1}    2.06{col 46}{space 3}0.085{col 54}{space 4}-.0055233{col 67}{space 3}   .06484
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} -.004341{col 26}{space 2} .0057755{col 37}{space 1}   -0.75{col 46}{space 3}0.481{col 54}{space 4}-.0184731{col 67}{space 3} .0097912
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0304581{col 26}{space 2} .0195367{col 37}{space 1}    1.56{col 46}{space 3}0.170{col 54}{space 4}-.0173464{col 67}{space 3} .0782627
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} -.074822{col 26}{space 2} .1397617{col 37}{space 1}   -0.54{col 46}{space 3}0.612{col 54}{space 4}-.4168065{col 67}{space 3} .2671626
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.1327479{col 26}{space 2} .2123442{col 37}{space 1}   -0.63{col 46}{space 3}0.555{col 54}{space 4}-.6523354{col 67}{space 3} .3868396
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2} .1775978{col 26}{space 2} .0944631{col 37}{space 1}    1.88{col 46}{space 3}0.109{col 54}{space 4}-.0535451{col 67}{space 3} .4087408
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0126306{col 26}{space 2} .0245965{col 37}{space 1}   -0.51{col 46}{space 3}0.626{col 54}{space 4} -.072816{col 67}{space 3} .0475547
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0033554{col 26}{space 2} .0073674{col 37}{space 1}    0.46{col 46}{space 3}0.665{col 54}{space 4}-.0146721{col 67}{space 3} .0213829
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} .0070641{col 26}{space 2} .0258313{col 37}{space 1}    0.27{col 46}{space 3}0.794{col 54}{space 4}-.0561428{col 67}{space 3} .0702709
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2} .0155437{col 26}{space 2} .1877412{col 37}{space 1}    0.08{col 46}{space 3}0.937{col 54}{space 4}-.4438426{col 67}{space 3}   .47493
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0140521{col 26}{space 2} .3265279{col 37}{space 1}    0.04{col 46}{space 3}0.967{col 54}{space 4}-.7849328{col 67}{space 3}  .813037
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.1207252{col 26}{space 2} .1357876{col 37}{space 1}   -0.89{col 46}{space 3}0.408{col 54}{space 4}-.4529855{col 67}{space 3} .2115352
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9022768{col 26}{space 2} .2228389{col 37}{space 1}    4.05{col 46}{space 3}0.007{col 54}{space 4} .3570096{col 67}{space 3} 1.447544
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.                 
+.         reg                     pershock ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}{help j_robustsingular:F(5, 6) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0830
+                                                {txt}Root MSE          =    {res} .47958
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:7} clusters in district)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}    pershock{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0019548{col 26}{space 2} .0046111{col 37}{space 1}    0.42{col 46}{space 3}0.686{col 54}{space 4}-.0093283{col 67}{space 3} .0132379
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0015171{col 26}{space 2} .0008985{col 37}{space 1}    1.69{col 46}{space 3}0.142{col 54}{space 4}-.0006816{col 67}{space 3} .0037157
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0025514{col 26}{space 2} .0025998{col 37}{space 1}    0.98{col 46}{space 3}0.364{col 54}{space 4}-.0038101{col 67}{space 3} .0089129
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0242613{col 26}{space 2} .0138985{col 37}{space 1}   -1.75{col 46}{space 3}0.131{col 54}{space 4}-.0582696{col 67}{space 3} .0097471
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0059973{col 26}{space 2} .0091589{col 37}{space 1}   -0.65{col 46}{space 3}0.537{col 54}{space 4}-.0284084{col 67}{space 3} .0164138
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}  .008212{col 26}{space 2} .0226618{col 37}{space 1}    0.36{col 46}{space 3}0.729{col 54}{space 4}-.0472394{col 67}{space 3} .0636633
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0127619{col 26}{space 2} .0151514{col 37}{space 1}    0.84{col 46}{space 3}0.432{col 54}{space 4}-.0243121{col 67}{space 3}  .049836
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0040321{col 26}{space 2} .0032665{col 37}{space 1}   -1.23{col 46}{space 3}0.263{col 54}{space 4} -.012025{col 67}{space 3} .0039608
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0359406{col 26}{space 2} .0478993{col 37}{space 1}   -0.75{col 46}{space 3}0.481{col 54}{space 4}-.1531461{col 67}{space 3} .0812648
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}  .040442{col 26}{space 2} .1109441{col 37}{space 1}    0.36{col 46}{space 3}0.728{col 54}{space 4}-.2310285{col 67}{space 3} .3119125
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .3700596{col 26}{space 2} .0982351{col 37}{space 1}    3.77{col 46}{space 3}0.009{col 54}{space 4} .1296869{col 67}{space 3} .6104322
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0933067{col 26}{space 2} .1007443{col 37}{space 1}   -0.93{col 46}{space 3}0.390{col 54}{space 4}-.3398192{col 67}{space 3} .1532058
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  .517275{col 26}{space 2} .3072796{col 37}{space 1}    1.68{col 46}{space 3}0.143{col 54}{space 4} -.234611{col 67}{space 3} 1.269161
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. * regressions for each of the four shocks 
+.         
+.         reg                     workdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu mfemhead mplough mown_cattle, vce(robust)
+
+{txt}Linear regression                               Number of obs     = {res}       705
+                                                {txt}F(12, 692)        =  {res}     2.34
+                                                {txt}Prob > F          = {res}    0.0060
+                                                {txt}R-squared         = {res}    0.0422
+                                                {txt}Root MSE          =    {res} .27771
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}   workdeath{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0217265{col 26}{space 2} .0101969{col 37}{space 1}    2.13{col 46}{space 3}0.033{col 54}{space 4}  .001706{col 67}{space 3} .0417471
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2}-.0023173{col 26}{space 2} .0025193{col 37}{space 1}   -0.92{col 46}{space 3}0.358{col 54}{space 4}-.0072636{col 67}{space 3}  .002629
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0009004{col 26}{space 2} .0092944{col 37}{space 1}    0.10{col 46}{space 3}0.923{col 54}{space 4}-.0173482{col 67}{space 3} .0191491
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} .0770892{col 26}{space 2}  .044993{col 37}{space 1}    1.71{col 46}{space 3}0.087{col 54}{space 4}  -.01125{col 67}{space 3} .1654284
+{txt}{space 6}plough {c |}{col 14}{res}{space 2} .1229777{col 26}{space 2} .0529885{col 37}{space 1}    2.32{col 46}{space 3}0.021{col 54}{space 4} .0189402{col 67}{space 3} .2270151
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0122752{col 26}{space 2} .0398817{col 37}{space 1}   -0.31{col 46}{space 3}0.758{col 54}{space 4}-.0905788{col 67}{space 3} .0660283
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0292843{col 26}{space 2} .0100196{col 37}{space 1}   -2.92{col 46}{space 3}0.004{col 54}{space 4}-.0489568{col 67}{space 3}-.0096119
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0024999{col 26}{space 2} .0027442{col 37}{space 1}    0.91{col 46}{space 3}0.363{col 54}{space 4} -.002888{col 67}{space 3} .0078879
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0084147{col 26}{space 2} .0110257{col 37}{space 1}   -0.76{col 46}{space 3}0.446{col 54}{space 4}-.0300625{col 67}{space 3} .0132331
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}-.0189766{col 26}{space 2} .0514453{col 37}{space 1}   -0.37{col 46}{space 3}0.712{col 54}{space 4}-.1199842{col 67}{space 3} .0820311
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2}-.0516143{col 26}{space 2}  .060704{col 37}{space 1}   -0.85{col 46}{space 3}0.395{col 54}{space 4}-.1708005{col 67}{space 3} .0675718
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2} .0228367{col 26}{space 2} .0458902{col 37}{space 1}    0.50{col 46}{space 3}0.619{col 54}{space 4}-.0672639{col 67}{space 3} .1129374
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0843832{col 26}{space 2} .0678159{col 37}{space 1}    1.24{col 46}{space 3}0.214{col 54}{space 4}-.0487665{col 67}{space 3} .2175329
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     commworkdeath ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, vce(robust)
+
+{txt}Linear regression                               Number of obs     = {res}       630
+                                                {txt}F(12, 617)        =  {res}     1.28
+                                                {txt}Prob > F          = {res}    0.2256
+                                                {txt}R-squared         = {res}    0.0251
+                                                {txt}Root MSE          =    {res} .02015
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}commworkde~h{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2}-.0005174{col 26}{space 2} .0006575{col 37}{space 1}   -0.79{col 46}{space 3}0.432{col 54}{space 4}-.0018087{col 67}{space 3} .0007738
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0000471{col 26}{space 2} .0002617{col 37}{space 1}    0.18{col 46}{space 3}0.857{col 54}{space 4}-.0004669{col 67}{space 3} .0005611
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0006435{col 26}{space 2} .0005553{col 37}{space 1}    1.16{col 46}{space 3}0.247{col 54}{space 4}-.0004469{col 67}{space 3}  .001734
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0057684{col 26}{space 2}  .002929{col 37}{space 1}   -1.97{col 46}{space 3}0.049{col 54}{space 4}-.0115205{col 67}{space 3}-.0000163
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0079159{col 26}{space 2} .0046933{col 37}{space 1}   -1.69{col 46}{space 3}0.092{col 54}{space 4}-.0171326{col 67}{space 3} .0013009
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}-.0019126{col 26}{space 2} .0027816{col 37}{space 1}   -0.69{col 46}{space 3}0.492{col 54}{space 4}-.0073751{col 67}{space 3} .0035498
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0012445{col 26}{space 2} .0007654{col 37}{space 1}    1.63{col 46}{space 3}0.104{col 54}{space 4}-.0002587{col 67}{space 3} .0027476
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0000511{col 26}{space 2} .0002439{col 37}{space 1}   -0.21{col 46}{space 3}0.834{col 54}{space 4}  -.00053{col 67}{space 3} .0004278
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} -.000131{col 26}{space 2} .0006598{col 37}{space 1}   -0.20{col 46}{space 3}0.843{col 54}{space 4}-.0014268{col 67}{space 3} .0011648
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}   .00427{col 26}{space 2} .0034336{col 37}{space 1}    1.24{col 46}{space 3}0.214{col 54}{space 4} -.002473{col 67}{space 3} .0110129
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0056349{col 26}{space 2} .0054352{col 37}{space 1}    1.04{col 46}{space 3}0.300{col 54}{space 4}-.0050389{col 67}{space 3} .0163086
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0000991{col 26}{space 2} .0028663{col 37}{space 1}   -0.03{col 46}{space 3}0.972{col 54}{space 4}-.0057281{col 67}{space 3} .0055298
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9925062{col 26}{space 2} .0036777{col 37}{space 1}  269.87{col 46}{space 3}0.000{col 54}{space 4} .9852838{col 67}{space 3} .9997286
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+.         reg                     shocktotal ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, vce(robust) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}F(12, 694)        =  {res}     1.98
+                                                {txt}Prob > F          = {res}    0.0237
+                                                {txt}R-squared         = {res}    0.0321
+                                                {txt}Root MSE          =    {res} .63089
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}  shocktotal{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0296584{col 26}{space 2} .0223972{col 37}{space 1}    1.32{col 46}{space 3}0.186{col 54}{space 4}-.0143159{col 67}{space 3} .0736327
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} -.004341{col 26}{space 2} .0046063{col 37}{space 1}   -0.94{col 46}{space 3}0.346{col 54}{space 4}-.0133849{col 67}{space 3}  .004703
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0304581{col 26}{space 2} .0220231{col 37}{space 1}    1.38{col 46}{space 3}0.167{col 54}{space 4}-.0127817{col 67}{space 3} .0736979
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2} -.074822{col 26}{space 2} .0897118{col 37}{space 1}   -0.83{col 46}{space 3}0.405{col 54}{space 4} -.250961{col 67}{space 3}  .101317
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.1327479{col 26}{space 2} .1182684{col 37}{space 1}   -1.12{col 46}{space 3}0.262{col 54}{space 4}-.3649548{col 67}{space 3} .0994589
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2} .1775978{col 26}{space 2} .0969771{col 37}{space 1}    1.83{col 46}{space 3}0.067{col 54}{space 4}-.0128059{col 67}{space 3} .3680015
+{txt}{space 9}mae {c |}{col 14}{res}{space 2}-.0126306{col 26}{space 2} .0279567{col 37}{space 1}   -0.45{col 46}{space 3}0.652{col 54}{space 4}-.0675205{col 67}{space 3} .0422593
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2} .0033554{col 26}{space 2} .0052715{col 37}{space 1}    0.64{col 46}{space 3}0.525{col 54}{space 4}-.0069945{col 67}{space 3} .0137053
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2} .0070641{col 26}{space 2} .0265977{col 37}{space 1}    0.27{col 46}{space 3}0.791{col 54}{space 4}-.0451575{col 67}{space 3} .0592856
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2} .0155437{col 26}{space 2} .1144147{col 37}{space 1}    0.14{col 46}{space 3}0.892{col 54}{space 4}-.2090967{col 67}{space 3} .2401841
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .0140521{col 26}{space 2} .1415545{col 37}{space 1}    0.10{col 46}{space 3}0.921{col 54}{space 4}-.2638744{col 67}{space 3} .2919786
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.1207252{col 26}{space 2} .1223203{col 37}{space 1}   -0.99{col 46}{space 3}0.324{col 54}{space 4}-.3608875{col 67}{space 3} .1194371
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .9022768{col 26}{space 2} .1446659{col 37}{space 1}    6.24{col 46}{space 3}0.000{col 54}{space 4} .6182414{col 67}{space 3} 1.186312
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.                 
+.         reg                     pershock ae hhage hhedu femhead plough own_cattle ///
+>                                                 mae mhhage mhhedu  mfemhead mplough mown_cattle, vce(robust) 
+
+{txt}Linear regression                               Number of obs     = {res}       707
+                                                {txt}F(12, 694)        =  {res}     6.19
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.0830
+                                                {txt}Root MSE          =    {res} .47958
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}    pershock{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 10}ae {c |}{col 14}{res}{space 2} .0019548{col 26}{space 2} .0152992{col 37}{space 1}    0.13{col 46}{space 3}0.898{col 54}{space 4}-.0280835{col 67}{space 3} .0319931
+{txt}{space 7}hhage {c |}{col 14}{res}{space 2} .0015171{col 26}{space 2}  .004028{col 37}{space 1}    0.38{col 46}{space 3}0.707{col 54}{space 4}-.0063915{col 67}{space 3} .0094257
+{txt}{space 7}hhedu {c |}{col 14}{res}{space 2} .0025514{col 26}{space 2} .0169227{col 37}{space 1}    0.15{col 46}{space 3}0.880{col 54}{space 4}-.0306743{col 67}{space 3} .0357772
+{txt}{space 5}femhead {c |}{col 14}{res}{space 2}-.0242613{col 26}{space 2} .0666436{col 37}{space 1}   -0.36{col 46}{space 3}0.716{col 54}{space 4}-.1551085{col 67}{space 3}  .106586
+{txt}{space 6}plough {c |}{col 14}{res}{space 2}-.0059973{col 26}{space 2} .0925924{col 37}{space 1}   -0.06{col 46}{space 3}0.948{col 54}{space 4}-.1877921{col 67}{space 3} .1757976
+{txt}{space 2}own_cattle {c |}{col 14}{res}{space 2}  .008212{col 26}{space 2} .0741347{col 37}{space 1}    0.11{col 46}{space 3}0.912{col 54}{space 4}-.1373431{col 67}{space 3} .1537671
+{txt}{space 9}mae {c |}{col 14}{res}{space 2} .0127619{col 26}{space 2} .0191159{col 37}{space 1}    0.67{col 46}{space 3}0.505{col 54}{space 4}  -.02477{col 67}{space 3} .0502938
+{txt}{space 6}mhhage {c |}{col 14}{res}{space 2}-.0040321{col 26}{space 2} .0044665{col 37}{space 1}   -0.90{col 46}{space 3}0.367{col 54}{space 4}-.0128015{col 67}{space 3} .0047373
+{txt}{space 6}mhhedu {c |}{col 14}{res}{space 2}-.0359406{col 26}{space 2} .0213259{col 37}{space 1}   -1.69{col 46}{space 3}0.092{col 54}{space 4}-.0778117{col 67}{space 3} .0059305
+{txt}{space 4}mfemhead {c |}{col 14}{res}{space 2}  .040442{col 26}{space 2} .0819515{col 37}{space 1}    0.49{col 46}{space 3}0.622{col 54}{space 4}-.1204606{col 67}{space 3} .2013446
+{txt}{space 5}mplough {c |}{col 14}{res}{space 2} .3700596{col 26}{space 2} .1063816{col 37}{space 1}    3.48{col 46}{space 3}0.001{col 54}{space 4} .1611911{col 67}{space 3}  .578928
+{txt}{space 1}mown_cattle {c |}{col 14}{res}{space 2}-.0933067{col 26}{space 2} .0891848{col 37}{space 1}   -1.05{col 46}{space 3}0.296{col 54}{space 4}-.2684111{col 67}{space 3} .0817978
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  .517275{col 26}{space 2} .1144515{col 37}{space 1}    4.52{col 46}{space 3}0.000{col 54}{space 4} .2925623{col 67}{space 3} .7419876
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}.         tabstat                 share_mig share_off share_non share_farm workdeath commworkdeath, by (pershock)  
+
+{txt}Summary statistics: mean
+  by categories of: pershock 
+
+{ralign 8:pershock} {...}
+{c |}{...}
+  share_~g  share_~f  share_~n  share_~m  workde~h  commwo~h
+{hline 9}{c +}{hline 60}
+{ralign 8:0} {...}
+{c |}{...}
+ {res} .0649355  .1604184  .0187796  .7526408  .0694698   .994514
+{txt}{ralign 8:1} {...}
+{c |}{...}
+ {res} .0944627  .1834024   .018046  .7015283  .1100703  .9961843
+{txt}{hline 9}{c +}{hline 60}
+{ralign 8:Total} {...}
+{c |}{...}
+ {res} .0779009  .1705107  .0184575  .7301973   .087269  .9953092
+{txt}{hline 9}{c BT}{hline 60}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}.         tabstat                 share_farm share_mig share_off share_non workdeath commworkdeath, by (pershock)  
+
+{txt}Summary statistics: mean
+  by categories of: pershock 
+
+{ralign 8:pershock} {...}
+{c |}{...}
+  share_~m  share_~g  share_~f  share_~n  workde~h  commwo~h
+{hline 9}{c +}{hline 60}
+{ralign 8:0} {...}
+{c |}{...}
+ {res} .7526408  .0649355  .1604184  .0187796  .0694698   .994514
+{txt}{ralign 8:1} {...}
+{c |}{...}
+ {res} .7015283  .0944627  .1834024   .018046  .1100703  .9961843
+{txt}{hline 9}{c +}{hline 60}
+{ralign 8:Total} {...}
+{c |}{...}
+ {res} .7301973  .0779009  .1705107  .0184575   .087269  .9953092
+{txt}{hline 9}{c BT}{hline 60}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}.         tabstat                 share_farm share_mig share_off share_non workdeath commworkdeath, by (shocktotal)        
+
+{txt}Summary statistics: mean
+  by categories of: shocktotal ((max) shocktotal)
+
+{ralign 10:shocktotal} {...}
+{c |}{...}
+  share_~m  share_~g  share_~f  share_~n  workde~h  commwo~h
+{hline 11}{c +}{hline 60}
+{ralign 10:.235942333} {...}
+{c |}{...}
+ {res}   .78125    .09375      .125         0         0         .
+{txt}{ralign 10:.246251031} {...}
+{c |}{...}
+ {res} .6596753      .075  .2403247      .025         0         .
+{txt}{ralign 10:.257253736} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.263316959} {...}
+{c |}{...}
+ {res} .7375581  .0524691  .1852814  .0246914         0         1
+{txt}{ralign 10:.275724142} {...}
+{c |}{...}
+ {res} .8532491  .0476969  .0935595  .0054945  .1153846  .9990464
+{txt}{ralign 10:.291013419} {...}
+{c |}{...}
+ {res} .5555556         0  .4444444         0         0         .
+{txt}{ralign 10:.296897292} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:.309453427} {...}
+{c |}{...}
+ {res} .6605115  .0555556   .283933         0         0         1
+{txt}{ralign 10:.329866200} {...}
+{c |}{...}
+ {res} .7413891  .0543377  .1899305  .0143428  .1071429   .994898
+{txt}{ralign 10:.352214246} {...}
+{c |}{...}
+ {res} .6479258  .2169892   .135085         0  .0769231   .993007
+{txt}{ralign 10:.396879285} {...}
+{c |}{...}
+ {res} .8833434  .0248889  .0695455  .0222222       .08      .998
+{txt}{ralign 10:.398758083} {...}
+{c |}{...}
+ {res}      .75         0       .25         0         0         1
+{txt}{ralign 10:.407619476} {...}
+{c |}{...}
+ {res} .7333333         0  .1333333  .1333333         0         1
+{txt}{ralign 10:.415830910} {...}
+{c |}{...}
+ {res} .8461539         0  .1538462         0         0         .
+{txt}{ralign 10:.428385078} {...}
+{c |}{...}
+ {res} .5714286  .1428571  .2857143         0         0         1
+{txt}{ralign 10:.434368759} {...}
+{c |}{...}
+ {res} .8004884         0  .1610501  .0192308  .2307692    .99509
+{txt}{ralign 10:.449551820} {...}
+{c |}{...}
+ {res}       .8         0        .2         0         0         1
+{txt}{ralign 10:.469787299} {...}
+{c |}{...}
+ {res} .7478958  .0596224  .1728238  .0196581         0         .
+{txt}{ralign 10:.471767961} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:.480277091} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         .
+{txt}{ralign 10:.542731761} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.560542643} {...}
+{c |}{...}
+ {res} .6666667         0  .3333333         0         0         .
+{txt}{ralign 10:.564967334} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         1  .9090909
+{txt}{ralign 10:.577609300} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         1  .9917355
+{txt}{ralign 10:.578113377} {...}
+{c |}{...}
+ {res} .8368072   .023088  .1287412  .0113636  .0454545  .9818182
+{txt}{ralign 10:.595598518} {...}
+{c |}{...}
+ {res} .6666667         0  .1666667  .1666667         .         .
+{txt}{ralign 10:.600637733} {...}
+{c |}{...}
+ {res} .7338504   .042328  .2238216         0  .0833333  .9833333
+{txt}{ralign 10:.610284805} {...}
+{c |}{...}
+ {res}       .5  .1666667  .1666667  .1666667         0         1
+{txt}{ralign 10:.614301741} {...}
+{c |}{...}
+ {res} .8190524  .0241546   .119293     .0375        .1  .9909091
+{txt}{ralign 10:.621419012} {...}
+{c |}{...}
+ {res} .5863623    .16496  .2246393  .0240385         0         1
+{txt}{ralign 10:.630081713} {...}
+{c |}{...}
+ {res}  .368421  .3157895  .3157895         0         0         1
+{txt}{ralign 10:.638369321} {...}
+{c |}{...}
+ {res} .7142857         0  .2857143         0         0         .
+{txt}{ralign 10:.648493230} {...}
+{c |}{...}
+ {res}        1         0         0         0         1      .975
+{txt}{ralign 10:.652402639} {...}
+{c |}{...}
+ {res}        1         0         0         0         1   .952381
+{txt}{ralign 10:.658439993} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:.674260735} {...}
+{c |}{...}
+ {res} .8666667         0  .1333333         0         0         .
+{txt}{ralign 10:.688291132} {...}
+{c |}{...}
+ {res} .6230631  .0891245  .2767014  .0111111        .2  .9894737
+{txt}{ralign 10:.699947655} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.708071231} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:.746985077} {...}
+{c |}{...}
+ {res} .7248307  .0536131  .2023255  .0192308         0         1
+{txt}{ralign 10:.765148222} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         1
+{txt}{ralign 10:.766088187} {...}
+{c |}{...}
+ {res}     .625       .25      .125         0         0         1
+{txt}{ralign 10:.775285243} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.783206880} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.788107454} {...}
+{c |}{...}
+ {res} .6666667         0  .2222222  .1111111         0         1
+{txt}{ralign 10:.810509085} {...}
+{c |}{...}
+ {res} .6988095         0  .2011905  .0166667         0         .
+{txt}{ralign 10:.812227189} {...}
+{c |}{...}
+ {res} .6604054  .0940466  .2254181  .0136364  .0357143  .9981203
+{txt}{ralign 10:.826955318} {...}
+{c |}{...}
+ {res} .7142857         0  .2857143         0         0         .
+{txt}{ralign 10:.827578783} {...}
+{c |}{...}
+ {res} .6082809  .1423297  .2075215  .0418678  .0789474  .9982456
+{txt}{ralign 10:.837678790} {...}
+{c |}{...}
+ {res}      .75         0       .25         0         0         1
+{txt}{ralign 10:.838845312} {...}
+{c |}{...}
+ {res} .5555556  .2222222  .2222222         0         0         .
+{txt}{ralign 10:.846228420} {...}
+{c |}{...}
+ {res}     .625         0      .375         0         0         .
+{txt}{ralign 10:.850959241} {...}
+{c |}{...}
+ {res} .7333333         0  .2666667         0         0         .
+{txt}{ralign 10:.856310188} {...}
+{c |}{...}
+ {res} .6165065  .1541991  .2107759  .0185185  .1666667  .9901961
+{txt}{ralign 10:.857136964} {...}
+{c |}{...}
+ {res} .8212836  .0546584  .1073913  .0166667         0         1
+{txt}{ralign 10:.862107396} {...}
+{c |}{...}
+ {res} .6923077  .1538462  .1538462         0         0         1
+{txt}{ralign 10:.869356930} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:.877959609} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:.893149912} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.900296986} {...}
+{c |}{...}
+ {res} .5714286  .1428571  .2857143         0         0         1
+{txt}{ralign 10:.906188607} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:.925446927} {...}
+{c |}{...}
+ {res}  .667188  .0623483  .1932151  .0772487   .047619   .998557
+{txt}{ralign 10:.927918136} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:.931320309} {...}
+{c |}{...}
+ {res} .8181818         0  .1818182         0         1  .9787234
+{txt}{ralign 10:.931713759} {...}
+{c |}{...}
+ {res} .8333333         0         0  .1666667         0         1
+{txt}{ralign 10:.944556593} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         1
+{txt}{ralign 10:.953594028} {...}
+{c |}{...}
+ {res}  .810897  .0615882  .1062334  .0212814  .1428571  .9988194
+{txt}{ralign 10:.961198151} {...}
+{c |}{...}
+ {res} .3846154  .2307692  .3846154         0         0         1
+{txt}{ralign 10:.963685691} {...}
+{c |}{...}
+ {res} .6666667         0  .3333333         0         0         1
+{txt}{ralign 10:.971300065} {...}
+{c |}{...}
+ {res} .8571429         0  .1428571         0         0         1
+{txt}{ralign 10:.977036416} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.00120866} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.00524353} {...}
+{c |}{...}
+ {res} .7111863  .1663375  .1166282   .005848  .1578947  .9964912
+{txt}{ralign 10:1.01452291} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.01949954} {...}
+{c |}{...}
+ {res}      .75         0       .25         0         .         .
+{txt}{ralign 10:1.02094686} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.02411210} {...}
+{c |}{...}
+ {res} .7142857         0  .2142857  .0714286         0         1
+{txt}{ralign 10:1.03550815} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.04161775} {...}
+{c |}{...}
+ {res} .6354746  .1500026  .2043666  .0101563    .15625  .9888393
+{txt}{ralign 10:1.04292929} {...}
+{c |}{...}
+ {res} .3333333  .3333333  .3333333         0         0         1
+{txt}{ralign 10:1.05262541} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.05437386} {...}
+{c |}{...}
+ {res}       .2        .6        .2         0         0         1
+{txt}{ralign 10:1.05565428} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:1.06306540} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:1.06853890} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         1
+{txt}{ralign 10:1.06897103} {...}
+{c |}{...}
+ {res} .5454546  .3636364  .0909091         0         0         1
+{txt}{ralign 10:1.07009136} {...}
+{c |}{...}
+ {res}     .625         0      .375         0         0         .
+{txt}{ralign 10:1.08378732} {...}
+{c |}{...}
+ {res} .7647059         0  .2352941         0         0         1
+{txt}{ralign 10:1.08638572} {...}
+{c |}{...}
+ {res} .5714286  .2857143  .1428571         0         0         1
+{txt}{ralign 10:1.08712542} {...}
+{c |}{...}
+ {res} .6666667         0  .3333333         0         0         1
+{txt}{ralign 10:1.10260796} {...}
+{c |}{...}
+ {res} .7260361  .0552993  .1686646  .0291667      .125   .996875
+{txt}{ralign 10:1.10267412} {...}
+{c |}{...}
+ {res} .6363636         0  .3636364         0         0         1
+{txt}{ralign 10:1.11795580} {...}
+{c |}{...}
+ {res} .5384616  .1538462  .3076923         0         0         1
+{txt}{ralign 10:1.12338292} {...}
+{c |}{...}
+ {res} .7627078  .0203175  .1861345  .0261345       .12      .988
+{txt}{ralign 10:1.12656259} {...}
+{c |}{...}
+ {res}       .8        .2         0         0         0         1
+{txt}{ralign 10:1.12677168} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.15153205} {...}
+{c |}{...}
+ {res}       .2         0        .2        .2         0         .
+{txt}{ralign 10:1.15487098} {...}
+{c |}{...}
+ {res} .7777778  .1111111  .1111111         0         0         1
+{txt}{ralign 10:1.15518999} {...}
+{c |}{...}
+ {res} .5294118  .1176471  .3529412         0         0         1
+{txt}{ralign 10:1.15638589} {...}
+{c |}{...}
+ {res} .7142857         0  .2857143         0         0         1
+{txt}{ralign 10:1.16081702} {...}
+{c |}{...}
+ {res} .7436713  .0768818  .1625639  .0168831  .1666667   .996124
+{txt}{ralign 10:1.17453849} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.18120241} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.18474602} {...}
+{c |}{...}
+ {res} .4666667  .1333333        .4         0         0         1
+{txt}{ralign 10:1.18717288} {...}
+{c |}{...}
+ {res} .7582969  .0855033  .1520069  .0041929  .0377358  .9991971
+{txt}{ralign 10:1.19218158} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.19787681} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.20174872} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         1
+{txt}{ralign 10:1.20435464} {...}
+{c |}{...}
+ {res} .6923077  .3076923         0         0         0         1
+{txt}{ralign 10:1.21550309} {...}
+{c |}{...}
+ {res} .6666667  .3333333         0         0         0         1
+{txt}{ralign 10:1.22231137} {...}
+{c |}{...}
+ {res} .6653279  .0554994  .2510422  .0281305   .037037   .997151
+{txt}{ralign 10:1.22636222} {...}
+{c |}{...}
+ {res} .6294292  .0955037  .2625672     .0125         0         1
+{txt}{ralign 10:1.22654259} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.23119902} {...}
+{c |}{...}
+ {res}       .5         0        .5         0         0         1
+{txt}{ralign 10:1.23346066} {...}
+{c |}{...}
+ {res}       .8         0         0        .2         0         1
+{txt}{ralign 10:1.25927460} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.26131212} {...}
+{c |}{...}
+ {res} .8333333  .1666667         0         0         0         1
+{txt}{ralign 10:1.27077841} {...}
+{c |}{...}
+ {res} .5555556         0  .2222222  .2222222         0         1
+{txt}{ralign 10:1.27249908} {...}
+{c |}{...}
+ {res}       .5       .25       .25         0         0         1
+{txt}{ralign 10:1.27497816} {...}
+{c |}{...}
+ {res} .6800214         0  .3199786         0       .25  .9722222
+{txt}{ralign 10:1.28504967} {...}
+{c |}{...}
+ {res} .6666667         0  .3333333         0         0         1
+{txt}{ralign 10:1.29259562} {...}
+{c |}{...}
+ {res}       .8         0        .2         0         1  .9777778
+{txt}{ralign 10:1.30080044} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.30186057} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.31847202} {...}
+{c |}{...}
+ {res}       .6        .4         0         0         0         1
+{txt}{ralign 10:1.32271099} {...}
+{c |}{...}
+ {res} .7777778         0  .2222222         0         0         1
+{txt}{ralign 10:1.32685327} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.32855606} {...}
+{c |}{...}
+ {res} .3333333  .3333333  .3333333         0         0         1
+{txt}{ralign 10:1.32962536} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.33869493} {...}
+{c |}{...}
+ {res}      .75       .25         0         0         0         .
+{txt}{ralign 10:1.34485399} {...}
+{c |}{...}
+ {res}       .6        .4         0         0         0         1
+{txt}{ralign 10:1.35972404} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.37871623} {...}
+{c |}{...}
+ {res} .6666667         0         0  .3333333         0         1
+{txt}{ralign 10:1.40391111} {...}
+{c |}{...}
+ {res}       .6        .4         0         0         0         .
+{txt}{ralign 10:1.41395056} {...}
+{c |}{...}
+ {res} .8666667         0  .1333333         0         0         1
+{txt}{ralign 10:1.42212915} {...}
+{c |}{...}
+ {res}       .5       .25       .25         0         1   .952381
+{txt}{ralign 10:1.43589305} {...}
+{c |}{...}
+ {res} .7142857         0  .2857143         0         0         1
+{txt}{ralign 10:1.45039153} {...}
+{c |}{...}
+ {res}       .8         0        .2         0         0         1
+{txt}{ralign 10:1.47092378} {...}
+{c |}{...}
+ {res} .7162277  .1375672  .1343003  .0119048   .047619  .9931973
+{txt}{ralign 10:1.47443532} {...}
+{c |}{...}
+ {res} .6363636  .1818182  .1818182         0         1   .969697
+{txt}{ralign 10:1.48373794} {...}
+{c |}{...}
+ {res} .5555556         0  .4444444         0         0         .
+{txt}{ralign 10:1.48983633} {...}
+{c |}{...}
+ {res} .7269977  .1009949  .1486727  .0233347  .1851852  .9952719
+{txt}{ralign 10:1.49918031} {...}
+{c |}{...}
+ {res}       .8         0        .2         0         0         1
+{txt}{ralign 10:1.51377809} {...}
+{c |}{...}
+ {res} .6470588         0  .2352941  .1176471         0         1
+{txt}{ralign 10:1.51733791} {...}
+{c |}{...}
+ {res} .6923077         0  .3076923         0         0         1
+{txt}{ralign 10:1.55874884} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.55909180} {...}
+{c |}{...}
+ {res} .6923077  .3076923         0         0         0         1
+{txt}{ralign 10:1.59834480} {...}
+{c |}{...}
+ {res} .6666667         0  .3333333         0         0         1
+{txt}{ralign 10:1.65318179} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.69713830} {...}
+{c |}{...}
+ {res} .5294118         0  .4705882         0         0         1
+{txt}{ralign 10:1.69837141} {...}
+{c |}{...}
+ {res} .5789474  .2105263  .2105263         0         0         .
+{txt}{ralign 10:1.71769547} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.75610232} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         .
+{txt}{ralign 10:1.79930317} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.83418667} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:1.84966218} {...}
+{c |}{...}
+ {res} .8461539  .1538462         0         0         0         1
+{txt}{ralign 10:1.88377058} {...}
+{c |}{...}
+ {res}       .6        .2        .2         0         0         1
+{txt}{ralign 10:1.91757678} {...}
+{c |}{...}
+ {res}       .8         0        .2         0         1        .9
+{txt}{ralign 10:1.99478924} {...}
+{c |}{...}
+ {res}       .6        .2        .2         0         0         1
+{txt}{ralign 10:2.05365490} {...}
+{c |}{...}
+ {res}        1         0         0         0         1   .952381
+{txt}{ralign 10:2.07438898} {...}
+{c |}{...}
+ {res} .6923077  .1538462  .1538462         0         0         1
+{txt}{ralign 10:2.08857154} {...}
+{c |}{...}
+ {res}       .4         0        .4        .2         1  .9230769
+{txt}{ralign 10:2.15003681} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:2.17092919} {...}
+{c |}{...}
+ {res} .7333333         0  .2666667         0         0         1
+{txt}{ralign 10:2.22308015} {...}
+{c |}{...}
+ {res} .7243632  .0824315  .1843165  .0088889         0         .
+{txt}{ralign 10:2.22658038} {...}
+{c |}{...}
+ {res}      .75         0       .25         0         0         .
+{txt}{ralign 10:2.30977821} {...}
+{c |}{...}
+ {res} .8666667         0  .1333333         0         0         1
+{txt}{ralign 10:2.31325173} {...}
+{c |}{...}
+ {res} .8201742  .0430981  .1203587   .016369  .0357143  .9897959
+{txt}{ralign 10:2.49517512} {...}
+{c |}{...}
+ {res}        1         0         0         0         0         1
+{txt}{ralign 10:2.54390859} {...}
+{c |}{...}
+ {res} .7142857         0  .2857143         0         0         1
+{txt}{ralign 10:2.56216025} {...}
+{c |}{...}
+ {res} .5555556         0  .4444444         0         0         1
+{txt}{ralign 10:2.58827257} {...}
+{c |}{...}
+ {res}        1         0         0         0         1   .969697
+{txt}{ralign 10:2.58877730} {...}
+{c |}{...}
+ {res} .6666667         0         0  .3333333         0         1
+{txt}{ralign 10:2.67218852} {...}
+{c |}{...}
+ {res}       .6         0        .4         0         0         1
+{txt}{ralign 10:2.71194291} {...}
+{c |}{...}
+ {res} .7383688  .0826876  .1500804  .0180606  .1111111  .9990817
+{txt}{ralign 10:2.79682278} {...}
+{c |}{...}
+ {res} .6363636  .3636364         0         0         0         1
+{txt}{hline 11}{c +}{hline 60}
+{ralign 10:Total} {...}
+{c |}{...}
+ {res} .7301973  .0779009  .1705107  .0184575   .087269  .9953092
+{txt}{hline 11}{c BT}{hline 60}
+
+{com}. 
+{txt}end of do-file
+
+{com}. sum shocktotal
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 2}shocktotal {c |}{res}        977     1.08755    .6292056   .2359423   2.796823
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. 
+. label var rc "respondent code"
+{txt}
+{com}. label var yearpanel "year panel, 1 = 2004/05, 2 = 2012/13"
+{txt}
+{com}. label var share_mig "share of household participating in migration activities"
+{txt}
+{com}. label var share_off "share of household participating in off-farm activities"
+{txt}
+{com}. label var share_farm "share of household participating in on-farm activities"
+{txt}
+{com}. label var share_non "share of household participating in no activities"
+{txt}
+{com}. label var lnshadow_migrant "log of shadow price, migrant wages"
+{txt}
+{com}. label var lnshadow_offfarm "log of shadow price, off-farm wages"
+{txt}
+{com}. label var lnshadow_farmlabor "log of shadow price, farm wages"
+{txt}
+{com}. label var sqlnshadow_migrant "sq of log of shadow price, migrant wages"
+{txt}
+{com}. label var sqlnshadow_offfarm "sq of log of shadow price, off-farm wages"
+{txt}
+{com}. label var sqlnshadow_farmlabor "sq of log of shadow price, farm wages"
+{txt}
+{com}. label var ae "number of adult equivalents in household"
+{txt}
+{com}. label var hhage "age of head of household"
+{txt}
+{com}. label var hhage "age of head of household, in years"
+{txt}
+{com}. label var hhedu "education of head of household, in years"
+{txt}
+{com}. 
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. label var multiple_mig "multiple migrants in household"
+
+. tab multiple_mig
+
+   {txt}multiple {c |}
+migrants in {c |}
+  household {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        906       92.73       92.73
+{txt}          1 {c |}{res}         71        7.27      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. label var multiple_mig "=1 if multiple migrants in household, =0 otherwise"
+
+. tab multiple_off
+
+      {txt}(max) {c |}
+multiple_of {c |}
+          f {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        736       75.33       75.33
+{txt}          1 {c |}{res}        241       24.67      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. label var mulitple_off "=1 if multiple off-farm labor participants in household, =0 otherwise"
+{err}variable {bf}mulitple_off{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. label var multiple_off "=1 if multiple off-farm labor participants in household, =0 otherwise"
+
+. label var dist_VicFalls "distance (km) to Victoria Falls"
+
+. label var dist_Mutare "distance (km) to Mutare"
+
+. label var dist_Beitbridge "distance (km) to Beitbridge"
+
+. label var dist_Plumtree "distance (km) to Plumtree"
+
+. label var femhead "=1 if head of household is woman, =0 otherwise"
+
+. label var workdeath "idio shock1: experience death of houeshold member 5-65"
+
+. label var commworkdeath "cov shock1: community ratio of death experience"
+
+. label var shocktotal "cov shock2: measured rainfall shock"
+
+. tab yearbin
+
+      {txt}(max) {c |}
+    yearbin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        578       59.16       59.16
+{txt}          1 {c |}{res}        399       40.84      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. label var yearbin "=1 if yearpanel == 2, =0 otherwise"
+
+. label var did_workdeathyr "diff. int. of workdeath and yearbin"
+
+. label var did_comworkdeathyr "diff. int. of commworkdeath and yearbin"
+
+. label var did_shockyr "diff. int. of shocktotal and yearbin"
+
+. label var pershock "cov shock3: perceived rainfall shock"
+
+. tab migrant
+
+    {txt}migrant {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        676       69.19       69.19
+{txt}          1 {c |}{res}        301       30.81      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        977      100.00
+
+{com}. drop migrant
+
+. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. 
+. 
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. label var plough "=1 if own plough, =0 otherwise"
+
+. label var own_cattle "=1 if own cattle, =0 otherwise"
+
+. label var area "total landholding area (ha)"
+
+. rename o_migrant_international migrant_internat
+{res}
+{com}. rename o_migrant_domestic migrant_dom
+{res}
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. 
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab migrant_internat
+
+{txt}OLD: =1 for {c |}
+internation {c |}
+al migrants {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        620       82.34       82.34
+{txt}          1 {c |}{res}        133       17.66      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        753      100.00
+
+{com}. label var migrant_internat "=1 if hh has international migrants, =0 otherwise"
+
+. label var migrant_dom "=1 if hh has domestic migrants, =0 otherwise"
+
+. tab o_formal
+
+ {txt}OLD: =1 if {c |}
+  household {c |}
+ has formal {c |}
+      labor {c |}
+participant {c |}
+          s {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        671       89.11       89.11
+{txt}          1 {c |}{res}         82       10.89      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        753      100.00
+
+{com}. rename o_formal formal
+{res}
+{com}. rename o_informal informal
+{res}
+{com}. label var formal "=1 if hh participates in formal labor market, =0 otherwise"
+
+. label var informal "=1 if hh participates in informal labor market, =0 otherwise"
+
+. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. label var comm_migrantratio "ratio of migrants from the community"
+
+. tab comm_migrantratio
+
+   {txt}ratio of {c |}
+   migrants {c |}
+   from the {c |}
+  community {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+   .0010652 {c |}{res}          2        0.27        0.27
+{txt}   .0010985 {c |}{res}         24        3.20        3.47
+{txt}   .0011332 {c |}{res}          2        0.27        3.73
+{txt}   .0011382 {c |}{res}          2        0.27        4.00
+{txt}   .0012141 {c |}{res}         26        3.47        7.47
+{txt}   .0012211 {c |}{res}          1        0.13        7.60
+{txt}   .0012647 {c |}{res}          3        0.40        8.00
+{txt}   .0012951 {c |}{res}          8        1.07        9.07
+{txt}   .0013083 {c |}{res}         27        3.60       12.67
+{txt}   .0013341 {c |}{res}         25        3.33       16.00
+{txt}   .0013519 {c |}{res}         25        3.33       19.33
+{txt}    .001516 {c |}{res}          2        0.27       19.60
+{txt}   .0015766 {c |}{res}          1        0.13       19.73
+{txt}   .0016249 {c |}{res}         13        1.73       21.47
+{txt}   .0016373 {c |}{res}         21        2.80       24.27
+{txt}   .0017524 {c |}{res}         13        1.73       26.00
+{txt}   .0017575 {c |}{res}          2        0.27       26.27
+{txt}   .0017808 {c |}{res}          9        1.20       27.47
+{txt}    .001817 {c |}{res}         14        1.87       29.33
+{txt}   .0019172 {c |}{res}         11        1.47       30.80
+{txt}   .0019639 {c |}{res}          2        0.27       31.07
+{txt}   .0020867 {c |}{res}         37        4.93       36.00
+{txt}   .0023672 {c |}{res}          1        0.13       36.13
+{txt}   .0024702 {c |}{res}          2        0.27       36.40
+{txt}   .0025692 {c |}{res}         24        3.20       39.60
+{txt}   .0025715 {c |}{res}          1        0.13       39.73
+{txt}   .0025904 {c |}{res}          1        0.13       39.87
+{txt}   .0026634 {c |}{res}          1        0.13       40.00
+{txt}    .002676 {c |}{res}         20        2.67       42.67
+{txt}     .00269 {c |}{res}         24        3.20       45.87
+{txt}   .0027413 {c |}{res}          4        0.53       46.40
+{txt}   .0027858 {c |}{res}          3        0.40       46.80
+{txt}   .0028409 {c |}{res}         15        2.00       48.80
+{txt}   .0028531 {c |}{res}         17        2.27       51.07
+{txt}   .0028818 {c |}{res}          1        0.13       51.20
+{txt}   .0028856 {c |}{res}         14        1.87       53.07
+{txt}    .002893 {c |}{res}         13        1.73       54.80
+{txt}   .0029848 {c |}{res}          1        0.13       54.93
+{txt}   .0030877 {c |}{res}         21        2.80       57.73
+{txt}   .0031735 {c |}{res}         19        2.53       60.27
+{txt}   .0037024 {c |}{res}          1        0.13       60.40
+{txt}   .0038787 {c |}{res}          1        0.13       60.53
+{txt}   .0038877 {c |}{res}          2        0.27       60.80
+{txt}    .004055 {c |}{res}          1        0.13       60.93
+{txt}   .0041037 {c |}{res}         16        2.13       63.07
+{txt}   .0042313 {c |}{res}         16        2.13       65.20
+{txt}   .0043562 {c |}{res}          1        0.13       65.33
+{txt}   .0043573 {c |}{res}         49        6.53       71.87
+{txt}   .0045983 {c |}{res}          3        0.40       72.27
+{txt}   .0048403 {c |}{res}         14        1.87       74.13
+{txt}    .005618 {c |}{res}          2        0.27       74.40
+{txt}   .0058989 {c |}{res}         20        2.67       77.07
+{txt}   .0061798 {c |}{res}          2        0.27       77.33
+{txt}   .0064607 {c |}{res}          1        0.13       77.47
+{txt}   .0067416 {c |}{res}         18        2.40       79.87
+{txt}   .0069855 {c |}{res}         16        2.13       82.00
+{txt}   .0102096 {c |}{res}         13        1.73       83.73
+{txt}   .0121359 {c |}{res}          4        0.53       84.27
+{txt}   .0127427 {c |}{res}         15        2.00       86.27
+{txt}   .0133495 {c |}{res}          1        0.13       86.40
+{txt}   .0145631 {c |}{res}          1        0.13       86.53
+{txt}   .0151699 {c |}{res}         17        2.27       88.80
+{txt}   .0177305 {c |}{res}          1        0.13       88.93
+{txt}    .018617 {c |}{res}         23        3.07       92.00
+{txt}   .0203901 {c |}{res}         20        2.67       94.67
+{txt}   .0758621 {c |}{res}          4        0.53       95.20
+{txt}   .0793103 {c |}{res}         16        2.13       97.33
+{txt}   .0862069 {c |}{res}          1        0.13       97.47
+{txt}   .0896552 {c |}{res}          3        0.40       97.87
+{txt}   .0965517 {c |}{res}         16        2.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        750      100.00
+
+{com}. label var no_offfarm "number of off-farm labor participants"
+
+. label comm_offfarm "ratio of off-farm participation from the community"
+{err}invalid syntax
+{txt}{search r(198), local:r(198);}
+
+{com}. label var comm_offfarm "ratio of off-farm participation from the community"
+
+. label var free_seed "=1 if hh got free seed, =0 otherwise"
+
+. label var "=1 if intercrop, =0 if otherwise"
+{err}"=1 if intercrop, =0 if otherwise invalid name
+{txt}{search r(198), local:r(198);}
+
+{com}. label var intercrop "=1 if intercrop, =0 if otherwise"
+
+. label var mplough time average of plough ownership
+{err}invalid syntax
+{txt}{search r(198), local:r(198);}
+
+{com}. label var mplough "time average of plough ownership"
+
+. drop _merge
+
+. rename mo_informal minformal
+{res}
+{com}. rename mo_formal mformal
+{res}
+{com}. label var mo_migrant_international mmigrant_internat
+
+. label var mo_migrant_dom mmigrant_dom
+
+. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. label var mfemhead "time average female headed houeshold"
+
+. label var did_pershock "diff. int. of perceived shock and yearbin"
+
+. rename mo_migrant_international mmigrant_internat
+{res}
+{com}. rename mo_migrant_domestic mmigrant_dom
+{res}
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD97c_000000.tmp"
+{txt}
+{com}. label var mmigrant_internat "time average of international migrant"
+{txt}
+{com}. label var mmigrant_dom "time average of domestic migrant"
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e3_labor\code\josephson_shively_maintan_code.do"
+{txt}
+{com}. * Project: Zimbabwe Labor Shocks 
+. * Created: August 2020
+. * Created by: alj
+. * Last edit: 15 September 2020 
+. * Stata v.16.1
+. 
+. * does
+.         * labels and renames as appropriate all variables 
+. 
+. * assumes
+.         * access to data file "data"
+. 
+. * to do 
+.         * done 
+.         
+. **********************************************************************
+. 
+. * read in data
+.         use                             "$fil/data", clear
+{txt}
+{com}.         
+. 
+. label var rc "respondent code"
+{txt}
+{com}. label var yearpanel "year panel, 1 = 2004/05, 2 = 2012/13"
+{txt}
+{com}. label var share_mig "share of household participating in migration activities"
+{txt}
+{com}. label var share_off "share of household participating in off-farm activities"
+{txt}
+{com}. label var share_farm "share of household participating in on-farm activities"
+{txt}
+{com}. label var share_non "share of household participating in no activities"
+{txt}
+{com}. label var lnshadow_migrant "log of shadow price, migrant wages"
+{txt}
+{com}. label var lnshadow_offfarm "log of shadow price, off-farm wages"
+{txt}
+{com}. label var lnshadow_farmlabor "log of shadow price, farm wages"
+{txt}
+{com}. label var sqlnshadow_migrant "sq of log of shadow price, migrant wages"
+{txt}
+{com}. label var sqlnshadow_offfarm "sq of log of shadow price, off-farm wages"
+{txt}
+{com}. label var sqlnshadow_farmlabor "sq of log of shadow price, farm wages"
+{txt}
+{com}. label var ae "number of adult equivalents in household"
+{txt}
+{com}. label var hhage "age of head of household"
+{txt}
+{com}. label var hhage "age of head of household, in years"
+{txt}
+{com}. label var hhedu "education of head of household, in years"
+{txt}
+{com}. label var multiple_mig "=1 if multiple migrants in household, =0 otherwise"
+{txt}
+{com}. label var multiple_off "=1 if multiple off-farm labor participants in household, =0 otherwise"
+{txt}
+{com}. label var dist_VicFalls "distance (km) to Victoria Falls"
+{txt}
+{com}. label var dist_Mutare "distance (km) to Mutare"
+{txt}
+{com}. label var dist_Beitbridge "distance (km) to Beitbridge"
+{txt}
+{com}. label var dist_Plumtree "distance (km) to Plumtree"
+{txt}
+{com}. label var femhead "=1 if head of household is woman, =0 otherwise"
+{txt}
+{com}. label var workdeath "idio shock1: experience death of houeshold member 5-65"
+{txt}
+{com}. label var commworkdeath "cov shock1: community ratio of death experience"
+{txt}
+{com}. label var shocktotal "cov shock2: measured rainfall shock"
+{txt}
+{com}. label var yearbin "=1 if yearpanel == 2, =0 otherwise"
+{txt}
+{com}. label var did_workdeathyr "diff. int. of workdeath and yearbin"
+{txt}
+{com}. label var did_comworkdeathyr "diff. int. of commworkdeath and yearbin"
+{txt}
+{com}. label var did_shockyr "diff. int. of shocktotal and yearbin"
+{txt}
+{com}. label var pershock "cov shock3: perceived rainfall shock"
+{txt}
+{com}. label var plough "=1 if own plough, =0 otherwise"
+{txt}
+{com}. label var own_cattle "=1 if own cattle, =0 otherwise"
+{txt}
+{com}. label var area "total landholding area (ha)"
+{txt}
+{com}. label var migrant_internat "=1 if hh has international migrants, =0 otherwise"
+{txt}
+{com}. label var migrant_dom "=1 if hh has domestic migrants, =0 otherwise"
+{txt}
+{com}. label var formal "=1 if hh participates in formal labor market, =0 otherwise"
+{txt}
+{com}. label var informal "=1 if hh participates in informal labor market, =0 otherwise"
+{txt}
+{com}. label var comm_migrantratio "ratio of migrants from the community"
+{txt}
+{com}. label var no_offfarm "number of off-farm labor participants"
+{txt}
+{com}. label var comm_offfarm "ratio of off-farm participation from the community"
+{txt}
+{com}. label var free_seed "=1 if hh got free seed, =0 otherwise"
+{txt}
+{com}. label var intercrop "=1 if intercrop, =0 if otherwise"
+{txt}
+{com}. label var mplough "time average of plough ownership"
+{txt}
+{com}. label var mfemhead "time average female headed houeshold"
+{txt}
+{com}. label var mmigrant_internat "time average of international migrant"
+{txt}
+{com}. label var mmigrant_dom "time average of domestic migrant"
+{txt}
+{com}. label var mae "time average of adult equivalents"
+{txt}
+{com}. label var mhhage "time average of household head age"
+{txt}
+{com}. label var mhhedu "time average of head of household education"
+{txt}
+{com}. label var did_pershock "diff. int. of perceived shock and yearbin"
+{txt}
+{com}. label var pershockint "interaction of shocktotal and perceived shock"
+{txt}
+{com}. label var did_pershockint "diff. int. of perceived shock, shocktotal, and yearbin"
+{txt}
+{com}. label var shadow_farmlabor "shadow value of farm labor"
+{txt}
+{com}. label var shadow_migrant "shadow value of migrant labor"
+{txt}
+{com}. label var shadow_offfarm "shadow value of off-farm labor"
+{txt}
+{com}. label var mshadow_farmlabor "time average of farm labor shadow value"
+{txt}
+{com}. label var mshadow_migrant "time average of migrant labor shadow value"
+{txt}
+{com}. label var mshadow_offfarm "time average of off-farm labor shadow value"
+{txt}
+{com}. label var lnwage_farm "log of farm wages"
+{txt}
+{com}. label var lnwage_offfarm "log of off-farm wages"
+{txt}
+{com}. label var lnwage_mig "log of migration wages"
+{txt}
+{com}. label var sqlnwage_farm "sq of log of farm wages"
+{txt}
+{com}. label var sqlnwage_offfarm "sq of log of off-farm wages"
+{txt}
+{com}. label var sqlnwage_mig "sq of log of migrant wages"
+{txt}
+{com}. 
+. * save as needed
+.         save                    "$fil/data", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication/data.dta saved
+
+{com}.         
+. **********************************************************************
+. 
+{txt}end of do-file
+
+{com}. 
