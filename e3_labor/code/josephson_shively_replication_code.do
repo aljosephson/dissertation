@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 15 September 2020 
+* Last edit: 16 September 2020 
 * Stata v.16.1
 
 * does
@@ -11,7 +11,7 @@
 	* access to data file "data"
 
 * to do 
-	* rename all variables for clarification in data file 
+	* done
 
 * **********************************************************************
 * 0 - setup
@@ -595,7 +595,7 @@
 	xtreg 			lnwages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
 						no_offfarm informal formal comm_offfarm /// 
 						mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
-						mno_offfarm minformal mformal mcomm_offfarm
+						mno_offfarm mo_informal mformal mcomm_offfarm
 
 	predict			xb3, xb
 	egen 			xb3mean = mean (xb3), by (district ward)
@@ -652,16 +652,16 @@
 						ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 
-	bootstrap 		_b, reps(1000): share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+	bootstrap 		_b, reps(1000): tobit share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 						ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 
-	bootstrap 		_b, reps(1000): share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+	bootstrap 		_b, reps(1000): tobit share_off lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 						ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 
-	bootstrap 		_b, reps(1000): share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
-						ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+	bootstrap 		_b, reps(1000): tobit share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+						ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 						femhead workdeath commworkdeath shocktotal yearbin did_workdeathyr did_comworkdeathyr did_shockyr
 						
 
@@ -685,7 +685,7 @@
 							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock
 
 	bootstrap 		_b, reps(1000): tobit share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
-							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+							ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock							
 
 * **********************************************************************
@@ -711,7 +711,7 @@
 							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
 
 	bootstrap 		_b, reps(1000): tobit share_non lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
-							ae hhage hhedu multiple_off dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
+							ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
 							
 * *********************************************************************
