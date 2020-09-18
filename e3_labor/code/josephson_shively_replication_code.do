@@ -1,7 +1,7 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 16 September 2020 
+* Last edit: 18 September 2020 
 * Stata v.16.1
 
 * does
@@ -668,13 +668,14 @@
 * **********************************************************************
 * 3dii - allocation of labor (perceived rainfall)
 * **********************************************************************
+
 * read in data
 	use				"$fil/data", clear
 	
 
 	bootstrap 		_b, reps(1000): tobit share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 							ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
-							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock) ///
+							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock 
 						
 	bootstrap 		_b, reps(1000):	tobit share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 							ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
@@ -702,7 +703,7 @@
 							ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
 							
-	bootstrap 		_b, reps(1000): tobit (share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
+	bootstrap 		_b, reps(1000): tobit share_farm lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 							ae hhage hhedu dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
 							femhead workdeath commworkdeath pershock shocktotal pershockint yearbin did_workdeathyr did_comworkdeathyr did_pershock did_shockyr did_pershockint
 							
