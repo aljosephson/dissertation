@@ -2,7 +2,7 @@
 * Reviewer Requests 
 * Created: September 2020
 * Created by: alj
-* Last edit: 18 September 2020 
+* Last edit: 24 September 2020 
 * Stata v.16.1
 
 * does
@@ -226,13 +226,13 @@
 	
 * rename variables 
 * do not have to change code below, if change variable names 
-* changes in NAME only - R indicates "real"
-	rename 			lnshadow_migrant Rlnshadow_migrant
-	rename 			lnshadow_offfarm Rlnshadow_offfarm
-	rename 			lnshadow_farmlabor Rlnshadow_farmlabor
-	rename			sqlnshadow_migrant Rsqlnshadow_offfarm
-	rename			sqlnshadow_offfarm Rsqlnshadow_offfarm
-	rename			sqlnshadow_farmlabor Rsqlnshadow_farmlabor
+* changes in NAME only - Re indicates "real"
+	rename 			lnshadow_migrant Relnshadow_migrant
+	rename 			lnshadow_offfarm Relnshadow_offfarm
+	rename 			lnshadow_farmlabor Relnshadow_farmlabor
+	rename			sqlnshadow_migrant Resqlnshadow_migrant
+	rename			sqlnshadow_offfarm Resqlnshadow_offfarm
+	rename			sqlnshadow_farmlabor Resqlnshadow_farmlabor
 	rename 			lnwage_farm lnshadow_farmlabor 
 	rename 			lnwage_offfarm lnshadow_offfarm 
 	rename 			lnwage_mig lnshadow_migrant 
@@ -399,7 +399,7 @@
 	rename 			lnshadow_migrant Rlnshadow_migrant
 	rename 			lnshadow_offfarm Rlnshadow_offfarm
 	rename 			lnshadow_farmlabor Rlnshadow_farmlabor
-	rename			sqlnshadow_migrant Rsqlnshadow_offfarm
+	rename			sqlnshadow_migrant Rsqlnshadow_migrant
 	rename			sqlnshadow_offfarm Rsqlnshadow_offfarm
 	rename			sqlnshadow_farmlabor Rsqlnshadow_farmlabor
 	rename 			lnwage_farm lnshadow_farmlabor 
