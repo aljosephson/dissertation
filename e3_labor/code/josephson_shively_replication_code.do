@@ -1,47 +1,48 @@
 * Project: Zimbabwe Labor Shocks
 * Created: August 2020
 * Created by: alj
-* Last edit: 18 September 2020 
+* Last edit: 28 September 2020 
 * Stata v.16.1
 
 * does
 	* replicates all tables from Josephson and Shively 
 
 * assumes
-	* access to data file "data"
+	* access to data file "josephson_shively_replication-data"
 
 * to do 
 	* done
+	* code and data can be made available on github and googledrive 
 
 * **********************************************************************
 * 0 - setup
 * **********************************************************************
 
 * define
-	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - ICRISAT Zimbabwe\3_Labor Allocation\Replication" 
-	global	code	=	"C:\Users\aljosephson\git\dissertation\e3_labor\code"
-	global	logs	=	"C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+	global	fil		=	"" 
+	global	code	=	""
+	global	logs	=	"" 
 
 * open log
 	cap log 		close
-	log using		"$logs/replication", append
+	log using		"$logs/josephson_shively_replication", append
 
 * **********************************************************************
 * 1 - read in clean data set
 * **********************************************************************
 
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 	
 * save as needed
-	save 			"$fil/data", replace
+	save 			"$fil/josephson_shively_replication-data", replace
 	
 * **********************************************************************
 * 2 - replication of tables: main text
 * **********************************************************************
 
 * **********************************************************************
-* 2a - summary statistics - shadow wage equations 
+* 2a - TABLE 1 - summary statistics - shadow wage equations 
 * **********************************************************************
 
 * panel A
@@ -56,7 +57,7 @@
 						no_offfarm informal formal comm_offfarm, stats (mean sd) by (yearpanel)	 
 
 * **********************************************************************
-* 2b - summary statistics - labor share equations 
+* 2b - TABLE 2 - summary statistics - labor share equations 
 * **********************************************************************
 
 * panel A
@@ -70,8 +71,11 @@
 
 
 * **********************************************************************
-* 2c - allocation of labor (z-score rainfall)	
+* 2c - TABLE 3 - allocation of labor (z-score rainfall)	
 * **********************************************************************	
+
+* read in data 
+	use				"$fil/josephson_shively_replication-data", clear
 
 * define constraint + run regression 
 
@@ -220,10 +224,10 @@
 	matrix 				list eq1
 
 * **********************************************************************
-* 2d - allocation of labor (perceived rainfall)
+* 2d - TABLE 4-  allocation of labor (perceived rainfall)
 * **********************************************************************
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 
 * run regression 
 
@@ -369,18 +373,106 @@
 							workdeath commworkdeath pershock dist_Plumtree dist_Mutare dist_Beitbridge dist_VicFalls yearbin did_workdeathyr did_comworkdeathyr did_pershock /// 
 							b_onfarm_offfarm b_onfarm_migrant b_onfarm_non b_onfarm_onfarm, row(.) e
 
-	matrix 				list eq1
+	matrix 				list eq1	
+
+* **********************************************************************
+* 3 - replication of tables: appendix 
+* **********************************************************************
+
+* **********************************************************************
+* 3a - TABLE A1 - shadow wage estimation 
+* **********************************************************************
+
+* read in data
+	use				"$fil/josephson_shively_replication-data", clear
+	
+	drop 			shadow_farmlabor shadow_migrant shadow_offfarm /// 
+					mshadow_farmlabor mshadow_migrant mshadow_offfarm
+
+* set panel 
+	xtset 			yearpanel 
+	
+	gen 			lnwages_farmlabor = asinh(wages_farmlabor)
+	gen			lnwages_migrant = asinh(wages_migrant)
+	gen 			lnwages_offfarm = asinh(wages_offfarm)
+
+* estimate shadow wage for farm labor 
+	xtreg 			lnwages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
+						no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
+						mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
+
+	predict 		xb1, xb
+	egen 			xb1mean = mean (xb1), by (district ward)
+	replace 		xb1 = xb1mean if xb1 == .
+	gen 			x_farm = _b[no_farm_fulltime]
+
+* estimate shadow wage for migrant labor 
+	xtreg 			lnwages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
+						migrant_internat migrant_dom no_migrants ///
+						comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
+						mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mmigrant_internat ///
+						mmigrant_dom mno_migrants mcomm_migrantratio
+
+	predict 		xb2, xb
+	egen 			xb2mean = mean (xb2), by (district ward)
+	replace 		xb2 = xb2mean if xb2 == .
+	gen 			x_migrant = _b[no_migrants]
+
+* estimate shadow wage for wage labor 
+	xtreg 			lnwages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
+						no_offfarm informal formal comm_offfarm /// 
+						mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
+						mno_offfarm minformal mformal mcomm_offfarm
+
+	predict			xb3, xb
+	egen 			xb3mean = mean (xb3), by (district ward)
+	replace 		xb3 = xb3mean if xb3 == .
+	gen 			x_offfarm = _b[no_offfarm]
+
+* calculate shadow wages 
+	gen 			shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
+	gen 			shadow_migrant = (xb2 / no_migrant1)*(x_migrant)
+	gen 			shadow_offfarm = (xb3 / no_offfarm1)*(x_offfarm)
+
+	egen 			mshadow_farmlabor = mean(shadow_farmlabor), by (rc id)
+	egen 			mshadow_migrant = mean(shadow_migrant), by (rc id)
+	egen 			mshadow_offfarm  = mean(shadow_offfarm), by (rc id)
+
+	label 			variable shadow_migrant "\hspace{0.1cm} Migration Wages"
+	label 			variable shadow_offfarm "\hspace{0.1cm} Off-Farm Wages"
+	label 			variable shadow_farmlabor "\hspace{0.1cm} On-Farm Wages"	
+	
+* **********************************************************************
+* 3b - TABLE A2 - shock exogeneity 
+* **********************************************************************
+
+* read in data
+	use				"$fil/josephson_shively_replication-data", clear
+	
+* regressions for each of the four shocks 
+	
+	reg 			workdeath ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
+
+	reg 			commworkdeath ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+
+	reg 			shocktotal ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
+		
+	reg 			pershock ae hhage hhedu femhead plough own_cattle ///
+						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
 
 
 * **********************************************************************
-* 2e - allocation of labor (perceived rainfall) control for dif. 
+* 3c - TABLE A3 - allocation of labor with both measures & interaction
 * **********************************************************************
 
 * examine interaction between perceived shock and actual shock 
 * add triple interaction with year as well 
 		
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 
 * run regression 
 
@@ -546,107 +638,19 @@
 							b_onfarm_offfarm b_onfarm_migrant b_onfarm_non b_onfarm_onfarm, row(.) e
 
 	matrix 				list eq1
-	
-
-* **********************************************************************
-* 3 - replication of tables: supplemental text
-* **********************************************************************
-
-* **********************************************************************
-* 3a - calculation of shadow wages 
-* **********************************************************************
-
-* read in data
-	use				"$fil/data", clear
-	
-	drop 			shadow_farmlabor shadow_migrant shadow_offfarm /// 
-					mshadow_farmlabor mshadow_migrant mshadow_offfarm
-
-* set panel 
-	xtset 			yearpanel 
-	
-	gen 			lnwages_farmlabor = asinh(wages_farmlabor)
-	gen			lnwages_migrant = asinh(wages_migrant)
-	gen 			lnwages_offfarm = asinh(wages_offfarm)
-
-* estimate shadow wage for farm labor 
-	xtreg 			lnwages_farmlabor plough femhead own_cattle free_seed intercrop fertqty area /// 
-						no_farm_fulltime no_farm_parttime mplough mfemhead mown_cattle mfree_seed ///
-						mintercrop mfertqty marea mno_farm_fulltime mno_farm_parttime
-
-	predict 		xb1, xb
-	egen 			xb1mean = mean (xb1), by (district ward)
-	replace 		xb1 = xb1mean if xb1 == .
-	gen 			x_farm = _b[no_farm_fulltime]
-
-* estimate shadow wage for migrant labor 
-	xtreg 			lnwages_migrant avgmig_gender avgmig_age avgmig_yred multiple_mig ///
-						migrant_internat migrant_dom no_migrants ///
-						comm_migrantratio dist_VicFalls dist_Beitbridge dist_Mutare dist_Plumtree /// 
-						mavgmig_gender mavgmig_age mavgmig_yred mmultiple_mig mmigrant_internat ///
-						mmigrant_dom mno_migrants mcomm_migrantratio
-
-	predict 		xb2, xb
-	egen 			xb2mean = mean (xb2), by (district ward)
-	replace 		xb2 = xb2mean if xb2 == .
-	gen 			x_migrant = _b[no_migrants]
-
-* estimate shadow wage for wage labor 
-	xtreg 			lnwages_offfarm avgoff_gender avgoff_age avgoff_yred multiple_off ///
-						no_offfarm informal formal comm_offfarm /// 
-						mavgoff_gender mavgoff_age mavgoff_yred mmultiple_off ///
-						mno_offfarm mo_informal mformal mcomm_offfarm
-
-	predict			xb3, xb
-	egen 			xb3mean = mean (xb3), by (district ward)
-	replace 		xb3 = xb3mean if xb3 == .
-	gen 			x_offfarm = _b[no_offfarm]
-
-* calculate shadow wages 
-	gen 			shadow_farmlabor = (xb1 / no_farm_fulltime1)*(x_farm)
-	gen 			shadow_migrant = (xb2 / no_migrant1)*(x_migrant)
-	gen 			shadow_offfarm = (xb3 / no_offfarm1)*(x_offfarm)
-
-	egen 			mshadow_farmlabor = mean(shadow_farmlabor), by (rc id)
-	egen 			mshadow_migrant = mean(shadow_migrant), by (rc id)
-	egen 			mshadow_offfarm  = mean(shadow_offfarm), by (rc id)
-
-	label 			variable shadow_migrant "\hspace{0.1cm} Migration Wages"
-	label 			variable shadow_offfarm "\hspace{0.1cm} Off-Farm Wages"
-	label 			variable shadow_farmlabor "\hspace{0.1cm} On-Farm Wages"	
-	
-* **********************************************************************
-* 3b - shock exogeneity 
-* **********************************************************************
-
-* read in data
-	use				"$fil/data", clear
-	
-* regressions for each of the four shocks 
-	
-	reg 			workdeath ae hhage hhedu femhead plough own_cattle ///
-						mae mhhage mhhedu mfemhead mplough mown_cattle, cluster(district) 
-
-	reg 			commworkdeath ae hhage hhedu femhead plough own_cattle ///
-						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
-
-	reg 			shocktotal ae hhage hhedu femhead plough own_cattle ///
-						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
-		
-	reg 			pershock ae hhage hhedu femhead plough own_cattle ///
-						mae mhhage mhhedu  mfemhead mplough mown_cattle, cluster(district) 
-
+						
+						
 * **********************************************************************
 * 3d - robust - analysis with CRE tobit 
 * **********************************************************************						
 
 * **********************************************************************
-* 3di - allocation of labor (z-score rainfall)	
+* 3di - TABLE A4 - allocation of labor (z-score rainfall)	
 * **********************************************************************	 
 
 		
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 		
 	bootstrap 		_b, reps(1000): tobit share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 						ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
@@ -666,11 +670,11 @@
 						
 
 * **********************************************************************
-* 3dii - allocation of labor (perceived rainfall)
+* 3dii - TABLE A5 - allocation of labor (perceived rainfall)
 * **********************************************************************
 
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 	
 
 	bootstrap 		_b, reps(1000): tobit share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
@@ -690,14 +694,14 @@
 							femhead workdeath commworkdeath pershock yearbin did_workdeathyr did_comworkdeathyr did_pershock							
 
 * **********************************************************************
-* 3diii - allocation of labor (perceived rainfall) control for dif. 
+* 3diii - TABLE A6 - allocation of labor (both rainfall measures)
 * **********************************************************************
 
 * examine interaction between perceived shock and actual shock 
 * add triple interaction with year as well 
 		
 * read in data
-	use				"$fil/data", clear
+	use				"$fil/josephson_shively_replication-data", clear
 
 	bootstrap 		_b, reps(1000): tobit share_mig lnshadow_migrant lnshadow_offfarm lnshadow_farmlabor sqlnshadow_migrant sqlnshadow_offfarm sqlnshadow_farmlabor ///
 							ae hhage hhedu multiple_mig dist_VicFalls dist_Mutare dist_Beitbridge dist_Plumtree ///
@@ -722,9 +726,6 @@
 compress
 describe
 summarize 
-
-* save main data file 
-	save			"$fil/data_replication", replace
 
 * close the log
 	log	close	
