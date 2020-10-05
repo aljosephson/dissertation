@@ -12,6 +12,7 @@
 
 * to do 
 	* all of it
+	* clean up data files 
 	* code and data can be made available on github and googledrive 
 
 * **********************************************************************
@@ -20,8 +21,8 @@
 
 * define
 	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi" 
-	global	code	=	"C:\Users\aljosephson\git\dissertation\e3_labor\code"
-	global	logs	=	"C:\Users\aljosephson\git\dissertation\e3_labor\logs" 
+	global	code	=	"C:\Users\aljosephson\git\dissertation\e1_gender\code"
+	global	logs	=	"C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
 
 * open log
 	cap log 		close

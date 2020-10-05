@@ -1,0 +1,47 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/joint_gender_replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 5 Oct 2020, 10:49:38
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+. * need to create single data set - right now multiples referenced 
+.         
+. * **********************************************************************
+. * 2 - replication of tables: main text - general 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - primary crop cultivation by gender 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2b - summary statistics 
+. * **********************************************************************
+. 
+. * income 
+. 
+. * percent expenditure 
+. 
+. * rainfall 
+. 
+. * **********************************************************************
+. * 3 - replication of tables: main text - general - crops sold 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 3a - male, female, joint specification 
+. * **********************************************************************
+. 
+.         use                             "$fil/data_jointest_16April2020.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. 
