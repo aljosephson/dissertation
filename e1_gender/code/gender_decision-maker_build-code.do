@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 12 October 2020
+* Last edit: 13 October 2020
 * Stata v.16.1
 
 * does
@@ -16,6 +16,7 @@
 	* code and data can be made available on github and googledrive 
 	
 	* leave this for now - possible issue with using owner instead of decision maker ... 
+	* probably for now going to go with this 
 
 * **********************************************************************
 * 0 - setup
@@ -42,6 +43,8 @@
 	use				"$fil\Year 1\AG_MOD_D.dta", clear
 
 * determine plot id and relevant decision maker variables 	
+
+* save decision maker and save owners 
 	
 	keep 			case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
 	rename 			ag_d00 plotid
