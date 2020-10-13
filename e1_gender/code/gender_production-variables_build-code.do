@@ -116,7 +116,7 @@
 	save 			"$fil\production-and-sales\totalproduction-sales_all.dta", replace
 
 * *********************************************************************
-* 7 - end matter
+* 3 - end matter
 * **********************************************************************
 
 compress
