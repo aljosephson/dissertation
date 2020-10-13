@@ -26,7 +26,7 @@
 
 * open log
 	cap log 		close
-	log using		"$logs/building_joint_variables-consumption", append
+	log using		"$logs/building_joint_variables-weather", append
 
 * **********************************************************************
 * 1 - consumption indices from each round
@@ -35,27 +35,27 @@
 * pull in Malawi kitchen sink data
 
 * 2009
-	use				"$fil\consumption\ihs3_summary.dta", clear
+	use				"$fil\geovar\householdgeovariables_ihs3_09.dta", clear
 	gen 			year = 2009
-	save			"$fil\consumption\ihs3_summary_09.dta", replace
+	save			"$fil\geovar\householdgeovariables_09.dta", replace
 	
 * 2012 
-	use				"$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+	use				"$fil\geovar\householdgeovariables_ihps_12.dta", clear
 	gen 			year = 2012
-	save			"$fil\consumption\ihs_summary_12.dta", replace
+	save			"$fil\geovar\householdgeovariables_12.dta", replace
 
 * 2015	
-	use				"$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+	use				"$fil\geovar\householdgeovariables_ihpsy15.dta", clear
 	gen 			year = 2015
-	save			"$fil\consumption\ihs3_summary_15.dta", replace
+	save			"$fil\geovar\householdgeovariables_15.dta", replace
 	
 	
 * append all 
-	use 			"$fil\consumption\ihs3_summary_09.dta", clear 
-	append 			using "$fil\consumption\ihs_summary_12.dta"
-	append 			using "$fil\consumption\ihs3_summary_15.dta"
+	use 			"$fil\geovar\householdgeovariables_09.dta", clear 
+	append 			using "$fil\geovar\householdgeovariables_12.dta"
+	append 			using "$fil\geovar\householdgeovariables_15.dta"
 	destring 		case_id, replace
-	save 			"$fil\consumption\consumptionagg.dta", replace
+	save 			"$fil\geovar\geovars.dta", replace
 	
 
 * *********************************************************************

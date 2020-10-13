@@ -1,0 +1,522 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-weather.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Oct 2020, 18:19:40
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\geovar\householdgeovariables_ihs3_09.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7868_000000.tmp"
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7868_000000.tmp"
+{txt}
+{com}.         save                    "$fil\geovar\householdgeovariables_09.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_09.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_09.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7868_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 12 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds consumption variables from malawi kitchen sink and world bank team 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-weather.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Oct 2020, 18:22:20
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\geovar\householdgeovariables_ihs3_09.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         save                    "$fil\geovar\householdgeovariables_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\geovar\householdgeovariables_ihps_12.dta", clear
+{txt}
+{com}.         gen                     year = 2012
+{txt}
+{com}.         save                    "$fil\geovar\householdgeovariables_12.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_12.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\geovar\householdgeovariables_ihpsy15.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         save                    "$fil\geovar\householdgeovariables_15.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_15.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\householdgeovariables_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\geovar\householdgeovariables_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\geovar\householdgeovariables_12.dta"
+{txt}{p 0 7 2}
+(note: variable
+eviarea_avg was 
+float, now double to accommodate using data's values)
+{p_end}
+(label sq1_lab already defined)
+(label ssa_lab already defined)
+(label srtm_lab already defined)
+(label fs_lab already defined)
+
+{com}.         append                  using "$fil\geovar\householdgeovariables_15.dta"
+{txt}{p 0 7 2}
+(note: variable
+lat_modified was 
+float, now double to accommodate using data's values)
+{p_end}
+{p 0 7 2}
+(note: variable
+lon_modified was 
+float, now double to accommodate using data's values)
+{p_end}
+(label fs_lab already defined)
+(label srtm_lab already defined)
+(label ssa_lab already defined)
+(label sq1_lab already defined)
+
+{com}.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}(4498 missing values generated)
+{res}{txt}
+{com}.         save                    "$fil\geovar\geovars.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\geovars.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\geovars.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}h2010_wetqstart{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}hh_a32_2{sf} was {bf}{res}long{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (42,819 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\geovar\geovars.dta
+{txt}  obs:{res}         6,117                          
+{txt} vars:{res}           149                          12 Oct 2020 18:22
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:lat_modified   }{txt}{bind: double  }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}EA Latitude Modified{p_end}
+{p 0 48}{bind:lon_modified   }{txt}{bind: double  }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}EA Longitude Modified{p_end}
+{p 0 48}{bind:dist_road      }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest Road{p_end}
+{p 0 48}{bind:dist_popcenter }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest Population Center with +20,000{p_end}
+{p 0 48}{bind:dist_admarc    }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest ADMARC Outlet{p_end}
+{p 0 48}{bind:dist_auction   }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest Tobacco Auction Floor{p_end}
+{p 0 48}{bind:dist_boma      }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to the Boma of Current District of Residence{p_end}
+{p 0 48}{bind:dist_borderpost}{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest Border Crossing{p_end}
+{p 0 48}{bind:af_bio_1       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Annual Mean Temperature (°C * 10){p_end}
+{p 0 48}{bind:af_bio_2       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Mean Diurnal Range (Mean of monthly (max temp - min temp)){p_end}
+{p 0 48}{bind:af_bio_3       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Isothermality (bio_2/bio_7) (* 100){p_end}
+{p 0 48}{bind:af_bio_4       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Temperature Seasonality (standard deviation *100){p_end}
+{p 0 48}{bind:af_bio_5       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Max Temperature of Warmest Month (°C * 10){p_end}
+{p 0 48}{bind:af_bio_6       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Min Temperature of Coldest Month (°C * 10){p_end}
+{p 0 48}{bind:af_bio_7       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Temperature Annual Range (bio_5-bio_6){p_end}
+{p 0 48}{bind:af_bio_8       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Mean Temperature of Wettest Quarter (°C * 10){p_end}
+{p 0 48}{bind:af_bio_9       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Mean Temperature of Driest Quarter (°C * 10){p_end}
+{p 0 48}{bind:af_bio_10      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Mean Temperature of Warmest Quarter (°C * 10){p_end}
+{p 0 48}{bind:af_bio_11      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Mean Temperature of Coldest Quarter (°C * 10){p_end}
+{p 0 48}{bind:af_bio_12      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Annual Precipitation (mm){p_end}
+{p 0 48}{bind:af_bio_13      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Precipitation of Wettest Month (mm){p_end}
+{p 0 48}{bind:af_bio_14      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Precipitation of Driest Month (mm){p_end}
+{p 0 48}{bind:af_bio_15      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Precipitation Seasonality (Coefficient of Variation){p_end}
+{p 0 48}{bind:af_bio_16      }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Precipitation of Wettest Quarter{p_end}
+{p 0 48}{bind:fsrad3_agpct   }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Majority landcover class within approx 1 km buffer{p_end}
+{p 0 48}{bind:fsrad3_lcmaj   }{txt}{bind: int     }{bind:{txt}%91.0g    }{space 1}{bind:fs_lab   }{bind:  }{res}{res}Percent agriculture within approx 1 km buffer{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:ssa_lab  }{bind:  }{res}{res}Agro-ecological Zones {p_end}
+{p 0 48}{bind:afmnslp_pct    }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Slope (percent){p_end}
+{p 0 48}{bind:srtm_eaf       }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Elevation (m){p_end}
+{p 0 48}{bind:twi_mwi        }{txt}{bind: float   }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Potential Wetness Index{p_end}
+{p 0 48}{bind:srtm_eaf_5_15  }{txt}{bind: byte    }{bind:{txt}%27.0g    }{space 1}{bind:srtm_lab }{bind:  }{res}{res}Terrain Roughness{p_end}
+{p 0 48}{bind:sq1            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Nutrient availability{p_end}
+{p 0 48}{bind:sq2            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Nutrient retention capacity{p_end}
+{p 0 48}{bind:sq3            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Rooting conditions{p_end}
+{p 0 48}{bind:sq4            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Oxygen availability to roots{p_end}
+{p 0 48}{bind:sq5            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Excess salts{p_end}
+{p 0 48}{bind:sq6            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Toxicity{p_end}
+{p 0 48}{bind:sq7            }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:sq1_lab  }{bind:  }{res}{res}Workability (constraining field management){p_end}
+{p 0 48}{bind:anntot_avg     }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg 12-month total rainfall(mm) for July-June{p_end}
+{p 0 48}{bind:wetq_avg       }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg total rainfall in wettest quarter(mm) within 12-month periods from July-June{p_end}
+{p 0 48}{bind:wetq_avgstart  }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg start of wettest quarter in dekads 1-36, where first week of July =1{p_end}
+{p 0 48}{bind:h2009_tot      }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2009{p_end}
+{p 0 48}{bind:h2009_wetq     }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter (mm) within 12-month period starting July 2009{p_end}
+{p 0 48}{bind:h2009_wetqstart}{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2009 =1{p_end}
+{p 0 48}{bind:h2010_tot      }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2010{p_end}
+{p 0 48}{bind:h2010_wetq     }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter(mm) within 12-month periods starting July 2010{p_end}
+{p 0 48}{bind:h2010_wetqstart}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2010 =1{p_end}
+{p 0 48}{bind:eviarea_avg    }{txt}{bind: double  }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg change in greenness(integral of daily EVI values)w/in primary growing season{p_end}
+{p 0 48}{bind:grn_avg        }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg onset of greenness increase in day of year 1-356,where 7/1=1,avg by district{p_end}
+{p 0 48}{bind:sen_avg        }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Avg onset of greenness decrease in day of year 1-356,where 7/1=1,avg by district{p_end}
+{p 0 48}{bind:h2009_area     }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total change in greenness w/in primary growing season for 7/08-6/09,avg by dist{p_end}
+{p 0 48}{bind:h2009_grn      }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness increase in day of year 1-356,starting 7/1/08,avg by district{p_end}
+{p 0 48}{bind:h2009_sen      }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness decrease in day of year 1-356,starting 7/1/08,avg by district{p_end}
+{p 0 48}{bind:h2010_area     }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total change in greenness w/in primary growing season for 7/09-6/10,avg by dist{p_end}
+{p 0 48}{bind:h2010_grn      }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness increase in day of year 1-356,starting 7/1/09,avg by district{p_end}
+{p 0 48}{bind:h2010_sen      }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness decrease in day of year 1-356,starting 7/1/09,avg by district{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:reside         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:reside1  }{bind:  }{res}{res}Baseline Rural/Urban Identifier{p_end}
+{p 0 48}{bind:stratum        }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:STRATUM  }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:hh_wgt         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:qx_type        }{txt}{bind: str7    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Sample Group (Panel A, Panel B, Cross-Sectional){p_end}
+{p 0 48}{bind:hh_a01         }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:HH_A01   }{bind:  }{res}{res}DISTRICT{p_end}
+{p 0 48}{bind:hh_a02         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}TA{p_end}
+{p 0 48}{bind:hh_a02b        }{txt}{bind: int     }{bind:{txt}%22.0g    }{space 1}{bind:HH_A02B  }{bind:  }{res}{res}DIS+TA{p_end}
+{p 0 48}{bind:hh_a11         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_A11   }{bind:  }{res}{res}Does this HH replace another sample HH chosen for the survey?{p_end}
+{p 0 48}{bind:hh_a13         }{txt}{bind: byte    }{bind:{txt}%46.0g    }{space 1}{bind:HH_A13   }{bind:  }{res}{res}Why was originally selected HH replaced?{p_end}
+{p 0 48}{bind:hh_a22_1       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Enumerator Code (Visit 1){p_end}
+{p 0 48}{bind:hh_a22_2       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Enumerator Code (Visit 2){p_end}
+{p 0 48}{bind:hh_a23_1       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Interview Date [MDY] (Visit 1){p_end}
+{p 0 48}{bind:hh_a23a_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Interview (Visit 1){p_end}
+{p 0 48}{bind:hh_a23b_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Interview (Visit 1){p_end}
+{p 0 48}{bind:hh_a23c_1      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Interview (Visit 1){p_end}
+{p 0 48}{bind:hh_a23_2       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Interview Date [MDY] (Visit 2){p_end}
+{p 0 48}{bind:hh_a23a_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Interview (Visit 2){p_end}
+{p 0 48}{bind:hh_a23b_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Interview (Visit 2){p_end}
+{p 0 48}{bind:hh_a23c_2      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Interivew (Visit 2){p_end}
+{p 0 48}{bind:hh_a25_1       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Field Supervisor Code (Visit 1){p_end}
+{p 0 48}{bind:hh_a25_2       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Field Supervisor Code (Visit 2){p_end}
+{p 0 48}{bind:hh_a26_1       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Field Supervisor Qx Inspection [MDY] (Visit 1){p_end}
+{p 0 48}{bind:hh_a26a_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Questionnaire Inspection (Visit 1){p_end}
+{p 0 48}{bind:hh_a26b_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Questionnaire Inspection (Visit 1){p_end}
+{p 0 48}{bind:hh_a26c_1      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Questionnaire Inspection (Visit 1){p_end}
+{p 0 48}{bind:hh_a26_2       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Field Supervisor Qx Inspection [MDY] (Visit 2){p_end}
+{p 0 48}{bind:hh_a26a_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Questionnaire Inspection (Visit 2){p_end}
+{p 0 48}{bind:hh_a26b_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Questionnaire Inspection (Visit 2){p_end}
+{p 0 48}{bind:hh_a26c_2      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Questionnaire Inspection (Visit 2){p_end}
+{p 0 48}{bind:hh_a31_1       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Data Entry Clerk Code (Visit 1){p_end}
+{p 0 48}{bind:hh_a31_2       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Data Entry Clerk Code (Visit 2){p_end}
+{p 0 48}{bind:hh_a32_1       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}1st Data Entry Date [MDY] (Visit 1){p_end}
+{p 0 48}{bind:hh_a32a_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Data Entry (Visit 1){p_end}
+{p 0 48}{bind:hh_a32b_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Data Entry (Visit 1){p_end}
+{p 0 48}{bind:hh_a32c_1      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Data Entry (Visit 1){p_end}
+{p 0 48}{bind:hh_a32_2       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}1st Data Entry Date [MDY] (Visit 2){p_end}
+{p 0 48}{bind:hh_a32a_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Data Entry (Visit 2){p_end}
+{p 0 48}{bind:hh_a32b_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Data Entry (Visit 2){p_end}
+{p 0 48}{bind:hh_a32c_2      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Data Entry (Visit 2){p_end}
+{p 0 48}{bind:hh_a34_1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Data Validation Clerk Code (Visit 1){p_end}
+{p 0 48}{bind:hh_a34_2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Data Validation Clerk Code (Visit 2){p_end}
+{p 0 48}{bind:hh_a35_1       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Validation Entry Data [MDY] (Visit 1){p_end}
+{p 0 48}{bind:hh_a35a_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Data Validation (Visit 1){p_end}
+{p 0 48}{bind:hh_a35b_1      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Data Validation (Visit 1){p_end}
+{p 0 48}{bind:hh_a35c_1      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Data Validation (Visit 1){p_end}
+{p 0 48}{bind:hh_a35_2       }{txt}{bind: int     }{bind:{txt}%d        }{space 1}{bind:         }{bind:  }{res}{res}Validation Entry Data [MDY] (Visit 2){p_end}
+{p 0 48}{bind:hh_a35a_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of Data Validation (Visit 2){p_end}
+{p 0 48}{bind:hh_a35b_2      }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Month of Data Validation (Visit 2){p_end}
+{p 0 48}{bind:hh_a35c_2      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of Data Validation (Visit 2){p_end}
+{p 0 48}{bind:hh_g09         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_G09   }{bind:  }{res}{res}Over the past one week (7 days), did any people that you did not list as househo{p_end}
+{p 0 48}{bind:hh_m00         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_M00   }{bind:  }{res}{res}Did your household own or rent any farm implements, machinery and/or structures,{p_end}
+{p 0 48}{bind:hh_o00         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_O00   }{bind:  }{res}{res}Does the household head or spouse have any biological sons and/or daughters who {p_end}
+{p 0 48}{bind:hh_s01         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_S01   }{bind:  }{res}{res}Over the past 12 months, did you or anyone else in this household borrow on cred{p_end}
+{p 0 48}{bind:hh_w01         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_W01   }{bind:  }{res}{res}Over the past two years, did any member of your household die, including any inf{p_end}
+{p 0 48}{bind:int_outcome_1  }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{txt}INT_OUTCOME{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Interview Outcome (Visit 1){p_end}
+{p 0 48}{bind:int_outcome_2  }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{txt}INT_OUTCOME{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Interview Outcome (Visit 2){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:dist_agmrkt    }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}HH Distance in (KMs) to Nearest Agricultural Market{p_end}
+{p 0 48}{bind:popdensity     }{txt}{bind: str9    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}2010 Population Density Range (people per KM2){p_end}
+{p 0 48}{bind:srtm_1k        }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Elevation (m){p_end}
+{p 0 48}{bind:srtm_mwi_5_15  }{txt}{bind: byte    }{bind:{txt}%27.0g    }{space 1}{bind:srtm_lab }{bind:  }{res}{res}Terrain Roughness{p_end}
+{p 0 48}{bind:wetQ_avg       }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Avg total rainfall in wettest quarter(mm) within 12-month periods from July-June{p_end}
+{p 0 48}{bind:wetQ_avgstart  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Avg start of wettest quarter in dekads 1-36, where first week of July =1{p_end}
+{p 0 48}{bind:h2012_tot      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2011{p_end}
+{p 0 48}{bind:h2012_wetQ     }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter (mm) within 12-month period starting July 2011{p_end}
+{p 0 48}{bind:h2012_wetQstart}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2011 =1{p_end}
+{p 0 48}{bind:h2013_tot      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2012{p_end}
+{p 0 48}{bind:h2013_wetQ     }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter(mm) within 12-month periods starting July 2012{p_end}
+{p 0 48}{bind:h2013_wetQstart}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2012 =1{p_end}
+{p 0 48}{bind:evimax_avg     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Avg EVI value at peak of greenness w/in growing season{p_end}
+{p 0 48}{bind:h2012_eviarea  }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total change in greenness w/in primary growing season for 7/11-6/12,avg by dist{p_end}
+{p 0 48}{bind:h2012_grn      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness increase in day of year 1-356,starting 7/1/11,avg by district{p_end}
+{p 0 48}{bind:h2012_sen      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness decrease in day of year 1-356,starting 7/1/11,avg by district{p_end}
+{p 0 48}{bind:h2012_evimax   }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EVI value at peak of greenness within growing season,starting 7/1/11{p_end}
+{p 0 48}{bind:h2013_eviarea  }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total change in greenness w/in primary growing season for 7/12-6/13,avg by dist{p_end}
+{p 0 48}{bind:h2013_grn      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness increase in day of year 1-356,starting 7/1/12,avg by district{p_end}
+{p 0 48}{bind:h2013_sen      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Onset of greenness decrease in day of year 1-356,starting 7/1/12,avg by district{p_end}
+{p 0 48}{bind:h2013_evimax   }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EVI value at peak of greenness within growing season,starting 7/1/12{p_end}
+{p 0 48}{bind:LAT_DD_MOD     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}GPS Latitude Modified{p_end}
+{p 0 48}{bind:LON_DD_MOD     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}GPS Longitude Modified{p_end}
+{p 0 48}{bind:distY1Y2       }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Distance to Y1 location{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:h2015_tot      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2014{p_end}
+{p 0 48}{bind:h2015_wetQ     }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter (mm) within 12-month period starting July 2014{p_end}
+{p 0 48}{bind:h2015_wetQstart}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2014 =1{p_end}
+{p 0 48}{bind:h2016_tot      }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}12-month total rainfall (mm) in July-June, starting July 2015{p_end}
+{p 0 48}{bind:h2016_wetQ     }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total rainfall in wettest quarter(mm) within 12-month periods starting July 2015{p_end}
+{p 0 48}{bind:h2016_wetQstart}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Start of wettest quarter in dekads 1-36, where first week of July 2015 =1{p_end}
+{p 0 48}{bind:distY1Y3       }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Distance to Y1 location{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,619    2.42e+11    6.91e+10   1.01e+11   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}lat_modified {c |}{res}      4,122   -14.30517    1.493182   -16.9855   -9.50446
+{txt}lon_modified {c |}{res}      4,122    34.50575    .7156607   32.76177   35.81534
+{txt}{space 3}dist_road {c |}{res}      6,112    7.484855     9.37713          0         50
+{txt}{hline 13}{c +}{hline 57}
+dist_popce~r {c |}{res}      6,112    27.44057    19.72809          0         99
+{txt}{space 1}dist_admarc {c |}{res}      6,112    7.231838    5.379563          0         33
+{txt}dist_auction {c |}{res}      6,112    59.80307    50.12277          0        236
+{txt}{space 3}dist_boma {c |}{res}      6,112    30.77212    26.49749          0        143
+{txt}dist_borde~t {c |}{res}      6,112    48.42081    30.64432          0        140
+{txt}{hline 13}{c +}{hline 57}
+{space 4}af_bio_1 {c |}{res}      6,112    213.1551    18.58134        176        264
+{txt}{space 4}af_bio_2 {c |}{res}      1,619    110.8164    9.353801         93        133
+{txt}{space 4}af_bio_3 {c |}{res}      1,619    57.07323    1.431819         55         61
+{txt}{space 4}af_bio_4 {c |}{res}      1,619    2387.327    227.4733       1624       2895
+{txt}{space 4}af_bio_5 {c |}{res}      1,619    302.3944     19.9606        268        366
+{txt}{hline 13}{c +}{hline 57}
+{space 4}af_bio_6 {c |}{res}      1,619    110.0181    23.65374         67        171
+{txt}{space 4}af_bio_7 {c |}{res}      1,619    192.3763    15.47781        157        226
+{txt}{space 4}af_bio_8 {c |}{res}      6,112    229.7571    18.05404        191        286
+{txt}{space 4}af_bio_9 {c |}{res}      1,619    185.7116    21.46415        148        238
+{txt}{space 3}af_bio_10 {c |}{res}      1,619    237.9968     18.9782        207        292
+{txt}{hline 13}{c +}{hline 57}
+{space 3}af_bio_11 {c |}{res}      1,619    177.2622    19.36031        139        226
+{txt}{space 3}af_bio_12 {c |}{res}      6,112    1058.819    229.0433        777       2309
+{txt}{space 3}af_bio_13 {c |}{res}      6,112    245.0252    33.73234        178        698
+{txt}{space 3}af_bio_14 {c |}{res}      1,619    4.285111      4.7904          0         25
+{txt}{space 3}af_bio_15 {c |}{res}      1,619    104.4354    12.93167         74        124
+{txt}{hline 13}{c +}{hline 57}
+{space 3}af_bio_16 {c |}{res}      6,112    670.2434    85.79371        494       1480
+{txt}fsrad3_agpct {c |}{res}      6,112    26.23958    18.74787          0         75
+{txt}fsrad3_lcmaj {c |}{res}      6,112    79.46073    58.76078         14        210
+{txt}{space 3}ssa_aez09 {c |}{res}      6,112    313.9822    3.712616        312        323
+{txt}{space 1}afmnslp_pct {c |}{res}      1,619    4.784266    3.751825         .9       33.2
+{txt}{hline 13}{c +}{hline 57}
+{space 4}srtm_eaf {c |}{res}      1,619    911.3577    302.5134         50       1610
+{txt}{space 5}twi_mwi {c |}{res}      6,112    13.47996    2.070253          0         36
+{txt}srtm_eaf_~15 {c |}{res}      1,618    5.682942    2.942906          1         13
+{txt}{space 9}sq1 {c |}{res}      6,112    1.609293    1.414849          1          7
+{txt}{space 9}sq2 {c |}{res}      6,112    1.520615    1.369502          1          7
+{txt}{hline 13}{c +}{hline 57}
+{space 9}sq3 {c |}{res}      6,112    1.850131    1.525902          1          7
+{txt}{space 9}sq4 {c |}{res}      6,112    1.396433    1.374692          1          7
+{txt}{space 9}sq5 {c |}{res}      6,112    1.340151    1.360055          1          7
+{txt}{space 9}sq6 {c |}{res}      6,112     1.32788    1.358075          1          7
+{txt}{space 9}sq7 {c |}{res}      6,112    2.024705    1.513549          1          7
+{txt}{hline 13}{c +}{hline 57}
+{space 2}anntot_avg {c |}{res}      6,112    847.6049    80.18725        684       1209
+{txt}{space 4}wetq_avg {c |}{res}      1,619    631.5531    37.74058        562        779
+{txt}wetq_avgst~t {c |}{res}      1,619    16.30167    .5816883       15.4       18.2
+{txt}{space 3}h2009_tot {c |}{res}      1,619    854.3689    148.2818        663       1357
+{txt}{space 2}h2009_wetq {c |}{res}      1,619    616.4435    105.4983        475       1006
+{txt}{hline 13}{c +}{hline 57}
+h2009_wetq~t {c |}{res}      1,619    16.33672    1.698501         14         20
+{txt}{space 3}h2010_tot {c |}{res}      1,619    753.9497    102.7401        538       1058
+{txt}{space 2}h2010_wetq {c |}{res}      1,619     568.649    80.03748        426        847
+{txt}h2010_wetq~t {c |}{res}      1,619     16.6609    .6486818         15         18
+{txt}{space 1}eviarea_avg {c |}{res}      3,609    62.82085     10.3374       43.5       89.6
+{txt}{hline 13}{c +}{hline 57}
+{space 5}grn_avg {c |}{res}      3,609    155.6456    13.88021        124        184
+{txt}{space 5}sen_avg {c |}{res}      3,609     240.297    7.800228        213        253
+{txt}{space 2}h2009_area {c |}{res}      1,619      75.684    15.28798       45.9      125.6
+{txt}{space 3}h2009_grn {c |}{res}      1,619    146.3039    9.948212        134        185
+{txt}{space 3}h2009_sen {c |}{res}      1,619    241.8975    5.854804        229        258
+{txt}{hline 13}{c +}{hline 57}
+{space 2}h2010_area {c |}{res}      1,619    43.79271    11.31563       29.6       75.3
+{txt}{space 3}h2010_grn {c |}{res}      1,619    154.1025    12.78758        119        197
+{txt}{space 3}h2010_sen {c |}{res}      1,619    234.8765    10.65388        215        264
+{txt}{space 8}HHID {c |}{res}      1,619    1813.719     820.436          1       3231
+{txt}{space 6}reside {c |}{res}      1,619    1.706609    .4554567          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 5}stratum {c |}{res}      1,619    4.410747     1.49863          1          6
+{txt}{space 6}hh_wgt {c |}{res}      1,619    1020.136    666.6101    70.8552   3607.235
+{txt}{space 5}qx_type {c |}{res}          0
+{txt}{space 6}hh_a01 {c |}{res}      1,619    242.2094    69.15723        101        315
+{txt}{space 6}hh_a02 {c |}{res}      1,619    17.56208    21.70915          1         86
+{txt}{hline 13}{c +}{hline 57}
+{space 5}hh_a02b {c |}{res}      1,619     24238.5    6912.861      10101      31555
+{txt}{space 6}hh_a11 {c |}{res}      1,619    1.922792    .2670039          1          2
+{txt}{space 6}hh_a13 {c |}{res}        123    2.601626    1.957499          1          6
+{txt}{space 4}hh_a22_1 {c |}{res}      1,618    89.04326     38.9951         11        164
+{txt}{space 4}hh_a22_2 {c |}{res}      1,616    89.07178    39.11808         11        164
+{txt}{hline 13}{c +}{hline 57}
+{space 4}hh_a23_1 {c |}{res}      1,619    18395.43    30.45796      18324      18515
+{txt}{space 3}hh_a23a_1 {c |}{res}      1,619    15.49969     8.62137          1         31
+{txt}{space 3}hh_a23b_1 {c |}{res}      1,619     4.92341    1.043108          3          9
+{txt}{space 3}hh_a23c_1 {c |}{res}      1,619        2010           0       2010       2010
+{txt}{space 4}hh_a23_2 {c |}{res}      1,619    18502.44    33.65225      18348      18779
+{txt}{hline 13}{c +}{hline 57}
+{space 3}hh_a23a_2 {c |}{res}      1,619    16.93329    9.393038          1         31
+{txt}{space 3}hh_a23b_2 {c |}{res}      1,619    8.344657    1.124973          3         11
+{txt}{space 3}hh_a23c_2 {c |}{res}      1,619    2010.002    .0496596       2010       2011
+{txt}{space 4}hh_a25_1 {c |}{res}      1,618    86.49567    38.93313         10        160
+{txt}{space 4}hh_a25_2 {c |}{res}      1,615    86.00743    40.83327         10        160
+{txt}{hline 13}{c +}{hline 57}
+{space 4}hh_a26_1 {c |}{res}      1,599     18398.1     32.2988      18322      18777
+{txt}{space 3}hh_a26a_1 {c |}{res}      1,619    15.48672    8.551613          0         31
+{txt}{space 3}hh_a26b_1 {c |}{res}      1,619    4.935763    1.165883          0          9
+{txt}{space 3}hh_a26c_1 {c |}{res}      1,619     1985.17    222.0868          0       2011
+{txt}{space 4}hh_a26_2 {c |}{res}      1,616    18501.68    32.19467      18352      18778
+{txt}{hline 13}{c +}{hline 57}
+{space 3}hh_a26a_2 {c |}{res}      1,619    16.79308    9.501014          0         31
+{txt}{space 3}hh_a26b_2 {c |}{res}      1,619    8.315009    1.120476          0         11
+{txt}{space 3}hh_a26c_2 {c |}{res}      1,619    2006.277    86.46994          0       2011
+{txt}{space 4}hh_a31_1 {c |}{res}      1,619    164.2915    176.8596         19        690
+{txt}{space 4}hh_a31_2 {c |}{res}      1,619    175.5003    182.4711         13       1491
+{txt}{hline 13}{c +}{hline 57}
+{space 4}hh_a32_1 {c |}{res}      1,437    18408.68    37.86461      18324      18597
+{txt}{space 3}hh_a32a_1 {c |}{res}      1,619    14.55281    9.157739          0         30
+{txt}{space 3}hh_a32b_1 {c |}{res}      1,619    4.728845    2.075218          0         12
+{txt}{space 3}hh_a32c_1 {c |}{res}      1,619    1784.046    635.1078          0       2010
+{txt}{space 4}hh_a32_2 {c |}{res}      1,595    18509.56    32.17795      18358      18897
+{txt}{hline 13}{c +}{hline 57}
+{space 3}hh_a32a_2 {c |}{res}      1,619    15.37369     10.1914          0         31
+{txt}{space 3}hh_a32b_2 {c |}{res}      1,619    8.467573    1.451108          0         11
+{txt}{space 3}hh_a32c_2 {c |}{res}      1,619    1980.215    242.9297          0       2011
+{txt}{space 4}hh_a34_1 {c |}{res}      1,619    8.404571    4.369945          1         24
+{txt}{space 4}hh_a34_2 {c |}{res}      1,613    10.47799    5.497262          1         26
+{txt}{hline 13}{c +}{hline 57}
+{space 4}hh_a35_1 {c |}{res}      1,617    18601.76    58.46947      18268      18887
+{txt}{space 3}hh_a35a_1 {c |}{res}      1,619    14.10933    9.059263          1         31
+{txt}{space 3}hh_a35b_1 {c |}{res}      1,619    8.552193    4.214603          1         12
+{txt}{space 3}hh_a35c_1 {c |}{res}      1,619    2009.022    49.96277          0       2011
+{txt}{space 4}hh_a35_2 {c |}{res}      1,613    18639.12    72.32932      18266      18943
+{txt}{hline 13}{c +}{hline 57}
+{space 3}hh_a35a_2 {c |}{res}      1,619    15.56578    8.482212          0         31
+{txt}{space 3}hh_a35b_2 {c |}{res}      1,619     4.35454    4.524517          0         12
+{txt}{space 3}hh_a35c_2 {c |}{res}      1,619    2003.259    122.2173          0       2011
+{txt}{space 6}hh_g09 {c |}{res}      1,619     1.69055    .4624099          1          2
+{txt}{space 6}hh_m00 {c |}{res}      1,619    1.151328     .358479          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 6}hh_o00 {c |}{res}      1,619    1.702285    .4573946          1          2
+{txt}{space 6}hh_s01 {c |}{res}      1,619    1.854849    .3523622          1          2
+{txt}{space 6}hh_w01 {c |}{res}      1,619    1.940704    .2362506          1          2
+{txt}int_outcom~1 {c |}{res}      1,619           1           0          1          1
+{txt}int_outcom~2 {c |}{res}      1,619    1.001235    .0351364          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}      6,117    2012.436    2.425482       2009       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 1}dist_agmrkt {c |}{res}      4,493    20.81905    15.06108          0         67
+{txt}{space 2}popdensity {c |}{res}          0
+{txt}{space 5}srtm_1k {c |}{res}      4,493    908.8337    307.5946         40       1710
+{txt}{hline 13}{c +}{hline 57}
+srtm_mwi_~15 {c |}{res}      4,493    5.660361    2.961526          1         13
+{txt}{space 4}wetQ_avg {c |}{res}      4,493    645.5622    40.75738        556        819
+{txt}wetQ_avgst~t {c |}{res}      4,493    16.68484    .6618564         15         18
+{txt}{space 3}h2012_tot {c |}{res}      1,990    814.2754     87.8905        605       1220
+{txt}{space 2}h2012_wetQ {c |}{res}      1,990    556.3191    64.10819        417        964
+{txt}{hline 13}{c +}{hline 57}
+h2012_wetQ~t {c |}{res}      1,990    18.10603    1.379048         13         20
+{txt}{space 3}h2013_tot {c |}{res}      1,990    837.8839    88.20084        571       1377
+{txt}{space 2}h2013_wetQ {c |}{res}      1,990    684.0241    56.92134        493        870
+{txt}h2013_wetQ~t {c |}{res}      1,990    16.38392    .5393912         15         18
+{txt}{space 2}evimax_avg {c |}{res}      1,990    .5031227    .0274005   .4503833   .5720083
+{txt}{hline 13}{c +}{hline 57}
+h2012_evia~a {c |}{res}      1,990    75.10763    11.95572      49.25     116.95
+{txt}{space 3}h2012_grn {c |}{res}      1,990    135.6593     16.8547         98        183
+{txt}{space 3}h2012_sen {c |}{res}      1,990    256.7216    12.74891        208        270
+{txt}h2012_evimax {c |}{res}      1,990    .5011995    .0282359      .4572      .5983
+{txt}h2013_evia~a {c |}{res}      1,990     63.5175    9.488387       45.1      81.13
+{txt}{hline 13}{c +}{hline 57}
+{space 3}h2013_grn {c |}{res}      1,990    158.6839    15.77749        129        196
+{txt}{space 3}h2013_sen {c |}{res}      1,990    235.9201    20.64795        178        257
+{txt}h2013_evimax {c |}{res}      1,990     .499618    .0260121      .3949      .5554
+{txt}{space 2}LAT_DD_MOD {c |}{res}      1,990    -14.3159     1.49004   -16.9855   -9.50446
+{txt}{space 2}LON_DD_MOD {c |}{res}      1,990     34.5131    .7221368   32.88071   35.80705
+{txt}{hline 13}{c +}{hline 57}
+{space 4}distY1Y2 {c |}{res}        340    84.59812    100.1516       5.18      609.9
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{space 3}h2015_tot {c |}{res}      2,503    963.5989    156.4042        569       1523
+{txt}{space 2}h2015_wetQ {c |}{res}      2,503    817.6788     143.461        418       1166
+{txt}h2015_wetQ~t {c |}{res}      2,503    16.64083    .5971244         16         24
+{txt}{hline 13}{c +}{hline 57}
+{space 3}h2016_tot {c |}{res}      2,503    690.2673    165.8567        477       1414
+{txt}{space 2}h2016_wetQ {c |}{res}      2,503    504.9948    103.4978        321        926
+{txt}h2016_wetQ~t {c |}{res}      2,503    17.48821    1.072027         13         28
+{txt}{space 4}distY1Y3 {c |}{res}        641    85.04836    108.0672          5        675
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-weather.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}12 Oct 2020, 18:22:21
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

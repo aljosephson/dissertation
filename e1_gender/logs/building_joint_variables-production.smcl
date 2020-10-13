@@ -19556,4 +19556,440 @@ pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
  {txt}closed on:  {res}12 Oct 2020, 17:56:08
 {txt}{.-}
 {smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Oct 2020, 18:11:40
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         save                    "$fil\consumption\ihs_summary_12.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\consumption\ihs3_summary_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\consumption\ihs_summary_12.dta"
+{txt}{p 0 7 2}
+(note: variable
+poor was 
+byte, now float to accommodate using data's values)
+{p_end}
+(label region already defined)
+(label urban already defined)
+
+{com}.         append                  using "$fil\consumption\ihs3_summary_15.dta"
+{txt}(label district already defined)
+
+{com}.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\consumptionagg.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}poor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}round{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}epoor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (315,898 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta
+{txt}  obs:{res}        28,718                          
+{txt} vars:{res}           148                          12 Oct 2020 18:11
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:area           }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{bind:area     }{bind:  }{res}{res}Area: region by urban/rural{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:HH_A01   }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:TA             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Strata (districts){p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweight       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Sampling weights adjusted based on population projections{p_end}
+{p 0 48}{bind:hhsize         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household size{p_end}
+{p 0 48}{bind:adulteq        }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Adult equivalents{p_end}
+{p 0 48}{bind:intmonth       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:intyear        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:month          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month    }{bind:  }{res}{res}Month{p_end}
+{p 0 48}{bind:qx_type        }{txt}{bind: str13   }{bind:{txt}%13s      }{space 1}{bind:         }{bind:  }{res}{res}Sample Group (Panel A, Panel B, Cross-Sectional){p_end}
+{p 0 48}{bind:price_index    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list price_index":*} {res}Spatial and Temporal Price Index (Base National Feb/Mar 2010){p_end}
+{p 0 48}{bind:rexp_cat011    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat012    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Beverage, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat021    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alcohol, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat022    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat031    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat032    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat041    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Actual rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat042    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Estimated rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat045    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity, gas, other fuels, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat051    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Decorations, carpets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat052    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household textiles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat053    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Appliances, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat054    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dishes, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat055    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tools/equipment for home, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat056    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Routine Home maintenance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat061    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health drugs, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat062    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health out-patient, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat063    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health hospitalization, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat071    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat072    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Operation of vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat073    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat081    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Postal services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat083    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Phone and fax services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat091    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Audio-visual, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat092    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Major durables for rec, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat093    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Other recreational items, pets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat094    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreational services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat095    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Newspapers, books, stationery, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat101    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat111    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vendors/Cafes/Restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat112    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Accommodation services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat121    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal care, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat123    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal effects, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat125    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insurance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat01     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food/Bev, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat02     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alc/Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat03     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing/Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat04     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Housing/Utilities, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat05     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Furnishings, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat06     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat07     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat08     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Communication, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat09     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreation, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat10     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat11     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Hotels and restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat12     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Misc Goods & Services, real annual consumption{p_end}
+{p 0 48}{bind:rexpagg        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggcap     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita{p_end}
+{p 0 48}{bind:ultrapovline   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra-poor (food) poverty line per person per year{p_end}
+{p 0 48}{bind:povline        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list povline":*} {res}Total poverty line per person per year{p_end}
+{p 0 48}{bind:poor           }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:poor     }{stata "notes list poor":*} {res}Exp per cap < poverty line{p_end}
+{p 0 48}{bind:ultra_poor     }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:ultra_p  }{bind:  }{res}{res}Exp per cap < ultra pov line{p_end}
+{p 0 48}{bind:gap_poor       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap poor{p_end}
+{p 0 48}{bind:gap_ultra      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap ultra poor{p_end}
+{p 0 48}{bind:gap2_poor      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity poor{p_end}
+{p 0 48}{bind:gap2_ultra     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity ultra poor{p_end}
+{p 0 48}{bind:head_age       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Age of household head{p_end}
+{p 0 48}{bind:head_gender    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{txt}head_gender{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Gender of household head{p_end}
+{p 0 48}{bind:head_edlevel   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{txt}head_edlevel{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head{p_end}
+{p 0 48}{bind:head_edlevel2  }{txt}{bind: byte    }{bind:{txt}%16.0g    }{space 1}{txt}head_edlevel2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head, detailed{p_end}
+{p 0 48}{bind:head_marital   }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{txt}head_marital{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, definition 2{p_end}
+{p 0 48}{bind:head_marital2  }{txt}{bind: byte    }{bind:{txt}%39.0g    }{space 1}{txt}head_marital2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, detailed{p_end}
+{p 0 48}{bind:quintil        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}National quintil, consumption per person, population weighted{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:round          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}1 = IHS3 2 = IHPS{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:panel          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_A02   }{bind:  }{res}{res}Sample Group (Panel A, Panel B){p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:price_indexL   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Laspeyres monthly Spatial and Temporal Price Index (Base National March 2013){p_end}
+{p 0 48}{bind:pcrexpagg      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita        - 2013 Prices, Spatially & Tempo{p_end}
+{p 0 48}{bind:absolute_povl~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Absolute Poverty Line - 2013 Prices{p_end}
+{p 0 48}{bind:extreme_povline}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra Poverty Line    - 2013 Prices{p_end}
+{p 0 48}{bind:epoor          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if 2013 Total real annual consumption per capita < Extreme  poverty line{p_end}
+{p 0 48}{bind:pcrexp_cat01   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat01 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat02   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat02 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat03   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat03 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat04   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat04 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat05   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat05 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat06   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat06 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat07   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat07 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat08   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat08 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat09   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat09 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat10   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat10 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat11   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat11 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat12   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat12 per capita{p_end}
+{p 0 48}{bind:rexp_cat044    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Water supply, real annual consumption{p_end}
+{p 0 48}{bind:pcrexp_cat011  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat011 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat012  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat012 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat021  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat021 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat022  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat022 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat031  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat031 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat032  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat032 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat041  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat041 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat042  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat042 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat044  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat044 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat045  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat045 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat051  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat051 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat052  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat052 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat053  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat053 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat054  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat054 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat055  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat055 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat056  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat056 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat061  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat061 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat062  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat062 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat063  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat063 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat071  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat071 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat072  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat072 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat073  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat073 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat081  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat081 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat083  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat083 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat091  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat091 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat092  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat092 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat093  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat093 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat094  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat094 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat095  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat095 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat101  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat101 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat111  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat111 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat112  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat112 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat121  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat121 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat123  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat123 per capita{p_end}
+{p 0 48}{bind:sdate          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of month for interview{p_end}
+{p 0 48}{bind:smonth         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month_l  }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:syear          }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:hh_wgt         }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Sampling Weight{p_end}
+{p 0 48}{bind:expagg         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total nominal annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggpc      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:upline_2016    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:pline_2016     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:upoor          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:lupoor   }{bind:  }{res}{res}Dummy for ultra-poor households below national food poverty line{p_end}
+                                            {txt}* indicated variables have notes
+{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     28,718    2.32e+11    7.84e+10   3.04e+07   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}region {c |}{res}     28,718    2.259384    .7655674          1          3
+{txt}{space 7}urban {c |}{res}     28,718    1.806707     .394888          1          2
+{txt}{space 8}area {c |}{res}     24,718    2.875394    1.117744          1          4
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}     28,718    232.3461     78.2435        101        315
+{txt}{space 10}TA {c |}{res}     24,718     10.7798    16.39046          1         88
+{txt}{space 6}strata {c |}{res}     16,271    177.8718     120.005          1        315
+{txt}{space 5}cluster {c |}{res}     12,271    384.4325    221.7332          1        768
+{txt}{space 4}hhweight {c |}{res}     16,271    372.7362    381.3168     6.6204   3257.806
+{txt}{hline 13}{c +}{hline 57}
+{space 6}hhsize {c |}{res}     28,718    4.519326    2.150878          1         19
+{txt}{space 5}adulteq {c |}{res}     28,718    3.877541    1.819357        .91      15.68
+{txt}{space 4}intmonth {c |}{res}     16,271    6.683486     3.28983          1         12
+{txt}{space 5}intyear {c |}{res}     16,271    2010.928    1.241648       2010       2013
+{txt}{space 7}month {c |}{res}     12,271      7.4738    3.518021          1         13
+{txt}{hline 13}{c +}{hline 57}
+{space 5}qx_type {c |}{res}          0
+{txt}{space 1}price_index {c |}{res}     24,718     99.0551    10.12667       75.3   123.3465
+{txt}{space 1}rexp_cat011 {c |}{res}     28,718    303394.8    292753.9          0   1.00e+07
+{txt}{space 1}rexp_cat012 {c |}{res}     28,718    10841.64    31115.99          0    1602566
+{txt}{space 1}rexp_cat021 {c |}{res}     28,718    6918.265    29435.98          0    1811697
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat022 {c |}{res}     28,718    438.7005    3526.831          0   128590.9
+{txt}{space 1}rexp_cat031 {c |}{res}     28,718    12997.09    29968.61          0    1307986
+{txt}{space 1}rexp_cat032 {c |}{res}     28,718    2986.841    9635.556          0   451104.5
+{txt}{space 1}rexp_cat041 {c |}{res}     28,718    8423.069    39511.83          0    1690141
+{txt}{space 1}rexp_cat042 {c |}{res}     28,718    31889.01    78594.61          0    5220849
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat045 {c |}{res}     28,718     43169.5     49804.3          0   721037.9
+{txt}{space 1}rexp_cat051 {c |}{res}     28,718    3880.167    9702.571          0   307369.8
+{txt}{space 1}rexp_cat052 {c |}{res}     28,718    1391.174    4355.489          0   89743.59
+{txt}{space 1}rexp_cat053 {c |}{res}     28,718    2356.522    13771.84          0   684353.3
+{txt}{space 1}rexp_cat054 {c |}{res}     28,718    1046.598    4965.133          0   261042.4
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat055 {c |}{res}     28,718    2882.988    5434.619          0   72923.65
+{txt}{space 1}rexp_cat056 {c |}{res}     28,718    10954.59    46580.87          0    2340840
+{txt}{space 1}rexp_cat061 {c |}{res}     28,718    2951.995    8887.411          0   390056.1
+{txt}{space 1}rexp_cat062 {c |}{res}     28,718    4587.983    26387.76          0    1276263
+{txt}{space 1}rexp_cat063 {c |}{res}     28,718    1167.282      7014.2          0   321952.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat071 {c |}{res}     28,718    25011.25     2167703          0   3.37e+08
+{txt}{space 1}rexp_cat072 {c |}{res}     28,718     10041.6    105805.7          0    4534811
+{txt}{space 1}rexp_cat073 {c |}{res}     28,718    17569.25    54146.32          0    1278831
+{txt}{space 1}rexp_cat081 {c |}{res}     28,718    43.01317    1193.402          0   96404.19
+{txt}{space 1}rexp_cat083 {c |}{res}     28,718    18185.48     50007.4          0    1913411
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat091 {c |}{res}     28,718     4065.37    17933.35          0   544887.1
+{txt}{space 1}rexp_cat092 {c |}{res}     28,718    39.81018    1083.823          0   111878.9
+{txt}{space 1}rexp_cat093 {c |}{res}     28,718    70.74258    2564.864          0   240871.4
+{txt}{space 1}rexp_cat094 {c |}{res}     28,718    65.60932    1276.633          0   70745.64
+{txt}{space 1}rexp_cat095 {c |}{res}     28,718     762.368     7058.97          0   368794.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat101 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 1}rexp_cat111 {c |}{res}     28,718    5914.026    16470.06          0   655028.2
+{txt}{space 1}rexp_cat112 {c |}{res}     28,718    514.7945    18307.56          0    1437216
+{txt}{space 1}rexp_cat121 {c |}{res}     28,718    15924.85    22057.88          0   422479.6
+{txt}{space 1}rexp_cat123 {c |}{res}     28,718    170.8905    957.9268          0   14702.72
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat125 {c |}{res}     12,271    329.5707    6747.555          0   422386.5
+{txt}{space 2}rexp_cat01 {c |}{res}     28,718    314236.4    308671.8          0   1.00e+07
+{txt}{space 2}rexp_cat02 {c |}{res}     28,718    7356.966    30043.61          0    1811697
+{txt}{space 2}rexp_cat03 {c |}{res}     28,718    15983.93    36366.35          0    1307986
+{txt}{space 2}rexp_cat04 {c |}{res}     28,718    87756.67    119462.6   1354.402    5851851
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat05 {c |}{res}     28,718    22512.03    61341.94          0    2744132
+{txt}{space 2}rexp_cat06 {c |}{res}     28,718    8707.259    32616.99          0    1681322
+{txt}{space 2}rexp_cat07 {c |}{res}     28,718    52622.09     2173689          0   3.37e+08
+{txt}{space 2}rexp_cat08 {c |}{res}     28,718    18228.49    50116.57          0    1913411
+{txt}{space 2}rexp_cat09 {c |}{res}     28,718      5003.9    22830.79          0   656311.4
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat10 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 2}rexp_cat11 {c |}{res}     28,718    6428.821    25013.24          0    1437216
+{txt}{space 2}rexp_cat12 {c |}{res}     28,718    16236.56    22885.53          0   483843.7
+{txt}{space 5}rexpagg {c |}{res}     28,718    571324.9     2290751   7332.667   3.41e+08
+{txt}{space 2}rexpaggcap {c |}{res}     12,271    65836.45    90997.51   2972.581    2857557
+{txt}{hline 13}{c +}{hline 57}
+ultrapovline {c |}{res}     12,271    22956.38           0   22956.38   22956.38
+{txt}{space 5}povline {c |}{res}     12,271    37001.68           0   37001.68   37001.68
+{txt}{space 8}poor {c |}{res}     28,718    37.69545    48.42269          0        100
+{txt}{space 2}ultra_poor {c |}{res}     12,271    18.97156     39.2092          0        100
+{txt}{space 4}gap_poor {c |}{res}     24,718    14.48464     21.0176          0   91.96636
+{txt}{hline 13}{c +}{hline 57}
+{space 3}gap_ultra {c |}{res}     24,718    4.352886    11.99403          0   87.05118
+{txt}{space 3}gap2_poor {c |}{res}     24,718    6.515264    12.29303          0   84.57812
+{txt}{space 2}gap2_ultra {c |}{res}     24,718    1.627985    5.946756          0   75.77908
+{txt}{space 4}head_age {c |}{res}     12,271    42.14815    16.22512          2        110
+{txt}{space 1}head_gender {c |}{res}     12,271    1.240567    .4274453          1          2
+{txt}{hline 13}{c +}{hline 57}
+head_edlevel {c |}{res}     12,262    1.527973    .8760516          1          4
+{txt}head_edlev~2 {c |}{res}     12,271    1.653492    1.179167          1          9
+{txt}head_marital {c |}{res}     12,269    1.457494    .8328264          1          4
+{txt}head_marit~2 {c |}{res}     12,269    2.015486    1.607192          1          6
+{txt}{space 5}quintil {c |}{res}     12,271    3.274468     1.41351          1          5
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}     28,718    2012.018    2.783229       2009       2015
+{txt}{space 7}round {c |}{res}      4,000           2           0          2          2
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}      4,000    1624.987    925.0496          1       3263
+{txt}{space 2}hhweightR1 {c |}{res}      4,000    925.3408    598.0219    69.1233   3607.235
+{txt}{hline 13}{c +}{hline 57}
+{space 7}panel {c |}{res}      4,000     1.49175    .4999944          1          2
+{txt}interview_~s {c |}{res}      4,000     1.66675    .7806067          1          5
+{txt}price_indexL {c |}{res}      4,000    93.84438    15.42045   75.39732    132.757
+{txt}{space 3}pcrexpagg {c |}{res}      4,000    188327.9    233205.2   11864.29    3716533
+{txt}absolute_p~e {c |}{res}      4,000       85852           0      85852      85852
+{txt}{hline 13}{c +}{hline 57}
+extreme_po~e {c |}{res}      4,000       53262           0      53262      53262
+{txt}{space 7}epoor {c |}{res}      4,000      .08225    .2747796          0          1
+{txt}pcrexp_cat01 {c |}{res}      4,000    100205.1    86793.21    3011.37    1352010
+{txt}pcrexp_cat02 {c |}{res}      4,000    4715.056    16245.95          0   316731.5
+{txt}pcrexp_cat03 {c |}{res}      4,000    6490.995    15484.49          0   432286.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat04 {c |}{res}      4,000     33003.9    53032.82   848.0483    1196932
+{txt}pcrexp_cat05 {c |}{res}      4,000    6570.529    14534.35          0   342603.3
+{txt}pcrexp_cat06 {c |}{res}      4,000    1840.636    14407.13          0   840660.8
+{txt}pcrexp_cat07 {c |}{res}      4,000    14491.85    72619.03          0    2068056
+{txt}pcrexp_cat08 {c |}{res}      4,000    5971.396    20831.06          0   890244.7
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat09 {c |}{res}      4,000    1821.747    7747.534          0   188763.1
+{txt}pcrexp_cat10 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}pcrexp_cat11 {c |}{res}      4,000    3597.865    17858.15          0   874109.3
+{txt}pcrexp_cat12 {c |}{res}      4,000    5229.361    8305.009          0   171891.4
+{txt}{space 1}rexp_cat044 {c |}{res}     16,447    7464.696    21306.37          0   793568.9
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~011 {c |}{res}      4,000    96884.06    80219.24          0    1111545
+{txt}pcrexp_c~012 {c |}{res}      4,000    3321.001    10066.96          0     240465
+{txt}pcrexp_c~021 {c |}{res}      4,000    4557.748    15894.98          0   316731.5
+{txt}pcrexp_c~022 {c |}{res}      4,000    157.3076    1454.857          0   44979.91
+{txt}pcrexp_c~031 {c |}{res}      4,000    5126.778    12598.51          0   366155.5
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~032 {c |}{res}      4,000    1364.217    4296.114          0   112776.1
+{txt}pcrexp_c~041 {c |}{res}      4,000    4079.133    17808.29          0   327905.4
+{txt}pcrexp_c~042 {c |}{res}      4,000    12108.28    37268.06          0    1044170
+{txt}pcrexp_c~044 {c |}{res}      4,000    1453.534    7780.419          0   396784.5
+{txt}pcrexp_c~045 {c |}{res}      4,000    15362.95    16075.37          0   197212.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~051 {c |}{res}      4,000    1105.694     3037.75          0   59336.26
+{txt}pcrexp_c~052 {c |}{res}      4,000    451.2033    1683.347          0   49458.04
+{txt}pcrexp_c~053 {c |}{res}      4,000    670.0974    3159.419          0   57792.81
+{txt}pcrexp_c~054 {c |}{res}      4,000    547.1143    4807.635          0   261042.4
+{txt}pcrexp_c~055 {c |}{res}      4,000    842.3427    1469.163          0   22184.79
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~056 {c |}{res}      4,000    2954.078    9408.447          0   265111.5
+{txt}pcrexp_c~061 {c |}{res}      4,000    582.5033    3418.094          0     195028
+{txt}pcrexp_c~062 {c |}{res}      4,000    969.1932    11031.48          0   638131.7
+{txt}pcrexp_c~063 {c |}{res}      4,000    288.9397     2198.97          0   107317.4
+{txt}pcrexp_c~071 {c |}{res}      4,000      3922.4    38964.67          0    1634426
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~072 {c |}{res}      4,000     4268.21    49030.91          0    1987107
+{txt}pcrexp_c~073 {c |}{res}      4,000    6301.238    19440.47          0     426277
+{txt}pcrexp_c~081 {c |}{res}      4,000     35.0321     917.513          0   48202.09
+{txt}pcrexp_c~083 {c |}{res}      4,000    5936.364    20764.09          0   890244.7
+{txt}pcrexp_c~091 {c |}{res}      4,000    1370.468    5363.809          0     126113
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~092 {c |}{res}      4,000     47.6745    1908.821          0   111878.9
+{txt}pcrexp_c~093 {c |}{res}      4,000    22.71938    732.2209          0   39348.65
+{txt}pcrexp_c~094 {c |}{res}      4,000    28.96861     601.032          0   27372.78
+{txt}pcrexp_c~095 {c |}{res}      4,000    351.9171    2425.886          0   62650.18
+{txt}pcrexp_c~101 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
+{txt}pcrexp_c~112 {c |}{res}      4,000    198.8462    8405.003          0   522084.8
+{txt}pcrexp_c~121 {c |}{res}      4,000    5195.217    8293.929          0   171891.4
+{txt}pcrexp_c~123 {c |}{res}      4,000    34.14388    227.7259          0   4992.553
+{txt}{space 7}sdate {c |}{res}     12,447    16.12148    8.741656          1         31
+{txt}{hline 13}{c +}{hline 57}
+{space 6}smonth {c |}{res}     12,447     5.27348    3.104442          1         12
+{txt}{space 7}syear {c |}{res}     12,447    2016.507    .4999772       2016       2017
+{txt}{space 6}hh_wgt {c |}{res}     12,447    305.0786    215.7428     8.2893    1711.44
+{txt}{space 6}expagg {c |}{res}     12,447      866582     4001130   44948.95   4.14e+08
+{txt}{space 3}rexpaggpc {c |}{res}     12,447    220641.9     1234242   20031.35   1.14e+08
+{txt}{hline 13}{c +}{hline 57}
+{space 1}upline_2016 {c |}{res}     12,447    85260.16           0   85260.16   85260.16
+{txt}{space 2}pline_2016 {c |}{res}     12,447      137428           0     137428     137428
+{txt}{space 7}upoor {c |}{res}     12,447     16.1324    36.78443          0        100
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}12 Oct 2020, 18:11:40
+{txt}{.-}
+{smcl}
 {txt}{sf}{ul off}
