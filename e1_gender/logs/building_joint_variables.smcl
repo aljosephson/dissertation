@@ -1,0 +1,181 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Oct 2020, 15:23:33
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify manager (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\Year 1\AG_MOD_D.dta", clear
+{txt}
+{com}. 
+. * determine plot id and relevant decision maker variables       
+.         
+.         keep                    case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y1.dta"
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\decision-making\decision_wet_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7868_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 12 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 Oct 2020, 15:24:13
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify manager (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\Year 1\AG_MOD_D.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. tab ag_d01
+
+  {txt}Who in HH {c |}
+      makes {c |}
+  decisions {c |}
+ concerning {c |}
+crops to be {c |}
+planted,inp {c |}
+         ut {c |}
+ use,timing {c |}
+     of cro {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}     17,745       93.73       93.73
+{txt}          2 {c |}{res}      1,117        5.90       99.63
+{txt}          3 {c |}{res}         41        0.22       99.85
+{txt}          4 {c |}{res}         14        0.07       99.92
+{txt}          5 {c |}{res}          8        0.04       99.96
+{txt}          6 {c |}{res}          2        0.01       99.97
+{txt}          8 {c |}{res}          1        0.01       99.98
+{txt}         11 {c |}{res}          1        0.01       99.98
+{txt}         12 {c |}{res}          2        0.01       99.99
+{txt}         13 {c |}{res}          1        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}     18,932      100.00
+
+{com}. use "G:\My Drive\weather_project\regression_data\malawi\mwi_lp.dta"
+{txt}(This data set was created with .do file mwi_append_built  | Last modified on 19 )
+
+{com}. tab year
+
+       {txt}Year {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       2009 {c |}{res}      1,619       38.89       38.89
+{txt}       2012 {c |}{res}      1,246       29.93       68.82
+{txt}       2015 {c |}{res}      1,298       31.18      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      4,163      100.00
+
+{com}. tab data
+
+{txt}Data Source {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+        lp1 {c |}{res}      1,619       38.89       38.89
+{txt}        lp2 {c |}{res}      1,246       29.93       68.82
+{txt}        lp3 {c |}{res}      1,298       31.18      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      4,163      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD7868_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 12 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds introduction of overall agriculture data (rs maize, rs production)
+.         * combines with previously built - stuff sold information 
+.         * overall agriculture data derived from world bank lsms kitchen sink 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+.         
+.         * leave this for now - possible issue with using owner instead of decision maker ... 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}

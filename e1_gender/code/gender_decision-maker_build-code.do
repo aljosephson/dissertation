@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 7 October 2020
+* Last edit: 12 October 2020
 * Stata v.16.1
 
 * does
@@ -14,6 +14,8 @@
 	* all of it
 	* clean up data files 
 	* code and data can be made available on github and googledrive 
+	
+	* leave this for now - possible issue with using owner instead of decision maker ... 
 
 * **********************************************************************
 * 0 - setup
@@ -43,24 +45,25 @@
 	
 	keep 			case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
 	rename 			ag_d00 plotid
+	rename 			ag_d01 decision
+	rename 			ag_
 	
-	save 			"$fil\decision-making\decision_dry_y1.dta"
+	save 			"$fil\decision-making\decision_wet_y1.dta"
 	
 * combined with household file to learn about gender, etc.  
-use "C:\Users\Anna\Dropbox\Dissertation\Data - LSMS Malawi\Plot\Decision, Own - Wet, Y1.dta", clear
-rename ag_d02 id_code
-merge m:m case_id ea_id id_code using "C:\Users\Anna\Dropbox\Dissertation\Data - LSMS Malawi\Household\_BASE ROSTER.dta"
-keep if _merge == 3
-tab hh_b03
-drop _merge
-sort case_id plotid id_code
-by case_id plotid id_code: gen female_dec = 1 if hh_b03 == 2
-replace female_dec = 0 if female_dec == .
-by case_id plotid id_code: gen male_dec = 1 if hh_b03 == 1
-replace male_dec = 0 if male_dec == .
-save "C:\Users\Anna\Dropbox\Dissertation\Data - LSMS Malawi\Plot\Decision - Wet, Y1.dta"
+	rename 			ag_d02 id_code
+	merge m:m 		case_id ea_id id_code using "$fil\household-base.dta"
+	keep 			if _merge == 3
+	drop 			_merge
+	
+	sort case_id plotid id_code
+	by case_id plotid id_code: gen female_dec = 1 if hh_b03 == 2
+	replace female_dec = 0 if female_dec == .
+	by case_id plotid id_code: gen male_dec = 1 if hh_b03 == 1
+	replace male_dec = 0 if male_dec == .
+	save "C:\Users\Anna\Dropbox\Dissertation\Data - LSMS Malawi\Plot\Decision - Wet, Y1.dta"
 
-*gender of plot owners: 1 
+* gender of plot owners: 1 
 rename ag_d04a id_code
 rename id_code id_code_plotmanager
 rename ag_d04a id_code
@@ -74,7 +77,7 @@ replace female_own1 = 0 if female_own1 == .
 by case_id plotid id_code: gen male_own1 = 1 if hh_b03 == 1
 replace male_own1 = 0 if male_own1 == .
 
-*gender of plot owners: 2 
+* gender of plot owners: 2 
 drop hh_b03
 rename id_code id_code_own1
 rename ag_d04b id_code
