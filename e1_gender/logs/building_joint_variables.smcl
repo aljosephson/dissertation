@@ -178,4 +178,427 @@ planted,inp {c |}
 . * open log
 .         cap log                 close
 {smcl}
-{com}{sf}{ul off}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}14 Oct 2020, 09:33:16
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify manager (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\Year 1\AG_MOD_D.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. sum ag_d01
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 6}ag_d01 {c |}{res}     18,932    1.070463    .3271397          1         13
+
+{com}. sum ag_d02
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 6}ag_d02 {c |}{res}     18,835     1.33151    .5328763          1         12
+
+{com}. tab ag_d01
+
+  {txt}Who in HH {c |}
+      makes {c |}
+  decisions {c |}
+ concerning {c |}
+crops to be {c |}
+planted,inp {c |}
+         ut {c |}
+ use,timing {c |}
+     of cro {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}     17,745       93.73       93.73
+{txt}          2 {c |}{res}      1,117        5.90       99.63
+{txt}          3 {c |}{res}         41        0.22       99.85
+{txt}          4 {c |}{res}         14        0.07       99.92
+{txt}          5 {c |}{res}          8        0.04       99.96
+{txt}          6 {c |}{res}          2        0.01       99.97
+{txt}          8 {c |}{res}          1        0.01       99.98
+{txt}         11 {c |}{res}          1        0.01       99.98
+{txt}         12 {c |}{res}          2        0.01       99.99
+{txt}         13 {c |}{res}          1        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}     18,932      100.00
+
+{com}. tab ag_d03
+
+  {txt}How did your household {c |}
+    acquire this [PLOT]? {c |}      Freq.     Percent        Cum.
+{hline 25}{c +}{hline 35}
+Granted by local leaders {c |}{res}      2,193       11.58       11.58
+{txt}               Inherited {c |}{res}     13,929       73.57       85.15
+{txt}             Bride Price {c |}{res}        330        1.74       86.89
+{txt}    Purchased with title {c |}{res}        208        1.10       87.99
+{txt} Purchased with no title {c |}{res}        331        1.75       89.74
+{txt}               Leasehold {c |}{res}         42        0.22       89.96
+{txt}         Rent short-term {c |}{res}      1,318        6.96       96.92
+{txt}     Farming as a tenant {c |}{res}         40        0.21       97.13
+{txt}       Borrowed for free {c |}{res}        376        1.99       99.12
+{txt} Moved in w/o permission {c |}{res}         87        0.46       99.58
+{txt}         Other (Specify) {c |}{res}         80        0.42      100.00
+{txt}{hline 25}{c +}{hline 35}
+                   Total {c |}{res}     18,934      100.00
+
+{com}. tab ag_d0`
+{bf}{err}ag_d0{sf} ambiguous abbreviation
+{txt}{search r(111), local:r(111);}
+
+{com}. tab ag_d01
+
+  {txt}Who in HH {c |}
+      makes {c |}
+  decisions {c |}
+ concerning {c |}
+crops to be {c |}
+planted,inp {c |}
+         ut {c |}
+ use,timing {c |}
+     of cro {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}     17,745       93.73       93.73
+{txt}          2 {c |}{res}      1,117        5.90       99.63
+{txt}          3 {c |}{res}         41        0.22       99.85
+{txt}          4 {c |}{res}         14        0.07       99.92
+{txt}          5 {c |}{res}          8        0.04       99.96
+{txt}          6 {c |}{res}          2        0.01       99.97
+{txt}          8 {c |}{res}          1        0.01       99.98
+{txt}         11 {c |}{res}          1        0.01       99.98
+{txt}         12 {c |}{res}          2        0.01       99.99
+{txt}         13 {c |}{res}          1        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}     18,932      100.00
+
+{com}. tab ag_d02
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}     12,925       68.62       68.62
+{txt}          2 {c |}{res}      5,709       30.31       98.93
+{txt}          3 {c |}{res}        133        0.71       99.64
+{txt}          4 {c |}{res}         31        0.16       99.80
+{txt}          5 {c |}{res}         21        0.11       99.92
+{txt}          6 {c |}{res}          9        0.05       99.96
+{txt}          7 {c |}{res}          6        0.03       99.99
+{txt}         12 {c |}{res}          1        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}     18,835      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}.         rename                  ag_d01 id_code
+{res}{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y1.dta"
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\decision-making\decision_wet_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+.         
+.         * leave this for now - possible issue with using owner instead of decision maker ... 
+.         * probably for now going to go with this 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}14 Oct 2020, 09:43:24
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\AG_MOD_D.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         keep                    case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y1.dta"
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y1.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+. * primary manager 
+.         rename                  ag_d01 id_code 
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         rename                  ag_d01 id_code 
+{res}{err}variable {bf}ag_d01{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   1:m case_id ea_id id_code using "$fil\household\hhbase_y1.dta"
+{res}{err}{p 0 4 2}
+variable{err}s{err} case_id
+ea_id
+id_code
+do not uniquely identify observations in the
+master data
+{p_end}
+{txt}{search r(459), local:r(459);}
+
+end of do-file
+
+{search r(459), local:r(459);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         rename                  ag_d01 id_code 
+{res}{err}variable {bf}ag_d01{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:1 case_id ea_id id_code using "$fil\household\hhbase_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          22,998
+{txt}{col 9}from master{col 30}{res}          16,721{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,277{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,544{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab id_code
+
+  {txt}Who in HH {c |}
+      makes {c |}
+  decisions {c |}
+ concerning {c |}
+crops to be {c |}
+planted,inp {c |}
+         ut {c |}
+ use,timing {c |}
+     of cro {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}     18,202       72.20       72.20
+{txt}          2 {c |}{res}      2,482        9.85       82.05
+{txt}          3 {c |}{res}      1,409        5.59       87.64
+{txt}          4 {c |}{res}      1,094        4.34       91.98
+{txt}          5 {c |}{res}        814        3.23       95.21
+{txt}          6 {c |}{res}        533        2.11       97.32
+{txt}          7 {c |}{res}        320        1.27       98.59
+{txt}          8 {c |}{res}        171        0.68       99.27
+{txt}          9 {c |}{res}         83        0.33       99.60
+{txt}         10 {c |}{res}         41        0.16       99.76
+{txt}         11 {c |}{res}         26        0.10       99.87
+{txt}         12 {c |}{res}         16        0.06       99.93
+{txt}         13 {c |}{res}          6        0.02       99.95
+{txt}         14 {c |}{res}          4        0.02       99.97
+{txt}         15 {c |}{res}          3        0.01       99.98
+{txt}         16 {c |}{res}          2        0.01       99.99
+{txt}         17 {c |}{res}          1        0.00       99.99
+{txt}         18 {c |}{res}          1        0.00      100.00
+{txt}         19 {c |}{res}          1        0.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}     25,209      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+.         
+.         * leave this for now - possible issue with using owner instead of decision maker ... 
+.         * probably for now going to go with this 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}14 Oct 2020, 09:49:34
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\AG_MOD_D.dta", clear
+{txt}
+{com}. 
+. * determine plot id and relevant decision maker variables       
+. 
+. * save decision maker 1 and 2 - need to merge with household base file 
+.         
+.         keep                    case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y1.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta saved
+
+{com}.         
+. * combined with household file to learn about gender, etc.  
+. 
+. * primary manager 
+.         rename                  ag_d01 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id id_code using "$fil\household\hhbase_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          22,998
+{txt}{col 9}from master{col 30}{res}          16,721{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,277{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,544{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. 

@@ -11,7 +11,6 @@
 	* access to data file(s) "..."
 
 * to do 
-	* all of it
 	* clean up data files 
 	* code and data can be made available on github and googledrive 
 

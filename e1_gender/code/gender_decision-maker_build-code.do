@@ -1,11 +1,12 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 13 October 2020
+* Last edit: 14 October 2020
 * Stata v.16.1
 
 * does
 	* builds respondent decision maker variable 
+	* just clean up for now - will merge with production data before determining genders (since only need if ACTUALLY produce something)
 
 * assumes
 	* access to data file(s) "..."
@@ -14,16 +15,13 @@
 	* all of it
 	* clean up data files 
 	* code and data can be made available on github and googledrive 
-	
-	* leave this for now - possible issue with using owner instead of decision maker ... 
-	* probably for now going to go with this 
 
 * **********************************************************************
 * 0 - setup
 * **********************************************************************
 
 * define
-	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi" 
+	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
 	global	code	=	"C:\Users\aljosephson\git\dissertation\e1_gender\code"
 	global	logs	=	"C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
 
@@ -36,26 +34,32 @@
 * **********************************************************************
 
 * for each plot:
-* identify manager (decision maker), owner [can identify joint ownership]
+* identify managers (decision maker), owner [can identify joint ownership]
 
 * primary wet season 
 
-	use				"$fil\Year 1\AG_MOD_D.dta", clear
+	use				"$fil\LSMS\AG_MOD_D.dta", clear
 
 * determine plot id and relevant decision maker variables 	
 
-* save decision maker and save owners 
+* save decision maker 1 and 2 - need to merge with household base file 
 	
 	keep 			case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
 	rename 			ag_d00 plotid
-	rename 			ag_d01 decision
-	rename 			ag_
 	
-	save 			"$fil\decision-making\decision_wet_y1.dta"
+	save 			"$fil\decision-making\decision_wet_y1.dta", replace
 	
 * combined with household file to learn about gender, etc.  
+
+* primary manager 
+	rename 			ag_d01 id_code 
+	merge 			m:m case_id id_code using "$fil\household\hhbase_y1.dta"
+	
+* secondary manager 
 	rename 			ag_d02 id_code
-	merge m:m 		case_id ea_id id_code using "$fil\household-base.dta"
+	merge m:m 		case_id ea_id id_code using "$fil\hhbase_y1.dta"
+	
+	
 	keep 			if _merge == 3
 	drop 			_merge
 	
