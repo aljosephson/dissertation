@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 12 October 2020
+* Last edit: 14 October 2020
 * Stata v.16.1
 
 * does
@@ -26,7 +26,18 @@
 
 * open log
 	cap log 		close
-	log using		"$logs/building_joint_variables-production", append
+	log using		"$logs/building_joint_variables-data", append
+	
+
+* **********************************************************************
+* 1 - merge together production and decision making 
+* **********************************************************************
+
+	use 			"$fil\production-and-sales\totalproduction-sales_all.dta", clear
+	
+*** need to resolve different levels of analysis
+*** this is at household level - but analysis would be at plot or observation level 
+
 
 * *********************************************************************
 * 3 - end matter
