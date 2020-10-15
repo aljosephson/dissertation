@@ -43,7 +43,43 @@
 	keep 			case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
 						harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
 						
-	save 			"$fil\production-and-sales\plot-with-manager"
+	save 			"$fil\production-and-sales\plot-with-manager", replace
+	
+* **********************************************************************
+* 2 - merge together to determine sex of manager 
+* **********************************************************************
+
+* will need to repeat twice - once for each manager? 
+
+* manager 1
+	rename 			manager1 id_code 
+	merge 			m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+	drop 			if _merge == 2
+	*** drop 28619 not matched
+	*** matched 2413 (from master 6816 not matched)
+	
+	rename 			id_code manager1
+	rename 			sex sex_manager1
+	rename			rltn rltn_manager1
+	rename 			age age_manager1
+	rename 			educ_years educ_years_manager1
+	drop 			_merge 
+	
+* manager 2	
+	rename 			manager2 id_code 
+	merge 			m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+	drop			if _merge == 2
+	*** drop 28651 not matched
+	*** matched 2391 (from master 6838 not matched)
+	
+	rename 			id_code manager2
+	rename 			sex sex_manager2
+	rename			rltn rltn_manager2
+	rename 			age age_manager2
+	rename 			educ_years educ_years_manager2
+	drop 			_merge 
+
+	save 			"$fil\production-and-sales\plot-with-manager", replace
 
 * *********************************************************************
 * 3 - end matter

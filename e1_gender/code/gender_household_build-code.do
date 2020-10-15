@@ -36,14 +36,14 @@
 * 2009
 	use				"$fil\household\hhbase_y1.dta", clear
 	gen 			year = 2009
-	keep			case_id region district urban ta ea_id strata cluster hhweightR1 id_code sex rltn age educ_years 
+	keep			case_id region district urban ta ea_id strata cluster hhweightR1 id_code sex rltn age educ_years year
 	destring		case_id, replace 
 	save			"$fil\household\hhbase_y1-short.dta", replace
 	
 * 2012 
 	use				"$fil\household\hhbase_y2.dta", clear
 	gen 			year = 2012
-	keep 			y2_hhid case_id region district urbanR2 ta ea_id urbanR1 strataR1 ///
+	keep 			y2_hhid case_id region district urbanR2 ta ea_id urbanR1 strataR1 year ///
 						strataR2 cluster hhweightR1 hhweightR2 splitoffR2 PID id_code hhmember rltn sex age educ_years
 	destring 		case_id, replace 
 	save			"$fil\household\hhbase_y2-short.dta", replace
@@ -51,7 +51,7 @@
 * 2015	
 	use				"$fil\household\hhbase_y3.dta", clear
 	gen 			year = 2015
-	keep			y3_hhid y2_hhid case_id region district urbanR3 ta ea_id strataR3 ///
+	keep			y3_hhid y2_hhid case_id region district urbanR3 ta ea_id strataR3 year ///
 						cluster hhweightR1 hhweightR2 hhweightR3 mover_R1R2R3 PID id_code rltn age educ_years sex
 	destring 		case_id, replace 
 	save			"$fil\household\hhbase_y3-short.dta", replace

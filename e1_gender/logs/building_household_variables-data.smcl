@@ -370,4 +370,368 @@ Sorted by:
  {txt}closed on:  {res}15 Oct 2020, 14:13:37
 {txt}{.-}
 {smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_household_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 15:02:07
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - merge together household rosters
+. * **********************************************************************
+. 
+. * 2009
+.         use                             "$fil\household\hhbase_y1.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         keep                    case_id region district urban ta ea_id strata cluster hhweightR1 id_code sex rltn age educ_years 
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y1-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y1-short.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\household\hhbase_y2.dta", clear
+{txt}
+{com}.         gen                     year = 2012
+{txt}
+{com}.         keep                    y2_hhid case_id region district urbanR2 ta ea_id urbanR1 strataR1 ///
+>                                                 strataR2 cluster hhweightR1 hhweightR2 splitoffR2 PID id_code hhmember rltn sex age educ_years
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y2-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y2-short.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\household\hhbase_y3.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         keep                    y3_hhid y2_hhid case_id region district urbanR3 ta ea_id strataR3 ///
+>                                                 cluster hhweightR1 hhweightR2 hhweightR3 mover_R1R2R3 PID id_code rltn age educ_years sex
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y3-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y3-short.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                             "$fil\household\hhbase_y1-short.dta", clear
+{txt}
+{com}.         append                  using "$fil\household\hhbase_y2-short.dta"
+{txt}(label urban already defined)
+(label strata already defined)
+(label district already defined)
+(label region already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{com}.         append                  using "$fil\household\hhbase_y3-short.dta"
+{txt}{p 0 7 2}
+(note: variable
+PID was 
+str9, now str10 to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{com}.         save                    "$fil\household\household_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\household_all.dta saved
+
+{com}. 
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\household_all.dta
+{txt}  obs:{res}        29,881                          
+{txt} vars:{res}            28                          15 Oct 2020 15:02
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:id_code        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Member ID Code{p_end}
+{p 0 48}{bind:sex            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn           }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age            }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:urbanR2        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:urbanR1        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Baseline Urban/rural{p_end}
+{p 0 48}{bind:strataR1       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Strata{p_end}
+{p 0 48}{bind:strataR2       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}2013 Strata{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}panel weight 2013{p_end}
+{p 0 48}{bind:splitoffR2     }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{bind:splitoff }{bind:  }{res}{res}Household split off from an IHS3 Household = 2{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline and IHPS New Members{p_end}
+{p 0 48}{bind:hhmember       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dummy Variable = 1 if Individual is Considered a Household Member in 2013{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     29,881    2.39e+11    6.84e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}     29,881    2.321676    .6750985          1          3
+{txt}{space 4}district {c |}{res}     29,881     238.993    68.55095        101        315
+{txt}{space 7}urban {c |}{res}      7,580    1.718997    .4495184          1          2
+{txt}{space 10}ta {c |}{res}     29,553    16.55859    21.15686          1         86
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 6}strata {c |}{res}      7,580    4.348549      1.4942          1          6
+{txt}{space 5}cluster {c |}{res}     29,881    2.39e+07     6836966   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}     29,881    2138.691    1298.026    70.8552   7525.956
+{txt}{space 5}id_code {c |}{res}     29,881     3.48904    2.222396          1         21
+{txt}{hline 13}{c +}{hline 57}
+{space 9}sex {c |}{res}     29,881    1.514675     .499793          1          2
+{txt}{space 8}rltn {c |}{res}     29,877    2.786692    1.659347          1         16
+{txt}{space 9}age {c |}{res}     29,881    21.20461     17.8287          0        116
+{txt}{space 2}educ_years {c |}{res}     29,881    4.383956    4.215385          0         19
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}urbanR2 {c |}{res}     10,035     1.72855    .4447298          1          2
+{txt}{space 5}urbanR1 {c |}{res}     10,035     1.71988    .4490798          1          2
+{txt}{space 4}strataR1 {c |}{res}     10,035     4.37997    1.486306          1          6
+{txt}{space 4}strataR2 {c |}{res}     10,035    4.387843    1.473117          1          6
+{txt}{space 2}hhweightR2 {c |}{res}     19,412    1180.429    1026.532   14.42097   11551.17
+{txt}{hline 13}{c +}{hline 57}
+{space 2}splitoffR2 {c |}{res}     10,028    1.248205    .4319929          1          2
+{txt}{space 9}PID {c |}{res}          0
+{txt}{space 4}hhmember {c |}{res}     10,035      .98286    .1297995          0          1
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{space 5}urbanR3 {c |}{res}     12,266    1.737078    .4402383          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 4}strataR3 {c |}{res}     12,266    1.737078    .4402383          1          2
+{txt}{space 2}hhweightR3 {c |}{res}     12,266    1190.102    1049.414    10.0647   7097.931
+{txt}mover_R1R2R3 {c |}{res}     12,264    .4973092    .5000131          0          1
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_household_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Oct 2020, 15:02:07
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_household_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 15:02:44
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - merge together household rosters
+. * **********************************************************************
+. 
+. * 2009
+.         use                             "$fil\household\hhbase_y1.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         keep                    case_id region district urban ta ea_id strata cluster hhweightR1 id_code sex rltn age educ_years year
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y1-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y1-short.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\household\hhbase_y2.dta", clear
+{txt}
+{com}.         gen                     year = 2012
+{txt}
+{com}.         keep                    y2_hhid case_id region district urbanR2 ta ea_id urbanR1 strataR1 year ///
+>                                                 strataR2 cluster hhweightR1 hhweightR2 splitoffR2 PID id_code hhmember rltn sex age educ_years
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y2-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y2-short.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\household\hhbase_y3.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         keep                    y3_hhid y2_hhid case_id region district urbanR3 ta ea_id strataR3 year ///
+>                                                 cluster hhweightR1 hhweightR2 hhweightR3 mover_R1R2R3 PID id_code rltn age educ_years sex
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\household\hhbase_y3-short.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\hhbase_y3-short.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                             "$fil\household\hhbase_y1-short.dta", clear
+{txt}
+{com}.         append                  using "$fil\household\hhbase_y2-short.dta"
+{txt}(label urban already defined)
+(label strata already defined)
+(label district already defined)
+(label region already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{com}.         append                  using "$fil\household\hhbase_y3-short.dta"
+{txt}{p 0 7 2}
+(note: variable
+PID was 
+str9, now str10 to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{com}.         save                    "$fil\household\household_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\household_all.dta saved
+
+{com}. 
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (59,762 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\household\household_all.dta
+{txt}  obs:{res}        29,881                          
+{txt} vars:{res}            29                          15 Oct 2020 15:02
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:id_code        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Member ID Code{p_end}
+{p 0 48}{bind:sex            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn           }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age            }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:urbanR2        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:urbanR1        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Baseline Urban/rural{p_end}
+{p 0 48}{bind:strataR1       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Strata{p_end}
+{p 0 48}{bind:strataR2       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}2013 Strata{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}panel weight 2013{p_end}
+{p 0 48}{bind:splitoffR2     }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{bind:splitoff }{bind:  }{res}{res}Household split off from an IHS3 Household = 2{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline and IHPS New Members{p_end}
+{p 0 48}{bind:hhmember       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dummy Variable = 1 if Individual is Considered a Household Member in 2013{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     29,881    2.39e+11    6.84e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}     29,881    2.321676    .6750985          1          3
+{txt}{space 4}district {c |}{res}     29,881     238.993    68.55095        101        315
+{txt}{space 7}urban {c |}{res}      7,580    1.718997    .4495184          1          2
+{txt}{space 10}ta {c |}{res}     29,553    16.55859    21.15686          1         86
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 6}strata {c |}{res}      7,580    4.348549      1.4942          1          6
+{txt}{space 5}cluster {c |}{res}     29,881    2.39e+07     6836966   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}     29,881    2138.691    1298.026    70.8552   7525.956
+{txt}{space 5}id_code {c |}{res}     29,881     3.48904    2.222396          1         21
+{txt}{hline 13}{c +}{hline 57}
+{space 9}sex {c |}{res}     29,881    1.514675     .499793          1          2
+{txt}{space 8}rltn {c |}{res}     29,877    2.786692    1.659347          1         16
+{txt}{space 9}age {c |}{res}     29,881    21.20461     17.8287          0        116
+{txt}{space 2}educ_years {c |}{res}     29,881    4.383956    4.215385          0         19
+{txt}{space 8}year {c |}{res}     29,881     2012.47    2.399243       2009       2015
+{txt}{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 5}urbanR2 {c |}{res}     10,035     1.72855    .4447298          1          2
+{txt}{space 5}urbanR1 {c |}{res}     10,035     1.71988    .4490798          1          2
+{txt}{space 4}strataR1 {c |}{res}     10,035     4.37997    1.486306          1          6
+{txt}{space 4}strataR2 {c |}{res}     10,035    4.387843    1.473117          1          6
+{txt}{hline 13}{c +}{hline 57}
+{space 2}hhweightR2 {c |}{res}     19,412    1180.429    1026.532   14.42097   11551.17
+{txt}{space 2}splitoffR2 {c |}{res}     10,028    1.248205    .4319929          1          2
+{txt}{space 9}PID {c |}{res}          0
+{txt}{space 4}hhmember {c |}{res}     10,035      .98286    .1297995          0          1
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}urbanR3 {c |}{res}     12,266    1.737078    .4402383          1          2
+{txt}{space 4}strataR3 {c |}{res}     12,266    1.737078    .4402383          1          2
+{txt}{space 2}hhweightR3 {c |}{res}     12,266    1190.102    1049.414    10.0647   7097.931
+{txt}mover_R1R2R3 {c |}{res}     12,264    .4973092    .5000131          0          1
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_household_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Oct 2020, 15:02:44
+{txt}{.-}
+{smcl}
 {txt}{sf}{ul off}
