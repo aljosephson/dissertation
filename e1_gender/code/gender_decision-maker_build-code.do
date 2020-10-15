@@ -150,30 +150,3 @@ summarize
 
 * close the log
 	log	close	
-
-* **********************************************************************
-/* holding code for later use 	
-	
-	sort case_id plotid id_code
-	by case_id plotid id_code: gen female_dec = 1 if hh_b03 == 2
-	replace female_dec = 0 if female_dec == .
-	by case_id plotid id_code: gen male_dec = 1 if hh_b03 == 1
-	replace male_dec = 0 if male_dec == .	
-	
-	gen female_own = 1 if female_own1 == 1 & female_own2 == 1
-tab female_own
-replace female_own = 0 if female_own == .
-gen male_own = 1 if male_own1 == 1 & male_own2 == 1
-tab male_own
-replace male_own = 0 if male_own == .
-gen joint_own = 1 if male_own == 0 & female_own == 0
-replace joint_own = 0 if joint_own == .
-* then save 
-
-rename female_own1 female_primary
-rename female_primary female_primaryown
-rename male_own1 male_primaryown
-drop female_own2 male_own2
-corr female_dec female_primaryown
-corr male_dec male_primaryown
-* then save /* 

@@ -80,6 +80,20 @@
 	drop 			_merge 
 
 	save 			"$fil\production-and-sales\plot-with-manager", replace
+	
+* **********************************************************************
+* 3 - determine management 
+* **********************************************************************
+	
+* determine primary manager 	
+	bys case_id plotid: gen female_dec = 1 if sex_manager1 == 2 
+	replace female_dec = 0 if female_dec == .
+	bys case_id plotid: gen male_dec = 1 if sex_manager1 == 1
+	replace male_dec = 0 if male_dec == .	
+	
+	bys case_id plotid: gen joint_dec = 1 if sex_manager2 != . 
+	replace joint_dec = . if sex_manager1 == . | sex_manager2 == .
+	*** THIS ISN'T WORKING
 
 * *********************************************************************
 * 3 - end matter
