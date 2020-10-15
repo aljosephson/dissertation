@@ -1,0 +1,730 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 13:29:28
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\production-and-sales\totalproduction-rs_hh_plot.dta", clear
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\totalproduction-rs_hh_plot.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+end of do-file
+
+{search r(601), local:r(601);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 13:34:28
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. tab year
+
+       {txt}year {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       2009 {c |}{res}      2,427       26.89       26.89
+{txt}       2012 {c |}{res}      2,964       32.83       59.72
+{txt}       2015 {c |}{res}      3,636       40.28      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,027      100.00
+
+{com}. merge 1:1 case_id y2_hhid y3_hhid year using "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+{res}{err}variable {bf}year{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. use "$fil\decision-making\decision_wet_y1.dta", clear
+
+. tab yera
+{err}variable {bf}yera{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\gender_decision-maker_build-code.do"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable 
+.         * just clean up for now - will merge with production data before determining genders (since only need if ACTUALLY produce something)
+. 
+. * assumes
+.         * access to original LSMS data files "AG_MOD_D_*" for each year
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 13:37:38
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+. 
+. 
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (18,054 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_plot.dta
+{txt}  obs:{res}         9,027                          
+{txt} vars:{res}            66                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:plottenure_own }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is owned{p_end}
+{p 0 48}{bind:plottenure_temp}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is held under short-term arrangement{p_end}
+{p 0 48}{bind:plottenure_rent}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is rented short-term{p_end}
+{p 0 48}{bind:plottenure     }{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{txt}plottenure{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Plot tenure categories{p_end}
+{p 0 48}{bind:crop_cash      }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is planted withcash crops (tobacco, cotton, sunflower, paprika, sugar cane){p_end}
+{p 0 48}{bind:soiltype       }{txt}{bind: byte    }{bind:{txt}%20.0g    }{space 1}{bind:soiltype }{bind:  }{res}{res}Predominant soil type of plot{p_end}
+{p 0 48}{bind:swc_terrace    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has terraces to control erosion{p_end}
+{p 0 48}{bind:swc_bund_ec    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to control erosion{p_end}
+{p 0 48}{bind:swc_bund_wh    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to harvest water{p_end}
+{p 0 48}{bind:swc_bund_any   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds{p_end}
+{p 0 48}{bind:swc_gabion     }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has gabions/sandbags to control erosion{p_end}
+{p 0 48}{bind:swc_vetiver    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has vetiver grass to control erosion{p_end}
+{p 0 48}{bind:swc_treebelt   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has tree belts to control erosion{p_end}
+{p 0 48}{bind:swc_drainage   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has drainage ditches to control erosion{p_end}
+{p 0 48}{bind:swc_any        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any erosion control structure{p_end}
+{p 0 48}{bind:swc_mech       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any mechanical erosion control structure{p_end}
+{p 0 48}{bind:swc_bio        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any biological erosion control measures{p_end}
+{p 0 48}{bind:slope          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:slope    }{bind:  }{res}{res}Predominant slope of plot{p_end}
+{p 0 48}{bind:dambo          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is in swamp/wetland{p_end}
+{p 0 48}{bind:irrigation_any }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any system of irrigation{p_end}
+{p 0 48}{bind:fert_org_any   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Organic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_any }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Inorganic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_n   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of applications of inorganic fertilizer on plot{p_end}
+{p 0 48}{bind:insecticide_any}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insecticide was applied on plot{p_end}
+{p 0 48}{bind:herbicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Herbicide was applied on plot{p_end}
+{p 0 48}{bind:fungicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Fungicide was applied on plot{p_end}
+{p 0 48}{bind:pesticide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any pesticide was applied on plot{p_end}
+{p 0 48}{bind:labordays      }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot{p_end}
+{p 0 48}{bind:labordaysimp   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot, imputed{p_end}
+{p 0 48}{bind:labordays_ha   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha){p_end}
+{p 0 48}{bind:labordays_haimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha), imputed{p_end}
+{p 0 48}{bind:hirelabor_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any labor hired on plot{p_end}
+{p 0 48}{bind:mz_harvest_lo~s}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest area less than maize planted area{p_end}
+{p 0 48}{bind:harvest_losses }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Harvest area less than planted area{p_end}
+{p 0 48}{bind:intercrop_leg~e}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was intercropped with legumes{p_end}
+{p 0 48}{bind:mz_harvest     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg){p_end}
+{p 0 48}{bind:mz_harvestimp  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg), imputed{p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:cultivated     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was cultivated during the rainy season{p_end}
+{p 0 48}{bind:weedings_n     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of weedings on plot{p_end}
+{p 0 48}{bind:covercrop_any  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any cover crop present on plot prior to cultivation in reference rainy season{p_end}
+{p 0 48}{bind:residue_cutsp~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Crop residue was cut and spread on plot prior to reference rainy season{p_end}
+{p 0 48}{bind:tilltype_redu~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with reduced tillage methods{p_end}
+{p 0 48}{bind:tilltype_anySLM}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with any SLM tillage method{p_end}
+{p 0 48}{bind:tilltool_trac~r}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any tractor power{p_end}
+{p 0 48}{bind:tilltool_drau~t}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any draught power{p_end}
+{p 0 48}{bind:neighbors_agfo }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_agf~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_min~l}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_min~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_cov~p}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_cov~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_swc  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:neighbors_swc~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:gardenid       }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Garden ID{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      9,027    .3543804    .3227719   .0040469   3.897123
+{txt}plottenure~n {c |}{res}      9,027    .8640744    .3427285          0          1
+{txt}plottenure~p {c |}{res}      9,027    .1354824    .3422571          0          1
+{txt}{hline 13}{c +}{hline 57}
+plottenure~t {c |}{res}      9,027    .0978177    .2970844          0          1
+{txt}{space 2}plottenure {c |}{res}      9,023    4.915217    4.198655          1         13
+{txt}{space 3}crop_cash {c |}{res}      9,027    .0902847    .2866051          0          1
+{txt}{space 4}soiltype {c |}{res}      9,027    2.059267    .6714471          1          3
+{txt}{space 1}swc_terrace {c |}{res}      9,027     .048078    .2139429          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}swc_bund_ec {c |}{res}      9,027    .2455965    .4304642          0          1
+{txt}{space 1}swc_bund_wh {c |}{res}      9,027    .0363354    .1871338          0          1
+{txt}swc_bund_any {c |}{res}      9,027    .2761715    .4471274          0          1
+{txt}{space 2}swc_gabion {c |}{res}      9,027    .0100809    .0999017          0          1
+{txt}{space 1}swc_vetiver {c |}{res}      9,027    .0774344    .2672942          0          1
+{txt}{hline 13}{c +}{hline 57}
+swc_treebelt {c |}{res}      9,027    .0121857    .1097201          0          1
+{txt}swc_drainage {c |}{res}      9,027    .0417636    .2000596          0          1
+{txt}{space 5}swc_any {c |}{res}      9,027    .4395702    .4963623          0          1
+{txt}{space 4}swc_mech {c |}{res}      9,027    .3690041    .4825618          0          1
+{txt}{space 5}swc_bio {c |}{res}      9,027    .0882907    .2837329          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 7}slope {c |}{res}      9,027    1.591891    .7609549          1          4
+{txt}{space 7}dambo {c |}{res}      9,027    .0928326    .2902138          0          1
+{txt}irrigation~y {c |}{res}      9,027    .0099701    .0993568          0          1
+{txt}fert_org_any {c |}{res}      9,027    .1609616    .3675158          0          1
+{txt}fert_inorg~y {c |}{res}      9,027    .6218013    .4849644          0          1
+{txt}{hline 13}{c +}{hline 57}
+fert_inorg_n {c |}{res}      9,027    .8950925     .800347          0          2
+{txt}insecticid~y {c |}{res}      9,027    .0183893    .1343619          0          1
+{txt}herbicide_~y {c |}{res}      9,027    .0096378    .0977032          0          1
+{txt}fungicide_~y {c |}{res}      9,027    .0006647    .0257741          0          1
+{txt}pesticide_~y {c |}{res}      9,027    .0299103    .1703492          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}labordays {c |}{res}      9,027    67.94782    54.15687          0        720
+{txt}labordaysimp {c |}{res}      9,027    66.97312    53.99083          0        720
+{txt}labordays_ha {c |}{res}      9,027    339.2005    744.3993          0   27922.91
+{txt}labordays_~p {c |}{res}      9,027    283.2023     291.978          0    6424.74
+{txt}hirelabor_~y {c |}{res}      9,027     .323474    .4678278          0          1
+{txt}{hline 13}{c +}{hline 57}
+mz_harvest~s {c |}{res}      6,424    .5952677    .4908784          0          1
+{txt}harvest_lo~s {c |}{res}      9,027    .5750526    .4943624          0          1
+{txt}intercrop_~e {c |}{res}      9,027    .2777224    .4479005          0          1
+{txt}{space 2}mz_harvest {c |}{res}      8,315    391.7335    1738.392          0     111888
+{txt}mz_harvest~p {c |}{res}      8,315    342.7844    620.2383          0    15987.5
+{txt}{hline 13}{c +}{hline 57}
+{space 4}mz_yield {c |}{res}      8,315    1502.567    9343.512          0   691203.2
+{txt}{space 1}mz_yieldimp {c |}{res}      8,315    1111.104    1665.351          0   38189.11
+{txt}harvest_va~e {c |}{res}      9,027    58241.38    290013.5          0   2.10e+07
+{txt}harvest~eimp {c |}{res}      9,027     49555.2    102220.2          0    3333333
+{txt}harvest_va~a {c |}{res}      9,027    229070.1     1516486          0   1.30e+08
+{txt}{hline 13}{c +}{hline 57}
+harvest~aimp {c |}{res}      9,027    172632.8    243433.5          0    3993076
+{txt}{space 8}year {c |}{res}      9,027    2012.402    2.425712       2009       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 2}cultivated {c |}{res}      6,600    .9974242    .0506904          0          1
+{txt}{space 2}weedings_n {c |}{res}      6,600    1.816667    1.185619          0         27
+{txt}{hline 13}{c +}{hline 57}
+covercrop_~y {c |}{res}      6,600    .2248485    .4175141          0          1
+{txt}residue_cu~d {c |}{res}      6,600    .0716667    .2579547          0          1
+{txt}tilltype_r~d {c |}{res}      6,600    .0372727    .1894437          0          1
+{txt}tilltype_a~M {c |}{res}      6,600    .0801515    .2715482          0          1
+{txt}tilltool_t~r {c |}{res}      6,600    .0015152    .0388984          0          1
+{txt}{hline 13}{c +}{hline 57}
+tilltool_d~t {c |}{res}      6,600    .0066667    .0813832          0          1
+{txt}neighbors_~o {c |}{res}      2,958    1.221433    3.911775          0         72
+{txt}neighb~o_any {c |}{res}      2,964    .2661943    .4420417          0          1
+{txt}neighbors_~l {c |}{res}      2,958    .8850575    3.415085          0         50
+{txt}neighb~l_any {c |}{res}      2,964    .1595816    .3662794          0          1
+{txt}{hline 13}{c +}{hline 57}
+neighbors_~p {c |}{res}      2,958    4.283638    10.43033          0         99
+{txt}neighb~p_any {c |}{res}      2,964    .3863023    .4869834          0          1
+{txt}neighbors_~c {c |}{res}      2,957    3.928306    7.422691          0         80
+{txt}neighb~c_any {c |}{res}      2,964    .5010121    .5000833          0          1
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 4}gardenid {c |}{res}          0
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Oct 2020, 13:37:38
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 13:38:33
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+. 
+. 
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (18,054 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_plot.dta
+{txt}  obs:{res}         9,027                          
+{txt} vars:{res}            66                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:plottenure_own }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is owned{p_end}
+{p 0 48}{bind:plottenure_temp}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is held under short-term arrangement{p_end}
+{p 0 48}{bind:plottenure_rent}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is rented short-term{p_end}
+{p 0 48}{bind:plottenure     }{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{txt}plottenure{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Plot tenure categories{p_end}
+{p 0 48}{bind:crop_cash      }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is planted withcash crops (tobacco, cotton, sunflower, paprika, sugar cane){p_end}
+{p 0 48}{bind:soiltype       }{txt}{bind: byte    }{bind:{txt}%20.0g    }{space 1}{bind:soiltype }{bind:  }{res}{res}Predominant soil type of plot{p_end}
+{p 0 48}{bind:swc_terrace    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has terraces to control erosion{p_end}
+{p 0 48}{bind:swc_bund_ec    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to control erosion{p_end}
+{p 0 48}{bind:swc_bund_wh    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to harvest water{p_end}
+{p 0 48}{bind:swc_bund_any   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds{p_end}
+{p 0 48}{bind:swc_gabion     }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has gabions/sandbags to control erosion{p_end}
+{p 0 48}{bind:swc_vetiver    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has vetiver grass to control erosion{p_end}
+{p 0 48}{bind:swc_treebelt   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has tree belts to control erosion{p_end}
+{p 0 48}{bind:swc_drainage   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has drainage ditches to control erosion{p_end}
+{p 0 48}{bind:swc_any        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any erosion control structure{p_end}
+{p 0 48}{bind:swc_mech       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any mechanical erosion control structure{p_end}
+{p 0 48}{bind:swc_bio        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any biological erosion control measures{p_end}
+{p 0 48}{bind:slope          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:slope    }{bind:  }{res}{res}Predominant slope of plot{p_end}
+{p 0 48}{bind:dambo          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is in swamp/wetland{p_end}
+{p 0 48}{bind:irrigation_any }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any system of irrigation{p_end}
+{p 0 48}{bind:fert_org_any   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Organic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_any }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Inorganic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_n   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of applications of inorganic fertilizer on plot{p_end}
+{p 0 48}{bind:insecticide_any}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insecticide was applied on plot{p_end}
+{p 0 48}{bind:herbicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Herbicide was applied on plot{p_end}
+{p 0 48}{bind:fungicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Fungicide was applied on plot{p_end}
+{p 0 48}{bind:pesticide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any pesticide was applied on plot{p_end}
+{p 0 48}{bind:labordays      }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot{p_end}
+{p 0 48}{bind:labordaysimp   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot, imputed{p_end}
+{p 0 48}{bind:labordays_ha   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha){p_end}
+{p 0 48}{bind:labordays_haimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha), imputed{p_end}
+{p 0 48}{bind:hirelabor_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any labor hired on plot{p_end}
+{p 0 48}{bind:mz_harvest_lo~s}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest area less than maize planted area{p_end}
+{p 0 48}{bind:harvest_losses }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Harvest area less than planted area{p_end}
+{p 0 48}{bind:intercrop_leg~e}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was intercropped with legumes{p_end}
+{p 0 48}{bind:mz_harvest     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg){p_end}
+{p 0 48}{bind:mz_harvestimp  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg), imputed{p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:cultivated     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was cultivated during the rainy season{p_end}
+{p 0 48}{bind:weedings_n     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of weedings on plot{p_end}
+{p 0 48}{bind:covercrop_any  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any cover crop present on plot prior to cultivation in reference rainy season{p_end}
+{p 0 48}{bind:residue_cutsp~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Crop residue was cut and spread on plot prior to reference rainy season{p_end}
+{p 0 48}{bind:tilltype_redu~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with reduced tillage methods{p_end}
+{p 0 48}{bind:tilltype_anySLM}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with any SLM tillage method{p_end}
+{p 0 48}{bind:tilltool_trac~r}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any tractor power{p_end}
+{p 0 48}{bind:tilltool_drau~t}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any draught power{p_end}
+{p 0 48}{bind:neighbors_agfo }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_agf~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_min~l}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_min~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_cov~p}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_cov~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_swc  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:neighbors_swc~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:gardenid       }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Garden ID{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      9,027    .3543804    .3227719   .0040469   3.897123
+{txt}plottenure~n {c |}{res}      9,027    .8640744    .3427285          0          1
+{txt}plottenure~p {c |}{res}      9,027    .1354824    .3422571          0          1
+{txt}{hline 13}{c +}{hline 57}
+plottenure~t {c |}{res}      9,027    .0978177    .2970844          0          1
+{txt}{space 2}plottenure {c |}{res}      9,023    4.915217    4.198655          1         13
+{txt}{space 3}crop_cash {c |}{res}      9,027    .0902847    .2866051          0          1
+{txt}{space 4}soiltype {c |}{res}      9,027    2.059267    .6714471          1          3
+{txt}{space 1}swc_terrace {c |}{res}      9,027     .048078    .2139429          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}swc_bund_ec {c |}{res}      9,027    .2455965    .4304642          0          1
+{txt}{space 1}swc_bund_wh {c |}{res}      9,027    .0363354    .1871338          0          1
+{txt}swc_bund_any {c |}{res}      9,027    .2761715    .4471274          0          1
+{txt}{space 2}swc_gabion {c |}{res}      9,027    .0100809    .0999017          0          1
+{txt}{space 1}swc_vetiver {c |}{res}      9,027    .0774344    .2672942          0          1
+{txt}{hline 13}{c +}{hline 57}
+swc_treebelt {c |}{res}      9,027    .0121857    .1097201          0          1
+{txt}swc_drainage {c |}{res}      9,027    .0417636    .2000596          0          1
+{txt}{space 5}swc_any {c |}{res}      9,027    .4395702    .4963623          0          1
+{txt}{space 4}swc_mech {c |}{res}      9,027    .3690041    .4825618          0          1
+{txt}{space 5}swc_bio {c |}{res}      9,027    .0882907    .2837329          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 7}slope {c |}{res}      9,027    1.591891    .7609549          1          4
+{txt}{space 7}dambo {c |}{res}      9,027    .0928326    .2902138          0          1
+{txt}irrigation~y {c |}{res}      9,027    .0099701    .0993568          0          1
+{txt}fert_org_any {c |}{res}      9,027    .1609616    .3675158          0          1
+{txt}fert_inorg~y {c |}{res}      9,027    .6218013    .4849644          0          1
+{txt}{hline 13}{c +}{hline 57}
+fert_inorg_n {c |}{res}      9,027    .8950925     .800347          0          2
+{txt}insecticid~y {c |}{res}      9,027    .0183893    .1343619          0          1
+{txt}herbicide_~y {c |}{res}      9,027    .0096378    .0977032          0          1
+{txt}fungicide_~y {c |}{res}      9,027    .0006647    .0257741          0          1
+{txt}pesticide_~y {c |}{res}      9,027    .0299103    .1703492          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}labordays {c |}{res}      9,027    67.94782    54.15687          0        720
+{txt}labordaysimp {c |}{res}      9,027    66.97312    53.99083          0        720
+{txt}labordays_ha {c |}{res}      9,027    339.2005    744.3993          0   27922.91
+{txt}labordays_~p {c |}{res}      9,027    283.2023     291.978          0    6424.74
+{txt}hirelabor_~y {c |}{res}      9,027     .323474    .4678278          0          1
+{txt}{hline 13}{c +}{hline 57}
+mz_harvest~s {c |}{res}      6,424    .5952677    .4908784          0          1
+{txt}harvest_lo~s {c |}{res}      9,027    .5750526    .4943624          0          1
+{txt}intercrop_~e {c |}{res}      9,027    .2777224    .4479005          0          1
+{txt}{space 2}mz_harvest {c |}{res}      8,315    391.7335    1738.392          0     111888
+{txt}mz_harvest~p {c |}{res}      8,315    342.7844    620.2383          0    15987.5
+{txt}{hline 13}{c +}{hline 57}
+{space 4}mz_yield {c |}{res}      8,315    1502.567    9343.512          0   691203.2
+{txt}{space 1}mz_yieldimp {c |}{res}      8,315    1111.104    1665.351          0   38189.11
+{txt}harvest_va~e {c |}{res}      9,027    58241.38    290013.5          0   2.10e+07
+{txt}harvest~eimp {c |}{res}      9,027     49555.2    102220.2          0    3333333
+{txt}harvest_va~a {c |}{res}      9,027    229070.1     1516486          0   1.30e+08
+{txt}{hline 13}{c +}{hline 57}
+harvest~aimp {c |}{res}      9,027    172632.8    243433.5          0    3993076
+{txt}{space 8}year {c |}{res}      9,027    2012.402    2.425712       2009       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 2}cultivated {c |}{res}      6,600    .9974242    .0506904          0          1
+{txt}{space 2}weedings_n {c |}{res}      6,600    1.816667    1.185619          0         27
+{txt}{hline 13}{c +}{hline 57}
+covercrop_~y {c |}{res}      6,600    .2248485    .4175141          0          1
+{txt}residue_cu~d {c |}{res}      6,600    .0716667    .2579547          0          1
+{txt}tilltype_r~d {c |}{res}      6,600    .0372727    .1894437          0          1
+{txt}tilltype_a~M {c |}{res}      6,600    .0801515    .2715482          0          1
+{txt}tilltool_t~r {c |}{res}      6,600    .0015152    .0388984          0          1
+{txt}{hline 13}{c +}{hline 57}
+tilltool_d~t {c |}{res}      6,600    .0066667    .0813832          0          1
+{txt}neighbors_~o {c |}{res}      2,958    1.221433    3.911775          0         72
+{txt}neighb~o_any {c |}{res}      2,964    .2661943    .4420417          0          1
+{txt}neighbors_~l {c |}{res}      2,958    .8850575    3.415085          0         50
+{txt}neighb~l_any {c |}{res}      2,964    .1595816    .3662794          0          1
+{txt}{hline 13}{c +}{hline 57}
+neighbors_~p {c |}{res}      2,958    4.283638    10.43033          0         99
+{txt}neighb~p_any {c |}{res}      2,964    .3863023    .4869834          0          1
+{txt}neighbors_~c {c |}{res}      2,957    3.928306    7.422691          0         80
+{txt}neighb~c_any {c |}{res}      2,964    .5010121    .5000833          0          1
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 4}gardenid {c |}{res}          0
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Oct 2020, 13:38:33
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Oct 2020, 13:40:00
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+. 
+. 
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (18,054 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_plot.dta
+{txt}  obs:{res}         9,027                          
+{txt} vars:{res}            66                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:plottenure_own }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is owned{p_end}
+{p 0 48}{bind:plottenure_temp}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is held under short-term arrangement{p_end}
+{p 0 48}{bind:plottenure_rent}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is rented short-term{p_end}
+{p 0 48}{bind:plottenure     }{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{txt}plottenure{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Plot tenure categories{p_end}
+{p 0 48}{bind:crop_cash      }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is planted withcash crops (tobacco, cotton, sunflower, paprika, sugar cane){p_end}
+{p 0 48}{bind:soiltype       }{txt}{bind: byte    }{bind:{txt}%20.0g    }{space 1}{bind:soiltype }{bind:  }{res}{res}Predominant soil type of plot{p_end}
+{p 0 48}{bind:swc_terrace    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has terraces to control erosion{p_end}
+{p 0 48}{bind:swc_bund_ec    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to control erosion{p_end}
+{p 0 48}{bind:swc_bund_wh    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds to harvest water{p_end}
+{p 0 48}{bind:swc_bund_any   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has bunds{p_end}
+{p 0 48}{bind:swc_gabion     }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has gabions/sandbags to control erosion{p_end}
+{p 0 48}{bind:swc_vetiver    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has vetiver grass to control erosion{p_end}
+{p 0 48}{bind:swc_treebelt   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has tree belts to control erosion{p_end}
+{p 0 48}{bind:swc_drainage   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has drainage ditches to control erosion{p_end}
+{p 0 48}{bind:swc_any        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any erosion control structure{p_end}
+{p 0 48}{bind:swc_mech       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any mechanical erosion control structure{p_end}
+{p 0 48}{bind:swc_bio        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any biological erosion control measures{p_end}
+{p 0 48}{bind:slope          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:slope    }{bind:  }{res}{res}Predominant slope of plot{p_end}
+{p 0 48}{bind:dambo          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot is in swamp/wetland{p_end}
+{p 0 48}{bind:irrigation_any }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot has any system of irrigation{p_end}
+{p 0 48}{bind:fert_org_any   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Organic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_any }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Inorganic fertilizer was applied on plot{p_end}
+{p 0 48}{bind:fert_inorg_n   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of applications of inorganic fertilizer on plot{p_end}
+{p 0 48}{bind:insecticide_any}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insecticide was applied on plot{p_end}
+{p 0 48}{bind:herbicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Herbicide was applied on plot{p_end}
+{p 0 48}{bind:fungicide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Fungicide was applied on plot{p_end}
+{p 0 48}{bind:pesticide_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any pesticide was applied on plot{p_end}
+{p 0 48}{bind:labordays      }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot{p_end}
+{p 0 48}{bind:labordaysimp   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on plot, imputed{p_end}
+{p 0 48}{bind:labordays_ha   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha){p_end}
+{p 0 48}{bind:labordays_haimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor per hectare (Days/ha), imputed{p_end}
+{p 0 48}{bind:hirelabor_any  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any labor hired on plot{p_end}
+{p 0 48}{bind:mz_harvest_lo~s}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest area less than maize planted area{p_end}
+{p 0 48}{bind:harvest_losses }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Harvest area less than planted area{p_end}
+{p 0 48}{bind:intercrop_leg~e}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was intercropped with legumes{p_end}
+{p 0 48}{bind:mz_harvest     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg){p_end}
+{p 0 48}{bind:mz_harvestimp  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize harvest quantity (kg), imputed{p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:cultivated     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was cultivated during the rainy season{p_end}
+{p 0 48}{bind:weedings_n     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of weedings on plot{p_end}
+{p 0 48}{bind:covercrop_any  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any cover crop present on plot prior to cultivation in reference rainy season{p_end}
+{p 0 48}{bind:residue_cutsp~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Crop residue was cut and spread on plot prior to reference rainy season{p_end}
+{p 0 48}{bind:tilltype_redu~d}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with reduced tillage methods{p_end}
+{p 0 48}{bind:tilltype_anySLM}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot was tilled with any SLM tillage method{p_end}
+{p 0 48}{bind:tilltool_trac~r}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any tractor power{p_end}
+{p 0 48}{bind:tilltool_drau~t}{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot preparation used any draught power{p_end}
+{p 0 48}{bind:neighbors_agfo }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_agf~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in agroforestry{p_end}
+{p 0 48}{bind:neighbors_min~l}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_min~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have ever practiced zero/minimum tillage{p_end}
+{p 0 48}{bind:neighbors_cov~p}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_cov~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that use cover crops/mulches{p_end}
+{p 0 48}{bind:neighbors_swc  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household number of neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:neighbors_swc~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household has any neighbors that have invested in soil & water conservation{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:gardenid       }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Garden ID{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      9,027    .3543804    .3227719   .0040469   3.897123
+{txt}plottenure~n {c |}{res}      9,027    .8640744    .3427285          0          1
+{txt}plottenure~p {c |}{res}      9,027    .1354824    .3422571          0          1
+{txt}{hline 13}{c +}{hline 57}
+plottenure~t {c |}{res}      9,027    .0978177    .2970844          0          1
+{txt}{space 2}plottenure {c |}{res}      9,023    4.915217    4.198655          1         13
+{txt}{space 3}crop_cash {c |}{res}      9,027    .0902847    .2866051          0          1
+{txt}{space 4}soiltype {c |}{res}      9,027    2.059267    .6714471          1          3
+{txt}{space 1}swc_terrace {c |}{res}      9,027     .048078    .2139429          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 1}swc_bund_ec {c |}{res}      9,027    .2455965    .4304642          0          1
+{txt}{space 1}swc_bund_wh {c |}{res}      9,027    .0363354    .1871338          0          1
+{txt}swc_bund_any {c |}{res}      9,027    .2761715    .4471274          0          1
+{txt}{space 2}swc_gabion {c |}{res}      9,027    .0100809    .0999017          0          1
+{txt}{space 1}swc_vetiver {c |}{res}      9,027    .0774344    .2672942          0          1
+{txt}{hline 13}{c +}{hline 57}
+swc_treebelt {c |}{res}      9,027    .0121857    .1097201          0          1
+{txt}swc_drainage {c |}{res}      9,027    .0417636    .2000596          0          1
+{txt}{space 5}swc_any {c |}{res}      9,027    .4395702    .4963623          0          1
+{txt}{space 4}swc_mech {c |}{res}      9,027    .3690041    .4825618          0          1
+{txt}{space 5}swc_bio {c |}{res}      9,027    .0882907    .2837329          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 7}slope {c |}{res}      9,027    1.591891    .7609549          1          4
+{txt}{space 7}dambo {c |}{res}      9,027    .0928326    .2902138          0          1
+{txt}irrigation~y {c |}{res}      9,027    .0099701    .0993568          0          1
+{txt}fert_org_any {c |}{res}      9,027    .1609616    .3675158          0          1
+{txt}fert_inorg~y {c |}{res}      9,027    .6218013    .4849644          0          1
+{txt}{hline 13}{c +}{hline 57}
+fert_inorg_n {c |}{res}      9,027    .8950925     .800347          0          2
+{txt}insecticid~y {c |}{res}      9,027    .0183893    .1343619          0          1
+{txt}herbicide_~y {c |}{res}      9,027    .0096378    .0977032          0          1
+{txt}fungicide_~y {c |}{res}      9,027    .0006647    .0257741          0          1
+{txt}pesticide_~y {c |}{res}      9,027    .0299103    .1703492          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}labordays {c |}{res}      9,027    67.94782    54.15687          0        720
+{txt}labordaysimp {c |}{res}      9,027    66.97312    53.99083          0        720
+{txt}labordays_ha {c |}{res}      9,027    339.2005    744.3993          0   27922.91
+{txt}labordays_~p {c |}{res}      9,027    283.2023     291.978          0    6424.74
+{txt}hirelabor_~y {c |}{res}      9,027     .323474    .4678278          0          1
+{txt}{hline 13}{c +}{hline 57}
+mz_harvest~s {c |}{res}      6,424    .5952677    .4908784          0          1
+{txt}harvest_lo~s {c |}{res}      9,027    .5750526    .4943624          0          1
+{txt}intercrop_~e {c |}{res}      9,027    .2777224    .4479005          0          1
+{txt}{space 2}mz_harvest {c |}{res}      8,315    391.7335    1738.392          0     111888
+{txt}mz_harvest~p {c |}{res}      8,315    342.7844    620.2383          0    15987.5
+{txt}{hline 13}{c +}{hline 57}
+{space 4}mz_yield {c |}{res}      8,315    1502.567    9343.512          0   691203.2
+{txt}{space 1}mz_yieldimp {c |}{res}      8,315    1111.104    1665.351          0   38189.11
+{txt}harvest_va~e {c |}{res}      9,027    58241.38    290013.5          0   2.10e+07
+{txt}harvest~eimp {c |}{res}      9,027     49555.2    102220.2          0    3333333
+{txt}harvest_va~a {c |}{res}      9,027    229070.1     1516486          0   1.30e+08
+{txt}{hline 13}{c +}{hline 57}
+harvest~aimp {c |}{res}      9,027    172632.8    243433.5          0    3993076
+{txt}{space 8}year {c |}{res}      9,027    2012.402    2.425712       2009       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 2}cultivated {c |}{res}      6,600    .9974242    .0506904          0          1
+{txt}{space 2}weedings_n {c |}{res}      6,600    1.816667    1.185619          0         27
+{txt}{hline 13}{c +}{hline 57}
+covercrop_~y {c |}{res}      6,600    .2248485    .4175141          0          1
+{txt}residue_cu~d {c |}{res}      6,600    .0716667    .2579547          0          1
+{txt}tilltype_r~d {c |}{res}      6,600    .0372727    .1894437          0          1
+{txt}tilltype_a~M {c |}{res}      6,600    .0801515    .2715482          0          1
+{txt}tilltool_t~r {c |}{res}      6,600    .0015152    .0388984          0          1
+{txt}{hline 13}{c +}{hline 57}
+tilltool_d~t {c |}{res}      6,600    .0066667    .0813832          0          1
+{txt}neighbors_~o {c |}{res}      2,958    1.221433    3.911775          0         72
+{txt}neighb~o_any {c |}{res}      2,964    .2661943    .4420417          0          1
+{txt}neighbors_~l {c |}{res}      2,958    .8850575    3.415085          0         50
+{txt}neighb~l_any {c |}{res}      2,964    .1595816    .3662794          0          1
+{txt}{hline 13}{c +}{hline 57}
+neighbors_~p {c |}{res}      2,958    4.283638    10.43033          0         99
+{txt}neighb~p_any {c |}{res}      2,964    .3863023    .4869834          0          1
+{txt}neighbors_~c {c |}{res}      2,957    3.928306    7.422691          0         80
+{txt}neighb~c_any {c |}{res}      2,964    .5010121    .5000833          0          1
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 4}gardenid {c |}{res}          0
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}15 Oct 2020, 13:40:00
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

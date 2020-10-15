@@ -30,14 +30,20 @@
 	
 
 * **********************************************************************
-* 1 - merge together production and decision making 
+* 1 - merge together production PLOT and decision making 
 * **********************************************************************
 
-	use 			"$fil\production-and-sales\totalproduction-sales_all.dta", clear
+	use 			"$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
 	
-*** need to resolve different levels of analysis
-*** this is at household level - but analysis would be at plot or observation level 
-
+	merge 			m:m case_id y2_hhid y3_hhid year plotid using ///
+						"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+	keep 			if _merge == 3
+	*** drops 20568 observations from using which did not match 
+	
+	keep 			case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+						harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
+						
+	save 			"$fil\production-and-sales\plot-with-manager"
 
 * *********************************************************************
 * 3 - end matter

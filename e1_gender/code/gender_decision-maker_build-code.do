@@ -48,7 +48,9 @@
 	rename 			ag_d02 manager2
 	rename 			ag_d04a owner1
 	rename 			ag_d04b owner2 
-
+	
+	gen 			year = 2009
+	destring 		case_id, replace 
 	
 * save new file	
 
@@ -82,6 +84,8 @@ summarize
 	rename 			ag_d04a owner1
 	rename 			ag_d04b owner2 
 	
+	gen 			year = 2012
+	
 * save new file 
 
 compress
@@ -112,6 +116,8 @@ summarize
 	rename 			ag_d01_2a mangagero_1
 	rename 			ag_d01_2b managero_2
 	rename 			ag_d02 respond_id 
+	
+	gen 			year = 2015
 	
 * save new file 
 
