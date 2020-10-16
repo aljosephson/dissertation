@@ -37,6 +37,7 @@
 * 2009
 	use				"$fil\geovar\householdgeovariables_ihs3_09.dta", clear
 	gen 			year = 2009
+	destring 		case_id, replace 
 	save			"$fil\geovar\householdgeovariables_09.dta", replace
 	
 * 2012 
@@ -54,7 +55,6 @@
 	use 			"$fil\geovar\householdgeovariables_09.dta", clear 
 	append 			using "$fil\geovar\householdgeovariables_12.dta"
 	append 			using "$fil\geovar\householdgeovariables_15.dta"
-	destring 		case_id, replace
 	save 			"$fil\geovar\geovars.dta", replace
 	
 

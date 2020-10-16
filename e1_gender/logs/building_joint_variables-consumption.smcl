@@ -1,0 +1,2681 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 12:14:47
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         save                    "$fil\consumption\ihs_summary_12.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\consumption\ihs3_summary_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\consumption\ihs_summary_12.dta"
+{err}{p 0 2 2}
+variable
+case_id is
+double in master but
+str12 in using data
+{p_end}
+{p 4 4 2}
+You could specify
+{bf:append}'s
+{bf:force} option to ignore this
+numeric/string mismatch.  The using variable
+would then be treated as if it
+contained numeric missing value.
+{p_end}
+{txt}{search r(106), local:r(106);}
+
+end of do-file
+
+{search r(106), local:r(106);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(461 observations deleted)
+
+{com}.         *** drops 83 observations from using and 378 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y1", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta saved
+
+{com}.         *** 2563 observations 
+.         
+. * manager 1 - year 1
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,759
+{txt}{col 9}from master{col 30}{res}           1,748{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,011{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             815{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,011 observations deleted)
+
+{com}.         *** matched 815 
+.         *** drop unmatched from using = 6316
+.         *** unmatched from master = 1748 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,209 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,558
+{txt}{col 9}from master{col 30}{res}           2,210{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,348{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             353{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,348 observations deleted)
+
+{com}.         *** matched 353 
+.         *** drop unmatched from using = 7348
+.         *** keep unmatched from master = 2210 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(2,388 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(2,388 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(1,923 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(1,923 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,214 missing values generated)
+
+{com}.         
+.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,213 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_salesmanager1{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}age_salesmanager2{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (33,319 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta
+{txt}  obs:{res}         2,563                          
+{txt} vars:{res}            26                          16 Oct 2020 12:14
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:rs_cropsales_~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Self-reported value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:rs_cropsales_~i}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Implied value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #1){p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #2){p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:sex_salesmana~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~1}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~2}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_decsale }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_decsale   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_decsale  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,563    2.46e+11    6.57e+10   1.01e+11   3.16e+11
+{txt}rs_cropsal~e {c |}{res}      2,563    19439.72    108128.3          0    2700000
+{txt}rs_cropsal~i {c |}{res}      2,563    23180.98    117716.7          0    2450000
+{txt}{space 8}year {c |}{res}      2,563        2009           0       2009       2009
+{txt}{space 6}region {c |}{res}      2,563    2.398361    .6499484          1          3
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}      2,563    245.6781    65.72347        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}      2,563    1750.127    775.2989          1       3230
+{txt}salesmanag~1 {c |}{res}        818    1.101467    .4855037          1         12
+{txt}salesmanag~2 {c |}{res}      2,559    .2727628    .6865204          0          3
+{txt}{hline 13}{c +}{hline 57}
+{space 7}urban {c |}{res}        815    1.932515    .2510135          1          2
+{txt}{space 10}ta {c |}{res}        815    8.469939    12.85914          1         86
+{txt}{space 6}strata {c |}{res}        815    4.440491    1.311855          1          6
+{txt}{space 5}cluster {c |}{res}        815    2.31e+07     6326699   1.01e+07   3.14e+07
+{txt}{space 2}hhweightR1 {c |}{res}        815    2318.008    1161.788    72.4084   6531.968
+{txt}{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}        815    1.214724    .4108828          1          2
+{txt}rltn_sales~1 {c |}{res}        815     1.08589     .305534          1          3
+{txt}age_salesm~1 {c |}{res}        815    42.14601    14.62419          3         82
+{txt}educ_years~1 {c |}{res}        815    5.809816    3.938333          0         19
+{txt}sex_salesm~2 {c |}{res}        349    1.988539    .1065951          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_sales~2 {c |}{res}        353    2.011331    .3452382          1          6
+{txt}age_salesm~2 {c |}{res}        353    36.73088     13.4656         16         74
+{txt}educ_years~2 {c |}{res}        353    4.756374    3.813496          0         16
+{txt}female_dec~e {c |}{res}      2,563    .0682794    .2522739          0          1
+{txt}male_decsale {c |}{res}      2,563    .2497074    .4329281          0          1
+{txt}{hline 13}{c +}{hline 57}
+joint_decs~e {c |}{res}      2,562    .1362217    .3430908          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y1", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m case_id year using "$fil\consumption\ihs3_summary_09.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+strata was 
+byte, now int to accommodate using data's values)
+{p_end}
+{p 0 7 2}
+(note: variable
+year was 
+int, now float to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,030
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          11,030{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    if _merge == 3
+{txt}(11,030 observations deleted)
+
+{com}.         drop                    _merge
+{txt}
+{com}.         *** dropping 11030 from using 
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 12 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds consumption variables from malawi kitchen sink and world bank team 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 12:28:01
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs_summary_12.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs_summary_12.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\consumption\ihs3_summary_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\consumption\ihs_summary_12.dta"
+{txt}{p 0 7 2}
+(note: variable
+poor was 
+byte, now float to accommodate using data's values)
+{p_end}
+(label region already defined)
+(label urban already defined)
+
+{com}.         append                  using "$fil\consumption\ihs3_summary_15.dta"
+{txt}(label district already defined)
+
+{com}.         destring                case_id, replace
+{txt}case_id already numeric; no {res}replace
+{txt}
+{com}.         save                    "$fil\consumption\consumptionagg.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}poor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}round{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}epoor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (315,898 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta
+{txt}  obs:{res}        28,718                          
+{txt} vars:{res}           148                          16 Oct 2020 12:28
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:area           }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{bind:area     }{bind:  }{res}{res}Area: region by urban/rural{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:HH_A01   }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:TA             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Strata (districts){p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweight       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Sampling weights adjusted based on population projections{p_end}
+{p 0 48}{bind:hhsize         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household size{p_end}
+{p 0 48}{bind:adulteq        }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Adult equivalents{p_end}
+{p 0 48}{bind:intmonth       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:intyear        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:month          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month    }{bind:  }{res}{res}Month{p_end}
+{p 0 48}{bind:qx_type        }{txt}{bind: str13   }{bind:{txt}%13s      }{space 1}{bind:         }{bind:  }{res}{res}Sample Group (Panel A, Panel B, Cross-Sectional){p_end}
+{p 0 48}{bind:price_index    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list price_index":*} {res}Spatial and Temporal Price Index (Base National Feb/Mar 2010){p_end}
+{p 0 48}{bind:rexp_cat011    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat012    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Beverage, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat021    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alcohol, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat022    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat031    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat032    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat041    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Actual rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat042    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Estimated rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat045    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity, gas, other fuels, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat051    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Decorations, carpets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat052    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household textiles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat053    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Appliances, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat054    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dishes, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat055    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tools/equipment for home, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat056    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Routine Home maintenance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat061    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health drugs, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat062    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health out-patient, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat063    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health hospitalization, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat071    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat072    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Operation of vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat073    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat081    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Postal services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat083    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Phone and fax services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat091    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Audio-visual, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat092    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Major durables for rec, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat093    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Other recreational items, pets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat094    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreational services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat095    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Newspapers, books, stationery, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat101    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat111    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vendors/Cafes/Restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat112    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Accommodation services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat121    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal care, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat123    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal effects, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat125    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insurance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat01     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food/Bev, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat02     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alc/Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat03     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing/Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat04     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Housing/Utilities, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat05     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Furnishings, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat06     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat07     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat08     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Communication, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat09     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreation, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat10     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat11     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Hotels and restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat12     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Misc Goods & Services, real annual consumption{p_end}
+{p 0 48}{bind:rexpagg        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggcap     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita{p_end}
+{p 0 48}{bind:ultrapovline   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra-poor (food) poverty line per person per year{p_end}
+{p 0 48}{bind:povline        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list povline":*} {res}Total poverty line per person per year{p_end}
+{p 0 48}{bind:poor           }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:poor     }{stata "notes list poor":*} {res}Exp per cap < poverty line{p_end}
+{p 0 48}{bind:ultra_poor     }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:ultra_p  }{bind:  }{res}{res}Exp per cap < ultra pov line{p_end}
+{p 0 48}{bind:gap_poor       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap poor{p_end}
+{p 0 48}{bind:gap_ultra      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap ultra poor{p_end}
+{p 0 48}{bind:gap2_poor      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity poor{p_end}
+{p 0 48}{bind:gap2_ultra     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity ultra poor{p_end}
+{p 0 48}{bind:head_age       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Age of household head{p_end}
+{p 0 48}{bind:head_gender    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{txt}head_gender{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Gender of household head{p_end}
+{p 0 48}{bind:head_edlevel   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{txt}head_edlevel{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head{p_end}
+{p 0 48}{bind:head_edlevel2  }{txt}{bind: byte    }{bind:{txt}%16.0g    }{space 1}{txt}head_edlevel2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head, detailed{p_end}
+{p 0 48}{bind:head_marital   }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{txt}head_marital{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, definition 2{p_end}
+{p 0 48}{bind:head_marital2  }{txt}{bind: byte    }{bind:{txt}%39.0g    }{space 1}{txt}head_marital2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, detailed{p_end}
+{p 0 48}{bind:quintil        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}National quintil, consumption per person, population weighted{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:round          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}1 = IHS3 2 = IHPS{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:panel          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_A02   }{bind:  }{res}{res}Sample Group (Panel A, Panel B){p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:price_indexL   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Laspeyres monthly Spatial and Temporal Price Index (Base National March 2013){p_end}
+{p 0 48}{bind:pcrexpagg      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita        - 2013 Prices, Spatially & Tempo{p_end}
+{p 0 48}{bind:absolute_povl~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Absolute Poverty Line - 2013 Prices{p_end}
+{p 0 48}{bind:extreme_povline}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra Poverty Line    - 2013 Prices{p_end}
+{p 0 48}{bind:epoor          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if 2013 Total real annual consumption per capita < Extreme  poverty line{p_end}
+{p 0 48}{bind:pcrexp_cat01   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat01 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat02   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat02 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat03   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat03 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat04   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat04 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat05   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat05 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat06   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat06 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat07   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat07 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat08   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat08 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat09   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat09 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat10   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat10 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat11   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat11 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat12   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat12 per capita{p_end}
+{p 0 48}{bind:rexp_cat044    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Water supply, real annual consumption{p_end}
+{p 0 48}{bind:pcrexp_cat011  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat011 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat012  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat012 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat021  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat021 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat022  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat022 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat031  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat031 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat032  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat032 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat041  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat041 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat042  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat042 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat044  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat044 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat045  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat045 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat051  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat051 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat052  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat052 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat053  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat053 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat054  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat054 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat055  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat055 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat056  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat056 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat061  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat061 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat062  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat062 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat063  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat063 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat071  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat071 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat072  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat072 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat073  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat073 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat081  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat081 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat083  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat083 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat091  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat091 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat092  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat092 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat093  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat093 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat094  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat094 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat095  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat095 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat101  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat101 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat111  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat111 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat112  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat112 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat121  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat121 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat123  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat123 per capita{p_end}
+{p 0 48}{bind:sdate          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of month for interview{p_end}
+{p 0 48}{bind:smonth         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month_l  }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:syear          }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:hh_wgt         }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Sampling Weight{p_end}
+{p 0 48}{bind:expagg         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total nominal annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggpc      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:upline_2016    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:pline_2016     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:upoor          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:lupoor   }{bind:  }{res}{res}Dummy for ultra-poor households below national food poverty line{p_end}
+                                            {txt}* indicated variables have notes
+{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     28,718    2.32e+11    7.84e+10   3.04e+07   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}region {c |}{res}     28,718    2.259384    .7655674          1          3
+{txt}{space 7}urban {c |}{res}     28,718    1.806707     .394888          1          2
+{txt}{space 8}area {c |}{res}     24,718    2.875394    1.117744          1          4
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}     28,718    232.3461     78.2435        101        315
+{txt}{space 10}TA {c |}{res}     24,718     10.7798    16.39046          1         88
+{txt}{space 6}strata {c |}{res}     16,271    177.8718     120.005          1        315
+{txt}{space 5}cluster {c |}{res}     12,271    384.4325    221.7332          1        768
+{txt}{space 4}hhweight {c |}{res}     16,271    372.7362    381.3168     6.6204   3257.806
+{txt}{hline 13}{c +}{hline 57}
+{space 6}hhsize {c |}{res}     28,718    4.519326    2.150878          1         19
+{txt}{space 5}adulteq {c |}{res}     28,718    3.877541    1.819357        .91      15.68
+{txt}{space 4}intmonth {c |}{res}     16,271    6.683486     3.28983          1         12
+{txt}{space 5}intyear {c |}{res}     16,271    2010.928    1.241648       2010       2013
+{txt}{space 7}month {c |}{res}     12,271      7.4738    3.518021          1         13
+{txt}{hline 13}{c +}{hline 57}
+{space 5}qx_type {c |}{res}          0
+{txt}{space 1}price_index {c |}{res}     24,718     99.0551    10.12667       75.3   123.3465
+{txt}{space 1}rexp_cat011 {c |}{res}     28,718    303394.8    292753.9          0   1.00e+07
+{txt}{space 1}rexp_cat012 {c |}{res}     28,718    10841.64    31115.99          0    1602566
+{txt}{space 1}rexp_cat021 {c |}{res}     28,718    6918.265    29435.98          0    1811697
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat022 {c |}{res}     28,718    438.7005    3526.831          0   128590.9
+{txt}{space 1}rexp_cat031 {c |}{res}     28,718    12997.09    29968.61          0    1307986
+{txt}{space 1}rexp_cat032 {c |}{res}     28,718    2986.841    9635.556          0   451104.5
+{txt}{space 1}rexp_cat041 {c |}{res}     28,718    8423.069    39511.83          0    1690141
+{txt}{space 1}rexp_cat042 {c |}{res}     28,718    31889.01    78594.61          0    5220849
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat045 {c |}{res}     28,718     43169.5     49804.3          0   721037.9
+{txt}{space 1}rexp_cat051 {c |}{res}     28,718    3880.167    9702.571          0   307369.8
+{txt}{space 1}rexp_cat052 {c |}{res}     28,718    1391.174    4355.489          0   89743.59
+{txt}{space 1}rexp_cat053 {c |}{res}     28,718    2356.522    13771.84          0   684353.3
+{txt}{space 1}rexp_cat054 {c |}{res}     28,718    1046.598    4965.133          0   261042.4
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat055 {c |}{res}     28,718    2882.988    5434.619          0   72923.65
+{txt}{space 1}rexp_cat056 {c |}{res}     28,718    10954.59    46580.87          0    2340840
+{txt}{space 1}rexp_cat061 {c |}{res}     28,718    2951.995    8887.411          0   390056.1
+{txt}{space 1}rexp_cat062 {c |}{res}     28,718    4587.983    26387.76          0    1276263
+{txt}{space 1}rexp_cat063 {c |}{res}     28,718    1167.282      7014.2          0   321952.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat071 {c |}{res}     28,718    25011.25     2167703          0   3.37e+08
+{txt}{space 1}rexp_cat072 {c |}{res}     28,718     10041.6    105805.7          0    4534811
+{txt}{space 1}rexp_cat073 {c |}{res}     28,718    17569.25    54146.32          0    1278831
+{txt}{space 1}rexp_cat081 {c |}{res}     28,718    43.01317    1193.402          0   96404.19
+{txt}{space 1}rexp_cat083 {c |}{res}     28,718    18185.48     50007.4          0    1913411
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat091 {c |}{res}     28,718     4065.37    17933.35          0   544887.1
+{txt}{space 1}rexp_cat092 {c |}{res}     28,718    39.81018    1083.823          0   111878.9
+{txt}{space 1}rexp_cat093 {c |}{res}     28,718    70.74258    2564.864          0   240871.4
+{txt}{space 1}rexp_cat094 {c |}{res}     28,718    65.60932    1276.633          0   70745.64
+{txt}{space 1}rexp_cat095 {c |}{res}     28,718     762.368     7058.97          0   368794.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat101 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 1}rexp_cat111 {c |}{res}     28,718    5914.026    16470.06          0   655028.2
+{txt}{space 1}rexp_cat112 {c |}{res}     28,718    514.7945    18307.56          0    1437216
+{txt}{space 1}rexp_cat121 {c |}{res}     28,718    15924.85    22057.88          0   422479.6
+{txt}{space 1}rexp_cat123 {c |}{res}     28,718    170.8905    957.9268          0   14702.72
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat125 {c |}{res}     12,271    329.5707    6747.555          0   422386.5
+{txt}{space 2}rexp_cat01 {c |}{res}     28,718    314236.4    308671.8          0   1.00e+07
+{txt}{space 2}rexp_cat02 {c |}{res}     28,718    7356.966    30043.61          0    1811697
+{txt}{space 2}rexp_cat03 {c |}{res}     28,718    15983.93    36366.35          0    1307986
+{txt}{space 2}rexp_cat04 {c |}{res}     28,718    87756.67    119462.6   1354.402    5851851
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat05 {c |}{res}     28,718    22512.03    61341.94          0    2744132
+{txt}{space 2}rexp_cat06 {c |}{res}     28,718    8707.259    32616.99          0    1681322
+{txt}{space 2}rexp_cat07 {c |}{res}     28,718    52622.09     2173689          0   3.37e+08
+{txt}{space 2}rexp_cat08 {c |}{res}     28,718    18228.49    50116.57          0    1913411
+{txt}{space 2}rexp_cat09 {c |}{res}     28,718      5003.9    22830.79          0   656311.4
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat10 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 2}rexp_cat11 {c |}{res}     28,718    6428.821    25013.24          0    1437216
+{txt}{space 2}rexp_cat12 {c |}{res}     28,718    16236.56    22885.53          0   483843.7
+{txt}{space 5}rexpagg {c |}{res}     28,718    571324.9     2290751   7332.667   3.41e+08
+{txt}{space 2}rexpaggcap {c |}{res}     12,271    65836.45    90997.51   2972.581    2857557
+{txt}{hline 13}{c +}{hline 57}
+ultrapovline {c |}{res}     12,271    22956.38           0   22956.38   22956.38
+{txt}{space 5}povline {c |}{res}     12,271    37001.68           0   37001.68   37001.68
+{txt}{space 8}poor {c |}{res}     28,718    37.69545    48.42269          0        100
+{txt}{space 2}ultra_poor {c |}{res}     12,271    18.97156     39.2092          0        100
+{txt}{space 4}gap_poor {c |}{res}     24,718    14.48464     21.0176          0   91.96636
+{txt}{hline 13}{c +}{hline 57}
+{space 3}gap_ultra {c |}{res}     24,718    4.352886    11.99403          0   87.05118
+{txt}{space 3}gap2_poor {c |}{res}     24,718    6.515264    12.29303          0   84.57812
+{txt}{space 2}gap2_ultra {c |}{res}     24,718    1.627985    5.946756          0   75.77908
+{txt}{space 4}head_age {c |}{res}     12,271    42.14815    16.22512          2        110
+{txt}{space 1}head_gender {c |}{res}     12,271    1.240567    .4274453          1          2
+{txt}{hline 13}{c +}{hline 57}
+head_edlevel {c |}{res}     12,262    1.527973    .8760516          1          4
+{txt}head_edlev~2 {c |}{res}     12,271    1.653492    1.179167          1          9
+{txt}head_marital {c |}{res}     12,269    1.457494    .8328264          1          4
+{txt}head_marit~2 {c |}{res}     12,269    2.015486    1.607192          1          6
+{txt}{space 5}quintil {c |}{res}     12,271    3.274468     1.41351          1          5
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}     28,718    2012.018    2.783229       2009       2015
+{txt}{space 7}round {c |}{res}      4,000           2           0          2          2
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}      4,000    1624.987    925.0496          1       3263
+{txt}{space 2}hhweightR1 {c |}{res}      4,000    925.3408    598.0219    69.1233   3607.235
+{txt}{hline 13}{c +}{hline 57}
+{space 7}panel {c |}{res}      4,000     1.49175    .4999944          1          2
+{txt}interview_~s {c |}{res}      4,000     1.66675    .7806067          1          5
+{txt}price_indexL {c |}{res}      4,000    93.84438    15.42045   75.39732    132.757
+{txt}{space 3}pcrexpagg {c |}{res}      4,000    188327.9    233205.2   11864.29    3716533
+{txt}absolute_p~e {c |}{res}      4,000       85852           0      85852      85852
+{txt}{hline 13}{c +}{hline 57}
+extreme_po~e {c |}{res}      4,000       53262           0      53262      53262
+{txt}{space 7}epoor {c |}{res}      4,000      .08225    .2747796          0          1
+{txt}pcrexp_cat01 {c |}{res}      4,000    100205.1    86793.21    3011.37    1352010
+{txt}pcrexp_cat02 {c |}{res}      4,000    4715.056    16245.95          0   316731.5
+{txt}pcrexp_cat03 {c |}{res}      4,000    6490.995    15484.49          0   432286.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat04 {c |}{res}      4,000     33003.9    53032.82   848.0483    1196932
+{txt}pcrexp_cat05 {c |}{res}      4,000    6570.529    14534.35          0   342603.3
+{txt}pcrexp_cat06 {c |}{res}      4,000    1840.636    14407.13          0   840660.8
+{txt}pcrexp_cat07 {c |}{res}      4,000    14491.85    72619.03          0    2068056
+{txt}pcrexp_cat08 {c |}{res}      4,000    5971.396    20831.06          0   890244.7
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat09 {c |}{res}      4,000    1821.747    7747.534          0   188763.1
+{txt}pcrexp_cat10 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}pcrexp_cat11 {c |}{res}      4,000    3597.865    17858.15          0   874109.3
+{txt}pcrexp_cat12 {c |}{res}      4,000    5229.361    8305.009          0   171891.4
+{txt}{space 1}rexp_cat044 {c |}{res}     16,447    7464.696    21306.37          0   793568.9
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~011 {c |}{res}      4,000    96884.06    80219.24          0    1111545
+{txt}pcrexp_c~012 {c |}{res}      4,000    3321.001    10066.96          0     240465
+{txt}pcrexp_c~021 {c |}{res}      4,000    4557.748    15894.98          0   316731.5
+{txt}pcrexp_c~022 {c |}{res}      4,000    157.3076    1454.857          0   44979.91
+{txt}pcrexp_c~031 {c |}{res}      4,000    5126.778    12598.51          0   366155.5
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~032 {c |}{res}      4,000    1364.217    4296.114          0   112776.1
+{txt}pcrexp_c~041 {c |}{res}      4,000    4079.133    17808.29          0   327905.4
+{txt}pcrexp_c~042 {c |}{res}      4,000    12108.28    37268.06          0    1044170
+{txt}pcrexp_c~044 {c |}{res}      4,000    1453.534    7780.419          0   396784.5
+{txt}pcrexp_c~045 {c |}{res}      4,000    15362.95    16075.37          0   197212.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~051 {c |}{res}      4,000    1105.694     3037.75          0   59336.26
+{txt}pcrexp_c~052 {c |}{res}      4,000    451.2033    1683.347          0   49458.04
+{txt}pcrexp_c~053 {c |}{res}      4,000    670.0974    3159.419          0   57792.81
+{txt}pcrexp_c~054 {c |}{res}      4,000    547.1143    4807.635          0   261042.4
+{txt}pcrexp_c~055 {c |}{res}      4,000    842.3427    1469.163          0   22184.79
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~056 {c |}{res}      4,000    2954.078    9408.447          0   265111.5
+{txt}pcrexp_c~061 {c |}{res}      4,000    582.5033    3418.094          0     195028
+{txt}pcrexp_c~062 {c |}{res}      4,000    969.1932    11031.48          0   638131.7
+{txt}pcrexp_c~063 {c |}{res}      4,000    288.9397     2198.97          0   107317.4
+{txt}pcrexp_c~071 {c |}{res}      4,000      3922.4    38964.67          0    1634426
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~072 {c |}{res}      4,000     4268.21    49030.91          0    1987107
+{txt}pcrexp_c~073 {c |}{res}      4,000    6301.238    19440.47          0     426277
+{txt}pcrexp_c~081 {c |}{res}      4,000     35.0321     917.513          0   48202.09
+{txt}pcrexp_c~083 {c |}{res}      4,000    5936.364    20764.09          0   890244.7
+{txt}pcrexp_c~091 {c |}{res}      4,000    1370.468    5363.809          0     126113
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~092 {c |}{res}      4,000     47.6745    1908.821          0   111878.9
+{txt}pcrexp_c~093 {c |}{res}      4,000    22.71938    732.2209          0   39348.65
+{txt}pcrexp_c~094 {c |}{res}      4,000    28.96861     601.032          0   27372.78
+{txt}pcrexp_c~095 {c |}{res}      4,000    351.9171    2425.886          0   62650.18
+{txt}pcrexp_c~101 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
+{txt}pcrexp_c~112 {c |}{res}      4,000    198.8462    8405.003          0   522084.8
+{txt}pcrexp_c~121 {c |}{res}      4,000    5195.217    8293.929          0   171891.4
+{txt}pcrexp_c~123 {c |}{res}      4,000    34.14388    227.7259          0   4992.553
+{txt}{space 7}sdate {c |}{res}     12,447    16.12148    8.741656          1         31
+{txt}{hline 13}{c +}{hline 57}
+{space 6}smonth {c |}{res}     12,447     5.27348    3.104442          1         12
+{txt}{space 7}syear {c |}{res}     12,447    2016.507    .4999772       2016       2017
+{txt}{space 6}hh_wgt {c |}{res}     12,447    305.0786    215.7428     8.2893    1711.44
+{txt}{space 6}expagg {c |}{res}     12,447      866582     4001130   44948.95   4.14e+08
+{txt}{space 3}rexpaggpc {c |}{res}     12,447    220641.9     1234242   20031.35   1.14e+08
+{txt}{hline 13}{c +}{hline 57}
+{space 1}upline_2016 {c |}{res}     12,447    85260.16           0   85260.16   85260.16
+{txt}{space 2}pline_2016 {c |}{res}     12,447      137428           0     137428     137428
+{txt}{space 7}upoor {c |}{res}     12,447     16.1324    36.78443          0        100
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 12:28:02
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 12:28:42
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_12.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\consumption\ihs3_summary_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\consumption\ihs_summary_12.dta"
+{txt}{p 0 7 2}
+(note: variable
+poor was 
+byte, now float to accommodate using data's values)
+{p_end}
+(label region already defined)
+(label urban already defined)
+
+{com}.         append                  using "$fil\consumption\ihs3_summary_15.dta"
+{txt}(label district already defined)
+
+{com}.         destring                case_id, replace
+{txt}case_id already numeric; no {res}replace
+{txt}
+{com}.         save                    "$fil\consumption\consumptionagg.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}poor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}round{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}epoor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (315,898 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta
+{txt}  obs:{res}        28,718                          
+{txt} vars:{res}           148                          16 Oct 2020 12:28
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:area           }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{bind:area     }{bind:  }{res}{res}Area: region by urban/rural{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:HH_A01   }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:TA             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Strata (districts){p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweight       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Sampling weights adjusted based on population projections{p_end}
+{p 0 48}{bind:hhsize         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household size{p_end}
+{p 0 48}{bind:adulteq        }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Adult equivalents{p_end}
+{p 0 48}{bind:intmonth       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:intyear        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:month          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month    }{bind:  }{res}{res}Month{p_end}
+{p 0 48}{bind:qx_type        }{txt}{bind: str13   }{bind:{txt}%13s      }{space 1}{bind:         }{bind:  }{res}{res}Sample Group (Panel A, Panel B, Cross-Sectional){p_end}
+{p 0 48}{bind:price_index    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list price_index":*} {res}Spatial and Temporal Price Index (Base National Feb/Mar 2010){p_end}
+{p 0 48}{bind:rexp_cat011    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat012    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Beverage, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat021    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alcohol, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat022    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat031    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat032    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat041    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Actual rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat042    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Estimated rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat045    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity, gas, other fuels, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat051    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Decorations, carpets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat052    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household textiles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat053    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Appliances, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat054    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dishes, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat055    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tools/equipment for home, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat056    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Routine Home maintenance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat061    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health drugs, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat062    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health out-patient, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat063    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health hospitalization, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat071    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat072    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Operation of vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat073    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat081    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Postal services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat083    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Phone and fax services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat091    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Audio-visual, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat092    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Major durables for rec, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat093    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Other recreational items, pets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat094    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreational services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat095    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Newspapers, books, stationery, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat101    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat111    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vendors/Cafes/Restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat112    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Accommodation services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat121    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal care, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat123    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal effects, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat125    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insurance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat01     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food/Bev, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat02     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alc/Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat03     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing/Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat04     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Housing/Utilities, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat05     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Furnishings, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat06     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat07     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat08     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Communication, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat09     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreation, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat10     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat11     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Hotels and restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat12     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Misc Goods & Services, real annual consumption{p_end}
+{p 0 48}{bind:rexpagg        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggcap     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita{p_end}
+{p 0 48}{bind:ultrapovline   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra-poor (food) poverty line per person per year{p_end}
+{p 0 48}{bind:povline        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list povline":*} {res}Total poverty line per person per year{p_end}
+{p 0 48}{bind:poor           }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:poor     }{stata "notes list poor":*} {res}Exp per cap < poverty line{p_end}
+{p 0 48}{bind:ultra_poor     }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:ultra_p  }{bind:  }{res}{res}Exp per cap < ultra pov line{p_end}
+{p 0 48}{bind:gap_poor       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap poor{p_end}
+{p 0 48}{bind:gap_ultra      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap ultra poor{p_end}
+{p 0 48}{bind:gap2_poor      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity poor{p_end}
+{p 0 48}{bind:gap2_ultra     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity ultra poor{p_end}
+{p 0 48}{bind:head_age       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Age of household head{p_end}
+{p 0 48}{bind:head_gender    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{txt}head_gender{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Gender of household head{p_end}
+{p 0 48}{bind:head_edlevel   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{txt}head_edlevel{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head{p_end}
+{p 0 48}{bind:head_edlevel2  }{txt}{bind: byte    }{bind:{txt}%16.0g    }{space 1}{txt}head_edlevel2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head, detailed{p_end}
+{p 0 48}{bind:head_marital   }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{txt}head_marital{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, definition 2{p_end}
+{p 0 48}{bind:head_marital2  }{txt}{bind: byte    }{bind:{txt}%39.0g    }{space 1}{txt}head_marital2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, detailed{p_end}
+{p 0 48}{bind:quintil        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}National quintil, consumption per person, population weighted{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:round          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}1 = IHS3 2 = IHPS{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:panel          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_A02   }{bind:  }{res}{res}Sample Group (Panel A, Panel B){p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:price_indexL   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Laspeyres monthly Spatial and Temporal Price Index (Base National March 2013){p_end}
+{p 0 48}{bind:pcrexpagg      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita        - 2013 Prices, Spatially & Tempo{p_end}
+{p 0 48}{bind:absolute_povl~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Absolute Poverty Line - 2013 Prices{p_end}
+{p 0 48}{bind:extreme_povline}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra Poverty Line    - 2013 Prices{p_end}
+{p 0 48}{bind:epoor          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if 2013 Total real annual consumption per capita < Extreme  poverty line{p_end}
+{p 0 48}{bind:pcrexp_cat01   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat01 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat02   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat02 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat03   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat03 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat04   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat04 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat05   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat05 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat06   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat06 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat07   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat07 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat08   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat08 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat09   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat09 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat10   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat10 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat11   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat11 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat12   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat12 per capita{p_end}
+{p 0 48}{bind:rexp_cat044    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Water supply, real annual consumption{p_end}
+{p 0 48}{bind:pcrexp_cat011  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat011 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat012  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat012 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat021  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat021 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat022  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat022 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat031  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat031 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat032  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat032 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat041  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat041 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat042  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat042 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat044  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat044 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat045  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat045 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat051  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat051 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat052  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat052 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat053  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat053 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat054  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat054 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat055  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat055 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat056  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat056 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat061  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat061 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat062  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat062 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat063  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat063 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat071  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat071 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat072  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat072 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat073  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat073 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat081  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat081 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat083  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat083 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat091  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat091 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat092  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat092 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat093  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat093 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat094  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat094 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat095  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat095 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat101  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat101 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat111  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat111 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat112  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat112 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat121  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat121 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat123  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat123 per capita{p_end}
+{p 0 48}{bind:sdate          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of month for interview{p_end}
+{p 0 48}{bind:smonth         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month_l  }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:syear          }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:hh_wgt         }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Sampling Weight{p_end}
+{p 0 48}{bind:expagg         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total nominal annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggpc      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:upline_2016    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:pline_2016     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:upoor          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:lupoor   }{bind:  }{res}{res}Dummy for ultra-poor households below national food poverty line{p_end}
+                                            {txt}* indicated variables have notes
+{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     28,718    2.32e+11    7.84e+10   3.04e+07   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}region {c |}{res}     28,718    2.259384    .7655674          1          3
+{txt}{space 7}urban {c |}{res}     28,718    1.806707     .394888          1          2
+{txt}{space 8}area {c |}{res}     24,718    2.875394    1.117744          1          4
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}     28,718    232.3461     78.2435        101        315
+{txt}{space 10}TA {c |}{res}     24,718     10.7798    16.39046          1         88
+{txt}{space 6}strata {c |}{res}     16,271    177.8718     120.005          1        315
+{txt}{space 5}cluster {c |}{res}     12,271    384.4325    221.7332          1        768
+{txt}{space 4}hhweight {c |}{res}     16,271    372.7362    381.3168     6.6204   3257.806
+{txt}{hline 13}{c +}{hline 57}
+{space 6}hhsize {c |}{res}     28,718    4.519326    2.150878          1         19
+{txt}{space 5}adulteq {c |}{res}     28,718    3.877541    1.819357        .91      15.68
+{txt}{space 4}intmonth {c |}{res}     16,271    6.683486     3.28983          1         12
+{txt}{space 5}intyear {c |}{res}     16,271    2010.928    1.241648       2010       2013
+{txt}{space 7}month {c |}{res}     12,271      7.4738    3.518021          1         13
+{txt}{hline 13}{c +}{hline 57}
+{space 5}qx_type {c |}{res}          0
+{txt}{space 1}price_index {c |}{res}     24,718     99.0551    10.12667       75.3   123.3465
+{txt}{space 1}rexp_cat011 {c |}{res}     28,718    303394.8    292753.9          0   1.00e+07
+{txt}{space 1}rexp_cat012 {c |}{res}     28,718    10841.64    31115.99          0    1602566
+{txt}{space 1}rexp_cat021 {c |}{res}     28,718    6918.265    29435.98          0    1811697
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat022 {c |}{res}     28,718    438.7005    3526.831          0   128590.9
+{txt}{space 1}rexp_cat031 {c |}{res}     28,718    12997.09    29968.61          0    1307986
+{txt}{space 1}rexp_cat032 {c |}{res}     28,718    2986.841    9635.556          0   451104.5
+{txt}{space 1}rexp_cat041 {c |}{res}     28,718    8423.069    39511.83          0    1690141
+{txt}{space 1}rexp_cat042 {c |}{res}     28,718    31889.01    78594.61          0    5220849
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat045 {c |}{res}     28,718     43169.5     49804.3          0   721037.9
+{txt}{space 1}rexp_cat051 {c |}{res}     28,718    3880.167    9702.571          0   307369.8
+{txt}{space 1}rexp_cat052 {c |}{res}     28,718    1391.174    4355.489          0   89743.59
+{txt}{space 1}rexp_cat053 {c |}{res}     28,718    2356.522    13771.84          0   684353.3
+{txt}{space 1}rexp_cat054 {c |}{res}     28,718    1046.598    4965.133          0   261042.4
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat055 {c |}{res}     28,718    2882.988    5434.619          0   72923.65
+{txt}{space 1}rexp_cat056 {c |}{res}     28,718    10954.59    46580.87          0    2340840
+{txt}{space 1}rexp_cat061 {c |}{res}     28,718    2951.995    8887.411          0   390056.1
+{txt}{space 1}rexp_cat062 {c |}{res}     28,718    4587.983    26387.76          0    1276263
+{txt}{space 1}rexp_cat063 {c |}{res}     28,718    1167.282      7014.2          0   321952.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat071 {c |}{res}     28,718    25011.25     2167703          0   3.37e+08
+{txt}{space 1}rexp_cat072 {c |}{res}     28,718     10041.6    105805.7          0    4534811
+{txt}{space 1}rexp_cat073 {c |}{res}     28,718    17569.25    54146.32          0    1278831
+{txt}{space 1}rexp_cat081 {c |}{res}     28,718    43.01317    1193.402          0   96404.19
+{txt}{space 1}rexp_cat083 {c |}{res}     28,718    18185.48     50007.4          0    1913411
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat091 {c |}{res}     28,718     4065.37    17933.35          0   544887.1
+{txt}{space 1}rexp_cat092 {c |}{res}     28,718    39.81018    1083.823          0   111878.9
+{txt}{space 1}rexp_cat093 {c |}{res}     28,718    70.74258    2564.864          0   240871.4
+{txt}{space 1}rexp_cat094 {c |}{res}     28,718    65.60932    1276.633          0   70745.64
+{txt}{space 1}rexp_cat095 {c |}{res}     28,718     762.368     7058.97          0   368794.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat101 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 1}rexp_cat111 {c |}{res}     28,718    5914.026    16470.06          0   655028.2
+{txt}{space 1}rexp_cat112 {c |}{res}     28,718    514.7945    18307.56          0    1437216
+{txt}{space 1}rexp_cat121 {c |}{res}     28,718    15924.85    22057.88          0   422479.6
+{txt}{space 1}rexp_cat123 {c |}{res}     28,718    170.8905    957.9268          0   14702.72
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat125 {c |}{res}     12,271    329.5707    6747.555          0   422386.5
+{txt}{space 2}rexp_cat01 {c |}{res}     28,718    314236.4    308671.8          0   1.00e+07
+{txt}{space 2}rexp_cat02 {c |}{res}     28,718    7356.966    30043.61          0    1811697
+{txt}{space 2}rexp_cat03 {c |}{res}     28,718    15983.93    36366.35          0    1307986
+{txt}{space 2}rexp_cat04 {c |}{res}     28,718    87756.67    119462.6   1354.402    5851851
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat05 {c |}{res}     28,718    22512.03    61341.94          0    2744132
+{txt}{space 2}rexp_cat06 {c |}{res}     28,718    8707.259    32616.99          0    1681322
+{txt}{space 2}rexp_cat07 {c |}{res}     28,718    52622.09     2173689          0   3.37e+08
+{txt}{space 2}rexp_cat08 {c |}{res}     28,718    18228.49    50116.57          0    1913411
+{txt}{space 2}rexp_cat09 {c |}{res}     28,718      5003.9    22830.79          0   656311.4
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat10 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 2}rexp_cat11 {c |}{res}     28,718    6428.821    25013.24          0    1437216
+{txt}{space 2}rexp_cat12 {c |}{res}     28,718    16236.56    22885.53          0   483843.7
+{txt}{space 5}rexpagg {c |}{res}     28,718    571324.9     2290751   7332.667   3.41e+08
+{txt}{space 2}rexpaggcap {c |}{res}     12,271    65836.45    90997.51   2972.581    2857557
+{txt}{hline 13}{c +}{hline 57}
+ultrapovline {c |}{res}     12,271    22956.38           0   22956.38   22956.38
+{txt}{space 5}povline {c |}{res}     12,271    37001.68           0   37001.68   37001.68
+{txt}{space 8}poor {c |}{res}     28,718    37.69545    48.42269          0        100
+{txt}{space 2}ultra_poor {c |}{res}     12,271    18.97156     39.2092          0        100
+{txt}{space 4}gap_poor {c |}{res}     24,718    14.48464     21.0176          0   91.96636
+{txt}{hline 13}{c +}{hline 57}
+{space 3}gap_ultra {c |}{res}     24,718    4.352886    11.99403          0   87.05118
+{txt}{space 3}gap2_poor {c |}{res}     24,718    6.515264    12.29303          0   84.57812
+{txt}{space 2}gap2_ultra {c |}{res}     24,718    1.627985    5.946756          0   75.77908
+{txt}{space 4}head_age {c |}{res}     12,271    42.14815    16.22512          2        110
+{txt}{space 1}head_gender {c |}{res}     12,271    1.240567    .4274453          1          2
+{txt}{hline 13}{c +}{hline 57}
+head_edlevel {c |}{res}     12,262    1.527973    .8760516          1          4
+{txt}head_edlev~2 {c |}{res}     12,271    1.653492    1.179167          1          9
+{txt}head_marital {c |}{res}     12,269    1.457494    .8328264          1          4
+{txt}head_marit~2 {c |}{res}     12,269    2.015486    1.607192          1          6
+{txt}{space 5}quintil {c |}{res}     12,271    3.274468     1.41351          1          5
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}     28,718    2012.018    2.783229       2009       2015
+{txt}{space 7}round {c |}{res}      4,000           2           0          2          2
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}      4,000    1624.987    925.0496          1       3263
+{txt}{space 2}hhweightR1 {c |}{res}      4,000    925.3408    598.0219    69.1233   3607.235
+{txt}{hline 13}{c +}{hline 57}
+{space 7}panel {c |}{res}      4,000     1.49175    .4999944          1          2
+{txt}interview_~s {c |}{res}      4,000     1.66675    .7806067          1          5
+{txt}price_indexL {c |}{res}      4,000    93.84438    15.42045   75.39732    132.757
+{txt}{space 3}pcrexpagg {c |}{res}      4,000    188327.9    233205.2   11864.29    3716533
+{txt}absolute_p~e {c |}{res}      4,000       85852           0      85852      85852
+{txt}{hline 13}{c +}{hline 57}
+extreme_po~e {c |}{res}      4,000       53262           0      53262      53262
+{txt}{space 7}epoor {c |}{res}      4,000      .08225    .2747796          0          1
+{txt}pcrexp_cat01 {c |}{res}      4,000    100205.1    86793.21    3011.37    1352010
+{txt}pcrexp_cat02 {c |}{res}      4,000    4715.056    16245.95          0   316731.5
+{txt}pcrexp_cat03 {c |}{res}      4,000    6490.995    15484.49          0   432286.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat04 {c |}{res}      4,000     33003.9    53032.82   848.0483    1196932
+{txt}pcrexp_cat05 {c |}{res}      4,000    6570.529    14534.35          0   342603.3
+{txt}pcrexp_cat06 {c |}{res}      4,000    1840.636    14407.13          0   840660.8
+{txt}pcrexp_cat07 {c |}{res}      4,000    14491.85    72619.03          0    2068056
+{txt}pcrexp_cat08 {c |}{res}      4,000    5971.396    20831.06          0   890244.7
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat09 {c |}{res}      4,000    1821.747    7747.534          0   188763.1
+{txt}pcrexp_cat10 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}pcrexp_cat11 {c |}{res}      4,000    3597.865    17858.15          0   874109.3
+{txt}pcrexp_cat12 {c |}{res}      4,000    5229.361    8305.009          0   171891.4
+{txt}{space 1}rexp_cat044 {c |}{res}     16,447    7464.696    21306.37          0   793568.9
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~011 {c |}{res}      4,000    96884.06    80219.24          0    1111545
+{txt}pcrexp_c~012 {c |}{res}      4,000    3321.001    10066.96          0     240465
+{txt}pcrexp_c~021 {c |}{res}      4,000    4557.748    15894.98          0   316731.5
+{txt}pcrexp_c~022 {c |}{res}      4,000    157.3076    1454.857          0   44979.91
+{txt}pcrexp_c~031 {c |}{res}      4,000    5126.778    12598.51          0   366155.5
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~032 {c |}{res}      4,000    1364.217    4296.114          0   112776.1
+{txt}pcrexp_c~041 {c |}{res}      4,000    4079.133    17808.29          0   327905.4
+{txt}pcrexp_c~042 {c |}{res}      4,000    12108.28    37268.06          0    1044170
+{txt}pcrexp_c~044 {c |}{res}      4,000    1453.534    7780.419          0   396784.5
+{txt}pcrexp_c~045 {c |}{res}      4,000    15362.95    16075.37          0   197212.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~051 {c |}{res}      4,000    1105.694     3037.75          0   59336.26
+{txt}pcrexp_c~052 {c |}{res}      4,000    451.2033    1683.347          0   49458.04
+{txt}pcrexp_c~053 {c |}{res}      4,000    670.0974    3159.419          0   57792.81
+{txt}pcrexp_c~054 {c |}{res}      4,000    547.1143    4807.635          0   261042.4
+{txt}pcrexp_c~055 {c |}{res}      4,000    842.3427    1469.163          0   22184.79
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~056 {c |}{res}      4,000    2954.078    9408.447          0   265111.5
+{txt}pcrexp_c~061 {c |}{res}      4,000    582.5033    3418.094          0     195028
+{txt}pcrexp_c~062 {c |}{res}      4,000    969.1932    11031.48          0   638131.7
+{txt}pcrexp_c~063 {c |}{res}      4,000    288.9397     2198.97          0   107317.4
+{txt}pcrexp_c~071 {c |}{res}      4,000      3922.4    38964.67          0    1634426
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~072 {c |}{res}      4,000     4268.21    49030.91          0    1987107
+{txt}pcrexp_c~073 {c |}{res}      4,000    6301.238    19440.47          0     426277
+{txt}pcrexp_c~081 {c |}{res}      4,000     35.0321     917.513          0   48202.09
+{txt}pcrexp_c~083 {c |}{res}      4,000    5936.364    20764.09          0   890244.7
+{txt}pcrexp_c~091 {c |}{res}      4,000    1370.468    5363.809          0     126113
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~092 {c |}{res}      4,000     47.6745    1908.821          0   111878.9
+{txt}pcrexp_c~093 {c |}{res}      4,000    22.71938    732.2209          0   39348.65
+{txt}pcrexp_c~094 {c |}{res}      4,000    28.96861     601.032          0   27372.78
+{txt}pcrexp_c~095 {c |}{res}      4,000    351.9171    2425.886          0   62650.18
+{txt}pcrexp_c~101 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
+{txt}pcrexp_c~112 {c |}{res}      4,000    198.8462    8405.003          0   522084.8
+{txt}pcrexp_c~121 {c |}{res}      4,000    5195.217    8293.929          0   171891.4
+{txt}pcrexp_c~123 {c |}{res}      4,000    34.14388    227.7259          0   4992.553
+{txt}{space 7}sdate {c |}{res}     12,447    16.12148    8.741656          1         31
+{txt}{hline 13}{c +}{hline 57}
+{space 6}smonth {c |}{res}     12,447     5.27348    3.104442          1         12
+{txt}{space 7}syear {c |}{res}     12,447    2016.507    .4999772       2016       2017
+{txt}{space 6}hh_wgt {c |}{res}     12,447    305.0786    215.7428     8.2893    1711.44
+{txt}{space 6}expagg {c |}{res}     12,447      866582     4001130   44948.95   4.14e+08
+{txt}{space 3}rexpaggpc {c |}{res}     12,447    220641.9     1234242   20031.35   1.14e+08
+{txt}{hline 13}{c +}{hline 57}
+{space 1}upline_2016 {c |}{res}     12,447    85260.16           0   85260.16   85260.16
+{txt}{space 2}pline_2016 {c |}{res}     12,447      137428           0     137428     137428
+{txt}{space 7}upoor {c |}{res}     12,447     16.1324    36.78443          0        100
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 12:28:43
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 12:52:35
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_12.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y3.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y3_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y3.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             765
+{txt}{col 9}from master{col 30}{res}             662{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             103{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,186{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(765 observations deleted)
+
+{com}.         *** drops 103 observations from using and 662 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y3", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta saved
+
+{com}.         *** 6186 observations 
+.         
+. * manager 1 
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label district already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,732
+{txt}{col 9}from master{col 30}{res}             129{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,603{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,332{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,603 observations deleted)
+
+{com}.         *** matched 6332 
+.         *** drop unmatched from using = 9603
+.         *** unmatched from master = 129 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,585 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label region already defined)
+(label yesno already defined)
+(label strataR3 already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          12,960
+{txt}{col 9}from master{col 30}{res}           2,588{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          10,372{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           4,045{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(10,372 observations deleted)
+
+{com}.         *** matched 4047 
+.         *** drop unmatched from using = 10372
+.         *** keep unmatched from master = 2593 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(242 real changes made, 242 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(241 real changes made, 241 to missing)
+
+{com}.         *** 242 changes made in first case, 241 in second case 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(4,221 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(4,221 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(2,541 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(2,541 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,829 missing values generated)
+
+{com}.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,827 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_salesmanager2{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (79,596 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta
+{txt}  obs:{res}         6,633                          
+{txt} vars:{res}            31                          16 Oct 2020 12:53
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:rs_cropsales_~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Self-reported value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:rs_cropsales_~i}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Implied value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%18.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID1)?{p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID2)?{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2013{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3/IHPS & IHS4 New Members{p_end}
+{p 0 48}{bind:sex_salesmana~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~1}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~1}{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~2}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_decsale }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_decsale   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_decsale  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}rs_cropsal~e {c |}{res}      6,632    129588.8     1832050          0   5.55e+07
+{txt}rs_cropsal~i {c |}{res}      6,632    93699.49     1327348          0   4.35e+07
+{txt}{space 8}year {c |}{res}      6,633        2015           0       2015       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      6,633    2.51e+11    6.25e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      6,633    2.442937    .6186988          1          3
+{txt}{space 4}district {c |}{res}      6,633    250.6352    62.56901        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}salesmanag~1 {c |}{res}      6,505    1.165565    .4722767          1          9
+{txt}{hline 13}{c +}{hline 57}
+salesmanag~2 {c |}{res}      6,391    1.259897    1.197109          0         10
+{txt}{space 5}urbanR3 {c |}{res}      6,504    1.871464    .3347117          1          2
+{txt}{space 10}ta {c |}{res}      6,504    11.12116    16.17898          1         86
+{txt}{space 4}strataR3 {c |}{res}      6,504    1.871464    .3347117          1          2
+{txt}{space 5}cluster {c |}{res}      6,504    2.51e+07     6250247   1.01e+07   3.16e+07
+{txt}{hline 13}{c +}{hline 57}
+{space 2}hhweightR1 {c |}{res}      6,504    2372.219     1246.18   120.8513   7525.956
+{txt}{space 2}hhweightR2 {c |}{res}      4,972    1350.315    1120.901   14.42097   11551.17
+{txt}{space 2}hhweightR3 {c |}{res}      6,504    1318.997    1135.857   12.55868   7097.931
+{txt}mover_R1R2R3 {c |}{res}      6,502    .4830821    .4997521          0          1
+{txt}{space 9}PID {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}      6,504    1.370849    .4830692          1          2
+{txt}rltn_sales~1 {c |}{res}      6,504    1.229551    .7330304          1         16
+{txt}age_salesm~1 {c |}{res}      6,504    41.55996    16.14874          0        106
+{txt}educ_years~1 {c |}{res}      6,504    5.760916    4.003213          0         19
+{txt}sex_salesm~2 {c |}{res}      3,804    1.835174    .3710727          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_sales~2 {c |}{res}      4,045    2.164153    1.149657          1         15
+{txt}age_salesm~2 {c |}{res}      4,045     34.7377    15.48027          0         93
+{txt}educ_years~2 {c |}{res}      4,045    5.316934    3.859734          0         19
+{txt}female_dec~e {c |}{res}      6,633    .3636364     .481082          0          1
+{txt}male_decsale {c |}{res}      6,633    .6169154    .4861753          0          1
+{txt}{hline 13}{c +}{hline 57}
+joint_decs~e {c |}{res}      6,631    .5736691    .4945804          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y3", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y3.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m case_id ea_id year using "$fil\consumption\ihs3_summary_15.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+year was 
+int, now float to accommodate using data's values)
+{p_end}
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          19,080
+{txt}{col 9}from master{col 30}{res}           6,633{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          12,447{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}               0{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y3.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y3_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y3.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             765
+{txt}{col 9}from master{col 30}{res}             662{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             103{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,186{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(765 observations deleted)
+
+{com}.         *** drops 103 observations from using and 662 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y3", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta saved
+
+{com}.         *** 6186 observations 
+.         
+. * manager 1 
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label district already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,732
+{txt}{col 9}from master{col 30}{res}             129{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,603{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,332{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,603 observations deleted)
+
+{com}.         *** matched 6332 
+.         *** drop unmatched from using = 9603
+.         *** unmatched from master = 129 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,588 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label region already defined)
+(label yesno already defined)
+(label strataR3 already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          12,963
+{txt}{col 9}from master{col 30}{res}           2,591{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          10,372{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           4,047{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(10,372 observations deleted)
+
+{com}.         *** matched 4047 
+.         *** drop unmatched from using = 10372
+.         *** keep unmatched from master = 2593 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(242 real changes made, 242 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(241 real changes made, 241 to missing)
+
+{com}.         *** 242 changes made in first case, 241 in second case 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(4,367 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(4,367 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(2,400 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(2,400 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,832 missing values generated)
+
+{com}.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,830 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_salesmanager2{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (79,656 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta
+{txt}  obs:{res}         6,638                          
+{txt} vars:{res}            31                          16 Oct 2020 12:53
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:rs_cropsales_~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Self-reported value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:rs_cropsales_~i}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Implied value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%18.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID1)?{p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID2)?{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2013{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3/IHPS & IHS4 New Members{p_end}
+{p 0 48}{bind:sex_salesmana~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~1}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~1}{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~2}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_decsale }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_decsale   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_decsale  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}rs_cropsal~e {c |}{res}      6,636    129571.3     1831499          0   5.55e+07
+{txt}rs_cropsal~i {c |}{res}      6,636    93651.74     1326949          0   4.35e+07
+{txt}{space 8}year {c |}{res}      6,638        2015           0       2015       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      6,638    2.51e+11    6.25e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      6,638    2.442904     .618613          1          3
+{txt}{space 4}district {c |}{res}      6,638    250.6332    62.56043        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}salesmanag~1 {c |}{res}      6,510    1.165591    .4722264          1          9
+{txt}{hline 13}{c +}{hline 57}
+salesmanag~2 {c |}{res}      6,396     1.25985    1.197347          0         10
+{txt}{space 5}urbanR3 {c |}{res}      6,509     1.87356    .3323705          1          2
+{txt}{space 10}ta {c |}{res}      6,509    11.12122    16.17628          1         86
+{txt}{space 4}strataR3 {c |}{res}      6,509     1.87356    .3323705          1          2
+{txt}{space 5}cluster {c |}{res}      6,509    2.51e+07     6249372   1.01e+07   3.16e+07
+{txt}{hline 13}{c +}{hline 57}
+{space 2}hhweightR1 {c |}{res}      6,509    2371.957    1246.073   120.8513   7525.956
+{txt}{space 2}hhweightR2 {c |}{res}      4,948    1365.828    1120.198   14.42097   11551.17
+{txt}{space 2}hhweightR3 {c |}{res}      6,509    1305.173    1113.979   12.55868   7097.931
+{txt}mover_R1R2R3 {c |}{res}      6,507    .4804057    .4996543          0          1
+{txt}{space 9}PID {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}      6,509    1.348902    .4766594          1          2
+{txt}rltn_sales~1 {c |}{res}      6,509    1.231679     .781885          1         16
+{txt}age_salesm~1 {c |}{res}      6,509    42.03027    16.24267          0        106
+{txt}educ_years~1 {c |}{res}      6,509    5.773237    4.023886          0         19
+{txt}sex_salesm~2 {c |}{res}      3,806    1.833946    .3721776          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_sales~2 {c |}{res}      4,047    2.170497    1.139152          1         15
+{txt}age_salesm~2 {c |}{res}      4,047    34.74648    15.44569          0         93
+{txt}educ_years~2 {c |}{res}      4,047    5.286138    3.849577          0         19
+{txt}female_dec~e {c |}{res}      6,638    .3421211    .4744557          0          1
+{txt}male_decsale {c |}{res}      6,638    .6384453    .4804869          0          1
+{txt}{hline 13}{c +}{hline 57}
+joint_decs~e {c |}{res}      6,636    .5735383    .4945998          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y3", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y3.dta saved
+
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m ea_id year using "$fil\consumption\ihs3_summary_15.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+year was 
+int, now float to accommodate using data's values)
+{p_end}
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          18,938
+{txt}{col 9}from master{col 30}{res}           6,507{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          12,431{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             131{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y3.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y3_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y3.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             765
+{txt}{col 9}from master{col 30}{res}             662{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             103{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,186{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(765 observations deleted)
+
+{com}.         *** drops 103 observations from using and 662 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y3", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta saved
+
+{com}.         *** 6186 observations 
+.         
+. * manager 1 
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label district already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,732
+{txt}{col 9}from master{col 30}{res}             129{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,603{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,332{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,603 observations deleted)
+
+{com}.         *** matched 6332 
+.         *** drop unmatched from using = 9603
+.         *** unmatched from master = 129 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,589 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label region already defined)
+(label yesno already defined)
+(label strataR3 already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          12,964
+{txt}{col 9}from master{col 30}{res}           2,592{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          10,372{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           4,046{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(10,372 observations deleted)
+
+{com}.         *** matched 4047 
+.         *** drop unmatched from using = 10372
+.         *** keep unmatched from master = 2593 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(242 real changes made, 242 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(241 real changes made, 241 to missing)
+
+{com}.         *** 242 changes made in first case, 241 in second case 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(4,335 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(4,335 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(2,432 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(2,432 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,833 missing values generated)
+
+{com}.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,831 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_salesmanager2{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_decsale{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (79,656 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y3.dta
+{txt}  obs:{res}         6,638                          
+{txt} vars:{res}            31                          16 Oct 2020 12:53
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:rs_cropsales_~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Self-reported value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:rs_cropsales_~i}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Implied value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%18.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID1)?{p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in the HH makes decision concerning the use of output from this plot(#ID2)?{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2013{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3/IHPS & IHS4 New Members{p_end}
+{p 0 48}{bind:sex_salesmana~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~1}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~1}{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_salesman~2}{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_salesmana~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_sa~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_decsale }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_decsale   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_decsale  }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}rs_cropsal~e {c |}{res}      6,636    129531.5     1831501          0   5.55e+07
+{txt}rs_cropsal~i {c |}{res}      6,636    93648.08     1326949          0   4.35e+07
+{txt}{space 8}year {c |}{res}      6,638        2015           0       2015       2015
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      6,638    2.51e+11    6.25e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      6,638    2.442904     .618613          1          3
+{txt}{space 4}district {c |}{res}      6,638    250.6332    62.56043        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}salesmanag~1 {c |}{res}      6,510    1.165591    .4722264          1          9
+{txt}{hline 13}{c +}{hline 57}
+salesmanag~2 {c |}{res}      6,396    1.259381    1.197253          0         10
+{txt}{space 5}urbanR3 {c |}{res}      6,509    1.871716    .3344314          1          2
+{txt}{space 10}ta {c |}{res}      6,509    11.12014    16.17632          1         86
+{txt}{space 4}strataR3 {c |}{res}      6,509    1.871716    .3344314          1          2
+{txt}{space 5}cluster {c |}{res}      6,509    2.51e+07     6249373   1.01e+07   3.16e+07
+{txt}{hline 13}{c +}{hline 57}
+{space 2}hhweightR1 {c |}{res}      6,509    2371.929    1245.811   120.8513   7525.956
+{txt}{space 2}hhweightR2 {c |}{res}      5,088    1340.941    1126.923   14.42097   11551.17
+{txt}{space 2}hhweightR3 {c |}{res}      6,509    1307.881    1118.179   12.55868   7097.931
+{txt}mover_R1R2R3 {c |}{res}      6,506    .4904703    .4999476          0          1
+{txt}{space 9}PID {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}      6,509    1.353818    .4781902          1          2
+{txt}rltn_sales~1 {c |}{res}      6,509    1.222154    .7325899          1         16
+{txt}age_salesm~1 {c |}{res}      6,509    41.69826    16.22954          0        106
+{txt}educ_years~1 {c |}{res}      6,509    5.767553    3.974862          0         19
+{txt}sex_salesm~2 {c |}{res}      3,805    1.840473    .3662149          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_sales~2 {c |}{res}      4,046    2.171775     1.18098          1         15
+{txt}age_salesm~2 {c |}{res}      4,046    34.89669    15.31186          0         93
+{txt}educ_years~2 {c |}{res}      4,046    5.234305    3.865856          0         19
+{txt}female_dec~e {c |}{res}      6,638    .3469418    .4760329          0          1
+{txt}male_decsale {c |}{res}      6,638    .6336246      .48185          0          1
+{txt}{hline 13}{c +}{hline 57}
+joint_decs~e {c |}{res}      6,636    .5733876    .4946222          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y3", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y3.dta saved
+
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m case_id ea_id year using "$fil\geovar\householdgeovariables_15.dta"
+{res}{err}variable {bf}case_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m y3_hhid ea_id year using "$fil\geovar\householdgeovariables_15.dta"
+{res}{err}variable {bf}ea_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m y3_hhid year using "$fil\geovar\householdgeovariables_15.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+year was 
+int, now float to accommodate using data's values)
+{p_end}
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             662
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             662{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           6,638{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    if _merge == 3
+{txt}(662 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 662 not matched from using
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m case_id year using "$fil\consumption\ihs3_summary_15.dta"
+{res}{txt}(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          19,085
+{txt}{col 9}from master{col 30}{res}           6,638{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          12,447{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}               0{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\gender_consumption_build-code.do"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 12 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds consumption variables from malawi kitchen sink and world bank team 
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 13:09:36
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - consumption indices from each round
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * 2009
+.         use                             "$fil\consumption\ihs3_summary.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_09.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_09.dta saved
+
+{com}.         
+. * 2012 
+.         use                             "$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
+{txt}(ALL CONSUMPTION VARIABLES SPATIALLY/TEMPORALLY DEFLATED, IN 2013 PRICES)
+
+{com}.         gen                     year = 2012
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_12.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_12.dta saved
+
+{com}. 
+. * 2015  
+.         use                             "$fil\consumption\IHS4 Consumption Aggregate.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\consumption\ihs3_summary_15.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\ihs3_summary_15.dta saved
+
+{com}.         
+.         
+. * append all 
+.         use                     "$fil\consumption\ihs3_summary_09.dta", clear 
+{txt}
+{com}.         append                  using "$fil\consumption\ihs_summary_12.dta"
+{txt}{p 0 7 2}
+(note: variable
+poor was 
+byte, now float to accommodate using data's values)
+{p_end}
+(label region already defined)
+(label urban already defined)
+
+{com}.         append                  using "$fil\consumption\ihs3_summary_15.dta"
+{txt}(label district already defined)
+
+{com}.         destring                case_id, replace
+{txt}case_id already numeric; no {res}replace
+{txt}
+{com}.         save                    "$fil\consumption\consumptionagg.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}poor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}round{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}epoor{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (315,898 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\consumption\consumptionagg.dta
+{txt}  obs:{res}        28,718                          
+{txt} vars:{res}           148                          16 Oct 2020 13:09
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:area           }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{bind:area     }{bind:  }{res}{res}Area: region by urban/rural{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:HH_A01   }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:TA             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Strata (districts){p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweight       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Sampling weights adjusted based on population projections{p_end}
+{p 0 48}{bind:hhsize         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household size{p_end}
+{p 0 48}{bind:adulteq        }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Adult equivalents{p_end}
+{p 0 48}{bind:intmonth       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:intyear        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:month          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month    }{bind:  }{res}{res}Month{p_end}
+{p 0 48}{bind:qx_type        }{txt}{bind: str13   }{bind:{txt}%13s      }{space 1}{bind:         }{bind:  }{res}{res}Sample Group (Panel A, Panel B, Cross-Sectional){p_end}
+{p 0 48}{bind:price_index    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list price_index":*} {res}Spatial and Temporal Price Index (Base National Feb/Mar 2010){p_end}
+{p 0 48}{bind:rexp_cat011    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat012    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Beverage, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat021    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alcohol, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat022    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat031    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat032    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat041    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Actual rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat042    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Estimated rents for housing, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat045    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity, gas, other fuels, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat051    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Decorations, carpets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat052    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household textiles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat053    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Appliances, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat054    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dishes, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat055    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Tools/equipment for home, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat056    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Routine Home maintenance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat061    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health drugs, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat062    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health out-patient, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat063    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health hospitalization, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat071    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat072    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Operation of vehicles, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat073    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat081    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Postal services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat083    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Phone and fax services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat091    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Audio-visual, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat092    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Major durables for rec, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat093    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Other recreational items, pets, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat094    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreational services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat095    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Newspapers, books, stationery, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat101    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat111    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Vendors/Cafes/Restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat112    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Accommodation services, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat121    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal care, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat123    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Personal effects, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat125    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Insurance, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat01     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food/Bev, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat02     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Alc/Tobacco, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat03     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Clothing/Footwear, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat04     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Housing/Utilities, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat05     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Furnishings, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat06     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Health, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat07     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Transport, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat08     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Communication, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat09     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Recreation, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat10     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Education, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat11     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Hotels and restaurants, real annual consumption{p_end}
+{p 0 48}{bind:rexp_cat12     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Misc Goods & Services, real annual consumption{p_end}
+{p 0 48}{bind:rexpagg        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggcap     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita{p_end}
+{p 0 48}{bind:ultrapovline   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra-poor (food) poverty line per person per year{p_end}
+{p 0 48}{bind:povline        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{stata "notes list povline":*} {res}Total poverty line per person per year{p_end}
+{p 0 48}{bind:poor           }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:poor     }{stata "notes list poor":*} {res}Exp per cap < poverty line{p_end}
+{p 0 48}{bind:ultra_poor     }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:ultra_p  }{bind:  }{res}{res}Exp per cap < ultra pov line{p_end}
+{p 0 48}{bind:gap_poor       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap poor{p_end}
+{p 0 48}{bind:gap_ultra      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Gap ultra poor{p_end}
+{p 0 48}{bind:gap2_poor      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity poor{p_end}
+{p 0 48}{bind:gap2_ultra     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Severity ultra poor{p_end}
+{p 0 48}{bind:head_age       }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Age of household head{p_end}
+{p 0 48}{bind:head_gender    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{txt}head_gender{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Gender of household head{p_end}
+{p 0 48}{bind:head_edlevel   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{txt}head_edlevel{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head{p_end}
+{p 0 48}{bind:head_edlevel2  }{txt}{bind: byte    }{bind:{txt}%16.0g    }{space 1}{txt}head_edlevel2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Highest education level acquired of household head, detailed{p_end}
+{p 0 48}{bind:head_marital   }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{txt}head_marital{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, definition 2{p_end}
+{p 0 48}{bind:head_marital2  }{txt}{bind: byte    }{bind:{txt}%39.0g    }{space 1}{txt}head_marital2{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Marital status of household head, detailed{p_end}
+{p 0 48}{bind:quintil        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}National quintil, consumption per person, population weighted{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:round          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}1 = IHS3 2 = IHPS{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:panel          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:HH_A02   }{bind:  }{res}{res}Sample Group (Panel A, Panel B){p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:price_indexL   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Laspeyres monthly Spatial and Temporal Price Index (Base National March 2013){p_end}
+{p 0 48}{bind:pcrexpagg      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total real annual consumption per capita        - 2013 Prices, Spatially & Tempo{p_end}
+{p 0 48}{bind:absolute_povl~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Absolute Poverty Line - 2013 Prices{p_end}
+{p 0 48}{bind:extreme_povline}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Ultra Poverty Line    - 2013 Prices{p_end}
+{p 0 48}{bind:epoor          }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if 2013 Total real annual consumption per capita < Extreme  poverty line{p_end}
+{p 0 48}{bind:pcrexp_cat01   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat01 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat02   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat02 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat03   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat03 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat04   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat04 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat05   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat05 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat06   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat06 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat07   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat07 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat08   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat08 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat09   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat09 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat10   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat10 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat11   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat11 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat12   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat12 per capita{p_end}
+{p 0 48}{bind:rexp_cat044    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Water supply, real annual consumption{p_end}
+{p 0 48}{bind:pcrexp_cat011  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat011 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat012  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat012 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat021  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat021 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat022  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat022 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat031  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat031 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat032  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat032 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat041  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat041 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat042  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat042 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat044  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat044 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat045  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat045 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat051  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat051 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat052  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat052 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat053  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat053 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat054  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat054 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat055  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat055 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat056  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat056 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat061  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat061 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat062  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat062 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat063  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat063 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat071  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat071 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat072  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat072 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat073  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat073 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat081  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat081 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat083  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat083 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat091  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat091 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat092  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat092 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat093  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat093 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat094  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat094 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat095  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat095 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat101  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat101 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat111  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat111 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat112  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat112 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat121  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat121 per capita{p_end}
+{p 0 48}{bind:pcrexp_cat123  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}rexp_cat123 per capita{p_end}
+{p 0 48}{bind:sdate          }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Day of month for interview{p_end}
+{p 0 48}{bind:smonth         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:month_l  }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:syear          }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:hh_wgt         }{txt}{bind: float   }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household Sampling Weight{p_end}
+{p 0 48}{bind:expagg         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total nominal annual consumption per household{p_end}
+{p 0 48}{bind:rexpaggpc      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:upline_2016    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Food poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:pline_2016     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Poverty line in Apri 2016 prices{p_end}
+{p 0 48}{bind:upoor          }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:lupoor   }{bind:  }{res}{res}Dummy for ultra-poor households below national food poverty line{p_end}
+                                            {txt}* indicated variables have notes
+{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     28,718    2.32e+11    7.84e+10   3.04e+07   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}region {c |}{res}     28,718    2.259384    .7655674          1          3
+{txt}{space 7}urban {c |}{res}     28,718    1.806707     .394888          1          2
+{txt}{space 8}area {c |}{res}     24,718    2.875394    1.117744          1          4
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}     28,718    232.3461     78.2435        101        315
+{txt}{space 10}TA {c |}{res}     24,718     10.7798    16.39046          1         88
+{txt}{space 6}strata {c |}{res}     16,271    177.8718     120.005          1        315
+{txt}{space 5}cluster {c |}{res}     12,271    384.4325    221.7332          1        768
+{txt}{space 4}hhweight {c |}{res}     16,271    372.7362    381.3168     6.6204   3257.806
+{txt}{hline 13}{c +}{hline 57}
+{space 6}hhsize {c |}{res}     28,718    4.519326    2.150878          1         19
+{txt}{space 5}adulteq {c |}{res}     28,718    3.877541    1.819357        .91      15.68
+{txt}{space 4}intmonth {c |}{res}     16,271    6.683486     3.28983          1         12
+{txt}{space 5}intyear {c |}{res}     16,271    2010.928    1.241648       2010       2013
+{txt}{space 7}month {c |}{res}     12,271      7.4738    3.518021          1         13
+{txt}{hline 13}{c +}{hline 57}
+{space 5}qx_type {c |}{res}          0
+{txt}{space 1}price_index {c |}{res}     24,718     99.0551    10.12667       75.3   123.3465
+{txt}{space 1}rexp_cat011 {c |}{res}     28,718    303394.8    292753.9          0   1.00e+07
+{txt}{space 1}rexp_cat012 {c |}{res}     28,718    10841.64    31115.99          0    1602566
+{txt}{space 1}rexp_cat021 {c |}{res}     28,718    6918.265    29435.98          0    1811697
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat022 {c |}{res}     28,718    438.7005    3526.831          0   128590.9
+{txt}{space 1}rexp_cat031 {c |}{res}     28,718    12997.09    29968.61          0    1307986
+{txt}{space 1}rexp_cat032 {c |}{res}     28,718    2986.841    9635.556          0   451104.5
+{txt}{space 1}rexp_cat041 {c |}{res}     28,718    8423.069    39511.83          0    1690141
+{txt}{space 1}rexp_cat042 {c |}{res}     28,718    31889.01    78594.61          0    5220849
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat045 {c |}{res}     28,718     43169.5     49804.3          0   721037.9
+{txt}{space 1}rexp_cat051 {c |}{res}     28,718    3880.167    9702.571          0   307369.8
+{txt}{space 1}rexp_cat052 {c |}{res}     28,718    1391.174    4355.489          0   89743.59
+{txt}{space 1}rexp_cat053 {c |}{res}     28,718    2356.522    13771.84          0   684353.3
+{txt}{space 1}rexp_cat054 {c |}{res}     28,718    1046.598    4965.133          0   261042.4
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat055 {c |}{res}     28,718    2882.988    5434.619          0   72923.65
+{txt}{space 1}rexp_cat056 {c |}{res}     28,718    10954.59    46580.87          0    2340840
+{txt}{space 1}rexp_cat061 {c |}{res}     28,718    2951.995    8887.411          0   390056.1
+{txt}{space 1}rexp_cat062 {c |}{res}     28,718    4587.983    26387.76          0    1276263
+{txt}{space 1}rexp_cat063 {c |}{res}     28,718    1167.282      7014.2          0   321952.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat071 {c |}{res}     28,718    25011.25     2167703          0   3.37e+08
+{txt}{space 1}rexp_cat072 {c |}{res}     28,718     10041.6    105805.7          0    4534811
+{txt}{space 1}rexp_cat073 {c |}{res}     28,718    17569.25    54146.32          0    1278831
+{txt}{space 1}rexp_cat081 {c |}{res}     28,718    43.01317    1193.402          0   96404.19
+{txt}{space 1}rexp_cat083 {c |}{res}     28,718    18185.48     50007.4          0    1913411
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat091 {c |}{res}     28,718     4065.37    17933.35          0   544887.1
+{txt}{space 1}rexp_cat092 {c |}{res}     28,718    39.81018    1083.823          0   111878.9
+{txt}{space 1}rexp_cat093 {c |}{res}     28,718    70.74258    2564.864          0   240871.4
+{txt}{space 1}rexp_cat094 {c |}{res}     28,718    65.60932    1276.633          0   70745.64
+{txt}{space 1}rexp_cat095 {c |}{res}     28,718     762.368     7058.97          0   368794.3
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat101 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 1}rexp_cat111 {c |}{res}     28,718    5914.026    16470.06          0   655028.2
+{txt}{space 1}rexp_cat112 {c |}{res}     28,718    514.7945    18307.56          0    1437216
+{txt}{space 1}rexp_cat121 {c |}{res}     28,718    15924.85    22057.88          0   422479.6
+{txt}{space 1}rexp_cat123 {c |}{res}     28,718    170.8905    957.9268          0   14702.72
+{txt}{hline 13}{c +}{hline 57}
+{space 1}rexp_cat125 {c |}{res}     12,271    329.5707    6747.555          0   422386.5
+{txt}{space 2}rexp_cat01 {c |}{res}     28,718    314236.4    308671.8          0   1.00e+07
+{txt}{space 2}rexp_cat02 {c |}{res}     28,718    7356.966    30043.61          0    1811697
+{txt}{space 2}rexp_cat03 {c |}{res}     28,718    15983.93    36366.35          0    1307986
+{txt}{space 2}rexp_cat04 {c |}{res}     28,718    87756.67    119462.6   1354.402    5851851
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat05 {c |}{res}     28,718    22512.03    61341.94          0    2744132
+{txt}{space 2}rexp_cat06 {c |}{res}     28,718    8707.259    32616.99          0    1681322
+{txt}{space 2}rexp_cat07 {c |}{res}     28,718    52622.09     2173689          0   3.37e+08
+{txt}{space 2}rexp_cat08 {c |}{res}     28,718    18228.49    50116.57          0    1913411
+{txt}{space 2}rexp_cat09 {c |}{res}     28,718      5003.9    22830.79          0   656311.4
+{txt}{hline 13}{c +}{hline 57}
+{space 2}rexp_cat10 {c |}{res}     28,718     16251.8    88979.79          0    4288955
+{txt}{space 2}rexp_cat11 {c |}{res}     28,718    6428.821    25013.24          0    1437216
+{txt}{space 2}rexp_cat12 {c |}{res}     28,718    16236.56    22885.53          0   483843.7
+{txt}{space 5}rexpagg {c |}{res}     28,718    571324.9     2290751   7332.667   3.41e+08
+{txt}{space 2}rexpaggcap {c |}{res}     12,271    65836.45    90997.51   2972.581    2857557
+{txt}{hline 13}{c +}{hline 57}
+ultrapovline {c |}{res}     12,271    22956.38           0   22956.38   22956.38
+{txt}{space 5}povline {c |}{res}     12,271    37001.68           0   37001.68   37001.68
+{txt}{space 8}poor {c |}{res}     28,718    37.69545    48.42269          0        100
+{txt}{space 2}ultra_poor {c |}{res}     12,271    18.97156     39.2092          0        100
+{txt}{space 4}gap_poor {c |}{res}     24,718    14.48464     21.0176          0   91.96636
+{txt}{hline 13}{c +}{hline 57}
+{space 3}gap_ultra {c |}{res}     24,718    4.352886    11.99403          0   87.05118
+{txt}{space 3}gap2_poor {c |}{res}     24,718    6.515264    12.29303          0   84.57812
+{txt}{space 2}gap2_ultra {c |}{res}     24,718    1.627985    5.946756          0   75.77908
+{txt}{space 4}head_age {c |}{res}     12,271    42.14815    16.22512          2        110
+{txt}{space 1}head_gender {c |}{res}     12,271    1.240567    .4274453          1          2
+{txt}{hline 13}{c +}{hline 57}
+head_edlevel {c |}{res}     12,262    1.527973    .8760516          1          4
+{txt}head_edlev~2 {c |}{res}     12,271    1.653492    1.179167          1          9
+{txt}head_marital {c |}{res}     12,269    1.457494    .8328264          1          4
+{txt}head_marit~2 {c |}{res}     12,269    2.015486    1.607192          1          6
+{txt}{space 5}quintil {c |}{res}     12,271    3.274468     1.41351          1          5
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}     28,718    2012.018    2.783229       2009       2015
+{txt}{space 7}round {c |}{res}      4,000           2           0          2          2
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}      4,000    1624.987    925.0496          1       3263
+{txt}{space 2}hhweightR1 {c |}{res}      4,000    925.3408    598.0219    69.1233   3607.235
+{txt}{hline 13}{c +}{hline 57}
+{space 7}panel {c |}{res}      4,000     1.49175    .4999944          1          2
+{txt}interview_~s {c |}{res}      4,000     1.66675    .7806067          1          5
+{txt}price_indexL {c |}{res}      4,000    93.84438    15.42045   75.39732    132.757
+{txt}{space 3}pcrexpagg {c |}{res}      4,000    188327.9    233205.2   11864.29    3716533
+{txt}absolute_p~e {c |}{res}      4,000       85852           0      85852      85852
+{txt}{hline 13}{c +}{hline 57}
+extreme_po~e {c |}{res}      4,000       53262           0      53262      53262
+{txt}{space 7}epoor {c |}{res}      4,000      .08225    .2747796          0          1
+{txt}pcrexp_cat01 {c |}{res}      4,000    100205.1    86793.21    3011.37    1352010
+{txt}pcrexp_cat02 {c |}{res}      4,000    4715.056    16245.95          0   316731.5
+{txt}pcrexp_cat03 {c |}{res}      4,000    6490.995    15484.49          0   432286.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat04 {c |}{res}      4,000     33003.9    53032.82   848.0483    1196932
+{txt}pcrexp_cat05 {c |}{res}      4,000    6570.529    14534.35          0   342603.3
+{txt}pcrexp_cat06 {c |}{res}      4,000    1840.636    14407.13          0   840660.8
+{txt}pcrexp_cat07 {c |}{res}      4,000    14491.85    72619.03          0    2068056
+{txt}pcrexp_cat08 {c |}{res}      4,000    5971.396    20831.06          0   890244.7
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_cat09 {c |}{res}      4,000    1821.747    7747.534          0   188763.1
+{txt}pcrexp_cat10 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}pcrexp_cat11 {c |}{res}      4,000    3597.865    17858.15          0   874109.3
+{txt}pcrexp_cat12 {c |}{res}      4,000    5229.361    8305.009          0   171891.4
+{txt}{space 1}rexp_cat044 {c |}{res}     16,447    7464.696    21306.37          0   793568.9
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~011 {c |}{res}      4,000    96884.06    80219.24          0    1111545
+{txt}pcrexp_c~012 {c |}{res}      4,000    3321.001    10066.96          0     240465
+{txt}pcrexp_c~021 {c |}{res}      4,000    4557.748    15894.98          0   316731.5
+{txt}pcrexp_c~022 {c |}{res}      4,000    157.3076    1454.857          0   44979.91
+{txt}pcrexp_c~031 {c |}{res}      4,000    5126.778    12598.51          0   366155.5
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~032 {c |}{res}      4,000    1364.217    4296.114          0   112776.1
+{txt}pcrexp_c~041 {c |}{res}      4,000    4079.133    17808.29          0   327905.4
+{txt}pcrexp_c~042 {c |}{res}      4,000    12108.28    37268.06          0    1044170
+{txt}pcrexp_c~044 {c |}{res}      4,000    1453.534    7780.419          0   396784.5
+{txt}pcrexp_c~045 {c |}{res}      4,000    15362.95    16075.37          0   197212.3
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~051 {c |}{res}      4,000    1105.694     3037.75          0   59336.26
+{txt}pcrexp_c~052 {c |}{res}      4,000    451.2033    1683.347          0   49458.04
+{txt}pcrexp_c~053 {c |}{res}      4,000    670.0974    3159.419          0   57792.81
+{txt}pcrexp_c~054 {c |}{res}      4,000    547.1143    4807.635          0   261042.4
+{txt}pcrexp_c~055 {c |}{res}      4,000    842.3427    1469.163          0   22184.79
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~056 {c |}{res}      4,000    2954.078    9408.447          0   265111.5
+{txt}pcrexp_c~061 {c |}{res}      4,000    582.5033    3418.094          0     195028
+{txt}pcrexp_c~062 {c |}{res}      4,000    969.1932    11031.48          0   638131.7
+{txt}pcrexp_c~063 {c |}{res}      4,000    288.9397     2198.97          0   107317.4
+{txt}pcrexp_c~071 {c |}{res}      4,000      3922.4    38964.67          0    1634426
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~072 {c |}{res}      4,000     4268.21    49030.91          0    1987107
+{txt}pcrexp_c~073 {c |}{res}      4,000    6301.238    19440.47          0     426277
+{txt}pcrexp_c~081 {c |}{res}      4,000     35.0321     917.513          0   48202.09
+{txt}pcrexp_c~083 {c |}{res}      4,000    5936.364    20764.09          0   890244.7
+{txt}pcrexp_c~091 {c |}{res}      4,000    1370.468    5363.809          0     126113
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~092 {c |}{res}      4,000     47.6745    1908.821          0   111878.9
+{txt}pcrexp_c~093 {c |}{res}      4,000    22.71938    732.2209          0   39348.65
+{txt}pcrexp_c~094 {c |}{res}      4,000    28.96861     601.032          0   27372.78
+{txt}pcrexp_c~095 {c |}{res}      4,000    351.9171    2425.886          0   62650.18
+{txt}pcrexp_c~101 {c |}{res}      4,000    4389.476    26021.27          0   737787.1
+{txt}{hline 13}{c +}{hline 57}
+pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
+{txt}pcrexp_c~112 {c |}{res}      4,000    198.8462    8405.003          0   522084.8
+{txt}pcrexp_c~121 {c |}{res}      4,000    5195.217    8293.929          0   171891.4
+{txt}pcrexp_c~123 {c |}{res}      4,000    34.14388    227.7259          0   4992.553
+{txt}{space 7}sdate {c |}{res}     12,447    16.12148    8.741656          1         31
+{txt}{hline 13}{c +}{hline 57}
+{space 6}smonth {c |}{res}     12,447     5.27348    3.104442          1         12
+{txt}{space 7}syear {c |}{res}     12,447    2016.507    .4999772       2016       2017
+{txt}{space 6}hh_wgt {c |}{res}     12,447    305.0786    215.7428     8.2893    1711.44
+{txt}{space 6}expagg {c |}{res}     12,447      866582     4001130   44948.95   4.14e+08
+{txt}{space 3}rexpaggpc {c |}{res}     12,447    220641.9     1234242   20031.35   1.14e+08
+{txt}{hline 13}{c +}{hline 57}
+{space 1}upline_2016 {c |}{res}     12,447    85260.16           0   85260.16   85260.16
+{txt}{space 2}pline_2016 {c |}{res}     12,447      137428           0     137428     137428
+{txt}{space 7}upoor {c |}{res}     12,447     16.1324    36.78443          0        100
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-consumption.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 13:09:37
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

@@ -36,16 +36,19 @@
 * 2009
 	use				"$fil\consumption\ihs3_summary.dta", clear
 	gen 			year = 2009
+	destring		case_id, replace 
 	save			"$fil\consumption\ihs3_summary_09.dta", replace
 	
 * 2012 
 	use				"$fil\consumption\Round 2 (2013) Consumption Aggregate.dta", clear
 	gen 			year = 2012
-	save			"$fil\consumption\ihs_summary_12.dta", replace
+	destring		case_id, replace 
+	save			"$fil\consumption\ihs3_summary_12.dta", replace
 
 * 2015	
 	use				"$fil\consumption\IHS4 Consumption Aggregate.dta", clear
 	gen 			year = 2015
+	destring		case_id, replace 
 	save			"$fil\consumption\ihs3_summary_15.dta", replace
 	
 	

@@ -1,0 +1,2816 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 13:29:34
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot_y1.dta", clear
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_plot_y1.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+end of do-file
+
+{search r(601), local:r(601);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   m:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}{err}variable {bf}ea_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. count
+  {res}2,505
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. count
+  {res}2,505
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{err}variable {bf}salesmanager2{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         replace                 manager2 = . if manager1 == manager1
+{txt}(8,855 real changes made, 8,855 to missing)
+
+{com}.         replace                 sex_manager2 = . if manager2 == .
+{txt}(8,807 real changes made, 8,807 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(8,177 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(8,177 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(7,051 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec = .    
+{err}invalid syntax
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(7,051 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(8,855 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(8,855 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab female_dec
+
+ {txt}female_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      8,177       92.34       92.34
+{txt}          1 {c |}{res}        678        7.66      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      8,855      100.00
+
+{com}. tab male_dec
+
+   {txt}male_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      7,051       79.63       79.63
+{txt}          1 {c |}{res}      1,804       20.37      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      8,855      100.00
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      8,855      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      8,855      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 manager2 = . if manager1 == manager1
+{txt}(2,505 real changes made, 2,505 to missing)
+
+{com}.         replace                 sex_manager2 = . if manager2 == .
+{txt}(2,457 real changes made, 2,457 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(2,505 missing values generated)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+{txt}no observations
+
+{com}. tab sex_manager1
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}      1,804       72.68       72.68
+{txt}     Female {c |}{res}        678       27.32      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,482      100.00
+
+{com}. tab sex_manager2
+{txt}no observations
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. tab manager2
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}      1,514       61.27       61.27
+{txt}          2 {c |}{res}        929       37.60       98.87
+{txt}          3 {c |}{res}         19        0.77       99.64
+{txt}          4 {c |}{res}          5        0.20       99.84
+{txt}          7 {c |}{res}          4        0.16      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,471      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 manager2 = 0 if manager2 == . 
+{txt}(0 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. tab manager2
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}         34        1.36        1.36
+{txt}          1 {c |}{res}      1,514       60.44       61.80
+{txt}          2 {c |}{res}        929       37.09       98.88
+{txt}          3 {c |}{res}         19        0.76       99.64
+{txt}          4 {c |}{res}          5        0.20       99.84
+{txt}          7 {c |}{res}          4        0.16      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,505      100.00
+
+{com}. tab sex_manager2
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}      1,132       46.07       46.07
+{txt}     Female {c |}{res}      1,325       53.93      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,457      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(48 missing values generated)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         gen                     joint_dec = 1 if sex_manager2 != .
+{err}variable {bf}joint_dec{sf} already defined
+{txt}{search r(110), local:r(110);}
+
+end of do-file
+
+{search r(110), local:r(110);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(48 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab female_dec
+
+ {txt}female_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,827       72.93       72.93
+{txt}          1 {c |}{res}        678       27.07      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,505      100.00
+
+{com}. tab male_dec
+
+   {txt}male_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        701       27.98       27.98
+{txt}          1 {c |}{res}      1,804       72.02      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,505      100.00
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}         48        1.92        1.92
+{txt}          1 {c |}{res}      2,457       98.08      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,505      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(48 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(48 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (27,555 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta
+{txt}  obs:{res}         2,505                          
+{txt} vars:{res}            31                          16 Oct 2020 13:42
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,505    2.36e+11    6.69e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      2,505    .3636177     .311373   .0040469   3.804045
+{txt}{space 4}mz_yield {c |}{res}      1,763    1638.458    2465.746          0   54869.41
+{txt}{space 1}mz_yieldimp {c |}{res}      1,763    1441.367    1442.945          0   11198.32
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      2,505    18388.37    54531.61          0    1826797
+{txt}harvest~eimp {c |}{res}      2,505    15312.58    29113.15          0     557520
+{txt}harvest_va~a {c |}{res}      2,505    60521.13      111643          0    2207596
+{txt}harvest~aimp {c |}{res}      2,505    48609.03    57080.13          0   421273.8
+{txt}{space 8}year {c |}{res}      2,505        2009           0       2009       2009
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      2,494    1.115878    .4170029          1         13
+{txt}{space 4}manager2 {c |}{res}      2,505    1.388024    .5829173          0          7
+{txt}{space 6}region {c |}{res}      2,482    2.304996    .6604257          1          3
+{txt}{space 4}district {c |}{res}      2,482    236.2301    66.83363        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 7}urban {c |}{res}      2,482    1.889202    .3139448          1          2
+{txt}{space 10}ta {c |}{res}      2,482    10.03465    15.82868          1         86
+{txt}{space 6}strata {c |}{res}      2,482    4.499194    1.394481          1          6
+{txt}{space 5}cluster {c |}{res}      2,482    2.36e+07     6681786   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      2,482    2342.445     1212.82    70.8552   7370.562
+{txt}{hline 13}{c +}{hline 57}
+sex_manager1 {c |}{res}      2,482    1.273167    .4456756          1          2
+{txt}rltn_manag~1 {c |}{res}      2,482    1.109186    .3676842          1          8
+{txt}age_manager1 {c |}{res}      2,482    42.75826    15.60177          4        110
+{txt}educ_years~1 {c |}{res}      2,482    5.429089    4.086727          0         19
+{txt}sex_manager2 {c |}{res}      2,457    1.539276    .4985565          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_manag~2 {c |}{res}      2,457    1.428164    .6787764          1         10
+{txt}age_manager2 {c |}{res}      2,457    40.53887    15.68551          4        110
+{txt}educ_years~2 {c |}{res}      2,457    5.131461    3.967218          0         19
+{txt}{space 2}female_dec {c |}{res}      2,505    .2706587    .4443888          0          1
+{txt}{space 4}male_dec {c |}{res}      2,505    .7201597    .4490102          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}joint_dec {c |}{res}      2,505    .9808383    .1371204          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y1", replace     
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y1.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+. 
+.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         merge                   1:m case_id "$fil\production-and-sales\plot-with-managerid_y1", replace 
+{res}{err}"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-man invalid name
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for plot-level 
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 13:44:25
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(48 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(48 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (27,555 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta
+{txt}  obs:{res}         2,505                          
+{txt} vars:{res}            31                          16 Oct 2020 13:44
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,505    2.36e+11    6.69e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      2,505    .3636177     .311373   .0040469   3.804045
+{txt}{space 4}mz_yield {c |}{res}      1,763    1638.458    2465.746          0   54869.41
+{txt}{space 1}mz_yieldimp {c |}{res}      1,763    1441.367    1442.945          0   11198.32
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      2,505    18388.37    54531.61          0    1826797
+{txt}harvest~eimp {c |}{res}      2,505    15312.58    29113.15          0     557520
+{txt}harvest_va~a {c |}{res}      2,505    60521.13      111643          0    2207596
+{txt}harvest~aimp {c |}{res}      2,505    48609.03    57080.13          0   421273.8
+{txt}{space 8}year {c |}{res}      2,505        2009           0       2009       2009
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      2,494    1.115878    .4170029          1         13
+{txt}{space 4}manager2 {c |}{res}      2,505    1.388024    .5829173          0          7
+{txt}{space 6}region {c |}{res}      2,482    2.304996    .6604257          1          3
+{txt}{space 4}district {c |}{res}      2,482    236.2301    66.83363        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 7}urban {c |}{res}      2,482    1.889202    .3139448          1          2
+{txt}{space 10}ta {c |}{res}      2,482    10.03465    15.82868          1         86
+{txt}{space 6}strata {c |}{res}      2,482    4.499194    1.394481          1          6
+{txt}{space 5}cluster {c |}{res}      2,482    2.36e+07     6681786   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      2,482    2342.445     1212.82    70.8552   7370.562
+{txt}{hline 13}{c +}{hline 57}
+sex_manager1 {c |}{res}      2,482    1.273167    .4456756          1          2
+{txt}rltn_manag~1 {c |}{res}      2,482    1.109186    .3676842          1          8
+{txt}age_manager1 {c |}{res}      2,482    42.75826    15.60177          4        110
+{txt}educ_years~1 {c |}{res}      2,482    5.429089    4.086727          0         19
+{txt}sex_manager2 {c |}{res}      2,457    1.539276    .4985565          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_manag~2 {c |}{res}      2,457    1.428164    .6787764          1         10
+{txt}age_manager2 {c |}{res}      2,457    40.53887    15.68551          4        110
+{txt}educ_years~2 {c |}{res}      2,457    5.131461    3.967218          0         19
+{txt}{space 2}female_dec {c |}{res}      2,505    .2706587    .4443888          0          1
+{txt}{space 4}male_dec {c |}{res}      2,505    .7201597    .4490102          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}joint_dec {c |}{res}      2,505    .9808383    .1371204          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y1.dta saved
+
+{com}.         /*
+> * **********************************************************************
+> * 2 - year 2
+> * **********************************************************************
+> 
+> * merge sales decision with decision-maker information 
+> 
+>         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y2.dta", clear
+> 
+>         merge                   m:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y2.dta"
+>         keep                    if _merge == 3
+>         *** drops 136 observations from using and 505 from master (no sales)
+>         drop                    _merge 
+> 
+>         save                    "$fil\production-and-sales\sales-with-manager_y2", replace      
+>         *** 3258 observations 
+>         
+> * manager 1 
+> * reduce sample significantly at this point - if do not identify a manager, not included 
+>         rename                  salesmanager1 id_code 
+>         merge                   m:m case_id year id_code using "$fil\household\hhbase_y2-short.dta"
+>         drop                    if _merge == 2
+>         *** matched 1177 
+>         *** drop unmatched from using = 9155
+>         *** unmatched from master = 2198 - okay, can drop later, as needed 
+>         
+>         rename                  id_code salesmanager1
+>         rename                  sex sex_salesmanager1
+>         rename                  rltn rltn_salesmanager1
+>         rename                  age age_salesmanager1
+>         rename                  educ_years educ_years_salesmanager1
+>         drop                    _merge 
+>         
+> * manager 2
+> * if no manager assume no one = 0
+>         replace                 salesmanager2 = 0 if salesmanager2 == . 
+>         rename                  salesmanager2 id_code 
+>         merge                   m:m case_id year id_code using "$fil\household\hhbase_y2-short.dta"
+>         drop                    if _merge == 2
+>         *** matched 688 
+>         *** drop unmatched from using = 9538
+>         *** keep unmatched from master = 11852 - perhaps no id code TO match - fewer observations here
+>         
+>         rename                  id_code salesmanager2
+>         rename                  sex sex_salesmanager2
+>         rename                  rltn rltn_salesmanager2
+>         rename                  age age_salesmanager2
+>         rename                  educ_years educ_years_salesmanager2
+>         drop                    _merge 
+>         
+> * determine management 
+>         
+>         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+>         replace                 sex_salesmanager2 = . if salesmanager2 == .
+>         *** 2 changes made in first case 
+>         
+> * determine primary manager     
+>         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+>         replace                 female_decsale = 0 if female_decsale == .
+>         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+>         replace                 male_decsale = 0 if male_decsale == .   
+>         
+>         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+>         
+>         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+>         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+>         
+> compress
+> describe
+> summarize 
+>         
+>         save                    "$fil\production-and-sales\sales-with-managerid_y2", replace    
+>         
+> * bring in consumption variables 
+>         
+>         merge                   m:m case_id year using "$fil\consumption\ihs3_summary_12.dta"
+>         keep                    if _merge == 3
+>         drop                    _merge
+>         *** dropping 2369 from using 
+>         
+>         save                    "$fil\regression-ready\household-level_y2", replace     
+>         
+> * merge in geovars 
+> 
+>         merge                   m:m y2_hhid year using "$fil\geovar\householdgeovariables_12.dta"
+>         keep                    if _merge == 3
+>         drop                    _merge 
+>         *** drops 505 not matched from using
+>         
+> compress
+> describe
+> summarize 
+>         
+>         save                    "$fil\regression-ready\household-level_y2", replace     
+> 
+> 
+> * **********************************************************************
+> * 3 - year 3
+> * **********************************************************************
+> 
+> * merge sales decision with decision-maker information 
+> 
+>         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y3.dta", clear
+> 
+>         merge                   m:m y3_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y3.dta"
+>         keep                    if _merge == 3
+>         *** drops 103 observations from using and 662 from master (no sales)
+>         drop                    _merge 
+> 
+>         save                    "$fil\production-and-sales\sales-with-manager_y3", replace      
+>         *** 6186 observations 
+>         
+> * manager 1 
+> * reduce sample significantly at this point - if do not identify a manager, not included 
+>         rename                  salesmanager1 id_code 
+>         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+>         drop                    if _merge == 2
+>         *** matched 6332 
+>         *** drop unmatched from using = 9603
+>         *** unmatched from master = 129 - okay, can drop later, as needed 
+>         
+>         rename                  id_code salesmanager1
+>         rename                  sex sex_salesmanager1
+>         rename                  rltn rltn_salesmanager1
+>         rename                  age age_salesmanager1
+>         rename                  educ_years educ_years_salesmanager1
+>         drop                    _merge 
+>         
+> * manager 2
+> * if no manager assume no one = 0
+>         replace                 salesmanager2 = 0 if salesmanager2 == . 
+>         rename                  salesmanager2 id_code 
+>         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+>         drop                    if _merge == 2
+>         *** matched 4047 
+>         *** drop unmatched from using = 10372
+>         *** keep unmatched from master = 2593 - perhaps no id code TO match - fewer observations here
+>         
+>         rename                  id_code salesmanager2
+>         rename                  sex sex_salesmanager2
+>         rename                  rltn rltn_salesmanager2
+>         rename                  age age_salesmanager2
+>         rename                  educ_years educ_years_salesmanager2
+>         drop                    _merge 
+>         
+> * determine management 
+>         
+>         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+>         replace                 sex_salesmanager2 = . if salesmanager2 == .
+>         *** 242 changes made in first case, 241 in second case 
+>         
+> * determine primary manager     
+>         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+>         replace                 female_decsale = 0 if female_decsale == .
+>         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+>         replace                 male_decsale = 0 if male_decsale == .   
+>         
+>         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+>         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+>         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+>         
+> compress
+> describe
+> summarize 
+>         
+>         save                    "$fil\production-and-sales\sales-with-managerid_y3", replace    
+>         
+> * bring in consumption variables 
+>         /*
+>         merge                   m:m case_id year using "$fil\consumption\ihs3_summary_15.dta"
+>         keep                    if _merge == 3
+>         drop                    _merge
+> **** THIS IS NOT WORKING ****
+> **** WILL HAVE TO OMIT 2016 FOR NOW ****
+> **** UGGGGH **** 
+>         
+>         save                    "$fil\regression-ready\household-level_y3", replace     */ 
+>         
+> * merge in geovars 
+> 
+>         merge                   m:m y3_hhid year using "$fil\geovar\householdgeovariables_15.dta"
+>         keep                    if _merge == 3
+>         drop                    _merge 
+>         *** drops 662 not matched from using
+> 
+> compress
+> describe
+> summarize 
+>         
+>         save                    "$fil\regression-ready\household-level_y3", replace     
+>         
+> * *********************************************************************
+> * 4 - append all together 
+> * **********************************************************************        
+>         
+>         
+> * *********************************************************************
+> * 5 - end matter
+> * **********************************************************************
+> 
+> compress
+> describe
+> summarize 
+> 
+> * close the log
+>         log     close   
+
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for plot-level 
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 13:44:37
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(48 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(48 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (27,555 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta
+{txt}  obs:{res}         2,505                          
+{txt} vars:{res}            31                          16 Oct 2020 13:44
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,505    2.36e+11    6.69e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      2,505    .3636177     .311373   .0040469   3.804045
+{txt}{space 4}mz_yield {c |}{res}      1,763    1638.458    2465.746          0   54869.41
+{txt}{space 1}mz_yieldimp {c |}{res}      1,763    1441.367    1442.945          0   11198.32
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      2,505    18388.37    54531.61          0    1826797
+{txt}harvest~eimp {c |}{res}      2,505    15312.58    29113.15          0     557520
+{txt}harvest_va~a {c |}{res}      2,505    60521.13      111643          0    2207596
+{txt}harvest~aimp {c |}{res}      2,505    48609.03    57080.13          0   421273.8
+{txt}{space 8}year {c |}{res}      2,505        2009           0       2009       2009
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      2,494    1.115878    .4170029          1         13
+{txt}{space 4}manager2 {c |}{res}      2,505    1.388024    .5829173          0          7
+{txt}{space 6}region {c |}{res}      2,482    2.304996    .6604257          1          3
+{txt}{space 4}district {c |}{res}      2,482    236.2301    66.83363        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 7}urban {c |}{res}      2,482    1.889202    .3139448          1          2
+{txt}{space 10}ta {c |}{res}      2,482    10.03465    15.82868          1         86
+{txt}{space 6}strata {c |}{res}      2,482    4.499194    1.394481          1          6
+{txt}{space 5}cluster {c |}{res}      2,482    2.36e+07     6681786   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      2,482    2342.445     1212.82    70.8552   7370.562
+{txt}{hline 13}{c +}{hline 57}
+sex_manager1 {c |}{res}      2,482    1.273167    .4456756          1          2
+{txt}rltn_manag~1 {c |}{res}      2,482    1.109186    .3676842          1          8
+{txt}age_manager1 {c |}{res}      2,482    42.75826    15.60177          4        110
+{txt}educ_years~1 {c |}{res}      2,482    5.429089    4.086727          0         19
+{txt}sex_manager2 {c |}{res}      2,457    1.539276    .4985565          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_manag~2 {c |}{res}      2,457    1.428164    .6787764          1         10
+{txt}age_manager2 {c |}{res}      2,457    40.53887    15.68551          4        110
+{txt}educ_years~2 {c |}{res}      2,457    5.131461    3.967218          0         19
+{txt}{space 2}female_dec {c |}{res}      2,505    .2706587    .4443888          0          1
+{txt}{space 4}male_dec {c |}{res}      2,505    .7201597    .4490102          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}joint_dec {c |}{res}      2,505    .9808383    .1371204          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}. 
+.         merge                   1:m case_id "$fil\production-and-sales\plot-with-managerid_y1"  
+{res}{err}"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-man invalid name
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   1:m case_id using "$fil\production-and-sales\plot-with-managerid_y1"    
+{res}{err}{p 0 4 2}
+variable{err} case_id
+does not uniquely identify observations in the
+master data
+{p_end}
+{txt}{search r(459), local:r(459);}
+
+end of do-file
+
+{search r(459), local:r(459);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+{res}{err}{p 0 4 2}
+variable{err}s{err} case_id
+ea_id
+do not uniquely identify observations in the
+master data
+{p_end}
+{txt}{search r(459), local:r(459);}
+
+end of do-file
+
+{search r(459), local:r(459);}
+
+{com}. distinct ea_id
+
+{txt}{col 8}{c |}        Observations
+{col 8}{c |}      total   distinct
+{hline 7}{c +}{hline 22}
+ ea_id {c |}  {res}     2563         99
+
+{com}. duplicates drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}.         duplicates drop 
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         merge                   1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+{res}{err}{p 0 4 2}
+variable{err}s{err} case_id
+ea_id
+do not uniquely identify observations in the
+master data
+{p_end}
+{txt}{search r(459), local:r(459);}
+
+end of do-file
+
+{search r(459), local:r(459);}
+
+{com}. distinct ea_id
+
+{txt}{col 8}{c |}        Observations
+{col 8}{c |}      total   distinct
+{hline 7}{c +}{hline 22}
+ ea_id {c |}  {res}     1693         99
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}.         duplicates drop 
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. 
+.         merge                   m:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label strata already defined)
+(label region already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}               0
+{txt}{col 5}matched{col 30}{res}           2,574{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         save                    "$fil\regression-ready\household-total_y1", replace     
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y2.dta"
+{res}{err}variable {bf}case_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision_wet_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             136
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             136{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,686{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    if _merge == 3
+{txt}(136 observations deleted)
+
+{com}.         *** drops 136 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    y2_hhid plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{err}variable {bf}ea_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    y2_hhid plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year manager1 manager2 
+{err}variable {bf}manager1{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\gender_decision-maker_build-code.do"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable 
+.         * just clean up for now - will merge with production data before determining genders (since only need if ACTUALLY produce something)
+. 
+. * assumes
+.         * access to original LSMS data files "AG_MOD_D_*" for each year
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 13:59:45
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m case_id year using ///
+>                                                 "$fil\decision-making\decision_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          16,760
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          16,760{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,505{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(16,760 observations deleted)
+
+{com}.         *** drops 16760 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year ea_id manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y1", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta saved
+
+{com}.         *** 2505 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,340
+{txt}{col 9}from master{col 30}{res}              23{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,317{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,482{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,317 observations deleted)
+
+{com}.         *** matched 2482 
+.         *** drop unmatched from using = 6317
+.         *** unmatched from master = 23
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(34 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           6,398
+{txt}{col 9}from master{col 30}{res}              48{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,350{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,457{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(6,350 observations deleted)
+
+{com}.         *** matched 2457 
+.         *** drop unmatched from using = 6350
+.         *** keep unmatched from master = 48 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(1,827 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(1,827 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(701 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(701 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(48 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(48 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (27,555 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y1.dta
+{txt}  obs:{res}         2,505                          
+{txt} vars:{res}            31                          16 Oct 2020 13:59
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,505    2.36e+11    6.69e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      2,505    .3636177     .311373   .0040469   3.804045
+{txt}{space 4}mz_yield {c |}{res}      1,763    1638.458    2465.746          0   54869.41
+{txt}{space 1}mz_yieldimp {c |}{res}      1,763    1441.367    1442.945          0   11198.32
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      2,505    18388.37    54531.61          0    1826797
+{txt}harvest~eimp {c |}{res}      2,505    15312.58    29113.15          0     557520
+{txt}harvest_va~a {c |}{res}      2,505    60521.13      111643          0    2207596
+{txt}harvest~aimp {c |}{res}      2,505    48609.03    57080.13          0   421273.8
+{txt}{space 8}year {c |}{res}      2,505        2009           0       2009       2009
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      2,494    1.115878    .4170029          1         13
+{txt}{space 4}manager2 {c |}{res}      2,505    1.388024    .5829173          0          7
+{txt}{space 6}region {c |}{res}      2,482    2.304996    .6604257          1          3
+{txt}{space 4}district {c |}{res}      2,482    236.2301    66.83363        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 7}urban {c |}{res}      2,482    1.889202    .3139448          1          2
+{txt}{space 10}ta {c |}{res}      2,482    10.03465    15.82868          1         86
+{txt}{space 6}strata {c |}{res}      2,482    4.499194    1.394481          1          6
+{txt}{space 5}cluster {c |}{res}      2,482    2.36e+07     6681786   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      2,482    2342.445     1212.82    70.8552   7370.562
+{txt}{hline 13}{c +}{hline 57}
+sex_manager1 {c |}{res}      2,482    1.273167    .4456756          1          2
+{txt}rltn_manag~1 {c |}{res}      2,482    1.109186    .3676842          1          8
+{txt}age_manager1 {c |}{res}      2,482    42.75826    15.60177          4        110
+{txt}educ_years~1 {c |}{res}      2,482    5.429089    4.086727          0         19
+{txt}sex_manager2 {c |}{res}      2,457    1.539276    .4985565          1          2
+{txt}{hline 13}{c +}{hline 57}
+rltn_manag~2 {c |}{res}      2,457    1.428164    .6787764          1         10
+{txt}age_manager2 {c |}{res}      2,457    40.53887    15.68551          4        110
+{txt}educ_years~2 {c |}{res}      2,457    5.131461    3.967218          0         19
+{txt}{space 2}female_dec {c |}{res}      2,505    .2706587    .4443888          0          1
+{txt}{space 4}male_dec {c |}{res}      2,505    .7201597    .4490102          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}joint_dec {c |}{res}      2,505    .9808383    .1371204          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision_wet_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           3,439
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           3,439{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,051{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(3,439 observations deleted)
+
+{com}.         *** drops 3439 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    y2_hhid plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y2", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y2.dta saved
+
+{com}.         *** 3051 observations 
+.         
+. * manager 1 - year 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m y2_hhid year id_code using "$fil\household\hhbase_y2-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,527
+{txt}{col 9}from master{col 30}{res}               2{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           8,525{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,049{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(8,525 observations deleted)
+
+{com}.         *** matched 3049 
+.         *** drop unmatched from using = 8525
+.         *** unmatched from master = 2
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(0 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y2-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label splitoff already defined)
+(label region already defined)
+(label district already defined)
+(label strata already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,258
+{txt}{col 9}from master{col 30}{res}              37{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           8,221{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,160{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(8,221 observations deleted)
+
+{com}.         *** matched 3160 
+.         *** drop unmatched from using = 8221
+.         *** keep unmatched from master = 8562 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(2,226 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(2,226 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(973 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(973 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(37 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(37 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_manager1{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (38,364 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y2.dta
+{txt}  obs:{res}         3,197                          
+{txt} vars:{res}            38                          16 Oct 2020 13:59
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in the household makes the decisions concerning crops to be planted, input u{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:AG_D01_1 }{bind:  }{res}{res}Are there other household members that the primary decision maker consults regar{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urbanR2        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:urbanR1        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Baseline Urban/rural{p_end}
+{p 0 48}{bind:strataR1       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Strata{p_end}
+{p 0 48}{bind:strataR2       }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}2013 Strata{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}panel weight 2013{p_end}
+{p 0 48}{bind:splitoffR2     }{txt}{bind: byte    }{bind:{txt}%19.0g    }{space 1}{bind:splitoff }{bind:  }{res}{res}Household split off from an IHS3 Household = 2{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str9    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline and IHPS New Members{p_end}
+{p 0 48}{bind:hhmember       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Dummy Variable = 1 if Individual is Considered a Household Member in 2013{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      3,197    .3553386    .3155944   .0040469   3.520765
+{txt}{space 4}mz_yield {c |}{res}      3,197    1832.371    8405.736          0   197230.7
+{txt}{space 1}mz_yieldimp {c |}{res}      3,197    1273.576    2300.309          0   38189.11
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      3,197    56700.71    175117.9          0    4924297
+{txt}harvest~eimp {c |}{res}      3,197     50398.6    103561.6          0    3333333
+{txt}harvest_va~a {c |}{res}      3,197    254499.4     1090840          0   3.13e+07
+{txt}harvest~aimp {c |}{res}      3,197    180839.8    256833.7          0    3071167
+{txt}{space 8}year {c |}{res}      3,197        2012           0       2012       2012
+{txt}{hline 13}{c +}{hline 57}
+{space 4}manager1 {c |}{res}      3,197     1.13325    .4684126          1          9
+{txt}{space 4}manager2 {c |}{res}      3,197     1.37848     .485084          1          2
+{txt}{space 5}case_id {c |}{res}      3,195    2.44e+11    6.27e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      3,195    2.381221    .6270048          1          3
+{txt}{space 4}district {c |}{res}      3,195    244.0404    63.51771        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 5}urbanR2 {c |}{res}      3,195    1.884194    .3200422          1          2
+{txt}{space 10}ta {c |}{res}      3,136    9.653061    14.99629          1         86
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 5}urbanR1 {c |}{res}      3,195    1.862598    .3443253          1          2
+{txt}{space 4}strataR1 {c |}{res}      3,195    4.615649    1.325538          1          6
+{txt}{hline 13}{c +}{hline 57}
+{space 4}strataR2 {c |}{res}      3,195    4.646635    1.315822          1          6
+{txt}{space 5}cluster {c |}{res}      3,195    2.44e+07     6272149   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      3,195     2310.15    1254.587    72.4084   7525.956
+{txt}{space 2}hhweightR2 {c |}{res}      3,195    1295.167    1073.011   14.42097   11551.17
+{txt}{space 2}splitoffR2 {c |}{res}      3,195     1.25133    .4338459          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 9}PID {c |}{res}          0
+{txt}{space 4}hhmember {c |}{res}      3,195    .9965571    .0585841          0          1
+{txt}sex_manager1 {c |}{res}      3,195    1.303912    .4600173          1          2
+{txt}rltn_manag~1 {c |}{res}      3,195    1.158998    .6537855          1         11
+{txt}age_manager1 {c |}{res}      3,195    43.57653    15.28275          4         92
+{txt}{hline 13}{c +}{hline 57}
+educ_years~1 {c |}{res}      3,195    5.481064    4.035364          0         19
+{txt}sex_manager2 {c |}{res}      3,160    1.349367    .4768456          1          2
+{txt}rltn_manag~2 {c |}{res}      3,160    1.589873     .992609          1         15
+{txt}age_manager2 {c |}{res}      3,160    37.34652    16.87129          0        104
+{txt}educ_years~2 {c |}{res}      3,160    5.691456    4.138707          0         19
+{txt}{hline 13}{c +}{hline 57}
+{space 2}female_dec {c |}{res}      3,197    .3037222    .4599361          0          1
+{txt}{space 4}male_dec {c |}{res}      3,197    .6956522    .4602026          0          1
+{txt}{space 3}joint_dec {c |}{res}      3,197    .9884266    .1069719          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y2.dta saved
+
+{com}.         
+. 
+. * **********************************************************************
+. * 3 - year 3
+. * **********************************************************************
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp3-plot.dta", clear
+{txt}
+{com}. 
+.         merge                   m:m y3_hhid year using ///
+>                                                 "$fil\decision-making\decision_wet_y3.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             111
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             111{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,931{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(111 observations deleted)
+
+{com}.         *** drops 111 observations from using and 0 from master 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         keep                    y3_hhid plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year manager1 manager2 
+{txt}
+{com}.                         
+.         save                    "$fil\production-and-sales\production-with-manager_y3", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y3.dta saved
+
+{com}.         *** 3931 observations 
+.         
+. * manager 1 
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m y3_hhid year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          10,254
+{txt}{col 9}from master{col 30}{res}              10{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          10,244{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,921{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(10,244 observations deleted)
+
+{com}.         *** matched 3921 
+.         *** drop unmatched from using = 10244
+.         *** unmatched from master = 10
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+. * manager 2     
+. * if no manager assume no one = 0
+.         replace                 manager2 = 0 if manager2 == . 
+{txt}(6 real changes made)
+
+{com}.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label region already defined)
+(label yesno already defined)
+(label strataR3 already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,495
+{txt}{col 9}from master{col 30}{res}              41{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,454{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           4,358{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,454 observations deleted)
+
+{com}.         *** matched 4358 
+.         *** drop unmatched from using = 9454
+.         *** keep unmatched from master = 41 
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+. * determine primary manager     
+.         gen                     female_dec = 1 if sex_manager1 == 2 
+{txt}(2,721 missing values generated)
+
+{com}.         replace                 female_dec = 0 if female_dec == .
+{txt}(2,721 real changes made)
+
+{com}.         gen                     male_dec = 1 if sex_manager1 == 1
+{txt}(1,688 missing values generated)
+
+{com}.         replace                 male_dec = 0 if male_dec == .   
+{txt}(1,688 real changes made)
+
+{com}.         
+.         gen                     joint_dec = 1 if sex_manager2 != .
+{txt}(41 missing values generated)
+
+{com}.         
+.         replace                 joint_dec = . if sex_manager1 == . & sex_manager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
+{txt}(41 real changes made)
+
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}age_manager1{sf} was {bf}{res}int{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}female_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}male_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}joint_dec{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (52,788 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\production-with-manager_y3.dta
+{txt}  obs:{res}         4,399                          
+{txt} vars:{res}            37                          16 Oct 2020 13:59
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:plotsize       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Plot Size (ha){p_end}
+{p 0 48}{bind:mz_yield       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha){p_end}
+{p 0 48}{bind:mz_yieldimp    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Maize yield (kg/ha), imputed{p_end}
+{p 0 48}{bind:harvest_value  }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK){p_end}
+{p 0 48}{bind:harvest_va~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:harvest_valueha}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:harvest_va~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}Decision Maker in Household Concerning Crops{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:ag_d01_1 }{bind:  }{res}{res}Another Household Member who makes decisions?{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%18.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urbanR3        }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:strataR3       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:strataR3 }{bind:  }{res}{res}2016 Strata{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:hhweightR1     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:hhweightR2     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2013{p_end}
+{p 0 48}{bind:hhweightR3     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Panel Weight 2016{p_end}
+{p 0 48}{bind:mover_R1R2R3   }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Household moved from its original 2010 sampling location in either 2013 or 2016{p_end}
+{p 0 48}{bind:PID            }{txt}{bind: str10   }{bind:{txt}%10s      }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3/IHPS & IHS4 New Members{p_end}
+{p 0 48}{bind:sex_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager1  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager1   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~1}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:sex_manager2   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:sex      }{bind:  }{res}{res}Sex of individual{p_end}
+{p 0 48}{bind:rltn_manager2  }{txt}{bind: byte    }{bind:{txt}%29.0g    }{space 1}{bind:rltn     }{bind:  }{res}{res}Relationship of individual to Household Head{p_end}
+{p 0 48}{bind:age_manager2   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Individual age (years){p_end}
+{p 0 48}{bind:educ_years_ma~2}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of Education{p_end}
+{p 0 48}{bind:female_dec     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:male_dec       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:joint_dec      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}plotsize {c |}{res}      4,399    .3468613     .335764   .0040469   3.897123
+{txt}{space 4}mz_yield {c |}{res}      4,399    1132.136    10595.96          0   691203.2
+{txt}{space 1}mz_yieldimp {c |}{res}      4,399    865.1995    1245.363          0    18989.1
+{txt}{hline 13}{c +}{hline 57}
+harvest_va~e {c |}{res}      4,399    82158.43    385875.3          0   2.10e+07
+{txt}harvest~eimp {c |}{res}      4,399    70462.88    117396.9          0    3000000
+{txt}harvest_va~a {c |}{res}      4,399    315754.2     2016879          0   1.30e+08
+{txt}harvest~aimp {c |}{res}      4,399    251399.2    280908.5          0    3993076
+{txt}{space 8}year {c |}{res}      4,399        2015           0       2015       2015
+{txt}{hline 13}{c +}{hline 57}
+{space 4}manager1 {c |}{res}      4,390    1.232574     .645637          1          9
+{txt}{space 4}manager2 {c |}{res}      4,399     1.31689    .4682398          0          2
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 5}case_id {c |}{res}      4,389    2.40e+11    6.32e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      4,389    2.338346      .62363          1          3
+{txt}{hline 13}{c +}{hline 57}
+{space 4}district {c |}{res}      4,389    240.1597    63.21612        101        315
+{txt}{space 5}urbanR3 {c |}{res}      4,389    1.886307    .3174746          1          2
+{txt}{space 10}ta {c |}{res}      4,389    12.07063    17.22803          1         86
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 4}strataR3 {c |}{res}      4,389    1.886307    .3174746          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 5}cluster {c |}{res}      4,389    2.40e+07     6319492   1.01e+07   3.16e+07
+{txt}{space 2}hhweightR1 {c |}{res}      4,389    2329.924    1249.005   120.8513   7525.956
+{txt}{space 2}hhweightR2 {c |}{res}      3,187    1312.031    1082.043    14.6518   11551.17
+{txt}{space 2}hhweightR3 {c |}{res}      4,389    1312.058    1103.075   12.55868   7097.931
+{txt}mover_R1R2R3 {c |}{res}      4,389    .4504443    .4975949          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 9}PID {c |}{res}          0
+{txt}sex_manager1 {c |}{res}      4,389    1.382319    .4860094          1          2
+{txt}rltn_manag~1 {c |}{res}      4,389    1.242652    .8127538          1         16
+{txt}age_manager1 {c |}{res}      4,389    43.55411    15.54636          0         96
+{txt}educ_years~1 {c |}{res}      4,389    5.604466    3.929685          0         19
+{txt}{hline 13}{c +}{hline 57}
+sex_manager2 {c |}{res}      4,358     1.37609    .4844586          1          2
+{txt}rltn_manag~2 {c |}{res}      4,358     1.55966    1.079148          1         15
+{txt}age_manager2 {c |}{res}      4,358    38.17233     16.9675          0        106
+{txt}educ_years~2 {c |}{res}      4,358    6.006654     4.07134          0         19
+{txt}{space 2}female_dec {c |}{res}      4,399    .3814503    .4857979          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 4}male_dec {c |}{res}      4,399    .6162764    .4863472          0          1
+{txt}{space 3}joint_dec {c |}{res}      4,399    .9906797    .0961017          0          1
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\plot-with-managerid_y3", replace     
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y3.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-managerid_y3.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 4 - end matter
+. * **********************************************************************
+. 
+. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 13:59:45
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
