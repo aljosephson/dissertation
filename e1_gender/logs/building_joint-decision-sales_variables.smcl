@@ -1,0 +1,324 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint-decision-sales_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 10:30:50
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers and owners (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\ag_mod_b_10.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         keep                    HHID case_id ea_id ag_b09a ag_b09b
+{txt}
+{com}.         
+. * primary and secondary manager 
+.         rename                  ag_b09a salesmanager1
+{res}{txt}
+{com}.         rename                  ag_b09b salesmanager2
+{res}{txt}
+{com}.         
+.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (5,292 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\ag_mod_b_10.dta
+{txt}  obs:{res}         2,646                          
+{txt} vars:{res}             6                          1 Dec 2017 15:01
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #1){p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #2){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      2,646    1752.254    781.2963          1       3230
+{txt}{space 5}case_id {c |}{res}      2,646    2.45e+11    6.62e+10   1.01e+11   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}salesmanag~1 {c |}{res}        834    1.101918    .4830089          1         12
+{txt}salesmanag~2 {c |}{res}        358     1.98324    .1487524          1          3
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}      2,646        2009           0       2009       2009
+{txt}
+{com}. 
+.         save                    "$fil\decision-making\decision-sales_wet_y1.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y1.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y1.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                             "$fil\LSMS\ag_mod_ba_13.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    occ y2_hhid ag_b09a ag_b09b
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * primary and secondary manager 
+.         rename                  ag_b09a salesmanager1
+{res}{txt}
+{com}.         rename                  ag_b09b salesmanager2
+{res}{txt}
+{com}.         
+.         gen                     year = 2012
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (6,788 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\ag_mod_ba_13.dta
+{txt}  obs:{res}         3,394                          
+{txt} vars:{res}             5                          1 Dec 2017 15:42
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:occ            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Case Section Roster / Line Occurrence Sequence for O/S Merge{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings from all [CROP] {p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings from all [CROP] {p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}occ {c |}{res}      3,394     1.91426    1.137477          1          8
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}salesmanag~1 {c |}{res}      1,075    1.066047    .2994575          0          6
+{txt}salesmanag~2 {c |}{res}        634    2.004732    .1905584          0          4
+{txt}{space 8}year {c |}{res}      3,394        2012           0       2012       2012
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y2.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y2.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision-sales_wet_y2.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y2.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y2.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                             "$fil\LSMS\ag_mod_b2_16.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. 
+.         use                             "$fil\LSMS\ag_mod_b2_16.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    y3_hhid ag_b204_6__0 ag_b204_6__1 ag_b204_6__2 ag_b204_6__3 
+{txt}
+{com}.         
+. * primary and secondary manager 
+.         rename                  ag_b204_6__0 salesmanager1
+{res}{txt}
+{com}.         rename                  ag_b204_6__1 salesmanager2
+{res}{txt}
+{com}.         rename                  ag_b204_6__2 salesmanagero_1
+{res}{txt}
+{com}.         rename                  ag_b204_6__3 salesmanagero_2
+{res}{txt}
+{com}.         
+.         gen                     year = 2015
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}salesmanager2{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}salesmanagero_1{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}salesmanagero_2{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}salesmanager1{sf} was {bf}{res}double{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (60,876 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\ag_mod_b2_16.dta
+{txt}  obs:{res}         3,382                          
+{txt} vars:{res}             6                          4 Dec 2017 09:01
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 1){p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 2){p_end}
+{p 0 48}{bind:salesmanagero_1}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 3){p_end}
+{p 0 48}{bind:salesmanagero_2}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 4){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}salesmana~r1 {c |}{res}      1,881    1.337055    .7438783          1         11
+{txt}salesmana~r2 {c |}{res}        487    2.275154    1.085946          1         10
+{txt}salesmana~_1 {c |}{res}         48      4.0625    1.668306          3         10
+{txt}salesmana~_2 {c |}{res}         26    5.038462    1.586966          4         10
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}      3,382        2015           0       2015       2015
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision-sales_wet_y3.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y3.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y3.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * append all 
+.         use                     "$fil\decision-making\decision-sales_wet_y1.dta", clear 
+{txt}
+{com}.         append                  using "$fil\decision-making\decision-sales_wet_y2.dta"
+{txt}
+{com}.         append                  using "$fil\decision-making\decision-sales_wet_y3.dta"
+{txt}
+{com}.         
+. * save new full file    
+. 
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_y1.dta
+{txt}  obs:{res}         9,422                          
+{txt} vars:{res}            11                          16 Oct 2020 10:32
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:salesmanager1  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #1){p_end}
+{p 0 48}{bind:salesmanager2  }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in your household kept/decided what to do with the earnings? (ID CODE #2){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:occ            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Case Section Roster / Line Occurrence Sequence for O/S Merge{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:salesmanagero_1}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 3){p_end}
+{p 0 48}{bind:salesmanagero_2}{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Who in HH can decide whether to sell this [GARDEN]? (#ID 4){p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      2,646    1752.254    781.2963          1       3230
+{txt}{space 5}case_id {c |}{res}      2,646    2.45e+11    6.62e+10   1.01e+11   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}salesmana~r1 {c |}{res}      3,790    1.208443    .6064076          0         12
+{txt}salesmana~r2 {c |}{res}      1,479    2.088573     .652567          0         10
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}      9,422    2012.234    2.388242       2009       2015
+{txt}{space 9}occ {c |}{res}      3,394     1.91426    1.137477          1          8
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}salesmana~_1 {c |}{res}         48      4.0625    1.668306          3         10
+{txt}{hline 13}{c +}{hline 57}
+salesmana~_2 {c |}{res}         26    5.038462    1.586966          4         10
+{txt}
+{com}. 
+.         save                    "$fil\decision-making\decision-sales_wet_all.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_all.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision-sales_wet_all.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint-decision-sales_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 10:37:50
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

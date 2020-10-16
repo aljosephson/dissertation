@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 14 October 2020
+* Last edit: 16 October 2020
 * Stata v.16.1
 
 * does
@@ -82,18 +82,45 @@
 	save 			"$fil\production-and-sales\plot-with-manager", replace
 	
 * **********************************************************************
-* 3 - determine management 
+* 3 - determine management gender variables 
 * **********************************************************************
 	
-* determine primary manager 	
-	bys case_id plotid: gen female_dec = 1 if sex_manager1 == 2 
-	replace female_dec = 0 if female_dec == .
-	bys case_id plotid: gen male_dec = 1 if sex_manager1 == 1
-	replace male_dec = 0 if male_dec == .	
+* issue where nonresponse to manager2 set it equal to manager1 
+* fix by replace with ., as appropriate 		
+	replace 		manager2 = . if manager1 == manager2
+	replace 		sex_manager2 = . if manager2 == .
 	
-	bys case_id plotid: gen joint_dec = 1 if sex_manager2 != . 
-	replace joint_dec = . if sex_manager1 == . | sex_manager2 == .
-	*** THIS ISN'T WORKING
+* determine primary manager 	
+	gen 			female_dec = 1 if sex_manager1 == 2 
+	replace 		female_dec = 0 if female_dec == .
+	gen 			male_dec = 1 if sex_manager1 == 1
+	replace 		male_dec = 0 if male_dec == .	
+	
+	gen 			joint_dec = 1 if sex_manager2 != . 
+	replace 		joint_dec = . if sex_manager1 == . | sex_manager2 == .
+	replace 		joint_dec = 0 if manager2 == 0 | manager2 == . 
+	
+compress
+describe
+summarize 
+	
+	save 			"$fil\production-and-sales\plot-with-manager", replace
+	
+* **********************************************************************
+* 4 - turn to household-level variables: production sales 
+* **********************************************************************
+
+use 			"$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+	
+	merge 			m:m case_id y2_hhid y3_hhid year plotid using ///
+						"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+	keep 			if _merge == 3
+	*** drops 20568 observations from using which did not match 
+	
+	keep 			case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+						harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
+						
+	save 			"$fil\production-and-sales\plot-with-manager", replace
 
 * *********************************************************************
 * 3 - end matter

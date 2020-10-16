@@ -1850,4 +1850,854 @@ respondent. {c |}      Freq.     Percent        Cum.
 {com}. 
 {txt}end of do-file
 
+{com}. tab mangaer1, missing
+{err}variable {bf}mangaer1{sf} not found
+{txt}{search r(111), local:r(111);}
+
+{com}. tab manager1, missing
+
+  {txt}Who in HH {c |}
+      makes {c |}
+  decisions {c |}
+ concerning {c |}
+crops to be {c |}
+planted,inp {c |}
+         ut {c |}
+ use,timing {c |}
+     of cro {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}      8,005       86.74       86.74
+{txt}          2 {c |}{res}      1,073       11.63       98.36
+{txt}          3 {c |}{res}         50        0.54       98.91
+{txt}          4 {c |}{res}         47        0.51       99.41
+{txt}          5 {c |}{res}         26        0.28       99.70
+{txt}          6 {c |}{res}         11        0.12       99.82
+{txt}          7 {c |}{res}          8        0.09       99.90
+{txt}          8 {c |}{res}          1        0.01       99.91
+{txt}          9 {c |}{res}          2        0.02       99.93
+{txt}         13 {c |}{res}          1        0.01       99.95
+{txt}          . {c |}{res}          5        0.05      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. tab manager2, missing
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}      6,044       65.49       65.49
+{txt}          2 {c |}{res}      3,133       33.95       99.44
+{txt}          3 {c |}{res}         19        0.21       99.64
+{txt}          4 {c |}{res}          5        0.05       99.70
+{txt}          7 {c |}{res}          4        0.04       99.74
+{txt}          . {c |}{res}         24        0.26      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. replace manager2 = . if manager1 == manager2
+{txt}(5,801 real changes made, 5,801 to missing)
+
+{com}. tab manager2
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        705       20.71       20.71
+{txt}          2 {c |}{res}      2,671       78.47       99.18
+{txt}          3 {c |}{res}         19        0.56       99.74
+{txt}          4 {c |}{res}          5        0.15       99.88
+{txt}          7 {c |}{res}          4        0.12      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      3,404      100.00
+
+{com}. tab manager2, missing
+
+{txt}ENUMERATOR: {c |}
+ Record the {c |}
+  ID of the {c |}
+respondent. {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        705        7.64        7.64
+{txt}          2 {c |}{res}      2,671       28.94       36.58
+{txt}          3 {c |}{res}         19        0.21       36.79
+{txt}          4 {c |}{res}          5        0.05       36.84
+{txt}          7 {c |}{res}          4        0.04       36.88
+{txt}          . {c |}{res}      5,825       63.12      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
 {com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 10:20:11
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+.         merge                   m:m case_id y2_hhid y3_hhid year plotid using ///
+>                                                 "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          20,568
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          20,568{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           9,229{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(20,568 observations deleted)
+
+{com}.         *** drops 20568 observations from using which did not match 
+.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
+{txt}
+{com}.                                                 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - merge together to determine sex of manager 
+. * **********************************************************************
+. 
+. * will need to repeat twice - once for each manager? 
+. 
+. * manager 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,435
+{txt}{col 9}from master{col 30}{res}           6,816{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,619{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,413{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,619 observations deleted)
+
+{com}.         *** drop 28619 not matched
+.         *** matched 2413 (from master 6816 not matched)
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     
+.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label strata already defined)
+(label region already defined)
+(label urban already defined)
+(label splitoff already defined)
+(label strataR3 already defined)
+(label yesno already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,489
+{txt}{col 9}from master{col 30}{res}           6,838{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,651{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,391{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,651 observations deleted)
+
+{com}.         *** drop 28651 not matched
+.         *** matched 2391 (from master 6838 not matched)
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace manager2 = . if manager1 == manager2
+{txt}(5,801 real changes made, 5,801 to missing)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * determine primary manager     
+.         bys case_id plotid: gen female_dec = 1 if sex_manager1 == 2 
+{txt}(8,571 missing values generated)
+
+{com}.         replace female_dec = 0 if female_dec == .
+{txt}(8,571 real changes made)
+
+{com}.         bys case_id plotid: gen male_dec = 1 if sex_manager1 == 1
+{txt}(7,474 missing values generated)
+
+{com}.         replace male_dec = 0 if male_dec == .   
+{txt}(7,474 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         bys case_id plotid: gen joint_dec = 1 if sex_manager2 != . 
+{txt}(6,838 missing values generated)
+
+{com}.         replace joint_dec = . if sex_manager1 == . | sex_manager2 == .
+{txt}(7 real changes made, 7 to missing)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}      2,384      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,384      100.00
+
+{com}. tab sex_manager2
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}      1,093       45.71       45.71
+{txt}     Female {c |}{res}      1,298       54.29      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,391      100.00
+
+{com}. tab sex_manager1
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}      1,755       72.73       72.73
+{txt}     Female {c |}{res}        658       27.27      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,413      100.00
+
+{com}. replace sex_manager2 = . if manager2 == .
+{txt}(1,577 real changes made, 1,577 to missing)
+
+{com}. replace sex_manager1 = . if manager1 == .
+{txt}(0 real changes made)
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 10:21:49
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+.         merge                   m:m case_id y2_hhid y3_hhid year plotid using ///
+>                                                 "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          20,568
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          20,568{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           9,229{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(20,568 observations deleted)
+
+{com}.         *** drops 20568 observations from using which did not match 
+.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
+{txt}
+{com}.                                                 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - merge together to determine sex of manager 
+. * **********************************************************************
+. 
+. * will need to repeat twice - once for each manager? 
+. 
+. * manager 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,435
+{txt}{col 9}from master{col 30}{res}           6,816{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,619{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,413{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,619 observations deleted)
+
+{com}.         *** drop 28619 not matched
+.         *** matched 2413 (from master 6816 not matched)
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     
+.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label strata already defined)
+(label region already defined)
+(label urban already defined)
+(label splitoff already defined)
+(label strataR3 already defined)
+(label yesno already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,489
+{txt}{col 9}from master{col 30}{res}           6,838{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,651{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,391{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,651 observations deleted)
+
+{com}.         *** drop 28651 not matched
+.         *** matched 2391 (from master 6838 not matched)
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace manager2 = . if manager1 == manager2
+{txt}(5,801 real changes made, 5,801 to missing)
+
+{com}.         replace sex_manager2 = . if manager2 == .
+{txt}(1,577 real changes made, 1,577 to missing)
+
+{com}.         
+. * determine primary manager     
+.         gen female_dec = 1 if sex_manager1 == 2 
+{txt}(8,571 missing values generated)
+
+{com}.         replace female_dec = 0 if female_dec == .
+{txt}(8,571 real changes made)
+
+{com}.         gen male_dec = 1 if sex_manager1 == 1
+{txt}(7,474 missing values generated)
+
+{com}.         replace male_dec = 0 if male_dec == .   
+{txt}(7,474 real changes made)
+
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         
+.         gen joint_dec = 1 if sex_manager2 != . 
+{txt}(8,415 missing values generated)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace joint_dec = . if sex_manager1 == . | sex_manager2 == .
+{txt}(7 real changes made, 7 to missing)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        807      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        807      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace joint_dec = 0 if manager2 == 0 | manager2 == .
+{txt}(5,825 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      5,825       87.83       87.83
+{txt}          1 {c |}{res}        807       12.17      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      6,632      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         replace joint_dec = 0 if manager2 == 0 
+{txt}(0 real changes made)
+
+{com}.         replace joint_dec = . if manager2 == .
+{txt}(5,825 real changes made, 5,825 to missing)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        807      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        807      100.00
+
+{com}. tab joint_dec, missing
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        807        8.74        8.74
+{txt}          . {c |}{res}      8,422       91.26      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. tab female_dec
+
+ {txt}female_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      8,571       92.87       92.87
+{txt}          1 {c |}{res}        658        7.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. tab male_dec, missing
+
+   {txt}male_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      7,474       80.98       80.98
+{txt}          1 {c |}{res}      1,755       19.02      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 10:23:53
+{txt}
+{com}.         
+. 
+. * **********************************************************************
+. * 1 - merge together production PLOT and decision making 
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_plot.dta", clear
+{txt}
+{com}.         
+.         merge                   m:m case_id y2_hhid y3_hhid year plotid using ///
+>                                                 "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          20,568
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          20,568{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           9,229{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(20,568 observations deleted)
+
+{com}.         *** drops 20568 observations from using which did not match 
+.         
+.         keep                    case_id plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
+>                                                 harvest_valuehaimp year y2_hhid y3_hhid gardenid ea_id manager1 manager2 owner1 owner2 mangagero_1 
+{txt}
+{com}.                                                 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - merge together to determine sex of manager 
+. * **********************************************************************
+. 
+. * will need to repeat twice - once for each manager? 
+. 
+. * manager 1
+.         rename                  manager1 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,435
+{txt}{col 9}from master{col 30}{res}           6,816{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,619{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,413{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,619 observations deleted)
+
+{com}.         *** drop 28619 not matched
+.         *** matched 2413 (from master 6816 not matched)
+.         
+.         rename                  id_code manager1
+{res}{txt}
+{com}.         rename                  sex sex_manager1
+{res}{txt}
+{com}.         rename                  rltn rltn_manager1
+{res}{txt}
+{com}.         rename                  age age_manager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     
+.         rename                  manager2 id_code 
+{res}{txt}
+{com}.         merge                   m:m case_id y2_hhid y3_hhid year id_code using "$fil\household\household_all.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label district already defined)
+(label strata already defined)
+(label region already defined)
+(label urban already defined)
+(label splitoff already defined)
+(label strataR3 already defined)
+(label yesno already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          35,489
+{txt}{col 9}from master{col 30}{res}           6,838{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          28,651{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,391{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(28,651 observations deleted)
+
+{com}.         *** drop 28651 not matched
+.         *** matched 2391 (from master 6838 not matched)
+.         
+.         rename                  id_code manager2
+{res}{txt}
+{com}.         rename                  sex sex_manager2
+{res}{txt}
+{com}.         rename                  rltn rltn_manager2
+{res}{txt}
+{com}.         rename                  age age_manager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_manager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\plot-with-manager", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\plot-with-manager.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 3 - determine management 
+. * **********************************************************************
+.         
+. * issue where nonresponse to manager2 set it equal to manager1 
+.                 
+.         replace manager2 = . if manager1 == manager2
+{txt}(5,801 real changes made, 5,801 to missing)
+
+{com}.         replace sex_manager2 = . if manager2 == .
+{txt}(1,577 real changes made, 1,577 to missing)
+
+{com}.         
+. * determine primary manager     
+.         gen female_dec = 1 if sex_manager1 == 2 
+{txt}(8,571 missing values generated)
+
+{com}.         replace female_dec = 0 if female_dec == .
+{txt}(8,571 real changes made)
+
+{com}.         gen male_dec = 1 if sex_manager1 == 1
+{txt}(7,474 missing values generated)
+
+{com}.         replace male_dec = 0 if male_dec == .   
+{txt}(7,474 real changes made)
+
+{com}.         
+.         gen joint_dec = 1 if sex_manager2 != . 
+{txt}(8,415 missing values generated)
+
+{com}.         replace joint_dec = . if sex_manager1 == . | sex_manager2 == .
+{txt}(7 real changes made, 7 to missing)
+
+{com}.         replace joint_dec = 0 if manager2 == 0 | manager2 == . 
+{txt}(5,825 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab joint_dec
+
+  {txt}joint_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      5,825       87.83       87.83
+{txt}          1 {c |}{res}        807       12.17      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      6,632      100.00
+
+{com}. tab female_dec
+
+ {txt}female_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      8,571       92.87       92.87
+{txt}          1 {c |}{res}        658        7.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. tab male_dec
+
+   {txt}male_dec {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      7,474       80.98       80.98
+{txt}          1 {c |}{res}      1,755       19.02      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,229      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 14 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * builds respondent decision maker variable for sales 
+.         * just clean up for now - will merge with production data before determining genders (since only need if ACTUALLY sell something)
+. 
+. * assumes
+.         * access to original LSMS data files "ag_mod_b_10", "ag_mod_ba_13", ag_mod_b2_16"
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}
