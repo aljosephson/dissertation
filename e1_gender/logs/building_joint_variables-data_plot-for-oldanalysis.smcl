@@ -1,0 +1,523 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 15:58:19
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    case_id plotid mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha harvest_valuehaimp 
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * creates all tables from Josephson
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 16:00:43
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         keep                    case_id plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2010
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2010       
+{res}{txt}
+{com}.         
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp1-plot.dta
+{txt}  obs:{res}         2,427                          
+{txt} vars:{res}             4                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:valueharve~2010}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:valueyield2010 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}valueha~2010 {c |}{res}      2,427    15120.59    27115.52          0     557520
+{txt}valueyi~2010 {c |}{res}      2,427    48469.44    56588.36          0   421273.8
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\y1production", replace       
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y1production.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y1production.dta saved
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         keep                    y2_hhid plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2013
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2013       
+{res}{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for plot-level 
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 16:01:42
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         keep                    case_id plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2010
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2010       
+{res}{txt}
+{com}.         
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp1-plot.dta
+{txt}  obs:{res}         2,427                          
+{txt} vars:{res}             4                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:valueharve~2010}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:valueyield2010 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}valueha~2010 {c |}{res}      2,427    15120.59    27115.52          0     557520
+{txt}valueyi~2010 {c |}{res}      2,427    48469.44    56588.36          0   421273.8
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\y1production", replace       
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y1production.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+.         keep                    y2_hhid plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2013
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2013       
+{res}{txt}
+{com}.         
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp2-plot.dta
+{txt}  obs:{res}         2,964                          
+{txt} vars:{res}             4                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:valueharve~2013}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:valueyield2013 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{txt}{hline}
+Sorted by: {res}y2_hhid  plotid
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}valueha~2013 {c |}{res}      2,964    51047.27    106124.4          0    3333333
+{txt}valueyi~2013 {c |}{res}      2,964    181165.3    249684.2          0    3071167
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\y2production", replace       
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y2production.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y2production.dta saved
+
+{com}. 
+.         
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 16:01:42
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 16:12:53
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{txt}
+{com}. 
+.         keep                    case_id plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2010
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2010       
+{res}{txt}
+{com}.         
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp1-plot.dta
+{txt}  obs:{res}         2,427                          
+{txt} vars:{res}             4                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:valueharve~2010}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:valueyield2010 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      2,427    2.38e+11    6.59e+10   1.01e+11   3.16e+11
+{txt}{space 6}plotid {c |}{res}          0
+{txt}valueha~2010 {c |}{res}      2,427    15120.59    27115.52          0     557520
+{txt}valueyi~2010 {c |}{res}      2,427    48469.44    56588.36          0   421273.8
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\y1production", replace       
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y1production.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2-plot.dta", clear
+{txt}
+{com}. 
+.         keep                    y2_hhid plotid harvest_valueimp harvest_valuehaimp 
+{txt}
+{com}.         rename                  harvest_valueimp valueharvest2013
+{res}{txt}
+{com}.         rename                  harvest_valuehaimp valueyield2013       
+{res}{txt}
+{com}.         
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp2-plot.dta
+{txt}  obs:{res}         2,964                          
+{txt} vars:{res}             4                          15 Oct 2020 11:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:valueharve~2013}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest (MWK), imputed{p_end}
+{p 0 48}{bind:valueyield2013 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{txt}{hline}
+Sorted by: {res}y2_hhid  plotid
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}valueha~2013 {c |}{res}      2,964    51047.27    106124.4          0    3333333
+{txt}valueyi~2013 {c |}{res}      2,964    181165.3    249684.2          0    3071167
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\y2production", replace       
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\y2production.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 4 - add information on production
+. * **********************************************************************
+. 
+. * merge into og file 
+. 
+.         use                             "$fil/data_jointest_16April2020.dta", clear
+{txt}
+{com}.         
+.         merge                   m:m case_id using "$fil\production-and-sales\y1production"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           1,862
+{txt}{col 9}from master{col 30}{res}             340{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           1,522{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             905{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(1,522 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 1522 from using 
+.         
+.         merge                   m:m y2_hhid using "$fil\production-and-sales\y2production"
+{res}{txt}{p 0 7 2}
+(note: variable
+plotid was 
+str2, now str3 to accommodate using data's values)
+{p_end}
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           2,382
+{txt}{col 9}from master{col 30}{res}             348{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           2,034{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,048{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(2,034 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 2034 from using 
+.         
+. * clean up for analysis 
+. 
+. * 2010 
+. * joint 
+.         gen                     valuejointharv2010 = valueharvest2010 if valuejoint2010 != 0 
+{txt}(905 missing values generated)
+
+{com}.         gen                             valuejointyield2010 = valueyield2010 if valuejoint2010 !=0
+{txt}(905 missing values generated)
+
+{com}. * male  
+.         gen                     valuemaleharv2010 = valueharvest2010 if valuemale2010 != 0 
+{txt}(965 missing values generated)
+
+{com}.         gen                             valuemaleyield2010 = valueyield2010 if valuemale2010 !=0        
+{txt}(965 missing values generated)
+
+{com}. *female         
+.         gen                     valuefemaleharv2010 = valueharvest2010 if valuefemale2010 != 0 
+{txt}(1,229 missing values generated)
+
+{com}.         gen                             valuefemaleyield2010 = valueyield2010 if valuefemale2010 !=0    
+{txt}(1,229 missing values generated)
+
+{com}. 
+. * 2013
+. * joint 
+.         gen                     valuejointharv2013 = valueharvest2013 if valuejoint2013 != 0 
+{txt}(767 missing values generated)
+
+{com}.         gen                             valuejointyield2013 = valueyield2013 if valuejoint2013 !=0
+{txt}(767 missing values generated)
+
+{com}. * male  
+.         gen                     valuemaleharv2013 = valueharvest2013 if valuemale2013 != 0 
+{txt}(1,176 missing values generated)
+
+{com}.         gen                             valuemaleyield2013 = valueyield2013 if valuemale2013 !=0        
+{txt}(1,176 missing values generated)
+
+{com}. *female         
+.         gen                     valuefemaleharv2013 = valueharvest2013 if valuefemale2013 != 0 
+{txt}(1,199 missing values generated)
+
+{com}.         gen                             valuefemaleyield2013 = valueyield2013 if valuefemale2013 !=0    
+{txt}(1,199 missing values generated)
+
+{com}.         
+.         
+.         
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-data_plot-for-oldanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}16 Oct 2020, 16:12:53
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

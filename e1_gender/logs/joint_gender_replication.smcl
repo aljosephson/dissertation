@@ -45,3 +45,239 @@
 {txt}end of do-file
 
 {com}. exit, clear
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/joint_gender_replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 15:56:06
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * creates all tables from Josephson
+. 
+. * assumes
+.         * access to data file(s) "..."
+. 
+. * to do 
+.         * all of it
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/joint_gender_replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 15:56:09
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+. * need to create single data set - right now multiples referenced 
+.         
+. * **********************************************************************
+. * 2 - replication of tables: main text - general 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - primary crop cultivation by gender 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2b - summary statistics 
+. * **********************************************************************
+. 
+. * income 
+. 
+. * percent expenditure 
+. 
+. * rainfall 
+. 
+. * **********************************************************************
+. * 3 - replication of tables: main text - general - crops sold 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 3a - male, female, joint specification 
+. * **********************************************************************
+. 
+.         use                             "$fil/data_jointest_16April2020.dta", clear
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\Cleaned_LSMS\rs_hh_lp1-plot.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+end of do-file
+
+{search r(601), local:r(601);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for plot-level 
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/joint_gender_replication.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}16 Oct 2020, 15:59:57
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - read in clean data set
+. * **********************************************************************
+. 
+. * read in data
+. * need to create single data set - right now multiples referenced 
+.         
+. * **********************************************************************
+. * 2 - replication of tables: main text - general 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - primary crop cultivation by gender 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2b - summary statistics 
+. * **********************************************************************
+. 
+. * income 
+. 
+. * percent expenditure 
+. 
+. * rainfall 
+. 
+. * **********************************************************************
+. * 3 - replication of tables: main text - general - crops sold 
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 3a - male, female, joint specification 
+. * **********************************************************************
+. 
+.         use                             "$fil/data_jointest_16April2020.dta", clear
+{txt}
+{com}.         
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}.         use                     "$fil\Cleaned_LSMS\rs_hh_lp1-plot.dta", clear
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\Cleaned_LSMS\rs_hh_lp1-plot.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+end of do-file
+
+{search r(601), local:r(601);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD2ea0_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 16 October 2020
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for plot-level 
+. 
+. * assumes
+.         * access to data file(s) previously created ... 
+. 
+. * to do 
+.         * all of it 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}

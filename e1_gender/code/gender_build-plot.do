@@ -90,7 +90,7 @@
 	gen 			male_dec = 1 if sex_manager1 == 1
 	replace 		male_dec = 0 if male_dec == .	
 	
-	gen 			joint_dec = 1 if sex_manager2 != .
+	gen 			joint_dec = 1 if sex_manager2 != . | sex_manager2 != 0 
 	
 	replace 		joint_dec = . if sex_manager1 == . & sex_manager2 == .
 	replace 		joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
@@ -121,7 +121,7 @@ summarize
 	save 			"$fil\production-and-sales\production-with-manager_y2", replace	
 	*** 3051 observations 
 	
-* manager 1 - year 1
+* manager 1 
 	rename 			manager1 id_code 
 	merge 			m:m y2_hhid year id_code using "$fil\household\hhbase_y2-short.dta"
 	drop 			if _merge == 2
@@ -136,7 +136,7 @@ summarize
 	rename 			educ_years educ_years_manager1
 	drop 			_merge 
 	
-* manager 2	- year 1
+* manager 2	
 * if no manager assume no one = 0
 	replace 		manager2 = 0 if manager2 == . 
 	rename 			manager2 id_code 
@@ -144,7 +144,7 @@ summarize
 	drop			if _merge == 2
 	*** matched 3160 
 	*** drop unmatched from using = 8221
-	*** keep unmatched from master = 8562 
+	*** keep unmatched from master = 37 
 	
 	rename 			id_code manager2
 	rename 			sex sex_manager2
@@ -161,7 +161,7 @@ summarize
 	gen 			male_dec = 1 if sex_manager1 == 1
 	replace 		male_dec = 0 if male_dec == .	
 	
-	gen 			joint_dec = 1 if sex_manager2 != .
+	gen 			joint_dec = 1 if sex_manager2 != . | sex_manager2 != 0 
 	
 	replace 		joint_dec = . if sex_manager1 == . & sex_manager2 == .
 	replace 		joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
@@ -232,7 +232,7 @@ summarize
 	gen 			male_dec = 1 if sex_manager1 == 1
 	replace 		male_dec = 0 if male_dec == .	
 	
-	gen 			joint_dec = 1 if sex_manager2 != .
+	gen 			joint_dec = 1 if sex_manager2 != . | sex_manager2 != 0 
 	
 	replace 		joint_dec = . if sex_manager1 == . & sex_manager2 == .
 	replace 		joint_dec = 0 if manager2 == 0 | sex_manager2 == . 

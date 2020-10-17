@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 5 October 2020
+* Last edit: 16 October 2020
 * Stata v.16.1
 
 * does
@@ -206,7 +206,7 @@ esttab INJM INJF INJJ using table_sold_mfj_stage1.tex, replace f ///
 	testnl 			([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
 						[TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
 
-/*	
+
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_sold_mfj_overid.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
@@ -214,7 +214,7 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_sold_mfj_overi
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" ///
 	"\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-	*/
+	
 	*** update code within table to reflect new output location 
 	
 * **********************************************************************
@@ -1147,6 +1147,465 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_sold_femhead1_
 * **********************************************************************
 
 *** NEED TO DO! 
+
+*** first pass - 16 October 2020 
+
+use				"$fil/data_jointest_16October2020.dta", clear
+
+* **********************************************************************
+* 4a - value of production
+* **********************************************************************
+
+* ************************* FIRST STAGE ***************************
+
+	global 			jincome (dlnvaluejointharv davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global 			fincome (dlnvaluefemaleharv davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global 			mincome (dlnvaluemaleharv davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+
+* joint							
+	reg 			$jincome, vce (cluster y2_hhid)
+	test			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJM
+	predict 		xbjoint, xb
+
+* female 
+	reg 			$fincome, vce (cluster y2_hhid) 
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJF
+	predict 		xbfemale, xb
+
+* male 
+	reg 			$mincome, vce (cluster y2_hhid)
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJJ
+	predict 		xbmale, xb
+
+*** not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
+*** applies to all tables below 
+
+/*
+esttab INJM INJF INJJ using table_sold_mfj_stage1.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
+*/
+	*** update code within table to reflect new output location 
+	
+* ************************* OVERID TESTS ***************************
+
+	global 			aggconsume (dlnconsume_agg xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			foodconsume (dlnconsume_food xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			cigsal (dlnconsume_alctob xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			clothing (dlnconsume_clothfoot xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			recconsume (dlnconsume_rec xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			educconsume (dlnconsume_educ xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			healthconsume (dlnconsume_health xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			houseconsume (dlnconsume_houseutils xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+    
+* aggregate 	
+	reg 			$aggconsume
+	est 			store AGCONJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+	
+* food 
+	reg				$foodconsume
+	est 			store CONFOJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CONFOJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+							[CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
+
+* cigarettes and alcohol 
+	reg 			$cigsal
+	est 			store CIGSJ
+	test			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CIGSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[CIGSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CIGSJ_mean]xbjoint)
+
+* clothing 						
+	reg 			$clothing
+	est 			store CLJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CLJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[CLJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CLJ_mean]xbjoint)
+
+* recreation  						
+	reg 			$recconsume 
+	est 			store RECJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 	
+	suest 			AGCONJ RECJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[RECJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECJ_mean]xbjoint)
+
+* education 	
+	reg 			$educconsume
+	est 			store EDUCJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 	
+	suest 			AGCONJ EDUCJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[EDUCJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [EDUCJ_mean]xbjoint)
+
+* health 	
+	reg 			$healthconsume 
+	est 			store HEAJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ HEAJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[HEAJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HEAJ_mean]xbjoint)
+
+* housing and utilities 	
+	reg 			$houseconsume  
+	est 			store TRANSJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ TRANSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
+
+
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_prod_mfj_overid.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(xbmale xbfemale xbjoint) ///
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" ///
+	"\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+	*/
+	*** update code within table to reflect new output location 
+	
+
+* **********************************************************************
+* 4c - MF specification (omit joint) - production 
+* **********************************************************************
+
+	use				"$fil/data_jointest_16October2020.dta", clear
+	
+* ************************* FIRST STAGE ***************************
+	
+	global 			fincome (dlnvaluefemaleharv davg_tot davg_wetq davg_wetqstart ///
+						dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global			mincome (dlnvaluemaleharv davg_tot davg_wetq davg_wetqstart ///
+						dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+
+* female	
+	reg 			$fincome, vce (cluster y2_hhid) 
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJF
+	predict 		xbfemale, xb
+
+* male 	
+	reg 			$mincome, vce (cluster y2_hhid)
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est				store INJJ
+	predict 		xbmale, xb
+
+/*
+esttab INJF INJJ using table_sold_mfomit_firststage.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
+*/
+	*** update code within table to reflect new output location 
+	
+* ************************* OVERID TESTS ***************************
+	
+	global 			aggconsume (dlnconsume_agg xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			foodconsume (dlnconsume_food xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			cigsal (dlnconsume_alctob xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			clothing (dlnconsume_clothfoot xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			recconsume (dlnconsume_rec xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			educconsume (dlnconsume_educ xbmale xbfemale i.agroeczone2010 i.agroeczone2013)	
+	global 			healthconsume (dlnconsume_health xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+	global 			houseconsume (dlnconsume_houseutils xbmale xbfemale i.agroeczone2010 i.agroeczone2013)
+   
+* aggregate  
+	reg 			$aggconsume
+	est 			store AGCONJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	
+* food 
+	reg 			$foodconsume
+	est 			store CONFOJ
+	test			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ CONFOJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) 
+
+* cigarettes and alcohol 	
+	reg 			$cigsal
+	est 			store CIGSJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ CIGSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) 
+
+	reg 			$clothing
+	est 			store CLJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ CLJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CLJ_mean]xbfemale) 
+
+* recreation 	
+	reg 			$recconsume 
+	est 			store RECJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ RECJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECJ_mean]xbfemale) 
+
+* education 	
+	reg 			$educconsume
+	est 			store EDUCJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ EDUCJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [EDUCJ_mean]xbfemale) 
+
+* health 
+	reg 			$healthconsume 
+	est 			store HEAJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ HEAJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) 
+
+* housing and utilities 	
+	reg 			$houseconsume  
+	est 			store TRANSJ
+	test 			xbmale xbfemale 
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+* test against aggregate 
+	suest 			AGCONJ TRANSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) 
+
+/*
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_mfomit_overidtests.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(xbmale xbfemale xbjoint) ///
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" ///
+	"\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+*/		
+	*** update code within table to reflect new output location 
+
+
+* **********************************************************************
+* 4a - value of yield 
+* **********************************************************************
+
+	use				"$fil/data_jointest_16October2020.dta", clear
+
+* ************************* FIRST STAGE ***************************
+
+	global 			jincome (dlnvaluejointyield davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global 			fincome (dlnvaluefemaleyield davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global 			mincome (dlnvaluemaleyield davg_tot davg_wetq davg_wetqstart ///
+							dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+
+* joint							
+	reg 			$jincome, vce (cluster y2_hhid)
+	test			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJM
+	predict 		xbjoint, xb
+
+* female 
+	reg 			$fincome, vce (cluster y2_hhid) 
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJF
+	predict 		xbfemale, xb
+
+* male 
+	reg 			$mincome, vce (cluster y2_hhid)
+	test 			davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	est 			store INJJ
+	predict 		xbmale, xb
+
+*** not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
+*** applies to all tables below 
+
+/*
+esttab INJM INJF INJJ using table_sold_mfj_stage1.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
+*/
+	*** update code within table to reflect new output location 
+	
+* ************************* OVERID TESTS ***************************
+
+	global 			aggconsume (dlnconsume_agg xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			foodconsume (dlnconsume_food xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			cigsal (dlnconsume_alctob xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			clothing (dlnconsume_clothfoot xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			recconsume (dlnconsume_rec xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			educconsume (dlnconsume_educ xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			healthconsume (dlnconsume_health xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+	global 			houseconsume (dlnconsume_houseutils xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
+    
+* aggregate 	
+	reg 			$aggconsume
+	est 			store AGCONJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+	
+* food 
+	reg				$foodconsume
+	est 			store CONFOJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CONFOJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+							[CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
+
+* cigarettes and alcohol 
+	reg 			$cigsal
+	est 			store CIGSJ
+	test			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CIGSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[CIGSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CIGSJ_mean]xbjoint)
+
+* clothing 						
+	reg 			$clothing
+	est 			store CLJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ CLJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[CLJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CLJ_mean]xbjoint)
+
+* recreation  						
+	reg 			$recconsume 
+	est 			store RECJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 	
+	suest 			AGCONJ RECJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[RECJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECJ_mean]xbjoint)
+
+* education 	
+	reg 			$educconsume
+	est 			store EDUCJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 	
+	suest 			AGCONJ EDUCJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[EDUCJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [EDUCJ_mean]xbjoint)
+
+* health 	
+	reg 			$healthconsume 
+	est 			store HEAJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ HEAJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[HEAJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HEAJ_mean]xbjoint)
+
+* housing and utilities 	
+	reg 			$houseconsume  
+	est 			store TRANSJ
+	test 			xbmale xbfemale xbjoint
+	*qui: boottest xbmale 
+	*qui: boottest xbfemale 
+	*qui: boottest xbjoint
+* test against aggregate 
+	suest 			AGCONJ TRANSJ, vce(robust)
+	testnl 			([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = ///
+						[TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
+
+/*	
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table_sold_mfj_overid.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(xbmale xbfemale xbjoint) ///
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" ///
+	"\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+	*/
+	*** update code within table to reflect new output location 
+
+
 
 * **********************************************************************
 * 5 - replication of tables: appendix 

@@ -13,7 +13,6 @@
 	* access to data file(s) previously created ... 
 
 * to do 
-	* all of it 
 	* clean up data files 
 	* code and data can be made available on github and googledrive 
 
@@ -183,7 +182,7 @@ summarize
 	drop			if _merge == 2
 	*** matched 688 
 	*** drop unmatched from using = 9538
-	*** keep unmatched from master = 11852 - perhaps no id code TO match - fewer observations here
+	*** keep unmatched from master = 2697 
 	
 	rename 			id_code salesmanager2
 	rename 			sex sex_salesmanager2
@@ -402,12 +401,24 @@ summarize
 	save 			"$fil\regression-ready\household-total_y1y2", replace
 	
 * *********************************************************************
-* 5 - end matter
+* 5 - append all together 
 * **********************************************************************
 
-compress
-describe
-summarize 
+* adapt management variables 
+/*
+	gen 			female_deconly = female_dec
+	replace			female_deconly = 0 if joint_dec == 1 
+	gen 			male_deconly = male_dec
+	replace			male_deconly = 0 if joint_dec == 1
+	gen 			female_decsaleonly = 0 
+	gen 			male_decsaleonly = 
+	
+	
+	**** THIS IS NOT WORKING 
+	
+* *********************************************************************
+* 6 - end matter
+* **********************************************************************
 
 * close the log
 	log	close	
