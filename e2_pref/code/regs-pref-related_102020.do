@@ -1,18 +1,39 @@
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* Project: Preferences, Crop Choice - Zimbabwe
+* Created: February 2020
+* Created by: alj
+* Last edit: 20 October 2020
+* Stata v.16.1
 
-*REGRESSIONS
-*ANALYSIS
-*DOUBLE HURDLE
-*MAIZE AND SORGHUM AND MILLET AND DIVERSITY/CROP COUNT
+* does
+	* runs all tables reported in Josephson & Ricker-Gilbert  
 
-*SORGHUM
-*FEBRUARY 2020
-*alj
+* assumes
+	* access to data file(s) previously created (e.g. hh-crop_21Feb) 
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* to do 
+	* clean up data files (if sharing)
+	* code and data can be made available on github and googledrive 
+
+* **********************************************************************
+* 0 - setup
+* **********************************************************************
+
+* define
+	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_Jan-Feb 2020\Data" 
+	global	code	=	"C:\Users\aljosephson\git\dissertation\e2_pref\code"
+	global	logs	=	"C:\Users\aljosephson\git\dissertation\e2_pref\logs" 
+
+* open log
+	cap log 		close
+	log using		"$logs/building_joint_variables-data", append
+	
+* **********************************************************************
+* summary statistics 
+* **********************************************************************
+	
+use "$fil\hh-crop_21Feb.dta", clear
+	
 
 *SUMMARY STATS 
 
@@ -25,20 +46,20 @@ tabstat plot_area div_index count_crop, statistics( mean sd p50) by(yearpanel)
 keep if sorghum == 1
 tabstat growsorghum staple_plotarea, statistics( mean sd p50) by(yearpanel)
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 
 *maize
 keep if maize == 1
 tabstat growmaize staple_plotarea, statistics( mean sd p50) by(yearpanel)
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 
 *millet 
 keep if millet == 1
 tabstat growmillet staple_plotarea, statistics( mean sd p50) by(yearpanel)
 
 *return to full sample for rest of variables
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 
 tabstat head_age head_edu femhead num_cattle plough rec_ext worker offfarm_labor onfarmfull_labor onfarmpart_labor migrant_labor, statistics( mean sd p50) by(yearpanel)
 
@@ -47,11 +68,11 @@ tabstat sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize
 tabstat tot_season shock sd_rain, statistics( mean sd p50) by(yearpanel)
 
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* **********************************************************************
+* alt spec  
+* **********************************************************************
 
-
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 xtset yearpanel 
 
 *diversity index 
@@ -71,6 +92,8 @@ mtot_season mshock msd_rain mplot_area mhead_age mhead_edu mfemhead mnum_cattle 
 mofffarm_labor monfarmfull_labor monfarmpart_labor mmigrant_labor ///
 Chivi Zaka Gwanda Bulilima Binga Nkayi Tsholotsho, vce(robust)
 
+* excluded from final paper
+/*
 *crop count
 *how is growing more crops affected by other elements?
 
@@ -87,12 +110,13 @@ offfarm_labor onfarmfull_labor onfarmpart_labor migrant_labor ///
 mtot_season mshock msd_rain mplot_area mhead_age mhead_edu mfemhead mnum_cattle mplough mrec_ext mworker /// 
 mofffarm_labor monfarmfull_labor monfarmpart_labor mmigrant_labor ///
 Chivi Zaka Gwanda Bulilima Binga Nkayi Tsholotsho
+*/
 
+* **********************************************************************
+* sorghum 
+* **********************************************************************
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
-
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_Jan-Feb 2020\Data\hh-crop_21Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 keep if sorghum == 1
 
 *sorghum
@@ -118,18 +142,20 @@ mtot_season mshock msd_rain mplot_area mhead_age mhead_edu mfemhead mnum_cattle 
 mofffarm_labor monfarmfull_labor monfarmpart_labor mmigrant_labor ///
   Chivi Zaka Gwanda Bulilima Binga Nkayi Tsholotsho year2)
 
-
 *normal   
 craggit $sorg1, sec ($sorg2) vce(robust)
 est store sorgmeasure
-eststo sorgshortmargins: margins, dydx(sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize_staple3  millet_staple1 millet_staple2 millet_staple3 ///
-tot_season shock sd_rain plot_area head_age head_edu femhead num_cattle plough rec_ext worker /// 
-offfarm_labor onfarmfull_labor onfarmpart_labor migrant_labor div_index) post
 
 probit $sorg1, vce(robust)
 eststo sorgshortmargins: margins, dydx(sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize_staple3 millet_staple1 millet_staple2 millet_staple3 ///
 tot_season shock sd_rain plot_area head_age head_edu femhead num_cattle plough rec_ext worker /// 
 offfarm_labor onfarmfull_labor onfarmpart_labor migrant_labor div_index) post
+
+truncreg $sorg2, ll(0) vce(robust)
+eststo sorgshortmargins2: margins, dydx (sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize_staple3  millet_staple1 millet_staple2 millet_staple3 ///
+tot_season shock sd_rain plot_area head_age head_edu femhead num_cattle plough rec_ext worker /// 
+offfarm_labor onfarmfull_labor onfarmpart_labor migrant_labor div_index) post
+
 
 *CRE
 craggit $sorg1m, sec ($sorg2m) vce(robust)
@@ -150,10 +176,11 @@ est store sorgtobitm
 *compare CRE to tobit 
 lrtest sorgmeasurem sorgtobitm, force
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* **********************************************************************
+* maize
+* **********************************************************************
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 keep if maize == 1
 
 *maize
@@ -210,13 +237,14 @@ est store maizetobitm
 *compare CRE to tobit 
 lrtest maizemeasurem maizetobitm, force
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* **********************************************************************
+* millet 
+* **********************************************************************
 
+use "$fil\hh-crop_21Feb.dta", clear
 *even fewer households grow millet ... 
 *having issues converging with dh 
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
 keep if millet == 1
 
 *millet
@@ -260,7 +288,7 @@ drop if staple_plotarea == 0
 reg $millet2, vce(robust)
 est store millet2
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 keep if millet == 1
 
 probit $millet1m, vce(robust)
@@ -275,7 +303,7 @@ est store millet2m
 
 *tobit 
 
-use "C:\Users\aljosephson\Dropbox\Out for Review\DISE2_Sorghum\_January 2020\Data\hh-crop_5Feb.dta", clear
+use "$fil\hh-crop_21Feb.dta", clear
 keep if millet == 1
 
 *tobit $millet1 
@@ -286,5 +314,13 @@ est store millettobitm
 
 lrtest millet2m millettobitm, force
 
-****************************************************************************************************************************************
-****************************************************************************************************************************************
+* *********************************************************************
+* end matter
+* **********************************************************************
+
+compress
+describe
+summarize 
+
+* close the log
+	log	close	
