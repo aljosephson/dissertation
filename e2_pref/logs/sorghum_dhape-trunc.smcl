@@ -1253,4 +1253,4 @@ end of do-file
 
 {search r(301), local:r(301);}
 
-{com}. 
+{com}. exit, clear
