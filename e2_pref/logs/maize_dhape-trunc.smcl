@@ -1,0 +1,335 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e2_pref\logs/maize_dhape-trunc.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 Oct 2020, 07:25:21
+{txt}
+{com}. 
+. 
+. capture program drop myboot
+{txt}
+{com}. program define myboot, rclass
+{txt}  1{com}. preserve
+{txt}  2{com}. 
+. reg $maize2m, vce(robust)
+{txt}  3{com}. 
+. predict x2b, xb
+{txt}  4{com}. predict sigma
+{txt}  5{com}. gen IMR = normalden(x2b/sigma)/normal(x2b/sigma)
+{txt}  6{com}. 
+. gen pe_ss1=_b[sorg_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt}  7{com}. sum pe_ss1
+{txt}  8{com}. 
+. gen pe_ss2=_b[sorg_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt}  9{com}. sum pe_ss2
+{txt} 10{com}. 
+. gen pe_ss3=_b[sorg_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 11{com}. sum pe_ss3
+{txt} 12{com}. 
+. gen pe_ms1=_b[maize_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 13{com}. sum pe_ms1
+{txt} 14{com}. 
+. gen pe_ms2=_b[maize_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 15{com}. sum pe_ms2
+{txt} 16{com}. 
+. gen pe_ms3=_b[maize_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 17{com}. sum pe_ms3
+{txt} 18{com}. 
+. gen pe_mis1=_b[millet_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 19{com}. sum pe_mis1
+{txt} 20{com}. 
+. gen pe_mis2=_b[millet_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 21{com}. sum pe_ms2
+{txt} 22{com}. 
+. gen pe_mis3=_b[millet_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 23{com}. sum pe_mis3
+{txt} 24{com}. 
+. gen pe_tots=_b[tot_season]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 25{com}. sum pe_tots
+{txt} 26{com}. 
+. gen pe_shock=_b[shock]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 27{com}. sum pe_shock
+{txt} 28{com}. 
+. gen pe_sdr=_b[sd_rain]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 29{com}. sum pe_sdr
+{txt} 30{com}. 
+. gen pe_plota=_b[plot_area]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 31{com}. sum pe_plota
+{txt} 32{com}. 
+. gen pe_hage=_b[head_age]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 33{com}. sum pe_hage
+{txt} 34{com}. 
+. gen pe_hedu=_b[head_edu]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 35{com}. sum pe_hedu 
+{txt} 36{com}. 
+. gen pe_fem=_b[femhead]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 37{com}. sum pe_fem 
+{txt} 38{com}. 
+. gen pe_cat=_b[num_cattle]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 39{com}. sum pe_cat
+{txt} 40{com}. 
+. gen pe_plough=_b[plough]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 41{com}. sum pe_plough 
+{txt} 42{com}. 
+. gen pe_rec=_b[rec_ext]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 43{com}. sum pe_rec
+{txt} 44{com}. 
+. gen pe_work=_b[worker]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 45{com}. sum pe_work 
+{txt} 46{com}. 
+. gen pe_offl=_b[offfarm_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 47{com}. sum pe_offl
+{txt} 48{com}. 
+. gen pe_onf=_b[onfarmfull_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 49{com}. sum pe_onf
+{txt} 50{com}. 
+. gen pe_onp=_b[onfarmpart_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 51{com}. sum pe_onp
+{txt} 52{com}. 
+. gen pe_mig=_b[migrant_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 53{com}. sum pe_mig
+{txt} 54{com}. 
+. gen pe_div=_b[div_index]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+{txt} 55{com}. sum pe_div 
+{txt} 56{com}. 
+. sum pe_ss1
+{txt} 57{com}. return scalar ape1=r(mean)
+{txt} 58{com}. matrix ape1=r(ape1)
+{txt} 59{com}. 
+. sum pe_ss2
+{txt} 60{com}. return scalar ape2=r(mean)
+{txt} 61{com}. matrix ape2=r(ape2)
+{txt} 62{com}. 
+. sum pe_ss3
+{txt} 63{com}. return scalar ape3=r(mean)
+{txt} 64{com}. matrix ape3=r(ape3)
+{txt} 65{com}. 
+. sum pe_ms1
+{txt} 66{com}. return scalar ape4=r(mean)
+{txt} 67{com}. matrix ape4=r(ape4)
+{txt} 68{com}. 
+. sum pe_ms2
+{txt} 69{com}. return scalar ape5=r(mean)
+{txt} 70{com}. matrix ape5=r(ape5)
+{txt} 71{com}. 
+. sum pe_ms3
+{txt} 72{com}. return scalar ape6=r(mean)
+{txt} 73{com}. matrix ape6=r(ape6)
+{txt} 74{com}. 
+. sum pe_mis1
+{txt} 75{com}. return scalar ape7=r(mean)
+{txt} 76{com}. matrix ape7=r(ape7)
+{txt} 77{com}. 
+. sum pe_mis2
+{txt} 78{com}. return scalar ape8=r(mean)
+{txt} 79{com}. matrix ape8=r(ape8)
+{txt} 80{com}. 
+. sum pe_mis3
+{txt} 81{com}. return scalar ape9=r(mean)
+{txt} 82{com}. matrix ape9=r(ape9)
+{txt} 83{com}. 
+. sum pe_tots
+{txt} 84{com}. return scalar ape10=r(mean)
+{txt} 85{com}. matrix ape10=r(ape10)
+{txt} 86{com}. 
+. sum pe_shock
+{txt} 87{com}. return scalar ape11=r(mean)
+{txt} 88{com}. matrix ape11=r(ape11)
+{txt} 89{com}. 
+. sum pe_sdr
+{txt} 90{com}. return scalar ape12=r(mean)
+{txt} 91{com}. matrix ape12=r(ape12)
+{txt} 92{com}. 
+. sum pe_plota
+{txt} 93{com}. return scalar ape13=r(mean)
+{txt} 94{com}. matrix ape13=r(ape13)
+{txt} 95{com}. 
+. sum pe_hage
+{txt} 96{com}. return scalar ape14=r(mean)
+{txt} 97{com}. matrix ape14=r(ape14)
+{txt} 98{com}. 
+. sum pe_hedu
+{txt} 99{com}. return scalar ape15=r(mean)
+{txt}100{com}. matrix ape15=r(ape15)
+{txt}101{com}. 
+. sum pe_fem 
+{txt}102{com}. return scalar ape16=r(mean)
+{txt}103{com}. matrix ape16=r(ape16)
+{txt}104{com}. 
+. sum pe_cat
+{txt}105{com}. return scalar ape17=r(mean)
+{txt}106{com}. matrix ape17=r(ape17)
+{txt}107{com}. 
+. sum pe_plough 
+{txt}108{com}. return scalar ape18=r(mean)
+{txt}109{com}. matrix ape18=r(ape18)
+{txt}110{com}. 
+. sum pe_rec
+{txt}111{com}. return scalar ape19=r(mean)
+{txt}112{com}. matrix ape19=r(ape19)
+{txt}113{com}. 
+. sum pe_work 
+{txt}114{com}. return scalar ape20=r(mean)
+{txt}115{com}. matrix ape20=r(ape20)
+{txt}116{com}. 
+. sum pe_offl
+{txt}117{com}. return scalar ape21=r(mean)
+{txt}118{com}. matrix ape21=r(ape21)
+{txt}119{com}. 
+. sum pe_onf
+{txt}120{com}. return scalar ape22=r(mean)
+{txt}121{com}. matrix ape22=r(ape22)
+{txt}122{com}. 
+. sum pe_onp
+{txt}123{com}. return scalar ape23=r(mean)
+{txt}124{com}. matrix ape23=r(ape23)
+{txt}125{com}. 
+. sum pe_mig
+{txt}126{com}. return scalar ape24=r(mean)
+{txt}127{com}. matrix ape24=r(ape24)
+{txt}128{com}. 
+. sum pe_div 
+{txt}129{com}. return scalar ape25=r(mean)
+{txt}130{com}. matrix ape25=r(ape25)
+{txt}131{com}. 
+. drop pe_ss1 pe_ss2 pe_ss3 pe_ms1 pe_ms2 pe_ms3 pe_mis1 pe_mis2 pe_mis3 pe_tots pe_shock pe_sdr ///
+>  pe_plota pe_hage pe_hedu pe_fem pe_cat pe_plough pe_rec pe_work pe_offl pe_onf pe_onp pe_mig pe_div 
+{txt}132{com}. 
+. 
+. restore
+{txt}133{com}. end 
+{txt}
+{com}. 
+. 
+. bootstrap sorg_staple1=r(ape1) sorg_staple2=r(ape2) sorg_staple3=r(ape3) maize_staple1=r(ape4) maize_staple2=r(ape5) maize_staple3=r(ape6) /// 
+> millet_staple1=r(ape7) millet_stape2=r(ape8) millet_staple3=r(ape9) tot_season=r(ape10) shock=r(ape11) sd_rain=r(ape12) plot_area=r(ape13) head_age=r(ape14) head_edu=r(ape15) ///
+> femhead=r(ape16) num_cattle=r(ape17) plough=r(ape18) rec_ext=r(ape19) worker=r(ape20) offfarm_labor=r(ape21) onfarmfull_labor=r(ape22) onfarmpart_labor=r(ape23) ///
+> migrant_labor=r(ape24) div_index=r(ape25), reps(1000) seed(123) cluster(rc) : myboot
+{res}{txt}(running {bf:myboot} on estimation sample)
+
+{p 0 9 2} warning: Because {cmd:myboot} is not an estimation command or does not set {cmd:e(sample)}, {cmd:bootstrap} has no way to determine which observations are used in calculating the statistics and so assumes that all observations are used. This means that no observations will be excluded from the resampling because of missing values or other reasons.{p_end}
+
+{p 9 9 2} If the assumption is not true, press Break, save the data, and drop the observations that are to be excluded. Be sure that the dataset in memory contains only the relevant data.{p_end}
+
+Bootstrap replications ({res}1000{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+.{err}x{txt}.{err}x{txt}.{err}xxxxxx{txt}..{err}xxx{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}..{err}xxx{txt}..{err}xxx{txt}..{err}xx{txt}..{err}x{txt}..{err}xx{txt}.{err}xx{txt}    50
+...{err}x{txt}.{err}x{txt}.{err}xxxxxxx{txt}.{err}xx{txt}..{err}xxxx{txt}.{err}x{txt}.{err}x{txt}..{err}xx{txt}.{err}xx{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}xx{txt}.{err}xx{txt}..{err}x{txt}.   100
+{err}x{txt}..{err}xx{txt}.{err}xxxxx{txt}......{err}x{txt}.{err}x{txt}..{err}xxxx{txt}.{err}x{txt}.{err}xxx{txt}.{err}xxx{txt}....{err}xxx{txt}...{err}xxx{txt}.   150
+{err}xx{txt}.{err}x{txt}.{err}x{txt}..{err}xx{txt}.{err}x{txt}.{err}x{txt}...{err}x{txt}.....{err}xxxx{txt}..{err}xxxx{txt}...{err}xx{txt}..{err}x{txt}.{err}xx{txt}.{err}xxxx{txt}.   200
+{err}xxxx{txt}.{err}xxx{txt}..{err}xxxx{txt}..{err}x{txt}.{err}xx{txt}.{err}x{txt}...{err}xx{txt}..{err}xx{txt}..{err}xx{txt}..{err}x{txt}...{err}x{txt}.....{err}x{txt}.{err}x{txt}   250
+{err}xxx{txt}.{err}x{txt}.{err}xxx{txt}.{err}x{txt}.{err}xxxxx{txt}.{err}xxxx{txt}.{err}xx{txt}.{err}x{txt}....{err}x{txt}.{err}x{txt}.{err}xx{txt}.{err}xx{txt}...{err}x{txt}.{err}xxx{txt}..   300
+{err}x{txt}.{err}xx{txt}...{err}xxx{txt}.{err}xx{txt}.{err}xxxxx{txt}.{err}x{txt}.{err}x{txt}..{err}x{txt}..{err}x{txt}...{err}xxxxx{txt}.{err}xxx{txt}...{err}x{txt}.{err}x{txt}...   350
+.{err}x{txt}..{err}x{txt}..{err}xx{txt}..{err}xx{txt}..{err}xxx{txt}.{err}x{txt}..{err}xx{txt}.{err}x{txt}..{err}xxx{txt}.{err}x{txt}..{err}x{txt}.{err}x{txt}.{err}xxxxx{txt}.{err}xx{txt}.{err}xx{txt}   400
+.{err}x{txt}.{err}xxx{txt}.....{err}xxxxx{txt}..{err}x{txt}.{err}xxxx{txt}.{err}x{txt}...{err}xxxxx{txt}..{err}x{txt}.{err}x{txt}......{err}xxx{txt}.{err}x{txt}   450
+{err}xx{txt}.{err}x{txt}.{err}xxx{txt}.{err}x{txt}..{err}xxxxxxx{txt}..{err}x{txt}..{err}xxxx{txt}.{err}x{txt}...{err}x{txt}.{err}x{txt}....{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.   500
+{err}x{txt}.{err}x{txt}.{err}xx{txt}...{err}x{txt}.{err}xxxxxxx{txt}.{err}xxxx{txt}.{err}x{txt}...{err}xx{txt}.{err}x{txt}.{err}xx{txt}.{err}x{txt}..{err}xxxx{txt}.{err}x{txt}.{err}x{txt}.{err}xx{txt}   550
+{err}xx{txt}..{err}xxxxxxxx{txt}..{err}xxx{txt}.{err}xxx{txt}..{err}x{txt}.{err}x{txt}....{err}xxx{txt}..{err}xx{txt}.{err}x{txt}.{err}x{txt}...{err}xx{txt}.{err}x{txt}..   600
+{err}xx{txt}...{err}x{txt}..{err}x{txt}...{err}x{txt}..{err}xx{txt}..{err}x{txt}..{err}x{txt}.{err}xxx{txt}.{err}x{txt}...{err}xx{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}.{err}xx{txt}.....{err}xx{txt}   650
+{err}xxx{txt}.{err}xxxxx{txt}.{err}xx{txt}..{err}xx{txt}.{err}x{txt}.....{err}xxx{txt}.{err}xx{txt}.{err}xx{txt}....{err}xx{txt}.....{err}xxx{txt}.{err}xxx{txt}   700
+{err}xxx{txt}..{err}x{txt}.{err}xxx{txt}....{err}x{txt}.{err}x{txt}.{err}xxxxxxx{txt}.{err}xx{txt}....{err}xx{txt}..{err}xx{txt}.{err}xxxxxxxx{txt}...   750
+{err}xxx{txt}.{err}x{txt}....{err}xxxxxx{txt}.{err}xx{txt}.{err}xxxxxxx{txt}..{err}xxxxx{txt}.....{err}x{txt}..{err}xx{txt}...{err}x{txt}...   800
+{err}x{txt}..{err}xxxxxx{txt}.{err}x{txt}....{err}xx{txt}...{err}xxxxxxx{txt}..{err}xxx{txt}..{err}xxxxx{txt}.{err}xx{txt}.{err}xx{txt}.{err}xxxx{txt}   850
+..{err}x{txt}.{err}x{txt}.{err}xxx{txt}.{err}xxxxx{txt}.{err}xx{txt}...{err}xx{txt}..{err}x{txt}....{err}x{txt}..{err}xx{txt}.{err}x{txt}.{err}xxx{txt}.{err}x{txt}..{err}x{txt}..{err}x{txt}.   900
+{err}xx{txt}..{err}x{txt}.{err}xxx{txt}.{err}x{txt}.{err}xxx{txt}..{err}x{txt}...{err}xxxx{txt}..{err}xxxx{txt}..{err}xxx{txt}.{err}x{txt}.{err}xx{txt}.{err}x{txt}..{err}xxxxx{txt}   950
+{err}x{txt}.{err}xxx{txt}...{err}x{txt}.{err}xxx{txt}..{err}xxx{txt}.{err}x{txt}.{err}x{txt}.{err}x{txt}..{err}xxx{txt}...{err}x{txt}.{err}xxxxxxxx{txt}..{err}xx{txt}.{err}xxx{txt}  1000
+{res}
+{txt}Bootstrap results{col 49}Number of obs{col 67}= {res}       935
+{txt}{col 49}Replications{col 67}= {res}       439
+{p2colset 7 17 21 2}{...}
+
+{txt}{p2col :command:}myboot{p_end}
+{p2colset 2 17 21 2}{...}
+{p2col :sorg_staple1:}{res:r(ape1)}{p_end}
+{p2colset 2 17 21 2}{...}
+{p2col :sorg_staple2:}{res:r(ape2)}{p_end}
+{p2colset 2 17 21 2}{...}
+{p2col :sorg_staple3:}{res:r(ape3)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :maize_staple1:}{res:r(ape4)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :maize_staple2:}{res:r(ape5)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :maize_staple3:}{res:r(ape6)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :millet_stap~1:}{res:r(ape7)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :millet_stape2:}{res:r(ape8)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :millet_stap~3:}{res:r(ape9)}{p_end}
+{p2colset 4 17 21 2}{...}
+{p2col :tot_season:}{res:r(ape10)}{p_end}
+{p2colset 9 17 21 2}{...}
+{p2col :shock:}{res:r(ape11)}{p_end}
+{p2colset 7 17 21 2}{...}
+{p2col :sd_rain:}{res:r(ape12)}{p_end}
+{p2colset 5 17 21 2}{...}
+{p2col :plot_area:}{res:r(ape13)}{p_end}
+{p2colset 6 17 21 2}{...}
+{p2col :head_age:}{res:r(ape14)}{p_end}
+{p2colset 6 17 21 2}{...}
+{p2col :head_edu:}{res:r(ape15)}{p_end}
+{p2colset 7 17 21 2}{...}
+{p2col :femhead:}{res:r(ape16)}{p_end}
+{p2colset 4 17 21 2}{...}
+{p2col :num_cattle:}{res:r(ape17)}{p_end}
+{p2colset 8 17 21 2}{...}
+{p2col :plough:}{res:r(ape18)}{p_end}
+{p2colset 7 17 21 2}{...}
+{p2col :rec_ext:}{res:r(ape19)}{p_end}
+{p2colset 8 17 21 2}{...}
+{p2col :worker:}{res:r(ape20)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :offfarm_labor:}{res:r(ape21)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :onfarmfull_~r:}{res:r(ape22)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :onfarmpart_~r:}{res:r(ape23)}{p_end}
+{p2colset 1 17 21 2}{...}
+{p2col :migrant_labor:}{res:r(ape24)}{p_end}
+{p2colset 5 17 21 2}{...}
+{p2col :div_index:}{res:r(ape25)}{p_end}
+
+{res}{txt}{ralign 82:(Replications based on {res:580} clusters in rc)}
+{hline 17}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 18}{c |}   Observed{col 30}   Bootstrap{col 58}         Norm{col 71}al-based
+{col 18}{c |}      Coef.{col 30}   Std. Err.{col 42}      z{col 50}   P>|z|{col 58}     [95% Con{col 71}f. Interval]
+{hline 17}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}sorg_staple1 {c |}{col 18}{res}{space 2}-.0833786{col 30}{space 2} .1032154{col 41}{space 1}   -0.81{col 50}{space 3}0.419{col 58}{space 4}-.2856772{col 71}{space 3} .1189199
+{txt}{space 4}sorg_staple2 {c |}{col 18}{res}{space 2}-.0289747{col 30}{space 2} .0243985{col 41}{space 1}   -1.19{col 50}{space 3}0.235{col 58}{space 4} -.076795{col 71}{space 3} .0188455
+{txt}{space 4}sorg_staple3 {c |}{col 18}{res}{space 2} .0481327{col 30}{space 2} .0378398{col 41}{space 1}    1.27{col 50}{space 3}0.203{col 58}{space 4} -.026032{col 71}{space 3} .1222973
+{txt}{space 3}maize_staple1 {c |}{col 18}{res}{space 2} .1886285{col 30}{space 2} .1007236{col 41}{space 1}    1.87{col 50}{space 3}0.061{col 58}{space 4}-.0087861{col 71}{space 3}  .386043
+{txt}{space 3}maize_staple2 {c |}{col 18}{res}{space 2} .2043689{col 30}{space 2} .0695266{col 41}{space 1}    2.94{col 50}{space 3}0.003{col 58}{space 4} .0680992{col 71}{space 3} .3406385
+{txt}{space 3}maize_staple3 {c |}{col 18}{res}{space 2} .2071071{col 30}{space 2} .0780035{col 41}{space 1}    2.66{col 50}{space 3}0.008{col 58}{space 4}  .054223{col 71}{space 3} .3599911
+{txt}{space 2}millet_staple1 {c |}{col 18}{res}{space 2}-.2938257{col 30}{space 2} .1184038{col 41}{space 1}   -2.48{col 50}{space 3}0.013{col 58}{space 4} -.525893{col 71}{space 3}-.0617585
+{txt}{space 3}millet_stape2 {c |}{col 18}{res}{space 2}-.1890947{col 30}{space 2} .0592432{col 41}{space 1}   -3.19{col 50}{space 3}0.001{col 58}{space 4}-.3052093{col 71}{space 3}-.0729801
+{txt}{space 2}millet_staple3 {c |}{col 18}{res}{space 2}-.1016416{col 30}{space 2} .0452944{col 41}{space 1}   -2.24{col 50}{space 3}0.025{col 58}{space 4} -.190417{col 71}{space 3}-.0128662
+{txt}{space 6}tot_season {c |}{col 18}{res}{space 2} .0000153{col 30}{space 2} .0000414{col 41}{space 1}    0.37{col 50}{space 3}0.711{col 58}{space 4}-.0000658{col 71}{space 3} .0000965
+{txt}{space 11}shock {c |}{col 18}{res}{space 2}-.0251575{col 30}{space 2} .0229646{col 41}{space 1}   -1.10{col 50}{space 3}0.273{col 58}{space 4}-.0701673{col 71}{space 3} .0198523
+{txt}{space 9}sd_rain {c |}{col 18}{res}{space 2} .0020768{col 30}{space 2} .0004979{col 41}{space 1}    4.17{col 50}{space 3}0.000{col 58}{space 4}  .001101{col 71}{space 3} .0030526
+{txt}{space 7}plot_area {c |}{col 18}{res}{space 2} .0553369{col 30}{space 2} .0203142{col 41}{space 1}    2.72{col 50}{space 3}0.006{col 58}{space 4} .0155218{col 71}{space 3}  .095152
+{txt}{space 8}head_age {c |}{col 18}{res}{space 2}-.0031827{col 30}{space 2} .0014326{col 41}{space 1}   -2.22{col 50}{space 3}0.026{col 58}{space 4}-.0059906{col 71}{space 3}-.0003748
+{txt}{space 8}head_edu {c |}{col 18}{res}{space 2}-.0098337{col 30}{space 2} .0065046{col 41}{space 1}   -1.51{col 50}{space 3}0.131{col 58}{space 4}-.0225824{col 71}{space 3}  .002915
+{txt}{space 9}femhead {c |}{col 18}{res}{space 2} -.083127{col 30}{space 2}  .033687{col 41}{space 1}   -2.47{col 50}{space 3}0.014{col 58}{space 4}-.1491523{col 71}{space 3}-.0171016
+{txt}{space 6}num_cattle {c |}{col 18}{res}{space 2}  .004312{col 30}{space 2} .0033492{col 41}{space 1}    1.29{col 50}{space 3}0.198{col 58}{space 4}-.0022523{col 71}{space 3} .0108762
+{txt}{space 10}plough {c |}{col 18}{res}{space 2}-.0078616{col 30}{space 2} .0361108{col 41}{space 1}   -0.22{col 50}{space 3}0.828{col 58}{space 4}-.0786376{col 71}{space 3} .0629144
+{txt}{space 9}rec_ext {c |}{col 18}{res}{space 2}-.0522982{col 30}{space 2} .0259711{col 41}{space 1}   -2.01{col 50}{space 3}0.044{col 58}{space 4}-.1032007{col 71}{space 3}-.0013958
+{txt}{space 10}worker {c |}{col 18}{res}{space 2} .0196847{col 30}{space 2} .0115582{col 41}{space 1}    1.70{col 50}{space 3}0.089{col 58}{space 4} -.002969{col 71}{space 3} .0423384
+{txt}{space 3}offfarm_labor {c |}{col 18}{res}{space 2} .0132531{col 30}{space 2} .0132415{col 41}{space 1}    1.00{col 50}{space 3}0.317{col 58}{space 4}-.0126997{col 71}{space 3} .0392059
+{txt}onfarmfull_labor {c |}{col 18}{res}{space 2}-.0063112{col 30}{space 2}  .011172{col 41}{space 1}   -0.56{col 50}{space 3}0.572{col 58}{space 4} -.028208{col 71}{space 3} .0155855
+{txt}onfarmpart_labor {c |}{col 18}{res}{space 2}-.0082877{col 30}{space 2} .0091161{col 41}{space 1}   -0.91{col 50}{space 3}0.363{col 58}{space 4}-.0261549{col 71}{space 3} .0095795
+{txt}{space 3}migrant_labor {c |}{col 18}{res}{space 2} .0148712{col 30}{space 2} .0217888{col 41}{space 1}    0.68{col 50}{space 3}0.495{col 58}{space 4}-.0278341{col 71}{space 3} .0575766
+{txt}{space 7}div_index {c |}{col 18}{res}{space 2} .1405839{col 30}{space 2} .0632307{col 41}{space 1}    2.22{col 50}{space 3}0.026{col 58}{space 4}  .016654{col 71}{space 3} .2645137
+{txt}{hline 17}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: One or more parameters could not be estimated in 561 bootstrap replicates; standard-error estimates include only complete replications.{p_end}
+
+{com}. 
+. log close 
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e2_pref\logs/maize_dhape-trunc.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 Oct 2020, 07:27:09
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

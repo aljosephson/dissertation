@@ -1,8 +1,7 @@
-
 * Project: Preferences, Crop Choice - Zimbabwe
 * Created: February 2020
 * Created by: alj
-* Last edit: 20 October 2020
+* Last edit: 21 October 2020
 * Stata v.16.1
 
 * does
@@ -364,6 +363,215 @@ migrant_labor=r(ape24) div_index=r(ape25), reps(1000) seed(123) cluster(rc) : my
 
 log close 
 
+*** THIS IS NOT WORKING 
+
+*create new log - easier to make tables
+* open log
+	cap log 		close
+	log using		"$logs/sorghum_dhape-trunc", append
+
+
+capture program drop myboot
+program define myboot, rclass
+preserve
+
+reg $sorghum2m
+
+predict x2b, xb
+predict sigma
+gen IMR = normalden(x2b/sigma)/normal(x2b/sigma)
+
+gen pe_ss1=_b[sorg_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss1
+
+gen pe_ss2=_b[sorg_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss2
+
+gen pe_ss3=_b[sorg_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss3
+
+gen pe_ms1=_b[maize_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms1
+
+gen pe_ms2=_b[maize_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms2
+
+gen pe_ms3=_b[maize_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms3
+
+gen pe_mis1=_b[millet_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mis1
+
+gen pe_mis2=_b[millet_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms2
+
+gen pe_mis3=_b[millet_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mis3
+
+gen pe_tots=_b[tot_season]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_tots
+
+gen pe_shock=_b[shock]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_shock
+
+gen pe_sdr=_b[sd_rain]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_sdr
+
+gen pe_plota=_b[plot_area]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_plota
+
+gen pe_hage=_b[head_age]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_hage
+
+gen pe_hedu=_b[head_edu]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_hedu 
+
+gen pe_fem=_b[femhead]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_fem 
+
+gen pe_cat=_b[num_cattle]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_cat
+
+gen pe_plough=_b[plough]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_plough 
+
+gen pe_rec=_b[rec_ext]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_rec
+
+gen pe_work=_b[worker]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_work 
+
+gen pe_offl=_b[offfarm_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_offl
+
+gen pe_onf=_b[onfarmfull_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_onf
+
+gen pe_onp=_b[onfarmpart_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_onp
+
+gen pe_mig=_b[migrant_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mig
+
+gen pe_div=_b[div_index]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_div 
+
+sum pe_ss1
+return scalar ape1=r(mean)
+matrix ape1=r(ape1)
+
+sum pe_ss2
+return scalar ape2=r(mean)
+matrix ape2=r(ape2)
+
+sum pe_ss3
+return scalar ape3=r(mean)
+matrix ape3=r(ape3)
+
+sum pe_ms1
+return scalar ape4=r(mean)
+matrix ape4=r(ape4)
+
+sum pe_ms2
+return scalar ape5=r(mean)
+matrix ape5=r(ape5)
+
+sum pe_ms3
+return scalar ape6=r(mean)
+matrix ape6=r(ape6)
+
+sum pe_mis1
+return scalar ape7=r(mean)
+matrix ape7=r(ape7)
+
+sum pe_mis2
+return scalar ape8=r(mean)
+matrix ape8=r(ape8)
+
+sum pe_mis3
+return scalar ape9=r(mean)
+matrix ape9=r(ape9)
+
+sum pe_tots
+return scalar ape10=r(mean)
+matrix ape10=r(ape10)
+
+sum pe_shock
+return scalar ape11=r(mean)
+matrix ape11=r(ape11)
+
+sum pe_sdr
+return scalar ape12=r(mean)
+matrix ape12=r(ape12)
+
+sum pe_plota
+return scalar ape13=r(mean)
+matrix ape13=r(ape13)
+
+sum pe_hage
+return scalar ape14=r(mean)
+matrix ape14=r(ape14)
+
+sum pe_hedu
+return scalar ape15=r(mean)
+matrix ape15=r(ape15)
+
+sum pe_fem 
+return scalar ape16=r(mean)
+matrix ape16=r(ape16)
+
+sum pe_cat
+return scalar ape17=r(mean)
+matrix ape17=r(ape17)
+
+sum pe_plough 
+return scalar ape18=r(mean)
+matrix ape18=r(ape18)
+
+sum pe_rec
+return scalar ape19=r(mean)
+matrix ape19=r(ape19)
+
+sum pe_work 
+return scalar ape20=r(mean)
+matrix ape20=r(ape20)
+
+sum pe_offl
+return scalar ape21=r(mean)
+matrix ape21=r(ape21)
+
+sum pe_onf
+return scalar ape22=r(mean)
+matrix ape22=r(ape22)
+
+sum pe_onp
+return scalar ape23=r(mean)
+matrix ape23=r(ape23)
+
+sum pe_mig
+return scalar ape24=r(mean)
+matrix ape24=r(ape24)
+
+sum pe_div 
+return scalar ape25=r(mean)
+matrix ape25=r(ape25)
+
+drop pe_ss1 pe_ss2 pe_ss3 pe_ms1 pe_ms2 pe_ms3 pe_mis1 pe_mis2 pe_mis3 pe_tots pe_shock pe_sdr ///
+ pe_plota pe_hage pe_hedu pe_fem pe_cat pe_plough pe_rec pe_work pe_offl pe_onf pe_onp pe_mig pe_div 
+
+
+restore
+end 
+
+
+bootstrap sorg_staple1=r(ape1) sorg_staple2=r(ape2) sorg_staple3=r(ape3) maize_staple1=r(ape4) maize_staple2=r(ape5) maize_staple3=r(ape6) /// 
+millet_staple1=r(ape7) millet_stape2=r(ape8) millet_staple3=r(ape9) tot_season=r(ape10) shock=r(ape11) sd_rain=r(ape12) plot_area=r(ape13) head_age=r(ape14) head_edu=r(ape15) ///
+femhead=r(ape16) num_cattle=r(ape17) plough=r(ape18) rec_ext=r(ape19) worker=r(ape20) offfarm_labor=r(ape21) onfarmfull_labor=r(ape22) onfarmpart_labor=r(ape23) ///
+migrant_labor=r(ape24) div_index=r(ape25), reps(1000) seed(123) cluster(rc) : myboot
+
+log close 
+
+
 probit $sorg1m, vce(robust)
 eststo sorgshortmarginsm: margins, dydx(sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize_staple3 millet_staple1 millet_staple2 millet_staple3 ///
 tot_season shock sd_rain plot_area head_age head_edu femhead num_cattle plough rec_ext worker /// 
@@ -630,6 +838,214 @@ migrant_labor=r(ape24) div_index=r(ape25), reps(1000) seed(123) cluster(rc) : my
 
 log close 
 
+
+*create new log - easier to make tables
+* open log
+	cap log 		close
+	log using		"$logs/maize_dhape-trunc", append
+
+
+capture program drop myboot
+program define myboot, rclass
+preserve
+
+reg $maize2m, vce(robust)
+
+predict x2b, xb
+predict sigma
+gen IMR = normalden(x2b/sigma)/normal(x2b/sigma)
+
+gen pe_ss1=_b[sorg_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss1
+
+gen pe_ss2=_b[sorg_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss2
+
+gen pe_ss3=_b[sorg_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ss3
+
+gen pe_ms1=_b[maize_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms1
+
+gen pe_ms2=_b[maize_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms2
+
+gen pe_ms3=_b[maize_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms3
+
+gen pe_mis1=_b[millet_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mis1
+
+gen pe_mis2=_b[millet_staple2]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_ms2
+
+gen pe_mis3=_b[millet_staple3]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mis3
+
+gen pe_tots=_b[tot_season]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_tots
+
+gen pe_shock=_b[shock]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_shock
+
+gen pe_sdr=_b[sd_rain]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_sdr
+
+gen pe_plota=_b[plot_area]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_plota
+
+gen pe_hage=_b[head_age]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_hage
+
+gen pe_hedu=_b[head_edu]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_hedu 
+
+gen pe_fem=_b[femhead]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_fem 
+
+gen pe_cat=_b[num_cattle]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_cat
+
+gen pe_plough=_b[plough]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_plough 
+
+gen pe_rec=_b[rec_ext]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_rec
+
+gen pe_work=_b[worker]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_work 
+
+gen pe_offl=_b[offfarm_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_offl
+
+gen pe_onf=_b[onfarmfull_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_onf
+
+gen pe_onp=_b[onfarmpart_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_onp
+
+gen pe_mig=_b[migrant_labor]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_mig
+
+gen pe_div=_b[div_index]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
+sum pe_div 
+
+sum pe_ss1
+return scalar ape1=r(mean)
+matrix ape1=r(ape1)
+
+sum pe_ss2
+return scalar ape2=r(mean)
+matrix ape2=r(ape2)
+
+sum pe_ss3
+return scalar ape3=r(mean)
+matrix ape3=r(ape3)
+
+sum pe_ms1
+return scalar ape4=r(mean)
+matrix ape4=r(ape4)
+
+sum pe_ms2
+return scalar ape5=r(mean)
+matrix ape5=r(ape5)
+
+sum pe_ms3
+return scalar ape6=r(mean)
+matrix ape6=r(ape6)
+
+sum pe_mis1
+return scalar ape7=r(mean)
+matrix ape7=r(ape7)
+
+sum pe_mis2
+return scalar ape8=r(mean)
+matrix ape8=r(ape8)
+
+sum pe_mis3
+return scalar ape9=r(mean)
+matrix ape9=r(ape9)
+
+sum pe_tots
+return scalar ape10=r(mean)
+matrix ape10=r(ape10)
+
+sum pe_shock
+return scalar ape11=r(mean)
+matrix ape11=r(ape11)
+
+sum pe_sdr
+return scalar ape12=r(mean)
+matrix ape12=r(ape12)
+
+sum pe_plota
+return scalar ape13=r(mean)
+matrix ape13=r(ape13)
+
+sum pe_hage
+return scalar ape14=r(mean)
+matrix ape14=r(ape14)
+
+sum pe_hedu
+return scalar ape15=r(mean)
+matrix ape15=r(ape15)
+
+sum pe_fem 
+return scalar ape16=r(mean)
+matrix ape16=r(ape16)
+
+sum pe_cat
+return scalar ape17=r(mean)
+matrix ape17=r(ape17)
+
+sum pe_plough 
+return scalar ape18=r(mean)
+matrix ape18=r(ape18)
+
+sum pe_rec
+return scalar ape19=r(mean)
+matrix ape19=r(ape19)
+
+sum pe_work 
+return scalar ape20=r(mean)
+matrix ape20=r(ape20)
+
+sum pe_offl
+return scalar ape21=r(mean)
+matrix ape21=r(ape21)
+
+sum pe_onf
+return scalar ape22=r(mean)
+matrix ape22=r(ape22)
+
+sum pe_onp
+return scalar ape23=r(mean)
+matrix ape23=r(ape23)
+
+sum pe_mig
+return scalar ape24=r(mean)
+matrix ape24=r(ape24)
+
+sum pe_div 
+return scalar ape25=r(mean)
+matrix ape25=r(ape25)
+
+drop pe_ss1 pe_ss2 pe_ss3 pe_ms1 pe_ms2 pe_ms3 pe_mis1 pe_mis2 pe_mis3 pe_tots pe_shock pe_sdr ///
+ pe_plota pe_hage pe_hedu pe_fem pe_cat pe_plough pe_rec pe_work pe_offl pe_onf pe_onp pe_mig pe_div 
+
+
+restore
+end 
+
+
+bootstrap sorg_staple1=r(ape1) sorg_staple2=r(ape2) sorg_staple3=r(ape3) maize_staple1=r(ape4) maize_staple2=r(ape5) maize_staple3=r(ape6) /// 
+millet_staple1=r(ape7) millet_stape2=r(ape8) millet_staple3=r(ape9) tot_season=r(ape10) shock=r(ape11) sd_rain=r(ape12) plot_area=r(ape13) head_age=r(ape14) head_edu=r(ape15) ///
+femhead=r(ape16) num_cattle=r(ape17) plough=r(ape18) rec_ext=r(ape19) worker=r(ape20) offfarm_labor=r(ape21) onfarmfull_labor=r(ape22) onfarmpart_labor=r(ape23) ///
+migrant_labor=r(ape24) div_index=r(ape25), reps(1000) seed(123) cluster(rc) : myboot
+
+log close 
+
+
 probit $maize1m, vce(robust)
 eststo maizeshortmarginsm: margins, dydx(sorg_staple1 sorg_staple2 sorg_staple3 maize_staple1 maize_staple2 maize_staple3 millet_staple1 millet_staple2 millet_staple3 ///
 tot_season shock sd_rain plot_area head_age head_edu femhead num_cattle plough rec_ext worker /// 
@@ -722,7 +1138,7 @@ preserve
 reg $millet2m, vce(robust)
 
 predict x2b, xb
-predict sigma, eq(sigma)
+predict sigma
 gen IMR = normalden(x2b/sigma)/normal(x2b/sigma)
 
 gen pe_ss1=_b[sorg_staple1]*((1-(normalden(x2b/sigma)/normal(x2b/sigma))*(x2b/sigma+(normalden(x2b/sigma)/normal(x2b/sigma)))))
