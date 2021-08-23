@@ -85,6 +85,8 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
       
+	 ***** ANNA WHAT IS GOING ON WITH THIS BOOTTEST!!?!?!
+	  
 	reg $aggconsume
 	est store AGCONJ
 	test xbmale xbfemale xbjoint
