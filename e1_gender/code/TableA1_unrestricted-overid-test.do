@@ -27,7 +27,7 @@
 * *********************************************************************
 
 * consumption aggregates based on WB aggregates provided in LSMS downloads
-* consumption aggregates for: food, cigarettes and alcohol, clothing, recreation, education, health, housing and utilities (labeled transpo)
+* consumption aggregates for: food, cigarettes and alcohol, clothing, recreation, education, health, housing and utilities 
 
 	global aggconsume (dlnconsume_agg davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq ///
 		dlag1_wetqstart dtot dwetq dwetqstart  i.agroeczone2010 i.agroeczone2013)
@@ -43,7 +43,7 @@
 		dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
 	global healthconsume (dlnconsume_health davg_tot davg_wetq davg_wetqstart dlag1_tot ///
 		dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart  i.agroeczone2010 i.agroeczone2013)
-	global transpoconsume (dlnconsume_houseutils davg_tot davg_wetq davg_wetqstart dlag1_tot ///
+	global houseconsume (dlnconsume_houseutils davg_tot davg_wetq davg_wetqstart dlag1_tot ///
 		dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart  i.agroeczone2010 i.agroeczone2013)
 		
 * **********************************************************************
@@ -78,7 +78,7 @@
 	est store INH
 	test davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart 
 
-	reg $transpoconsume, vce(cluster y2_hhid)
+	reg $houseconsume, vce(cluster y2_hhid)
 	est store INT
 	test davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart 
 
