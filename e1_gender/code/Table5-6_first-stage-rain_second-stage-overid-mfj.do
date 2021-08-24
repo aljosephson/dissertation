@@ -85,75 +85,69 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
       
-	 ***** ANNA WHAT IS GOING ON WITH THIS BOOTTEST!!?!?!
+	 ***** ANNA NEED TO FIX BOOTS!
 	  
 	reg $aggconsume
-	est store AGCONJ
 	test xbmale xbfemale xbjoint
-	qui: boottest xbmale 
-	qui: boottest xbfemale 
-	qui: boottest xbjoint
+	est store AGCONJ
 	
 	reg $foodconsume
-	est store CONFOJ
 	test xbmale xbfemale xbjoint
-	qui: boottest xbmale 
-	qui: boottest xbfemale 
-	qui: boottest xbjoint
+	est store CONFOJ
 	suest AGCONJ CONFOJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
 
 	reg $cigsal
 	est store CIGSJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ CIGSJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CIGSJ_mean]xbjoint)
 
 	reg $clothing
 	est store CLJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ CLJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CLJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CLJ_mean]xbjoint)
 
 	reg $recconsume 
 	est store RECJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ RECJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECJ_mean]xbjoint)
 
 	reg $educconsume
 	est store EDUCJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ EDUCJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [EDUCJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [EDUCJ_mean]xbjoint)
 
 	reg $healthconsume 
 	est store HEAJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ HEAJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HEAJ_mean]xbjoint)
 
 	reg $houseconsume  
 	est store TRANSJ
 	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale 
-	*qui: boottest xbfemale 
-	*qui: boottest xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ TRANSJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
 
