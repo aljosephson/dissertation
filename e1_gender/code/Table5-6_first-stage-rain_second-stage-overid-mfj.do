@@ -85,20 +85,19 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
   
-	bootstrap _b, reps(100): reg $aggconsume
+	reg $aggconsume
 	test xbmale xbfemale xbjoint
 	est store AGCONJ
-	estat bootstrap, all
 
-	bootstrap _b, reps(100): reg $foodconsume
-	estat bootstrap 
+	reg $foodconsume
 	test xbmale xbfemale xbjoint
 	est store CONFOJ
-	estat bootstrap, all
 	suest AGCONJ CONFOJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
 	
 *** PERSISTANT PROBLEM: "nonstandard vce (bootstrap)" for estimation of AGCONJ and CONFOJ	
+
+*** NOTHING WORKS
 	
 	reg $cigsal
 	est store CIGSJ
