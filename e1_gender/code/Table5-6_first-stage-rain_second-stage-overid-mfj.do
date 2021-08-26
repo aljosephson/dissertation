@@ -1,6 +1,6 @@
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 23 August 2021
+* Edited on: 26 August 2021
 * Created by: alj
 * Stata v.16
 
@@ -84,19 +84,22 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
-      
-	 ***** ANNA NEED TO FIX BOOTS!
-	  
-	reg $aggconsume
+  
+	bootstrap _b, reps(100): reg $aggconsume
 	test xbmale xbfemale xbjoint
 	est store AGCONJ
-	
-	reg $foodconsume
+	estat bootstrap, all
+
+	bootstrap _b, reps(100): reg $foodconsume
+	estat bootstrap 
 	test xbmale xbfemale xbjoint
 	est store CONFOJ
+	estat bootstrap, all
 	suest AGCONJ CONFOJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
-
+	
+*** PERSISTANT PROBLEM: "nonstandard vce (bootstrap)" for estimation of AGCONJ and CONFOJ	
+	
 	reg $cigsal
 	est store CIGSJ
 	test xbmale xbfemale xbjoint
@@ -105,7 +108,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ CIGSJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CIGSJ_mean]xbjoint)
-
+	
 	reg $clothing
 	est store CLJ
 	test xbmale xbfemale xbjoint
