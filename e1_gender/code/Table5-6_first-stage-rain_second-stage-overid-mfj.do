@@ -1,6 +1,6 @@
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 26 August 2021
+* Edited on: 26 September 2021
 * Created by: alj
 * Stata v.16
 

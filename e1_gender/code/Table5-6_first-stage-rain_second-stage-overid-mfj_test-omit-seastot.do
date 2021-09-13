@@ -1,6 +1,6 @@
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 26 August 2021
+* Edited on: 26 September 2021
 * Created by: alj
 * Stata v.16
 
@@ -29,25 +29,25 @@
 
 * set globals for male, female, and joint 
 
-	global jincome (dlnvaluejoint davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global fincome (dlnvaluefemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global mincome (dlnvaluemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global jincome (dlnvaluejoint davg_tot davg_wetqstart dlag1_tot dlag1_wetqstart dtot dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global fincome (dlnvaluefemale davg_tot davg_wetqstart dlag1_tot dlag1_wetqstart dtot dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global mincome (dlnvaluemale davg_tot davg_wetqstart dlag1_tot dlag1_wetqstart dtot dwetqstart i.agroeczone2010 i.agroeczone2013)
 
 * reg and F-test
 * save estimates and predict xb 
 
 	reg $jincome, vce (cluster y2_hhid)
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetqstart = dlag1_tot = dlag1_wetqstart = dtot =  dwetqstart 
 	est store INJM
 	predict xbjoint, xb
 
 	reg $fincome, vce (cluster y2_hhid) 
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetqstart = dlag1_tot = dlag1_wetqstart = dtot =  dwetqstart 
 	est store INJF
 	predict xbfemale, xb
 	
 	reg $mincome, vce (cluster y2_hhid)
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetqstart = dlag1_tot = dlag1_wetqstart = dtot =  dwetqstart 
 	est store INJJ
 	predict xbmale, xb
 
