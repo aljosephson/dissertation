@@ -1,13 +1,17 @@
+/* BEGIN */
+
+********************************************************************************************
+
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 26 September 2021
+* Edited on: 13 September 2021
 * Created by: alj
 * Stata v.16
 
 * does
 	* first stage rainfall estimates
 	* second stage overidentification test for male, female, joint 
-	* corresponds with tables 5 and 6 
+	* corresponds with tables 6 and 7  
 	
 * assumes
 	* data_jointtest.dta 
@@ -29,31 +33,31 @@
 
 * set globals for male, female, and joint 
 
-	global jincome (dlnvaluejoint  davg_wetq davg_wetqstart  dlag1_wetq dlag1_wetqstart  dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global fincome (dlnvaluefemale  davg_wetq davg_wetqstart  dlag1_wetq dlag1_wetqstart  dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global mincome (dlnvaluemale  davg_wetq davg_wetqstart  dlag1_wetq dlag1_wetqstart  dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global jincome (dlnvaluejoint davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global fincome (dlnvaluefemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global mincome (dlnvaluemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
 
 * reg and F-test
 * save estimates and predict xb 
 
 	reg $jincome, vce (cluster y2_hhid)
-	test davg_wetq = davg_wetqstart = dlag1_wetq = dlag1_wetqstart =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
 	est store INJM
 	predict xbjoint, xb
 
 	reg $fincome, vce (cluster y2_hhid) 
-	test davg_wetq = davg_wetqstart = dlag1_wetq = dlag1_wetqstart =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
 	est store INJF
 	predict xbfemale, xb
 	
 	reg $mincome, vce (cluster y2_hhid)
-	test davg_wetq = davg_wetqstart = dlag1_wetq = dlag1_wetqstart =  dwetq =  dwetqstart 
+	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
 	est store INJJ
 	predict xbmale, xb
 
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
-* export table 
+
 /*
 esttab INJM INJF INJJ using table1.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
@@ -62,6 +66,10 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
 	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
 */
+
+	label variable xbmale "\hspace{0.1cm} Predicted change in male income"
+	label variable xbfemale "\hspace{0.1cm} Predicted change in female income"
+	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
 
 * **********************************************************************
 * 3 - second stage 
@@ -87,17 +95,19 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
   
 	reg $aggconsume
 	test xbmale xbfemale xbjoint
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	est store AGCONJ
 
 	reg $foodconsume
 	test xbmale xbfemale xbjoint
 	est store CONFOJ
+	qui: boottest xbmale, reps (10000)  
+	qui: boottest xbfemale, reps (10000)  
+	qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ CONFOJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
-	
-*** PERSISTANT PROBLEM: "nonstandard vce (bootstrap)" for estimation of AGCONJ and CONFOJ	
-
-*** NOTHING WORKS
 	
 	reg $cigsal
 	est store CIGSJ
@@ -153,7 +163,6 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	suest AGCONJ TRANSJ, vce(robust)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
 
-* export table 
 /*	
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table3.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
