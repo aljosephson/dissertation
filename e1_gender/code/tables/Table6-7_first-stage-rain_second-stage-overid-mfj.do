@@ -4,7 +4,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 14 September 2021
+* Edited on: 21 September 2021
 * Created by: alj
 * Stata v.16
 
@@ -29,7 +29,7 @@ clear
 	use "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\data_jointtest-O.dta", clear
 
 * **********************************************************************
-* 2 - first stage 
+* 2 - first stage - TABLE 6
 * *********************************************************************
 
 * set globals for male, female, and joint 
@@ -73,7 +73,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
 
 * **********************************************************************
-* 3 - second stage 
+* 3 - second stage - TABLE 7
 * *********************************************************************
 
 * male, female, and joint 
