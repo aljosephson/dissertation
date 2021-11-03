@@ -82,13 +82,13 @@ esttab INJF INJJ using table1.tex, replace f ///
 * nl tests: compare specific consumption with aggregate 
   
 	reg $aggconsume
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	est store AGCONJ
 
 	reg $foodconsume
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	est store CONFOJ
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
@@ -97,7 +97,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	
 	reg $cigsal
 	est store CIGSJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ CIGSJ, vce(robust)
@@ -105,7 +105,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	
 	reg $clothing
 	est store CLJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ CLJ, vce(robust)
@@ -113,7 +113,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 
 	reg $recconsume 
 	est store RECJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ RECJ, vce(robust)
@@ -121,7 +121,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 
 	reg $educconsume
 	est store EDUCJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ EDUCJ, vce(robust)
@@ -129,7 +129,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 
 	reg $healthconsume 
 	est store HEAJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ HEAJ, vce(robust)
@@ -137,7 +137,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 
 	reg $houseconsume  
 	est store TRANSJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ TRANSJ, vce(robust)
@@ -219,13 +219,13 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 * nl tests: compare specific consumption with aggregate 
   
 	reg $aggconsume
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	est store AGCONJ
 
 	reg $foodconsume
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	est store CONFOJ
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
@@ -234,7 +234,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	
 	reg $cigsal
 	est store CIGSJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ CIGSJ, vce(robust)
@@ -242,7 +242,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	
 	reg $clothing
 	est store CLJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ CLJ, vce(robust)
@@ -250,7 +250,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 
 	reg $recconsume 
 	est store RECJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ RECJ, vce(robust)
@@ -258,7 +258,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 
 	reg $educconsume
 	est store EDUCJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ EDUCJ, vce(robust)
@@ -266,7 +266,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 
 	reg $healthconsume 
 	est store HEAJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ HEAJ, vce(robust)
@@ -274,7 +274,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 
 	reg $houseconsume  
 	est store TRANSJ
-	test xbmale xbfemale xbjoint
+	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
 	suest AGCONJ TRANSJ, vce(robust)
