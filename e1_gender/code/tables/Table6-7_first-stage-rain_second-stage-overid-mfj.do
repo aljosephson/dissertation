@@ -4,7 +4,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 21 September 2021
+* Edited on: 3 November 2021
 * Created by: alj
 * Stata v.16
 
@@ -26,8 +26,9 @@ clear
 
 * read in data 
 
-	use "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\data_jointtest-O.dta", clear
-
+	use "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\data_jointtest.dta", clear
+	*** was - O previous? 
+	
 * **********************************************************************
 * 2 - first stage - TABLE 6
 * *********************************************************************
@@ -107,7 +108,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000)  
-	suest AGCONJ CONFOJ, vce(robust)
+	suest AGCONJ CONFOJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CONFOJ_mean]xbjoint)
 	
 	reg $cigsal
@@ -116,7 +117,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ CIGSJ, vce(robust)
+	suest AGCONJ CIGSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CIGSJ_mean]xbjoint)
 	
 	reg $clothing
@@ -125,7 +126,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ CLJ, vce(robust)
+	suest AGCONJ CLJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CLJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [CLJ_mean]xbjoint)
 
 	reg $recconsume 
@@ -134,7 +135,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ RECJ, vce(robust)
+	suest AGCONJ RECJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECJ_mean]xbjoint)
 
 	reg $educconsume
@@ -143,7 +144,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ EDUCJ, vce(robust)
+	suest AGCONJ EDUCJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [EDUCJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [EDUCJ_mean]xbjoint)
 
 	reg $healthconsume 
@@ -152,7 +153,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ HEAJ, vce(robust)
+	suest AGCONJ HEAJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HEAJ_mean]xbjoint)
 
 	reg $houseconsume  
@@ -161,7 +162,7 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ TRANSJ, vce(robust)
+	suest AGCONJ TRANSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
 
 /*	
