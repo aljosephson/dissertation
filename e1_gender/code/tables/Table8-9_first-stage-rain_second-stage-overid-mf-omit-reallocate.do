@@ -92,7 +92,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	est store CONFOJ
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CONFOJ, vce(robust)
+	suest AGCONJ CONFOJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) 
 	
 	reg $cigsal
@@ -100,7 +100,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CIGSJ, vce(robust)
+	suest AGCONJ CIGSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) 
 	
 	reg $clothing
@@ -108,7 +108,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CLJ, vce(robust)
+	suest AGCONJ CLJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CLJ_mean]xbfemale)
 
 	reg $recconsume 
@@ -116,7 +116,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ RECJ, vce(robust)
+	suest AGCONJ RECJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECJ_mean]xbfemale) 
 
 	reg $educconsume
@@ -124,7 +124,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ EDUCJ, vce(robust)
+	suest AGCONJ EDUCJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [EDUCJ_mean]xbfemale) 
 
 	reg $healthconsume 
@@ -132,7 +132,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ HEAJ, vce(robust)
+	suest AGCONJ HEAJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) 
 
 	reg $houseconsume  
@@ -140,7 +140,7 @@ esttab INJF INJJ using table1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ TRANSJ, vce(robust)
+	suest AGCONJ TRANSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) 
 
 /*
@@ -229,7 +229,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	est store CONFOJ
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CONFOJ, vce(robust)
+	suest AGCONJ CONFOJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CONFOJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CONFOJ_mean]xbfemale) 
 	
 	reg $cigsal
@@ -237,7 +237,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CIGSJ, vce(robust)
+	suest AGCONJ CIGSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CIGSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CIGSJ_mean]xbfemale) 
 	
 	reg $clothing
@@ -245,7 +245,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ CLJ, vce(robust)
+	suest AGCONJ CLJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [CLJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [CLJ_mean]xbfemale)
 
 	reg $recconsume 
@@ -253,7 +253,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ RECJ, vce(robust)
+	suest AGCONJ RECJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [RECJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECJ_mean]xbfemale) 
 
 	reg $educconsume
@@ -261,7 +261,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ EDUCJ, vce(robust)
+	suest AGCONJ EDUCJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [EDUCJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [EDUCJ_mean]xbfemale) 
 
 	reg $healthconsume 
@@ -269,7 +269,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ HEAJ, vce(robust)
+	suest AGCONJ HEAJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) 
 
 	reg $houseconsume  
@@ -277,7 +277,7 @@ esttab INJF INJJ using tableincomemf_1.tex, replace f ///
 	test xbmale xbfemale 
 	qui: boottest xbmale, reps (10000)  
 	qui: boottest xbfemale, reps (10000)  
-	suest AGCONJ TRANSJ, vce(robust)
+	suest AGCONJ TRANSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) 
 
 /*
