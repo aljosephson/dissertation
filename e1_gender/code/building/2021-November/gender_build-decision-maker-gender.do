@@ -38,7 +38,7 @@
 
 	use 			"$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
 
-	merge 			m:m case_id ea_id year using ///
+	merge 			1:m case_id ea_id year using ///
 						"$fil\decision-making\decision-sales_wet_y1.dta"
 	keep 			if _merge == 3
 	*** drops 83 observations from using and 378 from master (no sales)

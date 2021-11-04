@@ -3058,4 +3058,362 @@ interview_~s {c |}{res}      6,490    1.615871    .7006332          1          5
  {txt}closed on:  {res}16 Oct 2020, 13:51:34
 {txt}{.-}
 {smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 4 Nov 2021, 14:40:14
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - identify decision makers and owners (Y1)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\AG_MOD_D_y1.dta", clear
+{txt}
+{com}. 
+. * determine plot id and relevant decision maker variables       
+.         
+.         keep                    case_id ea_id ag_d00 ag_d01 ag_d02 ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}.         
+. * primary and secondary manager 
+.         rename                  ag_d01 manager1
+{res}{txt}
+{com}.         rename                  ag_d02 manager2
+{res}{txt}
+{com}.         rename                  ag_d04a owner1
+{res}{txt}
+{com}.         rename                  ag_d04b owner2 
+{res}{txt}
+{com}.         
+.         gen                     year = 2009
+{txt}
+{com}.         destring                case_id, replace 
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (38,530 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\AG_MOD_D_y1.dta
+{txt}  obs:{res}        19,265                          
+{txt} vars:{res}             8                          28 Mar 2012 10:59
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot Id{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:owner1         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]?(ID CODE #1){p_end}
+{p 0 48}{bind:owner2         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]?(ID CODE #2){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     19,265    2.30e+11    7.61e+10   1.01e+11   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}     18,932    1.070463    .3271397          1         13
+{txt}{space 4}manager2 {c |}{res}     18,835     1.33151    .5328763          1         12
+{txt}{hline 13}{c +}{hline 57}
+{space 6}owner1 {c |}{res}     14,822    1.258332    .4871914          1         10
+{txt}{space 6}owner2 {c |}{res}      2,843     1.95357    .3741616          1          8
+{txt}{space 8}year {c |}{res}     19,265        2009           0       2009       2009
+{txt}
+{com}. 
+.         save                    "$fil\decision-making\decision_wet_y1.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - identify decision makers and owners (Y2)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker), owner [can identify joint ownership]
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\AG_MOD_D_y2.dta", clear
+{txt}
+{com}. 
+. * determine plot id and relevant decision maker variables       
+.         
+.         keep                    occ y2_hhid interview_status ag_d00 ag_d01 ag_d01_1 ag_d01_2a ag_d01_2b ag_d04a ag_d04b
+{txt}
+{com}.         rename                  ag_d00 plotid
+{res}{txt}
+{com}.         
+. * primary and secondary manager 
+.         rename                  ag_d01 manager1
+{res}{txt}
+{com}.         rename                  ag_d01_1 manager2
+{res}{txt}
+{com}.         rename                  ag_d01_2a mangagero_1
+{res}{txt}
+{com}.         rename                  ag_d01_2b managero_2
+{res}{txt}
+{com}.         rename                  ag_d04a owner1
+{res}{txt}
+{com}.         rename                  ag_d04b owner2 
+{res}{txt}
+{com}.         
+.         gen                     year = 2012
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (12,980 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\AG_MOD_D_y2.dta
+{txt}  obs:{res}         6,490                          
+{txt} vars:{res}            11                          10 Sep 2014 11:34
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:occ            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Case Section Roster / Line Occurrence Sequence for O/S Merge{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in the household makes the decisions concerning crops to be planted, input u{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:AG_D01_1 }{bind:  }{res}{res}Are there other household members that the primary decision maker consults regar{p_end}
+{p 0 48}{bind:mangagero_1    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who are the other decision makers on the [PLOT]? (1ST){p_end}
+{p 0 48}{bind:managero_2     }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who are the other decision makers on the [PLOT]? (2ND){p_end}
+{p 0 48}{bind:owner1         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]? (1ST){p_end}
+{p 0 48}{bind:owner2         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]? (2ND){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: {res}y2_hhid  occ
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}occ {c |}{res}      6,490    1.800308    1.009219          1          8
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}interview_~s {c |}{res}      6,490    1.615871    .7006332          1          5
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      6,332    1.106601    .4373648          1          9
+{txt}{hline 13}{c +}{hline 57}
+{space 4}manager2 {c |}{res}      6,332    1.404611    .4908555          1          2
+{txt}{space 1}mangagero_1 {c |}{res}      3,772    1.932131    .4843413          1          9
+{txt}{space 2}managero_2 {c |}{res}        263    2.973384    1.340522          1          8
+{txt}{space 6}owner1 {c |}{res}      5,263    1.309709    1.459524          1         99
+{txt}{space 6}owner2 {c |}{res}        966    1.944099     .415978          1          5
+{txt}{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}      6,490        2012           0       2012       2012
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y2.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y2.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 3 - identify decision makers  (Y3)
+. * **********************************************************************
+. 
+. * for each plot:
+. * identify managers (decision maker)
+. * owner not identified in this module - will need to go back and find if decide to use these 
+. 
+. * primary wet season 
+. 
+.         use                             "$fil\LSMS\AG_MOD_D_y3.dta", clear
+{txt}
+{com}. 
+. * determine plot id and relevant decision maker variables       
+.         
+.         keep                    y3_hhid gardenid plotid ag_d01 ag_d01_1 ag_d01_2a ag_d01_2b ag_d02
+{txt}
+{com}.         
+. * primary and secondary manager 
+.         rename                  ag_d01 manager1
+{res}{txt}
+{com}.         rename                  ag_d01_1 manager2
+{res}{txt}
+{com}.         rename                  ag_d01_2a mangagero_1
+{res}{txt}
+{com}.         rename                  ag_d01_2b managero_2
+{res}{txt}
+{com}.         rename                  ag_d02 respond_id 
+{res}{txt}
+{com}.         
+.         gen                     year = 2015
+{txt}
+{com}.         
+. * save new file 
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (8,084 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\LSMS\AG_MOD_D_y3.dta
+{txt}  obs:{res}         4,042                          
+{txt} vars:{res}             9                          4 Dec 2017 09:00
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:gardenid       }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Garden ID{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot ID{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}Decision Maker in Household Concerning Crops{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:ag_d01_1 }{bind:  }{res}{res}Another Household Member who makes decisions?{p_end}
+{p 0 48}{bind:mangagero_1    }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}Second Household Member who makes decisions{p_end}
+{p 0 48}{bind:managero_2     }{txt}{bind: byte    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Third Household Member who makes decisions{p_end}
+{p 0 48}{bind:respond_id     }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}ID of Respondent{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: {res}y3_hhid  gardenid  plotid
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y3_hhid {c |}{res}          0
+{txt}{space 4}gardenid {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}      4,027    1.235411    .6492057          1          9
+{txt}{space 4}manager2 {c |}{res}      4,030    1.294045    .4556687          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 1}mangagero_1 {c |}{res}      2,774    1.820836    .8517934          1         11
+{txt}{space 2}managero_2 {c |}{res}        457    2.514223    1.194062          1         10
+{txt}{space 2}respond_id {c |}{res}      4,027    1.442016    .7158712          1          7
+{txt}{space 8}year {c |}{res}      4,042        2015           0       2015       2015
+{txt}
+{com}.         
+.         save                    "$fil\decision-making\decision_wet_y3.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y3.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 4 - append files together 
+. * **********************************************************************        
+. 
+. * append all 
+.         use                     "$fil\decision-making\decision_wet_y1.dta", clear 
+{txt}
+{com}.         append                  using "$fil\decision-making\decision_wet_y2.dta"
+{txt}{p 0 7 2}
+(note: variable
+plotid was 
+str2, now str3 to accommodate using data's values)
+{p_end}
+
+{com}.         append                  using "$fil\decision-making\decision_wet_y3.dta"
+{txt}{p 0 7 2}
+(note: variable
+plotid was 
+str3, now str4 to accommodate using data's values)
+{p_end}
+
+{com}.         
+. * save new full file    
+. 
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_y1.dta
+{txt}  obs:{res}        29,797                          
+{txt} vars:{res}            16                          4 Nov 2021 14:40
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Unique HH Identifier{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique EA Identifier{p_end}
+{p 0 48}{bind:plotid         }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Plot Id{p_end}
+{p 0 48}{bind:manager1       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in HH makes decisions concerning crops to be planted,input use,timing of cro{p_end}
+{p 0 48}{bind:manager2       }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}ENUMERATOR: Record the ID of the respondent.{p_end}
+{p 0 48}{bind:owner1         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]?(ID CODE #1){p_end}
+{p 0 48}{bind:owner2         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who in this household owns this [PLOT]?(ID CODE #2){p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:occ            }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Case Section Roster / Line Occurrence Sequence for O/S Merge{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:interview_sta~s}{txt}{bind: byte    }{bind:{txt}%24.0g    }{space 1}{bind:stat     }{bind:  }{res}{res}Household Interview Status{p_end}
+{p 0 48}{bind:mangagero_1    }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who are the other decision makers on the [PLOT]? (1ST){p_end}
+{p 0 48}{bind:managero_2     }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Who are the other decision makers on the [PLOT]? (2ND){p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:gardenid       }{txt}{bind: str4    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Garden ID{p_end}
+{p 0 48}{bind:respond_id     }{txt}{bind: byte    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}ID of Respondent{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}     19,265    2.30e+11    7.61e+10   1.01e+11   3.16e+11
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 6}plotid {c |}{res}          0
+{txt}{space 4}manager1 {c |}{res}     29,291    1.100953     .414177          1         13
+{txt}{space 4}manager2 {c |}{res}     29,197    1.342193    .5150879          1         12
+{txt}{hline 13}{c +}{hline 57}
+{space 6}owner1 {c |}{res}     20,085    1.271795    .8566106          1         99
+{txt}{space 6}owner2 {c |}{res}      3,809    1.951168    .3851625          1          8
+{txt}{space 8}year {c |}{res}     29,797    2010.467    2.165828       2009       2015
+{txt}{space 9}occ {c |}{res}      6,490    1.800308    1.009219          1          8
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+interview_~s {c |}{res}      6,490    1.615871    .7006332          1          5
+{txt}{space 1}mangagero_1 {c |}{res}      6,546    1.884968    .6675246          1         11
+{txt}{space 2}managero_2 {c |}{res}        720    2.681944    1.268077          1         10
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{space 4}gardenid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 2}respond_id {c |}{res}      4,027    1.442016    .7158712          1          7
+{txt}
+{com}. 
+.         save                    "$fil\decision-making\decision_wet_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\decision-making\decision_wet_all.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 4 Nov 2021, 14:40:14
+{txt}{.-}
+{smcl}
 {txt}{sf}{ul off}

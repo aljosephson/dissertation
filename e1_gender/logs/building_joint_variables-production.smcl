@@ -19992,4 +19992,509 @@ pcrexp_c~111 {c |}{res}      4,000    3399.019    12509.08          0   352024.4
  {txt}closed on:  {res}12 Oct 2020, 18:11:40
 {txt}{.-}
 {smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 4 Nov 2021, 15:09:07
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - agricultural production data
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. * includes all years 
+. 
+.         use                             "$fil\Cleaned_LSMS\mwi_lp.dta", clear
+{txt}(This data set was created with .do file mwi_append_built  | Last modified on 19 )
+
+{com}.         
+. * drop all rainfall information + temperature information (for now)
+. * since these aren't identified
+. 
+.         drop                    v* tp* rf*
+{txt}
+{com}.         
+.         save                    "$fil\production-and-sales\totalproduction_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\totalproduction_all.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - sale production data
+. * **********************************************************************
+. 
+. * pull in Malawi kitchen sink data
+. 
+. * add year information for appending files together 
+. 
+. *2012
+.         use                             "$fil\Cleaned_LSMS\rs_hh_lp1.dta", clear
+{txt}
+{com}.         gen                     year = 2012
+{txt}
+{com}.         keep                    y2_hhid year rs_cropsales*
+{txt}
+{com}.         merge                   1:m y2_hhid using "$fil\Cleaned_LSMS\hh_lp1.dta"
+{res}{txt}(label soiltype already defined)
+(label slope already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             505
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             505{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,485{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    y2_hhid year case_id region district ea_id rs_cropsales*
+{txt}
+{com}.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\Cleaned_LSMS\rs_hh_lp1_sales.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp1_sales.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp1_sales.dta saved
+
+{com}. 
+. * 2009 
+.         use                             "$fil\Cleaned_LSMS\rs_hh_lp2.dta", clear
+{txt}
+{com}.         gen                     year = 2009
+{txt}
+{com}.         keep                    case_id year rs_cropsales*
+{txt}
+{com}.         merge                   1:m case_id using "$fil\Cleaned_LSMS\hh_lp2.dta"
+{res}{txt}(label soiltype already defined)
+(label slope already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,241{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    year case_id region district ea_id rs_cropsales*
+{txt}
+{com}.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\Cleaned_LSMS\rs_hh_lp2_sales.dta", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp2_sales.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp2_sales.dta saved
+
+{com}.         
+. * 2015 
+.         use                             "$fil\Cleaned_LSMS\rs_hh_lp3.dta", clear
+{txt}
+{com}.         gen                     year = 2015
+{txt}
+{com}.         keep                    y3_hhid year rs_cropsales*
+{txt}
+{com}.         merge                   1:m y3_hhid using "$fil\Cleaned_LSMS\hh_lp3.dta"
+{res}{txt}(label soiltype already defined)
+(label slope already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             662
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             662{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,846{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    year y2_hhid y3_hhid case_id region district ea_id rs_cropsales*
+{txt}
+{com}.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         save                    "$fil\Cleaned_LSMS\rs_hh_lp3_sales.dta", replace        
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp3_sales.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_lp3_sales.dta saved
+
+{com}.         
+. * append all 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_lp2_sales.dta", clear 
+{txt}
+{com}.         append                  using "$fil\Cleaned_LSMS\rs_hh_lp1_sales.dta"
+{txt}(label region already defined)
+(label district already defined)
+
+{com}.         append                  using "$fil\Cleaned_LSMS\rs_hh_lp3_sales.dta"
+{txt}(label district already defined)
+(label region already defined)
+
+{com}.         save                    "$fil\Cleaned_LSMS\rs_hh_sales.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\Cleaned_LSMS\rs_hh_sales.dta saved
+
+{com}.         
+. * merge into main file 
+.         
+.         use                     "$fil\production-and-sales\totalproduction_all.dta", clear
+{txt}(This data set was created with .do file mwi_append_built  | Last modified on 19 )
+
+{com}.         *** obs = 4163
+.         merge                   m:1 year case_id y2_hhid y3_hhid using "$fil\Cleaned_LSMS\rs_hh_sales.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+year was 
+int, now float to accommodate using data's values)
+{p_end}
+(label district already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           3,780
+{txt}{col 9}from master{col 30}{res}             913{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           2,867{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,250{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         *** matched 3250, from using not matched 2867 (???) and from master 913 not matched
+.         *** not sure why this is the case - but moving forward anyway 
+.         drop                    if _merge == 2
+{txt}(2,867 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** same number of obs 
+.         save                    "$fil\production-and-sales\totalproduction-sales_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\totalproduction-sales_all.dta saved
+
+{com}.         
+. * replace missing values of sold
+. * assume if nothing there, then sold nothing
+.         replace                 rs_cropsales_value = 0 if rs_cropsales_value == . 
+{txt}(914 real changes made)
+
+{com}.         replace                 rs_cropsales_valuei = 0 if rs_cropsales_valuei == . 
+{txt}(914 real changes made)
+
+{com}.         
+. * generate percent sold 
+.         gen                     soldvaluei_share = rs_cropsales_valuei / rs_harvest_valueimp
+{txt}(953 missing values generated)
+
+{com}.         bys year:               sum soldvaluei_share 
+
+{txt}{hline}
+-> year = 2009
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}      1,234    .4176055    5.700781          0   197.1402
+
+{txt}{hline}
+-> year = 2012
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}        966    .1884131    .8182984          0   14.09869
+
+{txt}{hline}
+-> year = 2015
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}      1,010    .3030699    3.148402          0   89.10765
+
+{txt}
+{com}.         *** need to deal with these observations which are greater than 0 
+.         replace                 soldvaluei_share = . if soldvaluei_share > 1 
+{txt}(52 real changes made, 52 to missing)
+
+{com}.         *** change 52 observations to missing
+.         bys year:               sum soldvaluei_share 
+
+{txt}{hline}
+-> year = 2009
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}      1,203    .1419123    .2463082          0          1
+
+{txt}{hline}
+-> year = 2012
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}        959    .1317663     .212224          0          1
+
+{txt}{hline}
+-> year = 2015
+
+    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+soldvaluei~e {c |}{res}        996    .1258239    .2083492          0          1
+
+{txt}
+{com}.         *** averages now 12, 13, 12 percent, by year - capped at 0 / 1
+.         
+.         save                    "$fil\production-and-sales\totalproduction-sales_all.dta", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\totalproduction-sales_all.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 3 - end matter
+. * **********************************************************************
+. 
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (8,326 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\totalproduction-sales_all.dta
+{txt}  obs:{res}         4,163                          This data set was created with .do file mwi_append_built  | Last modified on 19 
+{txt} vars:{res}           100                          4 Nov 2021 15:09
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:country        }{txt}{bind: str6    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Country{p_end}
+{p 0 48}{bind:dtype          }{txt}{bind: str2    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Data type{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:urban    }{bind:  }{res}{res}Urban/rural{p_end}
+{p 0 48}{bind:ta             }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Traditional authority{p_end}
+{p 0 48}{bind:strata         }{txt}{bind: byte    }{bind:{txt}%14.0g    }{space 1}{bind:strata   }{bind:  }{res}{res}Baseline Stratum - Region x Urban/Rural{p_end}
+{p 0 48}{bind:cluster        }{txt}{bind: long    }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Cluster or PSU{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:lpid           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Long panel household id{p_end}
+{p 0 48}{bind:lp_id          }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Long panel unique id{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%15.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:y3_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHS4{p_end}
+{p 0 48}{bind:hhweight       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseline Sampling Weight{p_end}
+{p 0 48}{bind:intmonth       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Month of interview{p_end}
+{p 0 48}{bind:intyear        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year of interview{p_end}
+{p 0 48}{bind:rs_cultivated~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total plot area during rainy season{p_end}
+{p 0 48}{bind:rs_irrigation~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area with any system of irrigation{p_end}
+{p 0 48}{bind:rs_irrigation~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season plot has a system of irrigation{p_end}
+{p 0 48}{bind:rs_fert_orgpct }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with organic fertilizer{p_end}
+{p 0 48}{bind:rs_fert_organy }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season plot treated with organic fertilizer{p_end}
+{p 0 48}{bind:rs_fert_inorg~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_fert_inorg~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season plot treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_insecticid~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_herbicidepct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_fungicidepct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_pesticidepct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rs_labordays   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on rainy season plots{p_end}
+{p 0 48}{bind:rs_labordaysimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on rainy season plots, imputed{p_end}
+{p 0 48}{bind:rs_harvest_va~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of rainy season harvest (MWK){p_end}
+{p 0 48}{bind:rs_harvest~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of rainy season harvest (MWK), imputed{p_end}
+{p 0 48}{bind:rs_harvest_va~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:rs_harvest~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:rsmz_cultivat~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total maize plot area during rainy season{p_end}
+{p 0 48}{bind:rsmz_irrigati~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area with any system of irrigation{p_end}
+{p 0 48}{bind:rsmz_irrigati~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season maize plot has a system of irrigation{p_end}
+{p 0 48}{bind:rsmz_fert_org~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with organic fertilizer{p_end}
+{p 0 48}{bind:rsmz_fert_org~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season maize plot treated with organic fertilizer{p_end}
+{p 0 48}{bind:rsmz_fert_ino~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_fert_ino~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any rainy season maize plot treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_insectic~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_herbicid~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_fungicid~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_pesticid~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of rainy season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:rsmz_labordays }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on rainy season maize plots{p_end}
+{p 0 48}{bind:rsmz_laborday~p}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on rainy season maize plots, imputed{p_end}
+{p 0 48}{bind:rsmz_harvest   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Quantity of maize harvested in rainy season (kg){p_end}
+{p 0 48}{bind:rsmz_harvestimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Quantity of maize harvested in rainy season (kg), imputed{p_end}
+{p 0 48}{bind:rs_fertpurcha~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer without a coupon{p_end}
+{p 0 48}{bind:rs_fertpurcha~h}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer with cash{p_end}
+{p 0 48}{bind:rs_fertpurcha~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer with credit{p_end}
+{p 0 48}{bind:ds_cultivated~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total plot area during dimba season{p_end}
+{p 0 48}{bind:ds_irrigation~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area with any system of irrigation{p_end}
+{p 0 48}{bind:ds_irrigation~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season plot has a system of irrigation{p_end}
+{p 0 48}{bind:ds_fert_orgpct }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with organic fertilizer{p_end}
+{p 0 48}{bind:ds_fert_organy }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season plot treated with organic fertilizer{p_end}
+{p 0 48}{bind:ds_fert_inorg~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_fert_inorg~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season plot treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_insecticid~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_herbicidepct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_fungicidepct}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_pesticidepct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:ds_labordays   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on dimba season plots{p_end}
+{p 0 48}{bind:ds_labordaysimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on dimba season plots, imputed{p_end}
+{p 0 48}{bind:ds_harvest_va~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of dimba season harvest (MWK){p_end}
+{p 0 48}{bind:ds_harvest~eimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of dimba season harvest (MWK), imputed{p_end}
+{p 0 48}{bind:ds_harvest_va~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha){p_end}
+{p 0 48}{bind:ds_harvest~aimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Value of harvest per hectare (MWK/ha), imputed{p_end}
+{p 0 48}{bind:dsmz_cultivat~a}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Total maize plot area during dimba season{p_end}
+{p 0 48}{bind:dsmz_irrigati~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area with any system of irrigation{p_end}
+{p 0 48}{bind:dsmz_irrigati~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season maize plot has a system of irrigation{p_end}
+{p 0 48}{bind:dsmz_fert_org~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with organic fertilizer{p_end}
+{p 0 48}{bind:dsmz_fert_org~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season maize plot treated with organic fertilizer{p_end}
+{p 0 48}{bind:dsmz_fert_ino~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_fert_ino~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Any dimba season maize plot treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_insectic~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_herbicid~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_fungicid~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_pesticid~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of dimba season maize plot area treated with inorganic fertilizer{p_end}
+{p 0 48}{bind:dsmz_labordays }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on dimba season maize plots{p_end}
+{p 0 48}{bind:dsmz_laborday~p}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Days of labor on dimba season maize plots, imputed{p_end}
+{p 0 48}{bind:dsmz_harvest   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Quantity of maize harvested in dimba season (kg){p_end}
+{p 0 48}{bind:dsmz_harvestimp}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Quantity of maize harvested in dimba season (kg), imputed{p_end}
+{p 0 48}{bind:ds_fertpurcha~y}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer without a coupon{p_end}
+{p 0 48}{bind:ds_fertpurcha~h}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer with cash{p_end}
+{p 0 48}{bind:ds_fertpurcha~t}{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Household purchased fertilizer with credit{p_end}
+{p 0 48}{bind:rs_herb        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ds_herb        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:rsmz_herb      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dsmz_herb      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:rs_pest        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ds_pest        }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:rsmz_pest      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dsmz_pest      }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:data           }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Data Source{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year{p_end}
+{p 0 48}{bind:rs_cropsales_~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Self-reported value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:rs_cropsales_~i}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Implied value of rainy season crop sales (MWK){p_end}
+{p 0 48}{bind:soldvaluei_sh~e}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: {res}year
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}country {c |}{res}          0
+{txt}{space 7}dtype {c |}{res}          0
+{txt}{space 6}region {c |}{res}      4,163    2.349508    .6905114          1          3
+{txt}{space 4}district {c |}{res}      4,163    241.7646    70.02092        101        315
+{txt}{space 7}urban {c |}{res}      4,163    1.732885    .4425061          1          2
+{txt}{hline 13}{c +}{hline 57}
+{space 10}ta {c |}{res}      4,133    16.34866    20.95769          1         86
+{txt}{space 6}strata {c |}{res}      4,163    3.581552    1.767278          1          6
+{txt}{space 5}cluster {c |}{res}      4,163    2.42e+07     7000042   1.01e+07   3.16e+07
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 8}lpid {c |}{res}      4,163    805.8597     468.268          1       1620
+{txt}{hline 13}{c +}{hline 57}
+{space 7}lp_id {c |}{res}      4,163        2082    1201.899          1       4163
+{txt}{space 5}case_id {c |}{res}      4,163    2.42e+11    7.00e+10   1.01e+11   3.16e+11
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 5}y3_hhid {c |}{res}          0
+{txt}{space 4}hhweight {c |}{res}      4,163    2174.283    1334.308    70.8552   7525.956
+{txt}{hline 13}{c +}{hline 57}
+{space 4}intmonth {c |}{res}      4,163    7.110737    2.347509          1         12
+{txt}{space 5}intyear {c |}{res}      4,163    2012.779    2.516554       2010       2017
+{txt}rs_cultiva~a {c |}{res}      3,250    .7185312    .6586135   .0040469   10.73226
+{txt}rs_irrigat~t {c |}{res}      3,250    .0085863    .0824718          0          1
+{txt}rs_irrigat~y {c |}{res}      3,250    .0153846    .1230959          0          1
+{txt}{hline 13}{c +}{hline 57}
+rs_fert_or~t {c |}{res}      3,250    .1731263    .3426931          0          1
+{txt}rs_fert_or~y {c |}{res}      3,250    .2412308    .4278958          0          1
+{txt}rs_fert_in~t {c |}{res}      3,250    .6908473     .392926          0          1
+{txt}rs_fert_in~y {c |}{res}      3,250    .8049231    .3963209          0          1
+{txt}rs_insecti~t {c |}{res}      3,250    .0134542    .0920309          0          1
+{txt}{hline 13}{c +}{hline 57}
+rs_herbici~t {c |}{res}      3,250    .0067009    .0705063          0          1
+{txt}rs_fungici~t {c |}{res}      3,250    .0001988    .0089484          0   .4982935
+{txt}rs_pestici~t {c |}{res}      3,250    .0210916    .1176066          0          1
+{txt}rs_labordays {c |}{res}      3,250    140.5415    130.3706          3       2500
+{txt}rs_laborda~p {c |}{res}      3,250    138.1818    125.4118   .7096775   1968.744
+{txt}{hline 13}{c +}{hline 57}
+rs_harvest~e {c |}{res}      3,250    103197.2    478429.3          0   2.12e+07
+{txt}rs_harv~eimp {c |}{res}      3,250    87582.28    203539.6          0    6121487
+{txt}rs_harvest~a {c |}{res}      3,250    160861.2    439850.8          0   1.50e+07
+{txt}rs_harv~aimp {c |}{res}      3,250    134904.1    197077.7          0    3993076
+{txt}rsmz_culti~a {c |}{res}      3,198    .6607778    .6219995   .0040469   10.73226
+{txt}{hline 13}{c +}{hline 57}
+rsmz_irrig~t {c |}{res}      3,198    .0082175    .0816315          0          1
+{txt}rsmz_irrig~y {c |}{res}      3,198    .0140713    .1178034          0          1
+{txt}rsmz~_orgpct {c |}{res}      3,198    .1779618    .3532071          0          1
+{txt}rsmz~_organy {c |}{res}      3,198    .2360851    .4247415          0          1
+{txt}rsmz~norgpct {c |}{res}      3,198    .7218516    .3988188          0          1
+{txt}{hline 13}{c +}{hline 57}
+rsmz~norgany {c |}{res}      3,198     .804878    .3963565          0          1
+{txt}rsmz_insec~t {c |}{res}      3,198    .0125169    .0907179          0          1
+{txt}rsmz_herbi~t {c |}{res}      3,198    .0071089    .0764186          0          1
+{txt}rsmz_fungi~t {c |}{res}      3,198     .000202    .0090208          0   .4982935
+{txt}rsmz_pesti~t {c |}{res}      3,198    .0209191    .1211048          0          1
+{txt}{hline 13}{c +}{hline 57}
+rsmz_labor~s {c |}{res}      3,198     129.445    118.1981          3       1223
+{txt}rsmz_labor~p {c |}{res}      3,198    127.6622    115.8678   .7096775   1043.449
+{txt}rsmz_harvest {c |}{res}      3,198    713.5089    2400.773          0   112429.5
+{txt}rsmz_harve~p {c |}{res}      3,198    636.8211    1035.265          0   32604.63
+{txt}rs_fertpur~y {c |}{res}      4,163    .2736008      .44586          0          1
+{txt}{hline 13}{c +}{hline 57}
+rs_fertpur~h {c |}{res}      4,163    .3264473    .4689694          0          1
+{txt}rs_fertpur~t {c |}{res}      4,163    .0110497    .1045478          0          1
+{txt}ds_cultiva~a {c |}{res}        431    .1189926    .1527068   .0040469   1.456868
+{txt}ds_irrigat~t {c |}{res}        431    .7288283    .4436535          0          1
+{txt}ds_irrigat~y {c |}{res}        431    .7331787    .4428122          0          1
+{txt}{hline 13}{c +}{hline 57}
+ds_fert_or~t {c |}{res}        431    .3296238    .4688762          0          1
+{txt}ds_fert_or~y {c |}{res}        431    .3341067    .4722254          0          1
+{txt}ds_fert_in~t {c |}{res}        431    .4010745    .4874775          0          1
+{txt}ds_fert_in~y {c |}{res}        431    .4106729    .4925277          0          1
+{txt}ds_insecti~t {c |}{res}        431    .1040217    .3042665          0          1
+{txt}{hline 13}{c +}{hline 57}
+ds_herbici~t {c |}{res}        431    .0153712    .1209343          0          1
+{txt}ds_fungici~t {c |}{res}        431    .0116009    .1072055          0          1
+{txt}ds_pestici~t {c |}{res}        431    .1309938    .3357295          0          1
+{txt}ds_labordays {c |}{res}        431   -3.48e+07    3.22e+08  -3.00e+09        241
+{txt}ds_laborda~p {c |}{res}        431   -3.48e+07    3.22e+08  -3.00e+09        216
+{txt}{hline 13}{c +}{hline 57}
+ds_harvest~e {c |}{res}        431    17643.61    55478.32          0   850061.6
+{txt}ds_harv~eimp {c |}{res}        431    13460.21    28323.79          0   411617.2
+{txt}ds_harvest~a {c |}{res}        431    401375.6     1482010          0   2.27e+07
+{txt}ds_harv~aimp {c |}{res}        431    248857.9    515737.1          0    4625097
+{txt}dsmz_culti~a {c |}{res}        206    .1355108    .1698183   .0040469   1.456868
+{txt}{hline 13}{c +}{hline 57}
+dsmz_irrig~t {c |}{res}        206    .7184466    .4508523          0          1
+{txt}dsmz_irrig~y {c |}{res}        206    .7184466    .4508523          0          1
+{txt}dsmz~_orgpct {c |}{res}        206    .2961165    .4576552          0          1
+{txt}dsmz~_organy {c |}{res}        206    .2961165    .4576552          0          1
+{txt}dsmz~norgpct {c |}{res}        206    .4466019    .4983515          0          1
+{txt}{hline 13}{c +}{hline 57}
+dsmz~norgany {c |}{res}        206    .4466019    .4983515          0          1
+{txt}dsmz_insec~t {c |}{res}        206    .0825243    .2758321          0          1
+{txt}dsmz_herbi~t {c |}{res}        206    .0145631    .1200876          0          1
+{txt}dsmz_fungi~t {c |}{res}        206           0           0          0          0
+{txt}dsmz_pesti~t {c |}{res}        206    .0970874     .296798          0          1
+{txt}{hline 13}{c +}{hline 57}
+dsmz_labor~s {c |}{res}        206   -5.83e+07    4.15e+08  -3.00e+09        124
+{txt}dsmz_labor~p {c |}{res}        206   -5.83e+07    4.15e+08  -3.00e+09        124
+{txt}dsmz_harvest {c |}{res}        206    123.8672    151.1697          0   1065.833
+{txt}dsmz_harve~p {c |}{res}        206    119.2493    151.6003          0   1065.833
+{txt}ds_fertpur~y {c |}{res}      4,163    .0393947    .1945554          0          1
+{txt}{hline 13}{c +}{hline 57}
+ds_fertpur~h {c |}{res}      4,163    .0389142    .1934138          0          1
+{txt}ds_fertpur~t {c |}{res}      4,163    .0004804    .0219159          0          1
+{txt}{space 5}rs_herb {c |}{res}      4,163    .0098487    .0987624          0          1
+{txt}{space 5}ds_herb {c |}{res}      4,163    .0026423    .0513418          0          1
+{txt}{space 3}rsmz_herb {c |}{res}      4,163    .0086476    .0926007          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}dsmz_herb {c |}{res}      4,163    .0007206    .0268382          0          1
+{txt}{space 5}rs_pest {c |}{res}      4,163    .0326687    .1777895          0          1
+{txt}{space 5}ds_pest {c |}{res}      4,163    .0139323    .1172239          0          1
+{txt}{space 3}rsmz_pest {c |}{res}      4,163    .0297862    .1700175          0          1
+{txt}{space 3}dsmz_pest {c |}{res}      4,163    .0048042    .0691541          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 8}data {c |}{res}          0
+{txt}{space 8}year {c |}{res}      4,163    2011.769    2.500852       2009       2015
+{txt}rs_cropsal~e {c |}{res}      4,163     33612.3    499693.7          0   2.62e+07
+{txt}rs_cropsal~i {c |}{res}      4,163    23554.81    145592.4          0    5693732
+{txt}soldvaluei~e {c |}{res}      3,158    .1337571    .2247082          0          1
+{txt}
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 4 Nov 2021, 15:09:08
+{txt}{.-}
+{smcl}
 {txt}{sf}{ul off}
