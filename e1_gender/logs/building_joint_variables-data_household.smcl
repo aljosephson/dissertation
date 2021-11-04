@@ -15943,4 +15943,4 @@ sex_salesm~2 {c |}{res}      1,240    1.962903    .1890752          1          2
 {bf}{err}sex{sf} ambiguous abbreviation
 {txt}{search r(111), local:r(111);}
 
-{com}. 
+{com}. exit, clear
