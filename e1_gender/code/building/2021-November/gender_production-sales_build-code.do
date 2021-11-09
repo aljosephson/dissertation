@@ -1,7 +1,9 @@
+/* BEGIN */
+
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 8 November 2021
+* Last edit: 9 November 2021
 * Stata v.16.1
 
 * does
@@ -10,7 +12,10 @@
 	* overall agriculture data derived from world bank lsms kitchen sink 
 
 * assumes
-	* access to data file(s) "..."
+	* access to data file(s): 
+	*** "mwi_lp.dta"
+	*** "rs_hh_lpi" where i = 1, 2, 3
+	*** "rs_hh_lpi_sales" where i = 1, 2, 3
 
 * to do 
 	* all of it
@@ -36,11 +41,13 @@
 
 * pull in Malawi kitchen sink data
 * includes all years 
+* comes from WB internal 
 
 	use				"$fil\Cleaned_LSMS\mwi_lp.dta", clear
 	
 * drop all rainfall information + temperature information (for now)
-* since these aren't identified
+* as these aren't identified
+* keep rs designation - which is for rainy season 
 
 	drop 			v* tp* rf*
 	
@@ -51,6 +58,7 @@
 * **********************************************************************
 
 * pull in Malawi kitchen sink data
+* comes from WB internal 
 
 * add year information for appending files together 
 
@@ -90,28 +98,37 @@
 * merge into main file 
 	
 	use 			"$fil\production-and-sales\totalproduction_all.dta", clear
+	count 
 	*** obs = 4163
-	merge 			m:1 year case_id y2_hhid y3_hhid using "$fil\Cleaned_LSMS\rs_hh_sales.dta"
+	merge 			1:1 year case_id y2_hhid y3_hhid using "$fil\Cleaned_LSMS\rs_hh_sales.dta"
 	*** matched 3250, from using not matched 2867 (???) and from master 913 not matched
 	*** not sure why this is the case - but moving forward anyway 
 	drop 			if _merge == 2
 	drop 			_merge 
-	*** same number of obs 
+	count 
+	*** same number of obs = 4163
+	duplicates 		drop 
+	*** no observations dropped 
 	save 			"$fil\production-and-sales\totalproduction-sales_all.dta", replace
 	
 * replace missing values of sold
 * assume if nothing there, then sold nothing
 	replace 		rs_cropsales_value = 0 if rs_cropsales_value == . 
+	*** 914 changes made 
 	replace 		rs_cropsales_valuei = 0 if rs_cropsales_valuei == . 
+	*** 914 changes made 
 	
 * generate percent sold 
 	gen 			soldvaluei_share = rs_cropsales_valuei / rs_harvest_valueimp
 	bys year: 		sum soldvaluei_share 
-	*** need to deal with these observations which are greater than 0 
+	*** variation year to year: 2009 - 42%, 2012 = 19%, 2015 = 30% 
+	*** probably associated with values greater than one, which doesn't make sense 
+* need to deal with these observations which are greater than 0 
 	replace 		soldvaluei_share = . if soldvaluei_share > 1 
 	*** change 52 observations to missing
 	bys year: 		sum soldvaluei_share 
 	*** averages now 12, 13, 12 percent, by year - capped at 0 / 1
+	*** outliers omitted, resolved issue
 	
 	save 			"$fil\production-and-sales\totalproduction-sales_all.dta", replace
 
@@ -125,3 +142,5 @@ summarize
 
 * close the log
 	log	close	
+
+/* END */
