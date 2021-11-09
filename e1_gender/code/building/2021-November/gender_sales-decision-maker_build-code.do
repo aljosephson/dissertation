@@ -1,15 +1,16 @@
+/* BEGIN */
+
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 8 November 2021
+* Last edit: 9 November 2021
 * Stata v.16.1
 
 * does
 	* builds respondent decision maker variable for sales 
-	* just clean up for now - will merge with production data before determining genders (since only need if ACTUALLY sell something)
 
 * assumes
-	* access to original LSMS data files "ag_mod_b_10", "ag_mod_ba_13", "
+	* access to original LSMS data files "ag_mod_b_10", "ag_mod_ba_13", "ag_mod_g_16"
 
 * to do 
 	* code and data can be made available on github and googledrive 
@@ -129,3 +130,5 @@ summarize
 
 * close the log
 	log	close	
+	
+/* END */	
