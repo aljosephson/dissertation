@@ -1,7 +1,9 @@
+/* BEGIN */
+
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 4 November 2021
+* Last edit: 23 November 2021
 * Stata v.16.1
 
 * does
@@ -13,6 +15,8 @@
 	* access to data file(s) previously created ... 
 
 * to do 
+	* SECTION 3: DEBUG 2016 CONSUMPTION VARIABLES 
+	* SECTION 6: DEBUG 
 	* clean up data files 
 	* code and data can be made available on github and googledrive 
 
@@ -135,11 +139,26 @@ summarize
 	*** all matched 
 	drop 			_merge 
 	
+	replace 		sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+	replace 		sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+	label 			var sex_salesmanager1 "0 = male,  = 1 female"
+	label 			define sex_salesmanager1 0 "male" 1 "female"	
+	
+	replace 		sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+	replace 		sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+	label 			var sex_salesmanager2 "0 = male,  = 1 female"
+	label 			define sex_salesmanager2 0 "male" 1 "female"	
+	
+	summarize 		sex_salesmanager1 sex_salesmanager2
+	*** 18 percent of first manager women
+	*** 99 percent of second manager women 
+
 compress
 describe
 summarize
 	
  	save 			"$fil\regression-ready\household-total_y1", replace	
+		
 	
 * **********************************************************************
 * 2 - year 2
@@ -248,6 +267,20 @@ summarize
 	*** drop 4313 from using 
 	keep 			if _merge == 3
 	drop 			_merge
+	
+	replace 		sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+	replace 		sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+	label 			var sex_salesmanager1 "0 = male,  = 1 female"
+	label 			define sex_salesmanager1 0 "male" 1 "female"	
+	
+	replace 		sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+	replace 		sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+	label 			var sex_salesmanager2 "0 = male,  = 1 female"
+	label 			define sex_salesmanager2 0 "male" 1 "female"	
+	
+	summarize 		sex_salesmanager1 sex_salesmanager2
+	*** 23 percent of first manager women
+	*** 95 percent of second manager women 
 	
 compress
 describe
@@ -362,6 +395,21 @@ summarize
 	keep 			if _merge == 3
 	drop 			_merge
 	
+		
+	replace 		sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+	replace 		sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+	label 			var sex_salesmanager1 "0 = male,  = 1 female"
+	label 			define sex_salesmanager1 0 "male" 1 "female"	
+	
+	replace 		sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+	replace 		sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+	label 			var sex_salesmanager2 "0 = male,  = 1 female"
+	label 			define sex_salesmanager2 0 "male" 1 "female"	
+	
+	summarize 		sex_salesmanager1 sex_salesmanager2
+	*** 35 percent of first manager women
+	*** 83 percent of second manager women 
+	
 compress
 describe
 summarize
@@ -412,7 +460,7 @@ summarize
 	replace			male_deconly = 0 if joint_dec == 1
 	gen 			female_decsaleonly = 0 
 	gen 			male_decsaleonly = 
-	
+*/	
 	
 	**** THIS IS NOT WORKING 
 	
@@ -422,3 +470,5 @@ summarize
 
 * close the log
 	log	close	
+	
+/* END */	
