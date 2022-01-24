@@ -116,6 +116,10 @@ summarize
 	append 			using "$fil\decision-making\decision-sales_wet_y2.dta"
 	append 			using "$fil\decision-making\decision-sales_wet_y3.dta"
 	
+* rename 
+	rename 			salesmanager1 manage1
+	rename 			salesmanager2 manage2 
+	
 * save new full file 	
 
 compress

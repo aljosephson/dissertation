@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 23 November 2021
+* Last edit: 24 January 2022
 * Stata v.16.1
 
 * does
@@ -47,17 +47,17 @@
 	keep 			if _merge == 3
 	*** drops 83 observations from using and 378 from master (no sales)
 	drop 			_merge 
-
+ 
 	save 			"$fil\production-and-sales\sales-with-manager_y1", replace	
 	*** 2563 observations 
 	
 * manager 1 - year 1
 * reduce sample significantly at this point - if do not identify a manager, not included 
 	rename 			salesmanager1 id_code 
-	merge 			m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+	merge 			m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
 	drop 			if _merge == 2
 	*** matched 815 
-	*** drop unmatched from using = 6316
+	*** drop unmatched from using = 7011
 	*** unmatched from master = 1748 - okay, can drop later, as needed 
 	
 	rename 			id_code salesmanager1
@@ -71,7 +71,7 @@
 * if no manager assume no one = 0
 	replace 		salesmanager2 = 0 if salesmanager2 == . 
 	rename 			salesmanager2 id_code 
-	merge 			m:m case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+	merge 			m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
 	drop			if _merge == 2
 	*** matched 353 
 	*** drop unmatched from using = 7348
@@ -109,7 +109,7 @@ summarize
 	
 * bring in consumption variables 
 	
-	merge 			m:m case_id year using "$fil\consumption\ihs3_summary_09.dta"
+	merge 			m:1 case_id year using "$fil\consumption\ihs3_summary_09.dta"
 	keep 			if _merge == 3
 	drop 			_merge
 	*** dropping 11030 from using 
@@ -118,7 +118,7 @@ summarize
 	
 * merge in geovars 
 
-	merge 			m:m case_id year using "$fil\geovar\householdgeovariables_09.dta"
+	merge 			m:1 case_id year using "$fil\geovar\householdgeovariables_09.dta"
 	keep 			if _merge == 3
 	drop 			_merge 
 	*** drops 378 not matched from using
@@ -134,11 +134,12 @@ summarize
 * merge in plot-level files 
  	use 			"$fil\regression-ready\household-level_y1", clear	
 	duplicates drop 
-
-	merge			m:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"	
+/*
+* not sure what I'm getting from this ... 
+	merge			1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"	
 	*** all matched 
 	drop 			_merge 
-	
+*/	
 	replace 		sex_salesmanager1 = 0 if sex_salesmanager1 == 1
 	replace 		sex_salesmanager1 = 1 if sex_salesmanager1 == 2
 	label 			var sex_salesmanager1 "0 = male,  = 1 female"
@@ -150,15 +151,41 @@ summarize
 	label 			define sex_salesmanager2 0 "male" 1 "female"	
 	
 	summarize 		sex_salesmanager1 sex_salesmanager2
-	*** 18 percent of first manager women
+	*** 22 percent of first manager women
 	*** 99 percent of second manager women 
+	
+* define manager categories of interest
+
+*** (1) joint 
+
+	gen 			joint_jspec = joint_decsale
+	gen 			female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+	replace			female_jspec = 0 if female_jspec == . 
+	gen 			male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+	replace 		male_jspec = 0 if male_jspec == . 
+	*** this is the new specification which this paper puts forward
+	
+*** (2) omit 
+
+	gen 			female_ospec = female_decsale 
+	replace 		female_ospec = 1 if sex_salesmanager1 == 1 
+	gen 			male_ospec = male_decsale 
+	replace 		male_ospec = 1 if sex_salesmanager1 == 0 
+	*** in this specification, we reallocate things as though there were no joint specification 
+	
+*** (3) reallocate 	
+
+	gen 			female_rspec = female_decsale
+	gen 			male_rspec = male_decsale 
+	replace			male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
+	*** in this specification, we assume that all joint labor is actually men's
+	*** which is a fair assumption, given above 	
 
 compress
 describe
 summarize
 	
  	save 			"$fil\regression-ready\household-total_y1", replace	
-		
 	
 * **********************************************************************
 * 2 - year 2
@@ -168,7 +195,7 @@ summarize
 
 	use 			"$fil\Cleaned_LSMS\rs_hh_sales_y2.dta", clear
 
-	merge 			m:m y2_hhid year using ///
+	merge 			1:m y2_hhid year using ///
 						"$fil\decision-making\decision-sales_wet_y2.dta"
 	keep 			if _merge == 3
 	*** drops 136 observations from using and 505 from master (no sales)
@@ -180,10 +207,10 @@ summarize
 * manager 1 
 * reduce sample significantly at this point - if do not identify a manager, not included 
 	rename 			salesmanager1 id_code 
-	merge 			m:m case_id year id_code using "$fil\household\hhbase_y2-short.dta"
+	merge 			m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
 	drop 			if _merge == 2
-	*** matched 1177 
-	*** drop unmatched from using = 9155
+	*** matched 1060 
+	*** drop unmatched from using = 9331
 	*** unmatched from master = 2198 - okay, can drop later, as needed 
 	
 	rename 			id_code salesmanager1
@@ -197,11 +224,11 @@ summarize
 * if no manager assume no one = 0
 	replace 		salesmanager2 = 0 if salesmanager2 == . 
 	rename 			salesmanager2 id_code 
-	merge 			m:m case_id year id_code using "$fil\household\hhbase_y2-short.dta"
+	merge 			m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
 	drop			if _merge == 2
-	*** matched 688 
-	*** drop unmatched from using = 9538
-	*** keep unmatched from master = 2697 
+	*** matched 625 
+	*** drop unmatched from using = 9647
+	*** keep unmatched from master = 2633 
 	
 	rename 			id_code salesmanager2
 	rename 			sex sex_salesmanager2
@@ -235,16 +262,16 @@ summarize
 	
 * bring in consumption variables 
 	
-	merge 			m:m case_id year using "$fil\consumption\ihs3_summary_12.dta"
+	merge 			m:1 case_id year y2_hhid using "$fil\consumption\ihs3_summary_12.dta"
 	keep 			if _merge == 3
 	drop 			_merge
-	*** dropping 2369 from using 
+	*** dropping 2515 from using 
 	
 	save 			"$fil\regression-ready\household-level_y2", replace	
 	
 * merge in geovars 
 
-	merge 			m:m y2_hhid year using "$fil\geovar\householdgeovariables_12.dta"
+	merge 			m:1 y2_hhid year using "$fil\geovar\householdgeovariables_12.dta"
 	keep 			if _merge == 3
 	drop 			_merge 
 	*** drops 505 not matched from using
@@ -258,11 +285,14 @@ summarize
 	
 	
 * merge in plot-level files 
+/*
+* not sure of purpose of this 
  	use 			"$fil\regression-ready\household-level_y2", clear	
 	duplicates drop 
 	*** no duplicates dropped
+*/
 
-	merge			m:m y2_hhid using "$fil\production-and-sales\plot-with-managerid_y2"	
+	merge			m:1 y2_hhid using "$fil\production-and-sales\plot-with-managerid_y2"	
 	*** 15662 matched 
 	*** drop 4313 from using 
 	keep 			if _merge == 3
@@ -281,6 +311,34 @@ summarize
 	summarize 		sex_salesmanager1 sex_salesmanager2
 	*** 23 percent of first manager women
 	*** 95 percent of second manager women 
+	
+
+* define manager categories of interest
+
+*** (1) joint 
+
+	gen 			joint_jspec = joint_decsale
+	gen 			female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+	replace			female_jspec = 0 if female_jspec == . 
+	gen 			male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+	replace 		male_jspec = 0 if male_jspec == . 
+	*** this is the new specification which this paper puts forward
+	
+*** (2) omit 
+
+	gen 			female_ospec = female_decsale 
+	replace 		female_ospec = 1 if sex_salesmanager1 == 1 
+	gen 			male_ospec = male_decsale 
+	replace 		male_ospec = 1 if sex_salesmanager1 == 0 
+	*** in this specification, we reallocate things as though there were no joint specification 
+	
+*** (3) reallocate 	
+
+	gen 			female_rspec = female_decsale
+	gen 			male_rspec = male_decsale 
+	replace			male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
+	*** in this specification, we assume that all joint labor is actually men's
+	*** which is a fair assumption, given above 	
 	
 compress
 describe
@@ -362,14 +420,14 @@ summarize
 	save 			"$fil\production-and-sales\sales-with-managerid_y3", replace	
 	
 * bring in consumption variables 
-	/*
+	
 	merge 			m:m case_id year using "$fil\consumption\ihs3_summary_15.dta"
 	keep 			if _merge == 3
 	drop 			_merge
 **** THIS IS NOT WORKING ****
 **** WILL HAVE TO OMIT 2016 FOR NOW **** 
 	
-	save 			"$fil\regression-ready\household-level_y3", replace	*/ 
+	save 			"$fil\regression-ready\household-level_y3", replace	
 	
 * merge in geovars 
 
@@ -432,21 +490,6 @@ describe
 summarize 
 
 	save 			"$fil\regression-ready\household-total_all", replace
-	
-* just file for october presentation y2 and y1
-
-
-* append all 
-	use 			"$fil\regression-ready\household-total_y1", clear 
-	append 			using "$fil\regression-ready\household-total_y2"
-	
-* save new full file 	
-
-compress
-describe
-summarize 
-
-	save 			"$fil\regression-ready\household-total_y1y2", replace
 	
 * *********************************************************************
 * 5 - append all together 
