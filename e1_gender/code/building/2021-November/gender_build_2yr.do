@@ -102,10 +102,6 @@
 	replace 		joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
 	replace 		joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
 	
-compress
-describe
-summarize 
-	
 	save 			"$fil\production-and-sales\sales-with-managerid_y1", replace	
 	
 * bring in consumption variables 
@@ -123,10 +119,6 @@ summarize
 	keep 			if _merge == 3
 	drop 			_merge 
 	*** drops 378 not matched from using
-	
-compress
-describe
-summarize 
 	
  	save 			"$fil\regression-ready\household-level_y1", replace	
 	*** and now same number of observations = 2563			
@@ -358,10 +350,6 @@ summarize
 	replace 		joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
 	replace 		joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
 	
-compress
-describe
-summarize 
-	
 	save 			"$fil\production-and-sales\sales-with-managerid_y2", replace	
 	
 * bring in consumption variables 
@@ -380,27 +368,8 @@ summarize
 	drop 			_merge 
 	*** drops 505 not matched from using
 	
-compress
-describe
-summarize 
-	
  	save 			"$fil\regression-ready\household-level_y2", replace	
 	*** 3342 - so some observations added at some point
-	
-	
-* merge in plot-level files 
-/*
-* not sure of purpose of this 
- 	use 			"$fil\regression-ready\household-level_y2", clear	
-	duplicates drop 
-	*** no duplicates dropped
-
-	merge			m:1 y2_hhid case_id year using "$fil\production-and-sales\plot-with-managerid_y2"	
-	*** 15662 matched 
-	*** drop 4313 from using 
-	keep 			if _merge == 3
-	drop 			_merge
-*/
 
 	replace 		sex_salesmanager1 = 0 if sex_salesmanager1 == 1
 	replace 		sex_salesmanager1 = 1 if sex_salesmanager1 == 2
@@ -443,10 +412,6 @@ summarize
 	*** in this specification, we assume that all joint labor is actually men's
 	*** which is a fair assumption, given above 	
 	
-compress
-describe
-summarize
-	
  	save 			"$fil\regression-ready\household-total_y2", replace	
 	
 
@@ -460,18 +425,18 @@ summarize
 
 * using rs_cropsales_valuei
 	summarize 		rs_cropsales_valuei, detail
-	*** mean = 37331, st. dev = 175685.4, small = 0, large = 333333
+	*** mean = 44933.32, st. dev = 196788, small = 0, large = 333333
 
 	gen 			cropsales = rs_cropsales_valuei / 1.661 if year == 2012
 	summarize 		cropsales, detail	
-	*** mean = 26149.78, st. dev = 123840.8, small = 0, large = 2006823
+	*** mean = 27051.97, st. dev = 118475.6, small = 0, large = 2006823
 	
 * convert MWK to USD 
 * 1 USD = 123 MWK
 *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
 	gen 			cropsales_usd = cropsales / 123 
 	summarize 		cropsales_usd, detail
-	*** mean = 212.60, st. dev = 1006.84, small = 0, large = 21394.95 
+	*** mean = 219.94, st. dev = 963.22, small = 0, large = 16315.63 
 
 * determine values by sales manager
 
@@ -531,7 +496,32 @@ summarize
  	save 			"$fil\regression-ready\household-total_y2", replace	
 	
 * *********************************************************************
-* 3 - append all together 
+* 2e - reduce + clean up   
+* **********************************************************************	
+	
+	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp case_id year region district ea_id HHID y2_hhid
+						
+	rename 			* *12
+	rename 			case_id12 case_id
+	rename 			year12 year 
+	rename 			region12 region 
+	rename 			district12 district
+	rename 			ea_id12 ea_id 
+	rename 			HHID12 HHID
+	rename 			y2_hhid12 y2_hhid
+	
+compress
+describe
+summarize
+	
+ 	save 			"$fil\regression-ready\household-total_y2", replace	
+
+	
+* *********************************************************************
+* 3 - merge together 
 * **********************************************************************	
 
 * append all 
