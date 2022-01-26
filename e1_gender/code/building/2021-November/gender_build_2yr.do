@@ -273,6 +273,15 @@
 	rename 			ea_id09 ea_id 
 	rename 			HHID09 HHID
 	
+	duplicates 		drop
+	
+	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp, by (case_id year region district ea_id HHID)
+						
+	isid 			case_id year region district ea_id HHID
+	
 compress
 describe
 summarize
@@ -513,6 +522,16 @@ summarize
 	rename 			HHID12 HHID
 	rename 			y2_hhid12 y2_hhid
 	
+	duplicates 		drop
+		
+	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp, by (case_id year region district ea_id HHID y2_hhid)
+						
+	isid 			case_id year region district ea_id HHID y2_hhid
+	
+	
 compress
 describe
 summarize
@@ -526,7 +545,8 @@ summarize
 
 * append all 
 	use 			"$fil\regression-ready\household-total_y1", clear 
-	append 			using "$fil\regression-ready\household-total_y2"
+	merge 			m:1 case_id ea_id region district HHID using "$fil\regression-ready\household-total_y2.dta"	
+	drop 			_merge 
 	
 * save new full file 	
 
@@ -536,18 +556,11 @@ summarize
 
 	save 			"$fil\regression-ready\household-total_both", replace
 	
-	
 * *********************************************************************
 * 7 - differencing  
 * **********************************************************************
 
-* keep only variables for regression 
-******* dsajklf;ajfkdsa
 
-	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID y2_hhid 
 						
 *** NEED TO GO BACK AND DO MERGE - SO THAT THINGS ARE 2009 AND 2012 IN THE DATA - FOR DIFFERENCING 
 
