@@ -263,7 +263,12 @@
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID 	
+						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 	
+	
+	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID)
 						
 	rename 			* *09
 	rename 			case_id09 case_id
@@ -272,13 +277,9 @@
 	rename 			district09 district
 	rename 			ea_id09 ea_id 
 	rename 			HHID09 HHID
+	rename 			ssa_aez0909 ssa_aez09
 	
 	duplicates 		drop
-	
-	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp, by (case_id year region district ea_id HHID)
 						
 	isid 			case_id year region district ea_id HHID
 	
@@ -472,7 +473,7 @@ summarize
 	replace 		valuemale_rspec = 0 if valuemale_rspec == . 
 	
 * *********************************************************************
-* 2c - weather 
+* 2c - weather and aez 
 * **********************************************************************
 
 	merge 			m:1 case_id y2_hhid ea_id year using "$fil\geovar\rain_2yr.dta"
@@ -511,8 +512,13 @@ summarize
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID y2_hhid
-						
+						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09
+		
+	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID y2_hhid)
+	
 	rename 			* *12
 	rename 			case_id12 case_id
 	rename 			year12 year 
@@ -521,14 +527,10 @@ summarize
 	rename 			ea_id12 ea_id 
 	rename 			HHID12 HHID
 	rename 			y2_hhid12 y2_hhid
+	rename 			ssa_aez0912 ssa_aez12
 	
 	duplicates 		drop
-		
-	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp, by (case_id year region district ea_id HHID y2_hhid)
-						
+	
 	isid 			case_id year region district ea_id HHID y2_hhid
 	
 	
@@ -547,6 +549,8 @@ summarize
 	use 			"$fil\regression-ready\household-total_y1", clear 
 	merge 			m:1 case_id ea_id region district HHID using "$fil\regression-ready\household-total_y2.dta"	
 	drop 			_merge 
+	*** 850 matched, 391 not matched from 2009, 118 not matched from 2012
+	*** keeping all observations for now 
 	
 * save new full file 	
 
@@ -557,16 +561,90 @@ summarize
 	save 			"$fil\regression-ready\household-total_both", replace
 	
 * *********************************************************************
-* 7 - differencing  
-* **********************************************************************
-
-
-						
-*** NEED TO GO BACK AND DO MERGE - SO THAT THINGS ARE 2009 AND 2012 IN THE DATA - FOR DIFFERENCING 
+* 4 - differencing / logs   
+* ********************************************************************** 
 
 * *********************************************************************
-* 7 - end matter
+* 4a - differencing  
+* ********************************************************************** 
+
+* sales values by manager 
+	bys case_id HHID: gen dvaluejoint_jspec = valuejoint_jspec12 - valuejoint_jspec09 
+	bys case_id HHID: gen dvaluefemale_jspec = valuefemale_jspec12 - valuefemale_jspec09
+	bys case_id HHID: gen dvaluemale_jspec = valuemale_jspec12 - valuemale_jspec09 
+	bys case_id HHID: gen dvaluefemale_ospec = valuefemale_ospec12 - valuefemale_ospec09
+	bys case_id HHID: gen dvaluemale_ospec = valuemale_ospec12 - valuemale_ospec09 
+	bys case_id HHID: gen dvaluefemale_rspec = valuefemale_rspec12 - valuefemale_rspec09
+	bys case_id HHID: gen dvaluemale_rspec = valuemale_rspec12 - valuemale_rspec09 
+	
+* rainfall 
+	bys case_id HHID: gen dtotalr = totalr12 - totalr09
+	bys case_id HHID: gen dnoraindays = noraindays12 - noraindays09 
+	bys case_id HHID: gen ddryspell = dryspell12 - dryspell09 
+	
+* consumption categories 
+	bys case_id HHID: gen dfoodexp = foodexp12 - foodexp09
+	bys case_id HHID: gen dalctobexp = alctobexp12 - alctobexp09 
+	bys case_id HHID: gen dclothexp = clothexp12 - clothexp09 
+	bys case_id HHID: gen dhouseutilsexp = houseutilsexp12 - houseutilsexp09 
+	bys case_id HHID: gen dhealthexp = healthexp12 - healthexp09 
+	bys case_id HHID: gen dtranspoexp = transpoexp12 - transpoexp09 
+	bys case_id HHID: gen dcommexp = commexp12 - commexp09 
+	bys case_id HHID: gen drecexp = recexp12 - recexp09 
+	bys case_id HHID: gen deduexp = eduexp12 - eduexp09 
+	bys case_id HHID: gen dhotelrestexp = hotelrestexp12 - hotelrestexp09 
+	bys case_id HHID: gen dmiscexp = miscexp12 - miscexp09 
+	bys case_id HHID: gen dtotalexp = totalexp12 - totalexp09 
+	
+
+* *********************************************************************
+* 4b - logs  
+* ********************************************************************** 
+
+* sales values by manager 
+	bys case_id HHID: gen dlnvaluejoint_jspec = asinh(dvaluejoint_jspec)
+	bys case_id HHID: gen dlnvaluefemale_jspec = asinh(dvaluefemale_jspec)
+	bys case_id HHID: gen dlnvaluemale_jspec = asinh(dvaluemale_jspec)
+	bys case_id HHID: gen dlnvaluefemale_ospec = asinh(dvaluefemale_ospec)
+	bys case_id HHID: gen dlnvaluemale_ospec = asinh(dvaluemale_ospec)
+	bys case_id HHID: gen dlnvaluefemale_rspec = asinh(dvaluefemale_rspec)
+	bys case_id HHID: gen dlnvaluemale_rspec = asinh(dvaluemale_rspec)
+	
+* do not log rainfall 
+	
+* consumption categories 
+	bys case_id HHID: gen dlnconsume_agg = asinh(dtotalexp)
+	bys case_id HHID: gen dlnconsume_food = asinh(dfoodexp)
+	bys case_id HHID: gen dlnconsume_alctob = asinh(dalctobexp)
+	bys case_id HHID: gen dlnconsume_clothfoot = asinh(dclothexp)
+	bys case_id HHID: gen dlnconsume_houseutils = asinh(dhouseutilsexp)
+	bys case_id HHID: gen dlnconsume_health = asinh(dhealthexp)
+	bys case_id HHID: gen dlnconsume_transpo = asinh(dtranspoexp)
+	bys case_id HHID: gen dlnconsume_comm = asinh(dcommexp)
+	bys case_id HHID: gen dlnconsume_rec = asinh(drecexp)
+	bys case_id HHID: gen dlnconsume_educ = asinh(deduexp)
+	bys case_id HHID: gen dlnconsume_hotres = asinh(dhotelrestexp)
+	bys case_id HHID: gen dlnconsume_misc = asinh(dmiscexp)		
+						
+
+	save 			"$fil\regression-ready\household-total_both", replace						
+						
+* *********************************************************************
+* 5 - end matter
 * **********************************************************************
+
+	isid 			case_id HHID year
+	
+	keep 			dlnvaluejoint_jspec dlnvaluefemale_jspec dlnvaluemale_jspec dlnvaluefemale_ospec dlnvaluemale_ospec ///
+						dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
+						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
+						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
+						ssa_aez09 ssa_aez12
+compress
+describe
+summarize
+	
+ 	save 			"$fil\regression-ready\reg_ready-final", replace	
 
 * close the log
 	log	close	
