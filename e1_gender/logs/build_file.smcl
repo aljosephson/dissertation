@@ -1,0 +1,1721 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}26 Jan 2022, 14:49:17
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(461 observations deleted)
+
+{com}.         *** drops 83 observations from using and 378 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}.  
+.         save                    "$fil\production-and-sales\sales-with-manager_y1", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta saved
+
+{com}.         *** 2563 observations 
+.         
+. * manager 1 - year 1
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,759
+{txt}{col 9}from master{col 30}{res}           1,748{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,011{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             815{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,011 observations deleted)
+
+{com}.         *** matched 815 
+.         *** drop unmatched from using = 7011
+.         *** unmatched from master = 1748 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,209 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,558
+{txt}{col 9}from master{col 30}{res}           2,210{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,348{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             353{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,348 observations deleted)
+
+{com}.         *** matched 353 
+.         *** drop unmatched from using = 7348
+.         *** keep unmatched from master = 2210 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(2,388 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(2,388 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(1,923 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(1,923 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,214 missing values generated)
+
+{com}.         
+.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,213 real changes made)
+
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y1", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y1.dta saved
+
+{com}.         
+. * bring in consumption variables 
+.         
+.         merge                   m:1 case_id year using "$fil\consumption\ihs3_summary_09.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+strata was 
+byte, now int to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,030
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          11,030{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,030 observations deleted)
+
+{com}.         drop                    _merge
+{txt}
+{com}.         *** dropping 11030 from using 
+.         
+.         save                    "$fil\regression-ready\household-level_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         
+. * merge in geovars 
+. 
+.         merge                   m:1 case_id year using "$fil\geovar\householdgeovariables_09.dta"
+{res}{txt}(label HH_A01 already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(378 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 378 not matched from using
+.         
+.         save                    "$fil\regression-ready\household-level_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         *** and now same number of observations = 2563                  
+. 
+.         
+. * merge in plot-level files 
+.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}.         duplicates drop 
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. /*
+> * not sure what I'm getting from this ... 
+>         merge                   1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+>         *** all matched 
+>         drop                    _merge 
+> */      
+.         replace                 sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+{txt}(447 real changes made)
+
+{com}.         replace                 sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+{txt}(129 real changes made)
+
+{com}.         label                   var sex_salesmanager1 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager1 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         replace                 sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+{txt}(2 real changes made)
+
+{com}.         replace                 sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+{txt}(227 real changes made)
+
+{com}.         label                   var sex_salesmanager2 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager2 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         summarize               sex_salesmanager1 sex_salesmanager2
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}        576    .2239583    .4172568          0          1
+{txt}sex_salesm~2 {c |}{res}        229    .9912664    .0932487          0          1
+{txt}
+{com}.         *** 22 percent of first manager women
+.         *** 99 percent of second manager women 
+.         
+. * define manager categories of interest
+. 
+. *** (1) joint 
+. 
+.         gen                     joint_jspec = joint_decsale
+{txt}(1 missing value generated)
+
+{com}.         gen                     female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 female_jspec = 0 if female_jspec == . 
+{txt}(1,568 real changes made)
+
+{com}.         gen                     male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 male_jspec = 0 if male_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         *** this is the new specification which this paper puts forward
+.         
+. *** (2) omit 
+. 
+.         gen                     female_ospec = female_decsale 
+{txt}
+{com}.         replace                 female_ospec = 1 if sex_salesmanager1 == 1 
+{txt}(0 real changes made)
+
+{com}.         gen                     male_ospec = male_decsale 
+{txt}
+{com}.         replace                 male_ospec = 1 if sex_salesmanager1 == 0 
+{txt}(0 real changes made)
+
+{com}.         *** in this specification, we reallocate things as though there were no joint specification 
+.         
+. *** (3) reallocate      
+. 
+.         gen                     female_rspec = female_decsale
+{txt}
+{com}.         gen                     male_rspec = male_decsale 
+{txt}
+{com}.         replace                 male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
+{txt}(5 real changes made)
+
+{com}.         *** in this specification, we assume that all joint labor is actually men's
+.         *** which is a fair assumption, given above 
+.         
+.         save                    "$fil\regression-ready\household-total_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 1b - sales values
+. * **********************************************************************
+. 
+. * convert MKW to 2010 values
+. * 2009 = 93.1
+. *** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
+. 
+. * using rs_cropsales_valuei
+.         summarize               rs_cropsales_valuei, detail
+
+       {txt}Implied value of rainy season crop sales (MWK)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 22732.55
+                        {txt}Largest       Std. Dev.     {res} 124344.3
+{txt}75%    {res} 7472.501        1826797
+{txt}90%    {res}    44500        1826797       {txt}Variance      {res} 1.55e+10
+{txt}95%    {res} 84416.16        2450000       {txt}Skewness      {res} 13.87106
+{txt}99%    {res}   376881        2450000       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 22732.55, st. dev = 1243344.3, small = 0, large = 2340000
+. 
+.         generate                cropsales = rs_cropsales_valuei / 0.931 
+{txt}
+{com}.         summarize               cropsales, detail       
+
+                          {txt}cropsales
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 24417.35
+                        {txt}Largest       Std. Dev.     {res}   133560
+{txt}75%    {res} 8026.317        1962188
+{txt}90%    {res} 47798.07        1962188       {txt}Variance      {res} 1.78e+10
+{txt}95%    {res} 90672.57        2631579       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 404813.1        2631579       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 24417.35, st. dev = 133560, small = 0, large = 2631579
+.         
+. * convert MWK to USD 
+. * 1 USD = 123 MWK
+. *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
+.         gen                     cropsales_usd = cropsales / 123 
+{txt}
+{com}.         summarize               cropsales_usd, detail
+
+                        {txt}cropsales_usd
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res}  198.515
+                        {txt}Largest       Std. Dev.     {res} 1085.853
+{txt}75%    {res} 65.25461       15952.75
+{txt}90%    {res} 388.6022       15952.75       {txt}Variance      {res}  1179078
+{txt}95%    {res} 737.1754       21394.95       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 3291.164       21394.95       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
+. 
+. * determine values by sales manager
+. 
+. *** (1) joint 
+.         gen                     valuejoint_jspec = cropsales if joint_jspec == 1
+{txt}(1,464 missing values generated)
+
+{com}.         replace                 valuejoint_jspec = 0 if valuejoint_jspec == . 
+{txt}(1,464 real changes made)
+
+{com}.         gen                     valuefemale_jspec = cropsales if female_jspec == 1
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 valuefemale_jspec = 0 if valuefemale_jspec == .
+{txt}(1,568 real changes made)
+
+{com}.         gen                     valuemale_jspec = cropsales if male_jspec == 1
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 valuemale_jspec = 0 if valuemale_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         
+. *** (2) omit
+. 
+.         gen                     valuefemale_ospec = cropsales if female_ospec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_ospec = 0 if valuefemale_ospec == .
+{txt}(1,564 real changes made)
+
+{com}.         gen                     valuemale_ospec = cropsales if male_ospec == 1
+{txt}(1,246 missing values generated)
+
+{com}.         replace                 valuemale_ospec = 0 if valuemale_ospec == . 
+{txt}(1,246 real changes made)
+
+{com}. 
+. *** (3) reallocate 
+. 
+.         gen                     valuefemale_rspec = cropsales if female_rspec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_rspec = 0 if valuefemale_rspec == .
+{txt}(1,564 real changes made)
+
+{com}.         gen                     valuemale_rspec = cropsales if male_rspec == 1
+{txt}(1,241 missing values generated)
+
+{com}.         replace                 valuemale_rspec = 0 if valuemale_rspec == . 
+{txt}(1,241 real changes made)
+
+{com}.         
+. * *********************************************************************
+. * 1c - weather 
+. * **********************************************************************
+. 
+.         merge                   m:1 case_id ea_id year using "$fil\geovar\rain_2yr.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           4,482
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           4,482{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,693{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         *** matched = 3853
+.         keep if _merge == 3
+{txt}(4,482 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}.         
+.         rename                  total totalr 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 1d - aggregates 
+. * **********************************************************************        
+. 
+.         rename                  rexp_cat01 foodexp
+{res}{txt}
+{com}.         rename                  rexp_cat02 alctobexp
+{res}{txt}
+{com}.         rename                  rexp_cat03 clothexp
+{res}{txt}
+{com}.         egen                    houseutilsexp = rsum (rexp_cat04 rexp_cat05)
+{txt}
+{com}.         *** adding housing and utilities with furnishings 
+.         rename                  rexp_cat06 healthexp 
+{res}{txt}
+{com}.         rename                  rexp_cat07 transpoexp
+{res}{txt}
+{com}.         rename                  rexp_cat08 commexp
+{res}{txt}
+{com}.         rename                  rexp_cat09 recexp
+{res}{txt}
+{com}.         rename                  rexp_cat10 eduexp
+{res}{txt}
+{com}.         rename                  rexp_cat11 hotelrestexp
+{res}{txt}
+{com}.         rename                  rexp_cat12 miscexp 
+{res}{txt}
+{com}.         rename                  rexpagg totalexp 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 1e - reduce + clean up   
+. * **********************************************************************        
+.         
+.         keep                    valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+>                                                 clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+>                                                 miscexp totalexp case_id year region district ea_id HHID ssa_aez09      
+{txt}
+{com}.         
+.         collapse                (sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+>                                                 clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+>                                                 miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID)
+{txt}
+{com}.                                                 
+.         rename                  * *09
+{res}{txt}
+{com}.         rename                  case_id09 case_id
+{res}{txt}
+{com}.         rename                  year09 year 
+{res}{txt}
+{com}.         rename                  region09 region 
+{res}{txt}
+{com}.         rename                  district09 district
+{res}{txt}
+{com}.         rename                  ea_id09 ea_id 
+{res}{txt}
+{com}.         rename                  HHID09 HHID
+{res}{txt}
+{com}.         rename                  ssa_aez0909 ssa_aez09
+{res}{txt}
+{com}.         
+.         duplicates              drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(0 observations are duplicates)
+
+{com}.                                                 
+.         isid                    case_id year region district ea_id HHID
+{txt}
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}totalr09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}noraindays09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}dryspell09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (26,061 bytes saved)
+
+{com}. describe
+
+{txt}Contains data
+  obs:{res}         1,241                          
+{txt} vars:{res}            29                          
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:valuejoint_j~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefemale_j~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_js~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefemale_o~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_os~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuefemale_r~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_rspec{p_end}
+{p 0 48}{bind:valuemale_rs~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_rspec{p_end}
+{p 0 48}{bind:totalr09       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays09   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell09     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp09   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp09 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{txt}{hline}
+Sorted by: {res}case_id  year  region  district  ea_id  HHID
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,241    2.44e+11    6.53e+10   1.01e+11   3.16e+11
+{txt}{space 8}year {c |}{res}      1,241        2009           0       2009       2009
+{txt}{space 6}region {c |}{res}      1,241    2.382756    .6470722          1          3
+{txt}{space 4}district {c |}{res}      1,241    244.3392     65.3424        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      1,241    1751.555    765.3623          1       3230
+{txt}valuejoin~09 {c |}{res}      1,241    10612.18    103314.7          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1328.427    16678.57          0   489352.2
+{txt}valuemale_j~ {c |}{res}      1,241    6289.391    45946.87          0   932073.7
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}{hline 13}{c +}{hline 57}
+valuemale_o~ {c |}{res}      1,241    16855.33    112639.6          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}valuemale_r~ {c |}{res}      1,241    16901.57    112642.3          0    2631579
+{txt}{space 4}totalr09 {c |}{res}      1,241    854.5359    368.4417        483       3292
+{txt}noraindays09 {c |}{res}      1,241    180.0008    71.24467         94        532
+{txt}{hline 13}{c +}{hline 57}
+{space 2}dryspell09 {c |}{res}      1,241    15.89686    7.943997          6         52
+{txt}{space 3}foodexp09 {c |}{res}      1,241      213291    198230.9   12290.57    1728861
+{txt}{space 1}alctobexp09 {c |}{res}      1,241    8393.827    27418.64          0   404158.5
+{txt}{space 2}clothexp09 {c |}{res}      1,241    12457.06    40302.76          0    1162791
+{txt}houseutil~09 {c |}{res}      1,241       63894    93464.73   3638.077    1198688
+{txt}{hline 13}{c +}{hline 57}
+{space 1}healthexp09 {c |}{res}      1,241    5685.962     15615.3          0   228704.8
+{txt}transpoexp09 {c |}{res}      1,241    16120.52    55603.42          0   790273.6
+{txt}{space 3}commexp09 {c |}{res}      1,241    12239.91    30798.39          0   402395.2
+{txt}{space 4}recexp09 {c |}{res}      1,241    3348.245    13573.86          0   204443.7
+{txt}{space 4}eduexp09 {c |}{res}      1,241    6002.034    28019.17          0   502512.6
+{txt}{hline 13}{c +}{hline 57}
+hotelrest~09 {c |}{res}      1,241     3464.57    10196.82          0   201816.3
+{txt}{space 3}miscexp09 {c |}{res}      1,241    9402.579    12459.42          0   153784.1
+{txt}{space 2}totalexp09 {c |}{res}      1,241    354299.7    376951.4   22750.21    3533046
+{txt}{space 3}ssa_aez09 {c |}{res}      1,241     313.838    3.594176        312        323
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y2.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             641
+{txt}{col 9}from master{col 30}{res}             505{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             136{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,258{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(641 observations deleted)
+
+{com}.         *** drops 136 observations from using and 505 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y2", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y2.dta saved
+
+{com}.         *** 3258 observations 
+.         
+. * manager 1 
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,529
+{txt}{col 9}from master{col 30}{res}           2,198{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,331{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,060{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,331 observations deleted)
+
+{com}.         *** matched 1060 
+.         *** drop unmatched from using = 9331
+.         *** unmatched from master = 2198 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,632 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label splitoff already defined)
+(label region already defined)
+(label district already defined)
+(label strata already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          12,280
+{txt}{col 9}from master{col 30}{res}           2,633{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,647{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             625{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,647 observations deleted)
+
+{com}.         *** matched 625 
+.         *** drop unmatched from using = 9647
+.         *** keep unmatched from master = 2633 
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(2 real changes made, 2 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         *** 2 changes made in first case 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(3,014 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(3,014 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(2,442 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(2,442 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,633 missing values generated)
+
+{com}.         
+.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,633 real changes made)
+
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y2", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y2.dta saved
+
+{com}.         
+. * bring in consumption variables 
+.         
+.         merge                   m:1 case_id year y2_hhid using "$fil\consumption\ihs3_summary_12.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           2,515
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           2,515{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,258{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(2,515 observations deleted)
+
+{com}.         drop                    _merge
+{txt}
+{com}.         *** dropping 2515 from using 
+.         
+.         save                    "$fil\regression-ready\household-level_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y2.dta saved
+
+{com}.         
+. * merge in geovars 
+. 
+.         merge                   m:1 y2_hhid year using "$fil\geovar\householdgeovariables_12.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             505
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             505{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,258{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(505 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 505 not matched from using
+.         
+.         save                    "$fil\regression-ready\household-level_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y2.dta saved
+
+{com}.         *** 3342 - so some observations added at some point
+. 
+.         replace                 sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+{txt}(816 real changes made)
+
+{com}.         replace                 sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+{txt}(244 real changes made)
+
+{com}.         label                   var sex_salesmanager1 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager1 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         replace                 sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+{txt}(20 real changes made)
+
+{com}.         replace                 sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+{txt}(605 real changes made)
+
+{com}.         label                   var sex_salesmanager2 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager2 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         summarize               sex_salesmanager1 sex_salesmanager2
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}      1,060    .2301887    .4211522          0          1
+{txt}sex_salesm~2 {c |}{res}        625        .968     .176141          0          1
+{txt}
+{com}.         *** 23 percent of first manager women
+.         *** 97 percent of second manager women 
+. 
+. * define manager categories of interest
+. 
+. *** (1) joint 
+. 
+.         gen                     joint_jspec = joint_decsale
+{txt}
+{com}.         gen                     female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+{txt}(3,042 missing values generated)
+
+{com}.         replace                 female_jspec = 0 if female_jspec == . 
+{txt}(3,042 real changes made)
+
+{com}.         gen                     male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+{txt}(3,039 missing values generated)
+
+{com}.         replace                 male_jspec = 0 if male_jspec == . 
+{txt}(3,039 real changes made)
+
+{com}.         *** this is the new specification which this paper puts forward
+.         
+. *** (2) omit 
+. 
+.         gen                     female_ospec = female_decsale 
+{txt}
+{com}.         replace                 female_ospec = 1 if sex_salesmanager1 == 1 
+{txt}(0 real changes made)
+
+{com}.         gen                     male_ospec = male_decsale 
+{txt}
+{com}.         replace                 male_ospec = 1 if sex_salesmanager1 == 0 
+{txt}(0 real changes made)
+
+{com}.         *** in this specification, we reallocate things as though there were no joint specification 
+.         
+. *** (3) reallocate      
+. 
+.         gen                     female_rspec = female_decsale
+{txt}
+{com}.         gen                     male_rspec = male_decsale 
+{txt}
+{com}.         replace                 male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
+{txt}(28 real changes made)
+
+{com}.         *** in this specification, we assume that all joint labor is actually men's
+.         *** which is a fair assumption, given above     
+.         
+.         save                    "$fil\regression-ready\household-total_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y2.dta saved
+
+{com}.         
+. 
+. * *********************************************************************
+. * 2b - sales values 
+. * **********************************************************************
+.         
+. * convert MKW to 2010 values
+. * 2012 = 130.5 
+. *** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
+. 
+. * using rs_cropsales_valuei
+.         summarize               rs_cropsales_valuei, detail
+
+       {txt}Implied value of rainy season crop sales (MWK)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      3,251
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      3,251
+
+{txt}50%    {res} 2022.879                      {txt}Mean          {res} 44933.32
+                        {txt}Largest       Std. Dev.     {res}   196788
+{txt}75%    {res}    22500        3333333
+{txt}90%    {res} 97222.22        3333333       {txt}Variance      {res} 3.87e+10
+{txt}95%    {res}   182290        3333333       {txt}Skewness      {res} 11.13309
+{txt}99%    {res} 799857.9        3333333       {txt}Kurtosis      {res} 153.0895
+{txt}
+{com}.         *** mean = 44933.32, st. dev = 196788, small = 0, large = 333333
+. 
+.         gen                     cropsales = rs_cropsales_valuei / 1.661 if year == 2012
+{txt}(7 missing values generated)
+
+{com}.         summarize               cropsales, detail       
+
+                          {txt}cropsales
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      3,251
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      3,251
+
+{txt}50%    {res} 1217.868                      {txt}Mean          {res} 27051.97
+                        {txt}Largest       Std. Dev.     {res} 118475.6
+{txt}75%    {res} 13546.06        2006823
+{txt}90%    {res} 58532.34        2006823       {txt}Variance      {res} 1.40e+10
+{txt}95%    {res} 109747.1        2006823       {txt}Skewness      {res} 11.13309
+{txt}99%    {res}   481552        2006823       {txt}Kurtosis      {res} 153.0895
+{txt}
+{com}.         *** mean = 27051.97, st. dev = 118475.6, small = 0, large = 2006823
+.         
+. * convert MWK to USD 
+. * 1 USD = 123 MWK
+. *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
+.         gen                     cropsales_usd = cropsales / 123 
+{txt}(7 missing values generated)
+
+{com}.         summarize               cropsales_usd, detail
+
+                        {txt}cropsales_usd
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      3,251
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      3,251
+
+{txt}50%    {res} 9.901365                      {txt}Mean          {res} 219.9347
+                        {txt}Largest       Std. Dev.     {res} 963.2162
+{txt}75%    {res} 110.1305       16315.63
+{txt}90%    {res} 475.8727       16315.63       {txt}Variance      {res} 927785.5
+{txt}95%    {res} 892.2532       16315.63       {txt}Skewness      {res} 11.13309
+{txt}99%    {res} 3915.057       16315.63       {txt}Kurtosis      {res} 153.0895
+{txt}
+{com}.         *** mean = 219.94, st. dev = 963.22, small = 0, large = 16315.63 
+. 
+. * determine values by sales manager
+. 
+. *** (1) joint 
+.         gen                     valuejoint_jspec = cropsales if joint_jspec == 1
+{txt}(2,635 missing values generated)
+
+{com}.         replace                 valuejoint_jspec = 0 if valuejoint_jspec == . 
+{txt}(2,635 real changes made)
+
+{com}.         gen                     valuefemale_jspec = cropsales if female_jspec == 1
+{txt}(3,042 missing values generated)
+
+{com}.         replace                 valuefemale_jspec = 0 if valuefemale_jspec == .
+{txt}(3,042 real changes made)
+
+{com}.         gen                     valuemale_jspec = cropsales if male_jspec == 1
+{txt}(3,039 missing values generated)
+
+{com}.         replace                 valuemale_jspec = 0 if valuemale_jspec == . 
+{txt}(3,039 real changes made)
+
+{com}.         
+. *** (2) omit
+. 
+.         gen                     valuefemale_ospec = cropsales if female_ospec == 1
+{txt}(3,014 missing values generated)
+
+{com}.         replace                 valuefemale_ospec = 0 if valuefemale_ospec == .
+{txt}(3,014 real changes made)
+
+{com}.         gen                     valuemale_ospec = cropsales if male_ospec == 1
+{txt}(2,444 missing values generated)
+
+{com}.         replace                 valuemale_ospec = 0 if valuemale_ospec == . 
+{txt}(2,444 real changes made)
+
+{com}. 
+. *** (3) reallocate 
+. 
+.         gen                     valuefemale_rspec = cropsales if female_rspec == 1
+{txt}(3,014 missing values generated)
+
+{com}.         replace                 valuefemale_rspec = 0 if valuefemale_rspec == .
+{txt}(3,014 real changes made)
+
+{com}.         gen                     valuemale_rspec = cropsales if male_rspec == 1
+{txt}(2,416 missing values generated)
+
+{com}.         replace                 valuemale_rspec = 0 if valuemale_rspec == . 
+{txt}(2,416 real changes made)
+
+{com}.         
+. * *********************************************************************
+. * 2c - weather and aez 
+. * **********************************************************************
+. 
+.         merge                   m:1 case_id y2_hhid ea_id year using "$fil\geovar\rain_2yr.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           5,853
+{txt}{col 9}from master{col 30}{res}           1,098{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           4,755{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,160{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         *** matched = 3853
+.         keep if _merge == 3
+{txt}(5,853 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}.         
+.         rename                  total totalr 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y2.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 2d - aggregates 
+. * **********************************************************************        
+. 
+.         rename                  rexp_cat01 foodexp
+{res}{txt}
+{com}.         rename                  rexp_cat02 alctobexp
+{res}{txt}
+{com}.         rename                  rexp_cat03 clothexp
+{res}{txt}
+{com}.         egen                    houseutilsexp = rsum (rexp_cat04 rexp_cat05)
+{txt}
+{com}.         *** adding housing and utilities with furnishings 
+.         rename                  rexp_cat06 healthexp 
+{res}{txt}
+{com}.         rename                  rexp_cat07 transpoexp
+{res}{txt}
+{com}.         rename                  rexp_cat08 commexp
+{res}{txt}
+{com}.         rename                  rexp_cat09 recexp
+{res}{txt}
+{com}.         rename                  rexp_cat10 eduexp
+{res}{txt}
+{com}.         rename                  rexp_cat11 hotelrestexp
+{res}{txt}
+{com}.         rename                  rexp_cat12 miscexp 
+{res}{txt}
+{com}.         rename                  rexpagg totalexp 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y2.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 2e - reduce + clean up   
+. * **********************************************************************        
+.         
+.         keep                    valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+>                                                 clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+>                                                 miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09
+{txt}
+{com}.                 
+.         collapse                (sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+>                                                 clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+>                                                 miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID y2_hhid)
+{txt}
+{com}.         
+.         rename                  * *12
+{res}{txt}
+{com}.         rename                  case_id12 case_id
+{res}{txt}
+{com}.         rename                  year12 year 
+{res}{txt}
+{com}.         rename                  region12 region 
+{res}{txt}
+{com}.         rename                  district12 district
+{res}{txt}
+{com}.         rename                  ea_id12 ea_id 
+{res}{txt}
+{com}.         rename                  HHID12 HHID
+{res}{txt}
+{com}.         rename                  y2_hhid12 y2_hhid
+{res}{txt}
+{com}.         rename                  ssa_aez0912 ssa_aez12
+{res}{txt}
+{com}.         
+.         duplicates              drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(0 observations are duplicates)
+
+{com}.         
+.         isid                    case_id year region district ea_id HHID y2_hhid
+{txt}
+{com}.         
+.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}totalr12{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}noraindays12{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}dryspell12{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+{txt}  (19,360 bytes saved)
+
+{com}. describe
+
+{txt}Contains data
+  obs:{res}           968                          
+{txt} vars:{res}            30                          
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:valuejoint_j~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefemale_j~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_js~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefemale_o~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_os~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuefemale_r~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_rspec{p_end}
+{p 0 48}{bind:valuemale_rs~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_rspec{p_end}
+{p 0 48}{bind:totalr12       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays12   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell12     }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp12    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp12     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp12    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp12   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp12       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp12       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp12 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp12     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez12      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{txt}{hline}
+Sorted by: {res}case_id  year  region  district  ea_id  HHID  y2_hhid
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 8}year {c |}{res}        968        2012           0       2012       2012
+{txt}{space 5}case_id {c |}{res}        968    2.45e+11    6.74e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}        968    2.392562    .6674795          1          3
+{txt}{space 4}district {c |}{res}        968    245.2293    67.51496        101        315
+{txt}{hline 13}{c +}{hline 57}
+{space 7}ea_id {c |}{res}          0
+{txt}{space 8}HHID {c |}{res}        968     1770.18    797.6784          1       3230
+{txt}valuejoin~12 {c |}{res}        968    21322.86    163258.8          0    4013646
+{txt}valuefemal.. {c |}{res}        968    5222.054    121042.6          0    3755703
+{txt}valuemale_j~ {c |}{res}        968    5708.313    59895.04          0    1281462
+{txt}{hline 13}{c +}{hline 57}
+valuefemal.. {c |}{res}        968    5615.516    121339.8          0    3755703
+{txt}valuemale_o~ {c |}{res}        968    26637.72      171974          0    4013646
+{txt}valuefemal.. {c |}{res}        968    5615.516    121339.8          0    3755703
+{txt}valuemale_r~ {c |}{res}        968    27031.18    173326.9          0    4013646
+{txt}{space 4}totalr12 {c |}{res}        968    1672.083    924.8219        600       5856
+{txt}{hline 13}{c +}{hline 57}
+noraindays12 {c |}{res}        968     306.189     171.183        116       1192
+{txt}{space 2}dryspell12 {c |}{res}        968    36.50826    29.52653          8        192
+{txt}{space 3}foodexp12 {c |}{res}        968    903497.6    824796.9   13588.31    6164608
+{txt}{space 1}alctobexp12 {c |}{res}        968     53221.6    159163.1          0    3623395
+{txt}{space 2}clothexp12 {c |}{res}        968    48173.39    94576.96          0    1567290
+{txt}{hline 13}{c +}{hline 57}
+houseutil~12 {c |}{res}        968    305204.4    381000.8   13877.62    6496884
+{txt}{space 1}healthexp12 {c |}{res}        968     15881.5    42004.59          0   685987.6
+{txt}transpoexp12 {c |}{res}        968     72948.7    291546.1          0    4755566
+{txt}{space 3}commexp12 {c |}{res}        968    38228.74    191198.4          0    5132397
+{txt}{space 4}recexp12 {c |}{res}        968    8126.464    33416.74          0   621133.9
+{txt}{hline 13}{c +}{hline 57}
+{space 4}eduexp12 {c |}{res}        968    20955.65    103674.9          0    2951149
+{txt}hotelrest~12 {c |}{res}        968    18076.03    41640.95          0   391738.1
+{txt}{space 3}miscexp12 {c |}{res}        968    35220.35    41985.45          0   354135.4
+{txt}{space 2}totalexp12 {c |}{res}        968     1519534     1589840   60655.43   2.37e+07
+{txt}{space 3}ssa_aez12 {c |}{res}        968    313.9205    3.646601        312        323
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y2", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y2.dta saved
+
+{com}. 
+.         
+. * *********************************************************************
+. * 3 - merge together 
+. * **********************************************************************        
+. 
+. * append all 
+.         use                     "$fil\regression-ready\household-total_y1", clear 
+{txt}
+{com}.         merge                   m:1 case_id ea_id region district HHID using "$fil\regression-ready\household-total_y2.dta"     
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             509
+{txt}{col 9}from master{col 30}{res}             391{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             118{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             850{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** 850 matched, 391 not matched from 2009, 118 not matched from 2012
+.         *** keeping all observations for now 
+.         
+. * save new full file    
+. 
+. compress
+{txt}  (0 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta
+{txt}  obs:{res}         1,359                          
+{txt} vars:{res}            53                          26 Jan 2022 14:49
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:valuejoint_j~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefemale_j~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_js~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefemale_o~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_os~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuefemale_r~9}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_rspec{p_end}
+{p 0 48}{bind:valuemale_rs~09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_rspec{p_end}
+{p 0 48}{bind:totalr09       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays09   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell09     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp09   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp09 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:valuejoint_j~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefemale_j~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_js~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefemale_o~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_os~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuefemale_r~2}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_rspec{p_end}
+{p 0 48}{bind:valuemale_rs~12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_rspec{p_end}
+{p 0 48}{bind:totalr12       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays12   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell12     }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp12    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp12     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp12}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp12    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp12   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp12       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp12       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp12 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp12      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp12     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez12      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize 
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,359    2.45e+11    6.57e+10   1.01e+11   3.16e+11
+{txt}{space 8}year {c |}{res}      1,359     2009.26    .8450619       2009       2012
+{txt}{space 6}region {c |}{res}      1,359    2.389993    .6508768          1          3
+{txt}{space 4}district {c |}{res}      1,359    245.2362    65.84609        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      1,359    1782.333    782.3508          1       3230
+{txt}valuejoin~09 {c |}{res}      1,241    10612.18    103314.7          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1328.427    16678.57          0   489352.2
+{txt}valuemale_.. {c |}{res}      1,241    6289.391    45946.87          0   932073.7
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}{hline 13}{c +}{hline 57}
+valuemale_.. {c |}{res}      1,241    16855.33    112639.6          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}valuemale_.. {c |}{res}      1,241    16901.57    112642.3          0    2631579
+{txt}{space 4}totalr09 {c |}{res}      1,241    854.5359    368.4417        483       3292
+{txt}noraindays09 {c |}{res}      1,241    180.0008    71.24467         94        532
+{txt}{hline 13}{c +}{hline 57}
+{space 2}dryspell09 {c |}{res}      1,241    15.89686    7.943997          6         52
+{txt}{space 3}foodexp09 {c |}{res}      1,241      213291    198230.9   12290.57    1728861
+{txt}{space 1}alctobexp09 {c |}{res}      1,241    8393.827    27418.64          0   404158.5
+{txt}{space 2}clothexp09 {c |}{res}      1,241    12457.06    40302.76          0    1162791
+{txt}houseutil~09 {c |}{res}      1,241       63894    93464.73   3638.077    1198688
+{txt}{hline 13}{c +}{hline 57}
+{space 1}healthexp09 {c |}{res}      1,241    5685.962     15615.3          0   228704.8
+{txt}transpoexp09 {c |}{res}      1,241    16120.52    55603.42          0   790273.6
+{txt}{space 3}commexp09 {c |}{res}      1,241    12239.91    30798.39          0   402395.2
+{txt}{space 4}recexp09 {c |}{res}      1,241    3348.245    13573.86          0   204443.7
+{txt}{space 4}eduexp09 {c |}{res}      1,241    6002.034    28019.17          0   502512.6
+{txt}{hline 13}{c +}{hline 57}
+hotelrest~09 {c |}{res}      1,241     3464.57    10196.82          0   201816.3
+{txt}{space 3}miscexp09 {c |}{res}      1,241    9402.579    12459.42          0   153784.1
+{txt}{space 2}totalexp09 {c |}{res}      1,241    354299.7    376951.4   22750.21    3533046
+{txt}{space 3}ssa_aez09 {c |}{res}      1,241     313.838    3.594176        312        323
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+valuejoin~12 {c |}{res}        968    21322.86    163258.8          0    4013646
+{txt}valuefemal.. {c |}{res}        968    5222.054    121042.6          0    3755703
+{txt}valuemale_.. {c |}{res}        968    5708.313    59895.04          0    1281462
+{txt}valuefemal.. {c |}{res}        968    5615.516    121339.8          0    3755703
+{txt}valuemale_.. {c |}{res}        968    26637.72      171974          0    4013646
+{txt}{hline 13}{c +}{hline 57}
+valuefemal.. {c |}{res}        968    5615.516    121339.8          0    3755703
+{txt}valuemale_.. {c |}{res}        968    27031.18    173326.9          0    4013646
+{txt}{space 4}totalr12 {c |}{res}        968    1672.083    924.8219        600       5856
+{txt}noraindays12 {c |}{res}        968     306.189     171.183        116       1192
+{txt}{space 2}dryspell12 {c |}{res}        968    36.50826    29.52653          8        192
+{txt}{hline 13}{c +}{hline 57}
+{space 3}foodexp12 {c |}{res}        968    903497.6    824796.9   13588.31    6164608
+{txt}{space 1}alctobexp12 {c |}{res}        968     53221.6    159163.1          0    3623395
+{txt}{space 2}clothexp12 {c |}{res}        968    48173.39    94576.96          0    1567290
+{txt}houseutil~12 {c |}{res}        968    305204.4    381000.8   13877.62    6496884
+{txt}{space 1}healthexp12 {c |}{res}        968     15881.5    42004.59          0   685987.6
+{txt}{hline 13}{c +}{hline 57}
+transpoexp12 {c |}{res}        968     72948.7    291546.1          0    4755566
+{txt}{space 3}commexp12 {c |}{res}        968    38228.74    191198.4          0    5132397
+{txt}{space 4}recexp12 {c |}{res}        968    8126.464    33416.74          0   621133.9
+{txt}{space 4}eduexp12 {c |}{res}        968    20955.65    103674.9          0    2951149
+{txt}hotelrest~12 {c |}{res}        968    18076.03    41640.95          0   391738.1
+{txt}{hline 13}{c +}{hline 57}
+{space 3}miscexp12 {c |}{res}        968    35220.35    41985.45          0   354135.4
+{txt}{space 2}totalexp12 {c |}{res}        968     1519534     1589840   60655.43   2.37e+07
+{txt}{space 3}ssa_aez12 {c |}{res}        968    313.9205    3.646601        312        323
+{txt}
+{com}. 
+.         save                    "$fil\regression-ready\household-total_both", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_both.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 4 - differencing / logs   
+. * ********************************************************************** 
+. 
+. * *********************************************************************
+. * 4a - differencing  
+. * ********************************************************************** 
+. 
+. * sales values by manager 
+.         bys case_id HHID: gen dvaluejoint_jspec = valuejoint_jspec12 - valuejoint_jspec09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluefemale_jspec = valuefemale_jspec12 - valuefemale_jspec09
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluemale_jspec = valuemale_jspec12 - valuemale_jspec09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluefemale_ospec = valuefemale_ospec12 - valuefemale_ospec09
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluemale_ospec = valuemale_ospec12 - valuemale_ospec09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluefemale_rspec = valuefemale_rspec12 - valuefemale_rspec09
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dvaluemale_rspec = valuemale_rspec12 - valuemale_rspec09 
+{txt}(509 missing values generated)
+
+{com}.         
+. * rainfall 
+.         bys case_id HHID: gen dtotalr = totalr12 - totalr09
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dnoraindays = noraindays12 - noraindays09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen ddryspell = dryspell12 - dryspell09 
+{txt}(509 missing values generated)
+
+{com}.         
+. * consumption categories 
+.         bys case_id HHID: gen dfoodexp = foodexp12 - foodexp09
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dalctobexp = alctobexp12 - alctobexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dclothexp = clothexp12 - clothexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dhouseutilsexp = houseutilsexp12 - houseutilsexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dhealthexp = healthexp12 - healthexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dtranspoexp = transpoexp12 - transpoexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dcommexp = commexp12 - commexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen drecexp = recexp12 - recexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen deduexp = eduexp12 - eduexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dhotelrestexp = hotelrestexp12 - hotelrestexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dmiscexp = miscexp12 - miscexp09 
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dtotalexp = totalexp12 - totalexp09 
+{txt}(509 missing values generated)
+
+{com}.         
+. 
+. * *********************************************************************
+. * 4b - logs  
+. * ********************************************************************** 
+. 
+. * sales values by manager 
+.         bys case_id HHID: gen dlnvaluejoint_jspec = asinh(dvaluejoint_jspec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluefemale_jspec = asinh(dvaluefemale_jspec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluemale_jspec = asinh(dvaluemale_jspec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluefemale_ospec = asinh(dvaluefemale_ospec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluemale_ospec = asinh(dvaluemale_ospec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluefemale_rspec = asinh(dvaluefemale_rspec)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnvaluemale_rspec = asinh(dvaluemale_rspec)
+{txt}(509 missing values generated)
+
+{com}.         
+. * do not log rainfall 
+.         
+. * consumption categories 
+.         bys case_id HHID: gen dlnconsume_agg = asinh(dtotalexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_food = asinh(dfoodexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_alctob = asinh(dalctobexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_clothfoot = asinh(dclothexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_houseutils = asinh(dhouseutilsexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_health = asinh(dhealthexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_transpo = asinh(dtranspoexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_comm = asinh(dcommexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_rec = asinh(drecexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_educ = asinh(deduexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_hotres = asinh(dhotelrestexp)
+{txt}(509 missing values generated)
+
+{com}.         bys case_id HHID: gen dlnconsume_misc = asinh(dmiscexp)         
+{txt}(509 missing values generated)
+
+{com}.                                                 
+. 
+.         save                    "$fil\regression-ready\household-total_both", replace                                           
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_both.dta saved
+
+{com}.                                                 
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+. 
+.         isid                    case_id HHID year
+{txt}
+{com}.         
+.         keep                    dlnvaluejoint_jspec dlnvaluefemale_jspec dlnvaluemale_jspec dlnvaluefemale_ospec dlnvaluemale_ospec ///
+>                                                 dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
+>                                                 dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
+>                                                 dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
+>                                                 ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid
+{txt}
+{com}. compress
+  {txt}variable {bf}dtotalr{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}dnoraindays{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}ddryspell{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+{txt}  (8,154 bytes saved)
+
+{com}. describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_both.dta
+{txt}  obs:{res}         1,359                          
+{txt} vars:{res}            31                          26 Jan 2022 14:49
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{p 0 48}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:ssa_aez12      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{p 0 48}{bind:dtotalr        }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dnoraindays    }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:ddryspell      }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluejoint~c}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluef~jspec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluem~jspec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluef~ospec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluem~ospec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluef~rspec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnvaluem~rspec}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_agg }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_food}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_al~b}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_cl~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_h~ls}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_he~h}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_tr~o}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_comm}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_rec }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_educ}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_h~es}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:dlnconsume_misc}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: {res}case_id  HHID
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,359    2.45e+11    6.57e+10   1.01e+11   3.16e+11
+{txt}{space 8}year {c |}{res}      1,359     2009.26    .8450619       2009       2012
+{txt}{space 6}region {c |}{res}      1,359    2.389993    .6508768          1          3
+{txt}{space 4}district {c |}{res}      1,359    245.2362    65.84609        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      1,359    1782.333    782.3508          1       3230
+{txt}{space 3}ssa_aez09 {c |}{res}      1,241     313.838    3.594176        312        323
+{txt}{space 5}y2_hhid {c |}{res}          0
+{txt}{space 3}ssa_aez12 {c |}{res}        968    313.9205    3.646601        312        323
+{txt}{space 5}dtotalr {c |}{res}        850    837.5906    998.9913      -1544       4848
+{txt}{hline 13}{c +}{hline 57}
+{space 1}dnoraindays {c |}{res}        850    130.9494     169.602       -379        890
+{txt}{space 3}ddryspell {c |}{res}        850    20.63765    27.68348        -40        160
+{txt}dlnvaluejo~c {c |}{res}        850    1.131906    5.584388  -15.47429   15.39949
+{txt}dlnvaluefe.. {c |}{res}        850    .2404466    3.448162  -12.86288   15.83193
+{txt}dlnvaluema.. {c |}{res}        850   -.4955548    4.354339  -14.43831   14.75666
+{txt}{hline 13}{c +}{hline 57}
+dlnvaluefe.. {c |}{res}        850    .3505767    3.536673   -12.0856   15.83193
+{txt}dlnvaluema.. {c |}{res}        850    .7783956    6.385647  -15.47429   15.39949
+{txt}dlnvaluefe.. {c |}{res}        850    .3505767    3.536673   -12.0856   15.83193
+{txt}dlnvaluema.. {c |}{res}        850    .8508137    6.423782  -15.47429   15.39949
+{txt}dlnconsume~g {c |}{res}        850    12.87446    5.970506  -14.80959   17.27962
+{txt}{hline 13}{c +}{hline 57}
+dlnconsume~d {c |}{res}        850    12.02973    6.498757  -14.24852   16.24267
+{txt}dlnconsume~b {c |}{res}        850    2.819838    8.105739  -13.60271   15.79607
+{txt}dlnconsume~t {c |}{res}        850    4.559426     8.77403  -13.06394   14.95801
+{txt}dlnconsum~ls {c |}{res}        850    11.98014    3.978879  -13.06273   16.01592
+{txt}dlnconsume~h {c |}{res}        850    2.770788    8.383623  -12.95613   13.72684
+{txt}{hline 13}{c +}{hline 57}
+dlnconsume~o {c |}{res}        850    3.766152    8.254334  -13.94917   16.03329
+{txt}dlnconsume~m {c |}{res}        850     2.16916    7.259952  -13.10277   14.46255
+{txt}dlnconsum~ec {c |}{res}        850    1.995627    6.518268  -11.65359   13.96689
+{txt}dlnconsum~uc {c |}{res}        850    5.652191    6.350008  -12.06629   15.49775
+{txt}dlnconsum~es {c |}{res}        850    2.815247    7.619544    -12.302   13.53686
+{txt}{hline 13}{c +}{hline 57}
+dlnconsum~sc {c |}{res}        850    8.358466    6.057891  -11.88938   13.29132
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\reg_ready-final", replace        
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\reg_ready-final.dta saved
+
+{com}. 
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}26 Jan 2022, 14:49:18
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

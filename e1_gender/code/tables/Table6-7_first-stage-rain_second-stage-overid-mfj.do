@@ -4,7 +4,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 3 November 2021
+* Edited on: 26 January 2022
 * Created by: alj
 * Stata v.16
 
@@ -14,10 +14,23 @@
 	* corresponds with tables 6 and 7  
 	
 * assumes
-	* data_jointtest.dta 
+	* reg_ready-final.dta 
 
 * TO DO:
 	* anonymize pre-submission 
+	
+* **********************************************************************
+* 0 - setup
+* **********************************************************************
+
+* define
+	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+	global	code	=	"C:\Users\aljosephson\git\dissertation\e1_gender\code"
+	global	logs	=	"C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+
+* open log
+	cap log 		close
+	log using		"$logs/regs", append	
 	
 * **********************************************************************
 * 1 - data 
@@ -26,8 +39,7 @@ clear
 
 * read in data 
 
-	use "C:\Users\aljosephson\Dropbox\Out for Review\DISE1_Gender\Data - LSMS Malawi\data_jointtest.dta", clear
-	*** was - O previous? 
+ 	use 			"$fil\regression-ready\reg_ready-final", replace	
 	
 * **********************************************************************
 * 2 - first stage - TABLE 6
@@ -35,26 +47,23 @@ clear
 
 * set globals for male, female, and joint 
 
-	global jincome (dlnvaluejoint davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global fincome (dlnvaluefemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
-	global mincome (dlnvaluemale davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart i.agroeczone2010 i.agroeczone2013)
+	global jincome (dlnvaluejoint_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
+	global fincome (dlnvaluefemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
+	global mincome (dlnvaluemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
 
 * reg and F-test
 * save estimates and predict xb 
 
-	reg $jincome, vce (cluster y2_hhid)
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
-	est store INJM
+	reg $jincome, vce (cluster case_id)
+	est store INJJ
 	predict xbjoint, xb
 
-	reg $fincome, vce (cluster y2_hhid) 
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
+	reg $fincome, vce (cluster case_id) 
 	est store INJF
 	predict xbfemale, xb
 	
-	reg $mincome, vce (cluster y2_hhid)
-	test davg_tot = davg_wetq = davg_wetqstart = dlag1_tot = dlag1_wetq = dlag1_wetqstart = dtot =  dwetq =  dwetqstart 
-	est store INJJ
+	reg $mincome, vce (cluster case_id)
+	est store INJM 
 	predict xbmale, xb
 
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
@@ -83,15 +92,19 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 * consumption aggregates based on WB aggregates provided in LSMS downloads
 * consumption aggregates for: food, cigarettes and alcohol, clothing, recreation, education, health, housing and utilities (labeled transpo)
 
-	global aggconsume (dlnconsume_agg xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global foodconsume (dlnconsume_food xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global cigsal (dlnconsume_alctob xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global clothing (dlnconsume_clothfoot xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global recconsume (dlnconsume_rec xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global educconsume (dlnconsume_educ xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)	
-	global healthconsume (dlnconsume_health xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	global houseconsume (dlnconsume_houseutils xbmale xbfemale xbjoint i.agroeczone2010 i.agroeczone2013)
-	
+	global aggconsume (dlnconsume_agg xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global foodconsume (dlnconsume_food xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global cigsal (dlnconsume_alctob xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global clothing (dlnconsume_clothfoot xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global recconsume (dlnconsume_rec xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global educconsume (dlnconsume_educ xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)	
+	global healthconsume (dlnconsume_health xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global houseconsume (dlnconsume_houseutils xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global transpoconsume (dlnconsume_transpo xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	global miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
   
@@ -157,6 +170,15 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	testnl ([AGCONJ_mean]xbmale = [HEAJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HEAJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HEAJ_mean]xbjoint)
 
 	reg $houseconsume  
+	est store HOUSEJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ HOUSEJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [HOUSEJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HOUSEJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HOUSEJ_mean]xbjoint)
+	
+	reg $transpoconsume  
 	est store TRANSJ
 	test xbmale xbfemale xbjoint
 	*qui: boottest xbmale, reps (10000)  
@@ -164,9 +186,37 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	*qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ TRANSJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [TRANSJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [TRANSJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [TRANSJ_mean]xbjoint)
-
+		
+	reg $commconsume  
+	est store COMJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ COMJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [COMJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [COMJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [COMJ_mean]xbjoint)
+		
+	reg $hotresconsume  
+	est store HRESJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ HRESJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
+						
+	reg $miscconsume  
+	est store MISJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ MISJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [MISJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [MISJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [MISJ_mean]xbjoint)
+					
+	
 /*	
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using table3.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ MISJ using table3.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///

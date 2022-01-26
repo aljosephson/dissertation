@@ -29,7 +29,7 @@
 
 * open log
 	cap log 		close
-	log using		"$logs/weather", append
+	log using		"$logs/build_file", append
 	
 * **********************************************************************
 * 1 - year 1
@@ -639,7 +639,7 @@ summarize
 						dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
 						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
 						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
-						ssa_aez09 ssa_aez12
+						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid
 compress
 describe
 summarize
