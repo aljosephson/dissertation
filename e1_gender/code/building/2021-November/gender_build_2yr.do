@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 24 January 2022
+* Last edit: 26 January 2022
 * Stata v.16.1
 
 * does
@@ -33,6 +33,10 @@
 	
 * **********************************************************************
 * 1 - year 1
+* **********************************************************************
+
+* **********************************************************************
+* 1a - household and gender details 
 * **********************************************************************
 
 * merge sales decision with decision-maker information 
@@ -176,16 +180,119 @@ summarize
 	gen 			male_rspec = male_decsale 
 	replace			male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
 	*** in this specification, we assume that all joint labor is actually men's
-	*** which is a fair assumption, given above 	
+	*** which is a fair assumption, given above 
+	
+ 	save 			"$fil\regression-ready\household-total_y1", replace	
+	
+* **********************************************************************
+* 1b - sales values
+* **********************************************************************
 
+* convert MKW to 2010 values
+* 2009 = 93.1
+*** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
+
+* using rs_cropsales_valuei
+	summarize 		rs_cropsales_valuei, detail
+	*** mean = 22732.55, st. dev = 1243344.3, small = 0, large = 2340000
+
+	generate 		cropsales = rs_cropsales_valuei / 0.931 
+	summarize 		cropsales, detail	
+	*** mean = 24417.35, st. dev = 133560, small = 0, large = 2631579
+	
+* convert MWK to USD 
+* 1 USD = 123 MWK
+*** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
+	gen 			cropsales_usd = cropsales / 123 
+	summarize 		cropsales_usd, detail
+	*** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
+
+* determine values by sales manager
+
+*** (1) joint 
+	gen 			valuejoint_jspec = cropsales if joint_jspec == 1
+	replace			valuejoint_jspec = 0 if valuejoint_jspec == . 
+	gen 			valuefemale_jspec = cropsales if female_jspec == 1
+	replace 		valuefemale_jspec = 0 if valuefemale_jspec == .
+	gen 			valuemale_jspec = cropsales if male_jspec == 1
+	replace 		valuemale_jspec = 0 if valuemale_jspec == . 
+	
+*** (2) omit
+
+	gen 			valuefemale_ospec = cropsales if female_ospec == 1
+	replace 		valuefemale_ospec = 0 if valuefemale_ospec == .
+	gen 			valuemale_ospec = cropsales if male_ospec == 1
+	replace 		valuemale_ospec = 0 if valuemale_ospec == . 
+
+*** (3) reallocate 
+
+	gen 			valuefemale_rspec = cropsales if female_rspec == 1
+	replace 		valuefemale_rspec = 0 if valuefemale_rspec == .
+	gen 			valuemale_rspec = cropsales if male_rspec == 1
+	replace 		valuemale_rspec = 0 if valuemale_rspec == . 
+	
+* *********************************************************************
+* 1c - weather 
+* **********************************************************************
+
+	merge 			m:1 case_id ea_id year using "$fil\geovar\rain_2yr.dta"
+	*** matched = 3853
+	keep if _merge == 3
+	drop _merge 
+	
+	rename			total totalr 
+	
+ 	save 			"$fil\regression-ready\household-total_y1", replace	
+
+* *********************************************************************
+* 1d - aggregates 
+* **********************************************************************	
+
+	rename 			rexp_cat01 foodexp
+	rename 			rexp_cat02 alctobexp
+	rename 			rexp_cat03 clothexp
+	egen 			houseutilsexp = rsum (rexp_cat04 rexp_cat05)
+	*** adding housing and utilities with furnishings 
+	rename 			rexp_cat06 healthexp 
+	rename 			rexp_cat07 transpoexp
+	rename 			rexp_cat08 commexp
+	rename 			rexp_cat09 recexp
+	rename 			rexp_cat10 eduexp
+	rename 			rexp_cat11 hotelrestexp
+	rename 			rexp_cat12 miscexp 
+	rename 			rexpagg totalexp 
+	
+ 	save 			"$fil\regression-ready\household-total_y1", replace	
+	
+* *********************************************************************
+* 1e - reduce + clean up   
+* **********************************************************************	
+	
+	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
+						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
+						miscexp totalexp case_id year region district ea_id HHID 	
+						
+	rename 			* *09
+	rename 			case_id09 case_id
+	rename 			year09 year 
+	rename 			region09 region 
+	rename 			district09 district
+	rename 			ea_id09 ea_id 
+	rename 			HHID09 HHID
+	
 compress
 describe
 summarize
 	
  	save 			"$fil\regression-ready\household-total_y1", replace	
-	
+
 * **********************************************************************
 * 2 - year 2
+* **********************************************************************
+
+* **********************************************************************
+* 2a - household and gender details 
 * **********************************************************************
 
 * merge sales decision with decision-maker information 
@@ -342,28 +449,13 @@ summarize
 	
  	save 			"$fil\regression-ready\household-total_y2", replace	
 	
+
 * *********************************************************************
-* 3 - append all together 
-* **********************************************************************	
-
-* append all 
-	use 			"$fil\regression-ready\household-total_y1", clear 
-	append 			using "$fil\regression-ready\household-total_y2"
-	
-* save new full file 	
-
-compress
-describe
-summarize 
-
-	save 			"$fil\regression-ready\household-total_both", replace
-	
-* *********************************************************************
-* 4 - sales values 
+* 2b - sales values 
 * **********************************************************************
 	
 * convert MKW to 2010 values
-* 2009 = 93.1, 2012 = 130.5 
+* 2012 = 130.5 
 *** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
 
 * using rs_cropsales_valuei
@@ -371,7 +463,6 @@ summarize
 	*** mean = 37331, st. dev = 175685.4, small = 0, large = 333333
 
 	gen 			cropsales = rs_cropsales_valuei / 1.661 if year == 2012
-	replace 		cropsales = rs_cropsales_valuei / 0.931 if year == 2009	
 	summarize 		cropsales, detail	
 	*** mean = 26149.78, st. dev = 123840.8, small = 0, large = 2006823
 	
@@ -407,7 +498,7 @@ summarize
 	replace 		valuemale_rspec = 0 if valuemale_rspec == . 
 	
 * *********************************************************************
-* 5 - weather 
+* 2c - weather 
 * **********************************************************************
 
 	merge 			m:1 case_id y2_hhid ea_id year using "$fil\geovar\rain_2yr.dta"
@@ -417,10 +508,10 @@ summarize
 	
 	rename			total totalr 
 	
-	save 			"$fil\regression-ready\gender_all", replace
+ 	save 			"$fil\regression-ready\household-total_y2", replace	
 
 * *********************************************************************
-* 6 - aggregates 
+* 2d - aggregates 
 * **********************************************************************	
 
 	rename 			rexp_cat01 foodexp
@@ -437,7 +528,24 @@ summarize
 	rename 			rexp_cat12 miscexp 
 	rename 			rexpagg totalexp 
 	
-	save 			"$fil\regression-ready\gender_all", replace
+ 	save 			"$fil\regression-ready\household-total_y2", replace	
+	
+* *********************************************************************
+* 3 - append all together 
+* **********************************************************************	
+
+* append all 
+	use 			"$fil\regression-ready\household-total_y1", clear 
+	append 			using "$fil\regression-ready\household-total_y2"
+	
+* save new full file 	
+
+compress
+describe
+summarize 
+
+	save 			"$fil\regression-ready\household-total_both", replace
+	
 	
 * *********************************************************************
 * 7 - differencing  
