@@ -1,7 +1,5 @@
 /* BEGIN */
 
-********************************************************************************************
-
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
 * Edited on: 31 January 2022
