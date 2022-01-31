@@ -4,7 +4,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 13 September 2021
+* Edited on: 31 January 2022
 * Created by: alj
 * Stata v.16
 
@@ -19,6 +19,7 @@
 
 * TO DO:
 	* anonymize pre-submission 
+	* update table numbers with new manuscript numbers 
 
 * **********************************************************************
 * 1 - data - OMIT joint income

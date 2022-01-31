@@ -4,7 +4,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 27 January 2022
+* Edited on: 31 January 2022
 * Created by: alj
 * Stata v.16
 
@@ -18,6 +18,7 @@
 
 * TO DO:
 	* anonymize pre-submission 
+	* update table numbers with new manuscript numbers 
 	
 * **********************************************************************
 * 0 - setup
