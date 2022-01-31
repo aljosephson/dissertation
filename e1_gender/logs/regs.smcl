@@ -5726,4 +5726,1353 @@ end of do-file
 
 {txt}end of do-file
 
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD6f70_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. ********************************************************************************************
+. 
+. * Project: alj - intrahousehold mgmt of joint resources 
+. * Created on: ... 2016 
+. * Edited on: 31 January 2022
+. * Created by: alj
+. * Stata v.16
+. 
+. * does
+.         * first stage rainfall estimates for OMIT joint income & REALLOCATE joint income 
+.         * second stage overidentification test for male, female for OMIT joint income  & REALLOCATE joint income 
+.         * corresponds with tables 8 and 9 - panel 1 (OMIT), panel 2 (REALLOCATE)
+.         
+. * assumes
+.         * data_jointtest.dta 
+.         * data_reallocatetest.dta 
+. 
+. * TO DO:
+.         * anonymize pre-submission 
+.         * update table numbers with new manuscript numbers 
+.         * mht ?? 
+. 
+.         
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/regs.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 09:59:27
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - data 
+. * *********************************************************************
+. clear 
+{txt}
+{com}. 
+. * read in data 
+. 
+.         use                     "$fil\regression-ready\reg_ready-final", replace                
+{txt}
+{com}.         
+. * **********************************************************************
+. * 2 - OMIT joint income
+. * *********************************************************************
+. 
+. * **********************************************************************
+. * 2a - first stage - OMIT joint income 
+. * *********************************************************************
+. 
+. * set globals for male and female
+. 
+.         local fincomeo (dlnvaluefemale_ospec dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local mincomeo (dlnvaluemale_ospec dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}. 
+. * reg and F-test
+. * save estimates and predict xb 
+. 
+.         reg `fincomeo', vce (cluster case_id) 
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0243
+                                                {txt}Root MSE          =    {res} 3.5079
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnvaluefe..{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0005095{col 26}{space 2} .0001404{col 37}{space 1}    3.63{col 46}{space 3}0.000{col 54}{space 4} .0002339{col 67}{space 3} .0007851
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-.3784085{col 26}{space 2} .2958787{col 37}{space 1}   -1.28{col 46}{space 3}0.201{col 54}{space 4} -.959148{col 67}{space 3}  .202331
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 4.259804{col 26}{space 2} 2.906241{col 37}{space 1}    1.47{col 46}{space 3}0.143{col 54}{space 4}-1.444456{col 67}{space 3} 9.964064
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-.1686392{col 26}{space 2}  .046478{col 37}{space 1}   -3.63{col 46}{space 3}0.000{col 54}{space 4}-.2598644{col 67}{space 3}-.0774139
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} .1878672{col 26}{space 2} .2020368{col 37}{space 1}    0.93{col 46}{space 3}0.353{col 54}{space 4} -.208683{col 67}{space 3} .5844174
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-3.718092{col 26}{space 2} 2.906845{col 37}{space 1}   -1.28{col 46}{space 3}0.201{col 54}{space 4}-9.423537{col 67}{space 3} 1.987354
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-.1006422{col 26}{space 2} .5823148{col 37}{space 1}   -0.17{col 46}{space 3}0.863{col 54}{space 4}-1.243588{col 67}{space 3} 1.042303
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}-.0533634{col 26}{space 2} .1833404{col 37}{space 1}   -0.29{col 46}{space 3}0.771{col 54}{space 4} -.413217{col 67}{space 3} .3064902
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INJFo
+{txt}
+{com}.         predict xbfemaleo, xb
+{txt}(509 missing values generated)
+
+{com}.         
+.         reg `mincomeo', vce (cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0685
+                                                {txt}Root MSE          =    {res} 6.1888
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnvaluema..{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0016029{col 26}{space 2}  .000245{col 37}{space 1}    6.54{col 46}{space 3}0.000{col 54}{space 4}  .001122{col 67}{space 3} .0020837
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-15.59937{col 26}{space 2} .5683809{col 37}{space 1}  -27.45{col 46}{space 3}0.000{col 54}{space 4}-16.71497{col 67}{space 3}-14.48378
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-6.024571{col 26}{space 2} 2.722008{col 37}{space 1}   -2.21{col 46}{space 3}0.027{col 54}{space 4}-11.36722{col 67}{space 3}-.6819175
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}  -13.867{col 26}{space 2} .0810942{col 37}{space 1} -171.00{col 46}{space 3}0.000{col 54}{space 4}-14.02617{col 67}{space 3}-13.70783
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 13.63589{col 26}{space 2} .3368855{col 37}{space 1}   40.48{col 46}{space 3}0.000{col 54}{space 4} 12.97466{col 67}{space 3} 14.29712
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 6.336225{col 26}{space 2} 2.706764{col 37}{space 1}    2.34{col 46}{space 3}0.019{col 54}{space 4} 1.023492{col 67}{space 3} 11.64896
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 11.02164{col 26}{space 2} .9774663{col 37}{space 1}   11.28{col 46}{space 3}0.000{col 54}{space 4}  9.10311{col 67}{space 3} 12.94018
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .1237196{col 26}{space 2} .3101421{col 37}{space 1}    0.40{col 46}{space 3}0.690{col 54}{space 4}-.4850156{col 67}{space 3} .7324547
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INJMo
+{txt}
+{com}.         predict xbmaleo, xb
+{txt}(509 missing values generated)
+
+{com}. 
+. * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
+. 
+. 
+. /*
+> esttab INJM INJF INJJ using table1.tex, replace f ///
+>         label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+>         drop(3* _cons) ///
+>         star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+>         order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+>         stats(N r2, fmt(0 3) layout("\multicolumn{c -(}1{c )-}{c -(}c{c )-}{c -(}@{c )-}" "\multicolumn{c -(}1{c )-}{c -(}c{c )-}{c -(}@{c )-}") labels(`"Observations"' `"\(R^{c -(}2{c )-}\)"'))
+> */
+. 
+.         label variable xbmaleo "\hspace{c -(}0.1cm{c )-} Predicted change in male income"
+{txt}
+{com}.         label variable xbfemaleo "\hspace{c -(}0.1cm{c )-} Predicted change in female income"
+{txt}
+{com}. 
+. * **********************************************************************
+. * 2b - second stage - TABLE XX
+. * *********************************************************************
+. 
+. * male and female 
+. 
+. * create consmption aggregates - same process as for unrestricted test (Table A1)
+. * consumption aggregates based on WB aggregates provided in LSMS downloads
+. 
+.         local aggconsume (dlnconsume_agg xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local foodconsume (dlnconsume_food xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local cigsal (dlnconsume_alctob xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local clothing (dlnconsume_clothfoot xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local recconsume (dlnconsume_rec xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local educconsume (dlnconsume_educ xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)   
+{txt}
+{com}.         local healthconsume (dlnconsume_health xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local houseconsume (dlnconsume_houseutils xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local transpoconsume (dlnconsume_transpo xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local commconsume (dlnconsume_comm xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local hotresconsume (dlnconsume_hotres xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local miscconsume (dlnconsume_misc xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}. 
+. * regressions and wald tests    
+. * nl tests: compare specific consumption with aggregate 
+.   
+.         reg `aggconsume'
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}    19.01
+{txt}       Model {c |} {res} 4130.42067         7  590.060096   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 26133.8312       842  31.0378042   {txt}R-squared       ={res}    0.1365
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1293
+{txt}       Total {c |} {res} 30264.2518       849  35.6469397   {txt}Root MSE        =   {res} 5.5712
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~g{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .6988374{col 37}{space 1}    0.12{col 46}{space 3}0.905{col 54}{space 4}-1.288055{col 67}{space 3}  1.45528
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} 2.234669{col 37}{space 1}    1.93{col 46}{space 3}0.053{col 54}{space 4}-.0634721{col 67}{space 3} 8.708879
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 7.326086{col 37}{space 1}   -0.39{col 46}{space 3}0.700{col 54}{space 4}-17.20239{col 67}{space 3} 11.55667
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 14.04961{col 37}{space 1}   -1.29{col 46}{space 3}0.197{col 54}{space 4}-45.71087{col 67}{space 3} 9.441862
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2} 1.705112{col 37}{space 1}    0.00{col 46}{space 3}0.997{col 54}{space 4}-3.340232{col 67}{space 3} 3.353306
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 6.528982{col 37}{space 1}    0.44{col 46}{space 3}0.659{col 54}{space 4}-9.929535{col 67}{space 3} 15.70045
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 13.07095{col 37}{space 1}    1.23{col 46}{space 3}0.219{col 54}{space 4}-9.579627{col 67}{space 3}  41.7313
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3460453{col 37}{space 1}   33.09{col 46}{space 3}0.000{col 54}{space 4} 10.77125{col 67}{space 3} 12.12968
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   58.18
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         est store AGCONJ
+{txt}
+{com}. 
+.         reg `foodconsume'
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}    17.67
+{txt}       Model {c |} {res} 4591.75955         7   655.96565   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 31264.7723       842  37.1315585   {txt}R-squared       ={res}    0.1281
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1208
+{txt}       Total {c |} {res} 35856.5318       849  42.2338419   {txt}Root MSE        =   {res} 6.0936
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~d{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .2224444{col 26}{space 2} .7643675{col 37}{space 1}    0.29{col 46}{space 3}0.771{col 54}{space 4}-1.277845{col 67}{space 3} 1.722734
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}  4.15167{col 26}{space 2} 2.444214{col 37}{space 1}    1.70{col 46}{space 3}0.090{col 54}{space 4}-.6457977{col 67}{space 3} 8.949138
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-1.204024{col 26}{space 2} 8.013055{col 37}{space 1}   -0.15{col 46}{space 3}0.881{col 54}{space 4}-16.93193{col 67}{space 3} 14.52388
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-16.91199{col 26}{space 2} 15.36704{col 37}{space 1}   -1.10{col 46}{space 3}0.271{col 54}{space 4} -47.0742{col 67}{space 3} 13.25021
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.923936{col 26}{space 2} 1.865001{col 37}{space 1}    1.03{col 46}{space 3}0.303{col 54}{space 4} -1.73666{col 67}{space 3} 5.584532
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 1.646462{col 26}{space 2} 7.141206{col 37}{space 1}    0.23{col 46}{space 3}0.818{col 54}{space 4}-12.37019{col 67}{space 3} 15.66312
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 14.84047{col 26}{space 2} 14.29661{col 37}{space 1}    1.04{col 46}{space 3}0.300{col 54}{space 4}-13.22071{col 67}{space 3} 42.90165
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 10.33875{col 26}{space 2} .3784941{col 37}{space 1}   27.32{col 46}{space 3}0.000{col 54}{space 4} 9.595847{col 67}{space 3} 11.08165
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   54.45
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         est store CONFOJ
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ CONFOJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay CONFOJ:CONFOJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CONFOJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .2224444{col 26}{space 2}   .07706{col 37}{space 1}    2.89{col 46}{space 3}0.004{col 54}{space 4} .0714096{col 67}{space 3} .3734793
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}  4.15167{col 26}{space 2} .5613358{col 37}{space 1}    7.40{col 46}{space 3}0.000{col 54}{space 4} 3.051472{col 67}{space 3} 5.251868
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-1.204024{col 26}{space 2} 1.172188{col 37}{space 1}   -1.03{col 46}{space 3}0.304{col 54}{space 4}-3.501471{col 67}{space 3} 1.093422
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-16.91199{col 26}{space 2} 3.060776{col 37}{space 1}   -5.53{col 46}{space 3}0.000{col 54}{space 4}-22.91101{col 67}{space 3}-10.91298
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.923936{col 26}{space 2} 1.027707{col 37}{space 1}    1.87{col 46}{space 3}0.061{col 54}{space 4}-.0903329{col 67}{space 3} 3.938205
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 1.646462{col 26}{space 2} .9294977{col 37}{space 1}    1.77{col 46}{space 3}0.077{col 54}{space 4}-.1753196{col 67}{space 3} 3.468245
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 14.84047{col 26}{space 2} 2.734036{col 37}{space 1}    5.43{col 46}{space 3}0.000{col 54}{space 4} 9.481859{col 67}{space 3} 20.19908
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 10.33875{col 26}{space 2} .3871925{col 37}{space 1}   26.70{col 46}{space 3}0.000{col 54}{space 4} 9.579866{col 67}{space 3} 11.09763
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CONFOJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.614467{col 26}{space 2} .1078754{col 37}{space 1}   33.51{col 46}{space 3}0.000{col 54}{space 4} 3.403035{col 67}{space 3} 3.825899
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [CONFOJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [CONFOJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [CONFOJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [CONFOJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}      6.16
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0461{txt}
+
+{com}. 
+.         reg `cigsal'    
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     8.25
+{txt}       Model {c |} {res} 3580.35825         7  511.479749   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 52201.4891       842   61.997018   {txt}R-squared       ={res}    0.0642
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0564
+{txt}       Total {c |} {res} 55781.8474       849  65.7030004   {txt}Root MSE        =   {res} 7.8738
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~b{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .8527506{col 26}{space 2} .9876795{col 37}{space 1}    0.86{col 46}{space 3}0.388{col 54}{space 4}-1.085852{col 67}{space 3} 2.791354
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} .5664983{col 26}{space 2} 3.158298{col 37}{space 1}    0.18{col 46}{space 3}0.858{col 54}{space 4}-5.632562{col 67}{space 3} 6.765559
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 5.333313{col 26}{space 2} 10.35409{col 37}{space 1}    0.52{col 46}{space 3}0.607{col 54}{space 4}-14.98954{col 67}{space 3} 25.65617
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 7.772645{col 26}{space 2} 19.85656{col 37}{space 1}    0.39{col 46}{space 3}0.696{col 54}{space 4}-31.20153{col 67}{space 3} 46.74682
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}  1.31192{col 26}{space 2} 2.409866{col 37}{space 1}    0.54{col 46}{space 3}0.586{col 54}{space 4} -3.41813{col 67}{space 3} 6.041969
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-2.296108{col 26}{space 2} 9.227528{col 37}{space 1}   -0.25{col 46}{space 3}0.804{col 54}{space 4}-20.40777{col 67}{space 3} 15.81555
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-7.597083{col 26}{space 2}  18.4734{col 37}{space 1}   -0.41{col 46}{space 3}0.681{col 54}{space 4}-43.85641{col 67}{space 3} 28.66224
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .9841899{col 26}{space 2} .4890721{col 37}{space 1}    2.01{col 46}{space 3}0.044{col 54}{space 4} .0242463{col 67}{space 3} 1.944133
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store CIGSJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   14.95
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ CIGSJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay CIGSJ:CIGSJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CIGSJ_mean   {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .8527506{col 26}{space 2} .0762177{col 37}{space 1}   11.19{col 46}{space 3}0.000{col 54}{space 4} .7033666{col 67}{space 3} 1.002135
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} .5664983{col 26}{space 2} .6035581{col 37}{space 1}    0.94{col 46}{space 3}0.348{col 54}{space 4}-.6164538{col 67}{space 3} 1.749451
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 5.333313{col 26}{space 2} 1.197565{col 37}{space 1}    4.45{col 46}{space 3}0.000{col 54}{space 4} 2.986127{col 67}{space 3} 7.680498
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 7.772645{col 26}{space 2} 4.236529{col 37}{space 1}    1.83{col 46}{space 3}0.067{col 54}{space 4}-.5307991{col 67}{space 3} 16.07609
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}  1.31192{col 26}{space 2} 1.016474{col 37}{space 1}    1.29{col 46}{space 3}0.197{col 54}{space 4}-.6803324{col 67}{space 3} 3.304172
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-2.296108{col 26}{space 2} .8877969{col 37}{space 1}   -2.59{col 46}{space 3}0.010{col 54}{space 4}-4.036158{col 67}{space 3}-.5560583
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-7.597083{col 26}{space 2} 3.922159{col 37}{space 1}   -1.94{col 46}{space 3}0.053{col 54}{space 4}-15.28437{col 67}{space 3} .0902076
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .9841899{col 26}{space 2} .3850381{col 37}{space 1}    2.56{col 46}{space 3}0.011{col 54}{space 4} .2295291{col 67}{space 3} 1.738851
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CIGSJ_lnvar  {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.127086{col 26}{space 2} .0357584{col 37}{space 1}  115.42{col 46}{space 3}0.000{col 54}{space 4} 4.057001{col 67}{space 3} 4.197172
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [CIGSJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [CIGSJ_mean]xbfemaleo)
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [CIGSJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [CIGSJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}     44.71
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0000{txt}
+
+{com}.         
+.         reg `clothing'
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     7.83
+{txt}       Model {c |} {res} 3994.00973         7  570.572819   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 61365.0754       842  72.8801371   {txt}R-squared       ={res}    0.0611
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0533
+{txt}       Total {c |} {res} 65359.0852       849  76.9836103   {txt}Root MSE        =   {res}  8.537
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~t{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} 1.971386{col 26}{space 2} 1.070866{col 37}{space 1}    1.84{col 46}{space 3}0.066{col 54}{space 4} -.130495{col 67}{space 3} 4.073266
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}-2.364192{col 26}{space 2} 3.424304{col 37}{space 1}   -0.69{col 46}{space 3}0.490{col 54}{space 4}-9.085365{col 67}{space 3} 4.356982
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 19.35393{col 26}{space 2} 11.22616{col 37}{space 1}    1.72{col 46}{space 3}0.085{col 54}{space 4}-2.680602{col 67}{space 3} 41.38847
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 34.94769{col 26}{space 2} 21.52897{col 37}{space 1}    1.62{col 46}{space 3}0.105{col 54}{space 4}-7.309062{col 67}{space 3} 77.20444
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 4.862689{col 26}{space 2} 2.612835{col 37}{space 1}    1.86{col 46}{space 3}0.063{col 54}{space 4}-.2657462{col 67}{space 3} 9.991123
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -15.8016{col 26}{space 2} 10.00471{col 37}{space 1}   -1.58{col 46}{space 3}0.115{col 54}{space 4} -35.4387{col 67}{space 3} 3.835507
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-33.76849{col 26}{space 2} 20.02932{col 37}{space 1}   -1.69{col 46}{space 3}0.092{col 54}{space 4}-73.08174{col 67}{space 3} 5.544759
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.484654{col 26}{space 2} .5302639{col 37}{space 1}    4.69{col 46}{space 3}0.000{col 54}{space 4}  1.44386{col 67}{space 3} 3.525449
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store CLJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   18.93
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ CLJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay CLJ:CLJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CLJ_mean     {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} 1.971386{col 26}{space 2} .1115855{col 37}{space 1}   17.67{col 46}{space 3}0.000{col 54}{space 4} 1.752682{col 67}{space 3} 2.190089
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}-2.364192{col 26}{space 2} .6575984{col 37}{space 1}   -3.60{col 46}{space 3}0.000{col 54}{space 4}-3.653061{col 67}{space 3}-1.075323
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 19.35393{col 26}{space 2} 1.699043{col 37}{space 1}   11.39{col 46}{space 3}0.000{col 54}{space 4} 16.02387{col 67}{space 3}   22.684
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 34.94769{col 26}{space 2} 3.640918{col 37}{space 1}    9.60{col 46}{space 3}0.000{col 54}{space 4} 27.81162{col 67}{space 3} 42.08376
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 4.862689{col 26}{space 2} 1.488154{col 37}{space 1}    3.27{col 46}{space 3}0.001{col 54}{space 4}  1.94596{col 67}{space 3} 7.779418
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -15.8016{col 26}{space 2} 1.372426{col 37}{space 1}  -11.51{col 46}{space 3}0.000{col 54}{space 4} -18.4915{col 67}{space 3}-13.11169
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-33.76849{col 26}{space 2} 3.200601{col 37}{space 1}  -10.55{col 46}{space 3}0.000{col 54}{space 4}-40.04155{col 67}{space 3}-27.49543
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.484654{col 26}{space 2} .4380193{col 37}{space 1}    5.67{col 46}{space 3}0.000{col 54}{space 4} 1.626152{col 67}{space 3} 3.343156
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}CLJ_lnvar    {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.288816{col 26}{space 2} .0335923{col 37}{space 1}  127.67{col 46}{space 3}0.000{col 54}{space 4} 4.222976{col 67}{space 3} 4.354656
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [CLJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [CLJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [CLJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [CLJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}    281.11
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0000{txt}
+
+{com}. 
+.         reg `recconsume' 
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     6.12
+{txt}       Model {c |} {res} 1746.76633         7  249.538047   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 34325.3879       842  40.7664939   {txt}R-squared       ={res}    0.0484
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0405
+{txt}       Total {c |} {res} 36072.1542       849  42.4878142   {txt}Root MSE        =   {res} 6.3849
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsum~ec{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-1.470455{col 26}{space 2} .8009074{col 37}{space 1}   -1.84{col 46}{space 3}0.067{col 54}{space 4}-3.042465{col 67}{space 3} .1015542
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 7.284776{col 26}{space 2} 2.561058{col 37}{space 1}    2.84{col 46}{space 3}0.005{col 54}{space 4} 2.257969{col 67}{space 3} 12.31158
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-12.18074{col 26}{space 2} 8.396112{col 37}{space 1}   -1.45{col 46}{space 3}0.147{col 54}{space 4}-28.66051{col 67}{space 3} 4.299021
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -43.0758{col 26}{space 2} 16.10165{col 37}{space 1}   -2.68{col 46}{space 3}0.008{col 54}{space 4}-74.67988{col 67}{space 3}-11.47172
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-2.018446{col 26}{space 2} 1.954155{col 37}{space 1}   -1.03{col 46}{space 3}0.302{col 54}{space 4}-5.854034{col 67}{space 3} 1.817142
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 10.33823{col 26}{space 2} 7.482585{col 37}{space 1}    1.38{col 46}{space 3}0.167{col 54}{space 4}-4.348475{col 67}{space 3} 25.02494
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 38.25277{col 26}{space 2} 14.98005{col 37}{space 1}    2.55{col 46}{space 3}0.011{col 54}{space 4} 8.850153{col 67}{space 3} 67.65539
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.648623{col 26}{space 2} .3965876{col 37}{space 1}    4.16{col 46}{space 3}0.000{col 54}{space 4} .8702065{col 67}{space 3} 2.427039
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store RECJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   16.69
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         *qui: boottest xbjoint, reps (10000) 
+.         suest AGCONJ RECJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay RECJ:RECJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}RECJ_mean    {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-1.470455{col 26}{space 2} .0874853{col 37}{space 1}  -16.81{col 46}{space 3}0.000{col 54}{space 4}-1.641923{col 67}{space 3}-1.298987
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 7.284776{col 26}{space 2}  .563704{col 37}{space 1}   12.92{col 46}{space 3}0.000{col 54}{space 4} 6.179937{col 67}{space 3} 8.389616
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-12.18074{col 26}{space 2} 1.341518{col 37}{space 1}   -9.08{col 46}{space 3}0.000{col 54}{space 4}-14.81007{col 67}{space 3}-9.551417
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -43.0758{col 26}{space 2} 3.679405{col 37}{space 1}  -11.71{col 46}{space 3}0.000{col 54}{space 4} -50.2873{col 67}{space 3} -35.8643
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-2.018446{col 26}{space 2} 1.166744{col 37}{space 1}   -1.73{col 46}{space 3}0.084{col 54}{space 4}-4.305223{col 67}{space 3} .2683307
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 10.33823{col 26}{space 2} 1.090298{col 37}{space 1}    9.48{col 46}{space 3}0.000{col 54}{space 4}  8.20129{col 67}{space 3} 12.47518
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 38.25277{col 26}{space 2} 3.430653{col 37}{space 1}   11.15{col 46}{space 3}0.000{col 54}{space 4} 31.52882{col 67}{space 3} 44.97673
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.648623{col 26}{space 2} .3139007{col 37}{space 1}    5.25{col 46}{space 3}0.000{col 54}{space 4} 1.033389{col 67}{space 3} 2.263857
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}RECJ_lnvar   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.707861{col 26}{space 2}  .033022{col 37}{space 1}  112.28{col 46}{space 3}0.000{col 54}{space 4} 3.643139{col 67}{space 3} 3.772583
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [RECJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [RECJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [RECJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [RECJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}    193.52
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0000{txt}
+
+{com}. 
+.         reg `educconsume'
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     7.44
+{txt}       Model {c |} {res} 1993.82631         7  284.832331   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 32240.0614       842  38.2898592   {txt}R-squared       ={res}    0.0582
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0504
+{txt}       Total {c |} {res} 34233.8877       849  40.3226004   {txt}Root MSE        =   {res} 6.1879
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsum~uc{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-.9715417{col 26}{space 2}  .776198{col 37}{space 1}   -1.25{col 46}{space 3}0.211{col 54}{space 4}-2.495052{col 67}{space 3} .5519684
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 5.935853{col 26}{space 2} 2.482045{col 37}{space 1}    2.39{col 46}{space 3}0.017{col 54}{space 4} 1.064132{col 67}{space 3} 10.80757
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-8.875131{col 26}{space 2} 8.137077{col 37}{space 1}   -1.09{col 46}{space 3}0.276{col 54}{space 4}-24.84647{col 67}{space 3} 7.096204
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -26.7707{col 26}{space 2} 15.60489{col 37}{space 1}   -1.72{col 46}{space 3}0.087{col 54}{space 4}-57.39974{col 67}{space 3} 3.858338
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-.2489057{col 26}{space 2} 1.893866{col 37}{space 1}   -0.13{col 46}{space 3}0.895{col 54}{space 4}-3.966159{col 67}{space 3} 3.468347
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 8.171492{col 26}{space 2} 7.251734{col 37}{space 1}    1.13{col 46}{space 3}0.260{col 54}{space 4}-6.062106{col 67}{space 3} 22.40509
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 23.86557{col 26}{space 2} 14.51789{col 37}{space 1}    1.64{col 46}{space 3}0.101{col 54}{space 4}-4.629924{col 67}{space 3} 52.36107
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.785431{col 26}{space 2} .3843522{col 37}{space 1}   12.45{col 46}{space 3}0.000{col 54}{space 4}  4.03103{col 67}{space 3} 5.539831
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store EDUCJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   19.46
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         *qui: boottest xbjoint, reps (10000) 
+.         suest AGCONJ EDUCJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay EDUCJ:EDUCJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}EDUCJ_mean   {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-.9715417{col 26}{space 2} .0849155{col 37}{space 1}  -11.44{col 46}{space 3}0.000{col 54}{space 4}-1.137973{col 67}{space 3}-.8051105
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 5.935853{col 26}{space 2} .5239592{col 37}{space 1}   11.33{col 46}{space 3}0.000{col 54}{space 4} 4.908912{col 67}{space 3} 6.962794
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-8.875131{col 26}{space 2} 1.296825{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-11.41686{col 67}{space 3}-6.333401
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -26.7707{col 26}{space 2} 5.663853{col 37}{space 1}   -4.73{col 46}{space 3}0.000{col 54}{space 4}-37.87165{col 67}{space 3}-15.66975
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-.2489057{col 26}{space 2} 1.132472{col 37}{space 1}   -0.22{col 46}{space 3}0.826{col 54}{space 4}-2.468509{col 67}{space 3} 1.970698
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 8.171492{col 26}{space 2} 1.055213{col 37}{space 1}    7.74{col 46}{space 3}0.000{col 54}{space 4} 6.103313{col 67}{space 3} 10.23967
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 23.86557{col 26}{space 2} 5.562839{col 37}{space 1}    4.29{col 46}{space 3}0.000{col 54}{space 4} 12.96261{col 67}{space 3} 34.76854
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.785431{col 26}{space 2} .3260608{col 37}{space 1}   14.68{col 46}{space 3}0.000{col 54}{space 4} 4.146363{col 67}{space 3} 5.424498
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}EDUCJ_lnvar  {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.645185{col 26}{space 2} .0485977{col 37}{space 1}   75.01{col 46}{space 3}0.000{col 54}{space 4} 3.549935{col 67}{space 3} 3.740435
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [EDUCJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [EDUCJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [EDUCJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [EDUCJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}     94.51
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0000{txt}
+
+{com}. 
+.         reg `healthconsume' 
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     6.93
+{txt}       Model {c |} {res} 3252.26866         7  464.609809   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 56419.8054       842  67.0068948   {txt}R-squared       ={res}    0.0545
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0466
+{txt}       Total {c |} {res}  59672.074       849  70.2851284   {txt}Root MSE        =   {res} 8.1858
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~h{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} 1.720752{col 26}{space 2} 1.026811{col 37}{space 1}    1.68{col 46}{space 3}0.094{col 54}{space 4}-.2946574{col 67}{space 3} 3.736161
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}-1.783906{col 26}{space 2} 3.283427{col 37}{space 1}   -0.54{col 46}{space 3}0.587{col 54}{space 4} -8.22857{col 67}{space 3} 4.660757
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 15.88254{col 26}{space 2} 10.76431{col 37}{space 1}    1.48{col 46}{space 3}0.140{col 54}{space 4}-5.245493{col 67}{space 3} 37.01057
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 21.24228{col 26}{space 2} 20.64327{col 37}{space 1}    1.03{col 46}{space 3}0.304{col 54}{space 4}-19.27602{col 67}{space 3} 61.76059
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 5.863129{col 26}{space 2} 2.505343{col 37}{space 1}    2.34{col 46}{space 3}0.020{col 54}{space 4} .9456787{col 67}{space 3} 10.78058
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-12.72982{col 26}{space 2} 9.593117{col 37}{space 1}   -1.33{col 46}{space 3}0.185{col 54}{space 4}-31.55905{col 67}{space 3}  6.09941
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-19.11905{col 26}{space 2} 19.20531{col 37}{space 1}   -1.00{col 46}{space 3}0.320{col 54}{space 4}-56.81495{col 67}{space 3} 18.57684
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .6297156{col 26}{space 2} .5084488{col 37}{space 1}    1.24{col 46}{space 3}0.216{col 54}{space 4}-.3682602{col 67}{space 3} 1.627691
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store HEAJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   18.18
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ HEAJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay HEAJ:HEAJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HEAJ_mean    {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} 1.720752{col 26}{space 2} .0912955{col 37}{space 1}   18.85{col 46}{space 3}0.000{col 54}{space 4} 1.541816{col 67}{space 3} 1.899688
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2}-1.783906{col 26}{space 2} .6376283{col 37}{space 1}   -2.80{col 46}{space 3}0.005{col 54}{space 4}-3.033635{col 67}{space 3}-.5341779
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 15.88254{col 26}{space 2} 1.423656{col 37}{space 1}   11.16{col 46}{space 3}0.000{col 54}{space 4} 13.09223{col 67}{space 3} 18.67286
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 21.24228{col 26}{space 2} 5.881291{col 37}{space 1}    3.61{col 46}{space 3}0.000{col 54}{space 4} 9.715166{col 67}{space 3}  32.7694
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 5.863129{col 26}{space 2} 1.217559{col 37}{space 1}    4.82{col 46}{space 3}0.000{col 54}{space 4} 3.476757{col 67}{space 3} 8.249501
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-12.72982{col 26}{space 2} 1.100818{col 37}{space 1}  -11.56{col 46}{space 3}0.000{col 54}{space 4}-14.88738{col 67}{space 3}-10.57226
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-19.11905{col 26}{space 2} 5.708455{col 37}{space 1}   -3.35{col 46}{space 3}0.001{col 54}{space 4}-30.30742{col 67}{space 3}-7.930689
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .6297156{col 26}{space 2} .4233467{col 37}{space 1}    1.49{col 46}{space 3}0.137{col 54}{space 4}-.2000286{col 67}{space 3}  1.45946
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HEAJ_lnvar   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.204796{col 26}{space 2} .0277275{col 37}{space 1}  151.65{col 46}{space 3}0.000{col 54}{space 4} 4.150451{col 67}{space 3}  4.25914
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [HEAJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [HEAJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [HEAJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [HEAJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}    215.50
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0000{txt}
+
+{com}. 
+.         reg `houseconsume'  
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}    18.95
+{txt}       Model {c |} {res} 1829.43595         7  261.347993   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 11611.4907       842   13.790369   {txt}R-squared       ={res}    0.1361
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1289
+{txt}       Total {c |} {res} 13440.9267       849  15.8314802   {txt}Root MSE        =   {res} 3.7135
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsum~ls{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-.0035936{col 26}{space 2} .4658205{col 37}{space 1}   -0.01{col 46}{space 3}0.994{col 54}{space 4}-.9178993{col 67}{space 3}  .910712
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.690203{col 26}{space 2} 1.489552{col 37}{space 1}    1.81{col 46}{space 3}0.071{col 54}{space 4}-.2334674{col 67}{space 3} 5.613874
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-1.900391{col 26}{space 2} 4.883312{col 37}{space 1}   -0.39{col 46}{space 3}0.697{col 54}{space 4}-11.48528{col 67}{space 3} 7.684503
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-11.60624{col 26}{space 2} 9.364975{col 37}{space 1}   -1.24{col 46}{space 3}0.216{col 54}{space 4}-29.98768{col 67}{space 3} 6.775194
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.493787{col 26}{space 2} 1.136568{col 37}{space 1}   -1.31{col 46}{space 3}0.189{col 54}{space 4}-3.724626{col 67}{space 3} .7370518
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.335763{col 26}{space 2}  4.35199{col 37}{space 1}    0.54{col 46}{space 3}0.592{col 54}{space 4} -6.20626{col 67}{space 3} 10.87779
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.42924{col 26}{space 2} 8.712634{col 37}{space 1}    1.20{col 46}{space 3}0.232{col 54}{space 4}-6.671791{col 67}{space 3} 27.53027
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  11.0968{col 26}{space 2} .2306617{col 37}{space 1}   48.11{col 46}{space 3}0.000{col 54}{space 4} 10.64406{col 67}{space 3} 11.54954
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store HOUSEJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   44.69
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ HOUSEJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay HOUSEJ:HOUSEJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HOUSEJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2}-.0035936{col 26}{space 2} .0867287{col 37}{space 1}   -0.04{col 46}{space 3}0.967{col 54}{space 4}-.1735788{col 67}{space 3} .1663916
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.690203{col 26}{space 2} .4234643{col 37}{space 1}    6.35{col 46}{space 3}0.000{col 54}{space 4} 1.860228{col 67}{space 3} 3.520178
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-1.900391{col 26}{space 2} 1.283453{col 37}{space 1}   -1.48{col 46}{space 3}0.139{col 54}{space 4}-4.415913{col 67}{space 3} .6151317
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-11.60624{col 26}{space 2} 2.224417{col 37}{space 1}   -5.22{col 46}{space 3}0.000{col 54}{space 4}-15.96602{col 67}{space 3}-7.246465
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.493787{col 26}{space 2} 1.156654{col 37}{space 1}   -1.29{col 46}{space 3}0.197{col 54}{space 4}-3.760786{col 67}{space 3} .7732125
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.335763{col 26}{space 2} 1.117719{col 37}{space 1}    2.09{col 46}{space 3}0.037{col 54}{space 4} .1450752{col 67}{space 3} 4.526452
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.42924{col 26}{space 2}  2.01394{col 37}{space 1}    5.18{col 46}{space 3}0.000{col 54}{space 4} 6.481989{col 67}{space 3} 14.37649
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  11.0968{col 26}{space 2} .2434132{col 37}{space 1}   45.59{col 46}{space 3}0.000{col 54}{space 4} 10.61972{col 67}{space 3} 11.57388
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HOUSEJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  2.62397{col 26}{space 2}  .180879{col 37}{space 1}   14.51{col 46}{space 3}0.000{col 54}{space 4} 2.269454{col 67}{space 3} 2.978487
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [HOUSEJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [HOUSEJ_mean]xbfemaleo)
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [HOUSEJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [HOUSEJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}     15.50
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0004{txt}
+
+{com}.         
+.         reg `transpoconsume'  
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     7.58
+{txt}       Model {c |} {res} 3429.50846         7   489.92978   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 54416.2885       842   64.627421   {txt}R-squared       ={res}    0.0593
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0515
+{txt}       Total {c |} {res} 57845.7969       849  68.1340364   {txt}Root MSE        =   {res} 8.0391
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~o{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} 1.008414{col 37}{space 1}    0.44{col 46}{space 3}0.660{col 54}{space 4}-1.535944{col 67}{space 3} 2.422659
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2} 3.224602{col 37}{space 1}    0.76{col 46}{space 3}0.446{col 54}{space 4}-3.872786{col 67}{space 3} 8.785616
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 10.57146{col 37}{space 1}   -0.38{col 46}{space 3}0.706{col 54}{space 4}-24.73664{col 67}{space 3} 16.76237
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 20.27342{col 37}{space 1}   -0.71{col 46}{space 3}0.479{col 54}{space 4}-54.15067{col 67}{space 3} 25.43409
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 2.460457{col 37}{space 1}    0.28{col 46}{space 3}0.776{col 54}{space 4}-4.128467{col 67}{space 3} 5.530233
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2} 9.421247{col 37}{space 1}    0.49{col 46}{space 3}0.628{col 54}{space 4}-13.92093{col 67}{space 3} 23.06285
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 18.86123{col 37}{space 1}    0.58{col 46}{space 3}0.562{col 54}{space 4}-26.08786{col 67}{space 3} 47.95322
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4993395{col 37}{space 1}    5.32{col 46}{space 3}0.000{col 54}{space 4} 1.677729{col 67}{space 3} 3.637922
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store TRANSJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   19.78
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ TRANSJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay TRANSJ:TRANSJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}TRANSJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} .1069982{col 37}{space 1}    4.14{col 46}{space 3}0.000{col 54}{space 4} .2336451{col 67}{space 3} .6530702
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2}  .656942{col 37}{space 1}    3.74{col 46}{space 3}0.000{col 54}{space 4} 1.168832{col 67}{space 3} 3.743998
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 1.640804{col 37}{space 1}   -2.43{col 46}{space 3}0.015{col 54}{space 4}-7.203055{col 67}{space 3}-.7712212
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 3.941328{col 37}{space 1}   -3.64{col 46}{space 3}0.000{col 54}{space 4}-22.08315{col 67}{space 3}-6.633427
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 1.426976{col 37}{space 1}    0.49{col 46}{space 3}0.623{col 54}{space 4} -2.09594{col 67}{space 3} 3.497705
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2}  1.32673{col 37}{space 1}    3.45{col 46}{space 3}0.001{col 54}{space 4} 1.970616{col 67}{space 3} 7.171301
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 3.586204{col 37}{space 1}    3.05{col 46}{space 3}0.002{col 54}{space 4} 3.903847{col 67}{space 3} 17.96151
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4108344{col 37}{space 1}    6.47{col 46}{space 3}0.000{col 54}{space 4} 1.852605{col 67}{space 3} 3.463046
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}TRANSJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.168639{col 26}{space 2} .0342738{col 37}{space 1}  121.63{col 46}{space 3}0.000{col 54}{space 4} 4.101463{col 67}{space 3} 4.235814
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [TRANSJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [TRANSJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [TRANSJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [TRANSJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}      8.26
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0161{txt}
+
+{com}.                 
+.         reg `transpoconsume'  
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     7.58
+{txt}       Model {c |} {res} 3429.50846         7   489.92978   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 54416.2885       842   64.627421   {txt}R-squared       ={res}    0.0593
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0515
+{txt}       Total {c |} {res} 57845.7969       849  68.1340364   {txt}Root MSE        =   {res} 8.0391
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~o{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} 1.008414{col 37}{space 1}    0.44{col 46}{space 3}0.660{col 54}{space 4}-1.535944{col 67}{space 3} 2.422659
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2} 3.224602{col 37}{space 1}    0.76{col 46}{space 3}0.446{col 54}{space 4}-3.872786{col 67}{space 3} 8.785616
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 10.57146{col 37}{space 1}   -0.38{col 46}{space 3}0.706{col 54}{space 4}-24.73664{col 67}{space 3} 16.76237
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 20.27342{col 37}{space 1}   -0.71{col 46}{space 3}0.479{col 54}{space 4}-54.15067{col 67}{space 3} 25.43409
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 2.460457{col 37}{space 1}    0.28{col 46}{space 3}0.776{col 54}{space 4}-4.128467{col 67}{space 3} 5.530233
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2} 9.421247{col 37}{space 1}    0.49{col 46}{space 3}0.628{col 54}{space 4}-13.92093{col 67}{space 3} 23.06285
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 18.86123{col 37}{space 1}    0.58{col 46}{space 3}0.562{col 54}{space 4}-26.08786{col 67}{space 3} 47.95322
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4993395{col 37}{space 1}    5.32{col 46}{space 3}0.000{col 54}{space 4} 1.677729{col 67}{space 3} 3.637922
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store COMJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   19.78
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ COMJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay COMJ:COMJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}COMJ_mean    {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} .1069982{col 37}{space 1}    4.14{col 46}{space 3}0.000{col 54}{space 4} .2336451{col 67}{space 3} .6530702
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2}  .656942{col 37}{space 1}    3.74{col 46}{space 3}0.000{col 54}{space 4} 1.168832{col 67}{space 3} 3.743998
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 1.640804{col 37}{space 1}   -2.43{col 46}{space 3}0.015{col 54}{space 4}-7.203055{col 67}{space 3}-.7712212
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 3.941328{col 37}{space 1}   -3.64{col 46}{space 3}0.000{col 54}{space 4}-22.08315{col 67}{space 3}-6.633427
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 1.426976{col 37}{space 1}    0.49{col 46}{space 3}0.623{col 54}{space 4} -2.09594{col 67}{space 3} 3.497705
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2}  1.32673{col 37}{space 1}    3.45{col 46}{space 3}0.001{col 54}{space 4} 1.970616{col 67}{space 3} 7.171301
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 3.586204{col 37}{space 1}    3.05{col 46}{space 3}0.002{col 54}{space 4} 3.903847{col 67}{space 3} 17.96151
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4108344{col 37}{space 1}    6.47{col 46}{space 3}0.000{col 54}{space 4} 1.852605{col 67}{space 3} 3.463046
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}COMJ_lnvar   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.168639{col 26}{space 2} .0342738{col 37}{space 1}  121.63{col 46}{space 3}0.000{col 54}{space 4} 4.101463{col 67}{space 3} 4.235814
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [COMJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [COMJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [COMJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [COMJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}      8.26
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0161{txt}
+
+{com}.                 
+.         reg `transpoconsume'  
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}     7.58
+{txt}       Model {c |} {res} 3429.50846         7   489.92978   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 54416.2885       842   64.627421   {txt}R-squared       ={res}    0.0593
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0515
+{txt}       Total {c |} {res} 57845.7969       849  68.1340364   {txt}Root MSE        =   {res} 8.0391
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsume~o{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} 1.008414{col 37}{space 1}    0.44{col 46}{space 3}0.660{col 54}{space 4}-1.535944{col 67}{space 3} 2.422659
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2} 3.224602{col 37}{space 1}    0.76{col 46}{space 3}0.446{col 54}{space 4}-3.872786{col 67}{space 3} 8.785616
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 10.57146{col 37}{space 1}   -0.38{col 46}{space 3}0.706{col 54}{space 4}-24.73664{col 67}{space 3} 16.76237
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 20.27342{col 37}{space 1}   -0.71{col 46}{space 3}0.479{col 54}{space 4}-54.15067{col 67}{space 3} 25.43409
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 2.460457{col 37}{space 1}    0.28{col 46}{space 3}0.776{col 54}{space 4}-4.128467{col 67}{space 3} 5.530233
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2} 9.421247{col 37}{space 1}    0.49{col 46}{space 3}0.628{col 54}{space 4}-13.92093{col 67}{space 3} 23.06285
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 18.86123{col 37}{space 1}    0.58{col 46}{space 3}0.562{col 54}{space 4}-26.08786{col 67}{space 3} 47.95322
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4993395{col 37}{space 1}    5.32{col 46}{space 3}0.000{col 54}{space 4} 1.677729{col 67}{space 3} 3.637922
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store HRESJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   19.78
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ HRESJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay HRESJ:HRESJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HRESJ_mean   {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .4433576{col 26}{space 2} .1069982{col 37}{space 1}    4.14{col 46}{space 3}0.000{col 54}{space 4} .2336451{col 67}{space 3} .6530702
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 2.456415{col 26}{space 2}  .656942{col 37}{space 1}    3.74{col 46}{space 3}0.000{col 54}{space 4} 1.168832{col 67}{space 3} 3.743998
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.987138{col 26}{space 2} 1.640804{col 37}{space 1}   -2.43{col 46}{space 3}0.015{col 54}{space 4}-7.203055{col 67}{space 3}-.7712212
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-14.35829{col 26}{space 2} 3.941328{col 37}{space 1}   -3.64{col 46}{space 3}0.000{col 54}{space 4}-22.08315{col 67}{space 3}-6.633427
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .7008828{col 26}{space 2} 1.426976{col 37}{space 1}    0.49{col 46}{space 3}0.623{col 54}{space 4} -2.09594{col 67}{space 3} 3.497705
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.570959{col 26}{space 2}  1.32673{col 37}{space 1}    3.45{col 46}{space 3}0.001{col 54}{space 4} 1.970616{col 67}{space 3} 7.171301
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 10.93268{col 26}{space 2} 3.586204{col 37}{space 1}    3.05{col 46}{space 3}0.002{col 54}{space 4} 3.903847{col 67}{space 3} 17.96151
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.657826{col 26}{space 2} .4108344{col 37}{space 1}    6.47{col 46}{space 3}0.000{col 54}{space 4} 1.852605{col 67}{space 3} 3.463046
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}HRESJ_lnvar  {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.168639{col 26}{space 2} .0342738{col 37}{space 1}  121.63{col 46}{space 3}0.000{col 54}{space 4} 4.101463{col 67}{space 3} 4.235814
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [HRESJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [HRESJ_mean]xbfemaleo)
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [HRESJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [HRESJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}      8.26
+{txt}{ralign 22:Prob > chi2} =  {res}      0.0161{txt}
+
+{com}.                                                 
+.         reg `miscconsume'  
+{p 0 6 2}{txt}note: 323.ssa_aez12 omitted because of collinearity{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       850
+{txt}{hline 13}{c +}{hline 34}   F(7, 842)       = {res}    18.57
+{txt}       Model {c |} {res}  4166.0589         7  595.151271   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}  26990.585       842  32.0553266   {txt}R-squared       ={res}    0.1337
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1265
+{txt}       Total {c |} {res} 31156.6439       849  36.6980494   {txt}Root MSE        =   {res} 5.6617
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}dlnconsum~sc{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .2231563{col 26}{space 2} .7102001{col 37}{space 1}    0.31{col 46}{space 3}0.753{col 54}{space 4}-1.170814{col 67}{space 3} 1.617127
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.037175{col 26}{space 2} 2.271003{col 37}{space 1}    1.78{col 46}{space 3}0.076{col 54}{space 4}-.4203173{col 67}{space 3} 8.494667
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-2.376237{col 26}{space 2} 7.445204{col 37}{space 1}   -0.32{col 46}{space 3}0.750{col 54}{space 4}-16.98958{col 67}{space 3}  12.2371
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-15.36189{col 26}{space 2} 14.27805{col 37}{space 1}   -1.08{col 46}{space 3}0.282{col 54}{space 4}-43.38663{col 67}{space 3} 12.66285
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.561881{col 26}{space 2} 1.732836{col 37}{space 1}    0.90{col 46}{space 3}0.368{col 54}{space 4}-1.839305{col 67}{space 3} 4.963067
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.298789{col 26}{space 2}  6.63514{col 37}{space 1}    0.35{col 46}{space 3}0.729{col 54}{space 4}-10.72457{col 67}{space 3} 15.32215
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 13.77218{col 26}{space 2} 13.28347{col 37}{space 1}    1.04{col 46}{space 3}0.300{col 54}{space 4}-12.30042{col 67}{space 3} 39.84479
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 6.833945{col 26}{space 2} .3516718{col 37}{space 1}   19.43{col 46}{space 3}0.000{col 54}{space 4} 6.143688{col 67}{space 3} 7.524201
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store MISJ
+{txt}
+{com}.         test xbmaleo xbfemaleo
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}xbmaleo = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} xbfemaleo = 0{p_end}
+
+{txt}       F(  2,   842) ={res}   60.18
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}.         *qui: boottest xbmale, reps (10000)  
+.         *qui: boottest xbfemale, reps (10000)  
+.         suest AGCONJ MISJ, vce(cluster y2_hhid)
+{res}
+{txt}Simultaneous results for {stata estimates replay AGCONJ:AGCONJ}, {stata estimates replay MISJ:MISJ}
+
+{col 49}Number of obs{col 67}= {res}       850
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in y2_hhid)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_mean  {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .0836124{col 26}{space 2} .0960743{col 37}{space 1}    0.87{col 46}{space 3}0.384{col 54}{space 4}-.1046897{col 67}{space 3} .2719146
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.322703{col 26}{space 2} .6030889{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} 3.140671{col 67}{space 3} 5.504736
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -2.82286{col 26}{space 2} 1.448737{col 37}{space 1}   -1.95{col 46}{space 3}0.051{col 54}{space 4}-5.662332{col 67}{space 3} .0166123
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -18.1345{col 26}{space 2} 3.173219{col 37}{space 1}   -5.71{col 46}{space 3}0.000{col 54}{space 4} -24.3539{col 67}{space 3}-11.91511
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .0065369{col 26}{space 2}  1.28129{col 37}{space 1}    0.01{col 46}{space 3}0.996{col 54}{space 4}-2.504746{col 67}{space 3}  2.51782
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.885456{col 26}{space 2} 1.213367{col 37}{space 1}    2.38{col 46}{space 3}0.017{col 54}{space 4} .5073012{col 67}{space 3} 5.263612
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 16.07584{col 26}{space 2} 2.814046{col 37}{space 1}    5.71{col 46}{space 3}0.000{col 54}{space 4} 10.56041{col 67}{space 3} 21.59126
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.45047{col 26}{space 2} .3555465{col 37}{space 1}   32.21{col 46}{space 3}0.000{col 54}{space 4} 10.75361{col 67}{space 3} 12.14733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}AGCONJ_lnvar {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.435206{col 26}{space 2} .1262557{col 37}{space 1}   27.21{col 46}{space 3}0.000{col 54}{space 4} 3.187749{col 67}{space 3} 3.682663
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}MISJ_mean    {txt}{c |}
+{space 5}xbmaleo {c |}{col 14}{res}{space 2} .2231563{col 26}{space 2} .0794061{col 37}{space 1}    2.81{col 46}{space 3}0.005{col 54}{space 4} .0675232{col 67}{space 3} .3787893
+{txt}{space 3}xbfemaleo {c |}{col 14}{res}{space 2} 4.037175{col 26}{space 2} .4930263{col 37}{space 1}    8.19{col 46}{space 3}0.000{col 54}{space 4} 3.070861{col 67}{space 3} 5.003489
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-2.376237{col 26}{space 2} 1.209626{col 37}{space 1}   -1.96{col 46}{space 3}0.049{col 54}{space 4} -4.74706{col 67}{space 3}-.0054145
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-15.36189{col 26}{space 2} 3.177518{col 37}{space 1}   -4.83{col 46}{space 3}0.000{col 54}{space 4}-21.58971{col 67}{space 3}-9.134068
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.561881{col 26}{space 2} 1.058996{col 37}{space 1}    1.47{col 46}{space 3}0.140{col 54}{space 4}-.5137122{col 67}{space 3} 3.637474
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.298789{col 26}{space 2} .9805214{col 37}{space 1}    2.34{col 46}{space 3}0.019{col 54}{space 4} .3770025{col 67}{space 3} 4.220576
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 13.77218{col 26}{space 2} 2.953369{col 37}{space 1}    4.66{col 46}{space 3}0.000{col 54}{space 4} 7.983687{col 67}{space 3} 19.56068
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}        0{col 26}{txt}  (omitted)
+{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 6.833945{col 26}{space 2} .3387397{col 37}{space 1}   20.17{col 46}{space 3}0.000{col 54}{space 4} 6.170027{col 67}{space 3} 7.497862
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}MISJ_lnvar   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 3.467463{col 26}{space 2} .0794361{col 37}{space 1}   43.65{col 46}{space 3}0.000{col 54}{space 4} 3.311772{col 67}{space 3} 3.623155
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         testnl ([AGCONJ_mean]xbmaleo = [MISJ_mean]xbmaleo) ([AGCONJ_mean]xbfemaleo = [MISJ_mean]xbfemaleo) 
+
+{col 3}{txt}(1){res}{col 8}{bind:[AGCONJ_mean]xbmaleo = [MISJ_mean]xbmaleo}
+{col 3}{txt}(2){res}{col 8}{bind:[AGCONJ_mean]xbfemaleo = [MISJ_mean]xbfemaleo}
+
+{txt}{ralign 22:chi2({res:2})} =  {res}      1.90
+{txt}{ralign 22:Prob > chi2} =  {res}      0.3858{txt}
+
+{com}.                                         
+.         
+. 
+{txt}end of do-file
+
 {com}. 
