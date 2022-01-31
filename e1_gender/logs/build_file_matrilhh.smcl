@@ -1,0 +1,962 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:33:47
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         
+.         save                    "$fil\regression-ready\matril-hh\matril_y1", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta not found)
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\building\matril-hh.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:33:50
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         
+.         save                    "$fil\regression-ready\matril-hh\matril_y1", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta not found)
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\building\matril-hh.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:34:08
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         
+.         save                    "$fil\regression-ready\matril-hh\matril_y1", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta not found)
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\building\matril-hh.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:34:18
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         
+.         save                    "$fil\regression-ready\matril-hh\matril_y1", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta not found)
+{err}{p 0 4 2}
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\matril-hh\matril_y1.dta
+could not be opened
+{p_end}
+{txt}{search r(603), local:r(603);}
+
+end of do-file
+
+{search r(603), local:r(603);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD6f70_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:34:53
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. save "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta"
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\building\matril-hh.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:35:48
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\matril_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     use "$filb\Year 2\Community\COM_MOD_C.dta", clear
+{err}invalid '"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\\Year 2\Community\COM_MOD_C.dta' 
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD6f70_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: January 2022
+. * Created by: alj
+. * Last edit: 31 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * creates matrilineal variables 
+.         * creates female / male headed household variables 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:36:13
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\matril_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 2\Community\COM_MOD_C.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(70 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+    in this {c |}
+  community {c |}
+trace their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+      their {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}         46       22.55       22.55
+{txt}     MOTHER {c |}{res}        134       65.69       88.24
+{txt}       BOTH {c |}{res}         24       11.76      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        204      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(70 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(0 real changes made)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\matril_y2", replace
+{txt}(note: file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y2.dta not found)
+file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y2.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+.         
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}31 Jan 2022, 15:36:13
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:41:59
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         
+.         save                    "$fil\matril-hh\matril_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 2\Community\COM_MOD_C.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(70 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+    in this {c |}
+  community {c |}
+trace their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+      their {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}         46       22.55       22.55
+{txt}     MOTHER {c |}{res}        134       65.69       88.24
+{txt}       BOTH {c |}{res}         24       11.76      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        204      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(70 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(0 real changes made)
+
+{com}.         
+.         save                    "$fil\matril-hh\matril_y2", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y2.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+.         
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}31 Jan 2022, 15:41:59
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}31 Jan 2022, 15:43:19
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab matril
+
+     {txt}matril {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        321       41.85       41.85
+{txt}          1 {c |}{res}        446       58.15      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        767      100.00
+
+{com}. tab com_cc06
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.07       32.07
+{txt}     MOTHER {c |}{res}        446       58.15       90.22
+{txt}       BOTH {c |}{res}         75        9.78      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        767      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD6f70_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 26 January 2022
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for household-level 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}

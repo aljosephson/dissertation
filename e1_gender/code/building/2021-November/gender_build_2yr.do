@@ -9,7 +9,6 @@
 * does
 	* combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
 	* for household-level 
-	* add in plot level 
 
 * assumes
 	* access to data file(s) previously created 
@@ -24,6 +23,7 @@
 
 * define
 	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+	global 	filb 	= 	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
 	global	code	=	"C:\Users\aljosephson\git\dissertation\e1_gender\code"
 	global	logs	=	"C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
 
@@ -174,7 +174,7 @@
 	*** in this specification, we assume that all joint labor is actually men's
 	*** which is a fair assumption, given above 
 	
- 	save 			"$fil\regression-ready\household-total_y1", replace	
+ 	save 			"$fil\regression-ready\household-total_y1.dta", replace	
 	
 * **********************************************************************
 * 1b - sales values
@@ -234,7 +234,7 @@
 	
 	rename			total totalr 
 	
- 	save 			"$fil\regression-ready\household-total_y1", replace	
+ 	save 			"$fil\regression-ready\household-total_y1.dta", replace	
 
 * *********************************************************************
 * 1d - aggregates 
@@ -254,21 +254,33 @@
 	rename 			rexp_cat12 miscexp 
 	rename 			rexpagg totalexp 
 	
- 	save 			"$fil\regression-ready\household-total_y1", replace	
+ 	save 			"$fil\regression-ready\household-total_y1.dta", replace	
+
+* *********************************************************************
+* 1e - matrilineal and head of household gender   
+* **********************************************************************	
+	
+	merge 			m:1 ea_id using "$fil\matril-hh\matril_y1.dta"
+	keep 			if _merge == 3
+	*** 1693 matched, 669 not matched from using 
+	drop 			_merge 
+	
+	tab 			matril 
+	*** 69 percent matril, 31 percent otherwise 
 	
 * *********************************************************************
-* 1e - reduce + clean up   
+* 1f - reduce + clean up   
 * **********************************************************************	
 	
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 	
+						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril 
 	
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID)
+						miscexp totalexp (max) ssa_aez09 matril, by (case_id year region district ea_id HHID)
 						
 	rename 			* *09
 	rename 			case_id09 case_id
@@ -287,7 +299,7 @@ compress
 describe
 summarize
 	
- 	save 			"$fil\regression-ready\household-total_y1", replace	
+ 	save 			"$fil\regression-ready\household-total_y1.dta", replace	
 
 * **********************************************************************
 * 2 - year 2
@@ -360,7 +372,7 @@ summarize
 	replace 		joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
 	replace 		joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
 	
-	save 			"$fil\production-and-sales\sales-with-managerid_y2", replace	
+	save 			"$fil\production-and-sales\sales-with-managerid_y2.dta", replace	
 	
 * bring in consumption variables 
 	
@@ -369,7 +381,7 @@ summarize
 	drop 			_merge
 	*** dropping 2515 from using 
 	
-	save 			"$fil\regression-ready\household-level_y2", replace	
+	save 			"$fil\regression-ready\household-level_y2.dta", replace	
 	
 * merge in geovars 
 
@@ -422,7 +434,7 @@ summarize
 	*** in this specification, we assume that all joint labor is actually men's
 	*** which is a fair assumption, given above 	
 	
- 	save 			"$fil\regression-ready\household-total_y2", replace	
+ 	save 			"$fil\regression-ready\household-total_y2.dta", replace	
 	
 
 * *********************************************************************
@@ -483,7 +495,7 @@ summarize
 	
 	rename			total totalr 
 	
- 	save 			"$fil\regression-ready\household-total_y2", replace	
+ 	save 			"$fil\regression-ready\household-total_y2.dta", replace	
 
 * *********************************************************************
 * 2d - aggregates 
@@ -503,21 +515,33 @@ summarize
 	rename 			rexp_cat12 miscexp 
 	rename 			rexpagg totalexp 
 	
- 	save 			"$fil\regression-ready\household-total_y2", replace	
+ 	save 			"$fil\regression-ready\household-total_y2.dta", replace	
 	
 * *********************************************************************
-* 2e - reduce + clean up   
+* 2e - matrilineal and head of household gender   
+* **********************************************************************	
+	
+	merge 			m:1 ea_id using "$fil\matril-hh\matril_y2.dta"
+	keep 			if _merge == 3
+	*** 2160 matched, 102 not matched from using 
+	drop 			_merge 
+	
+	tab 			matril 
+	*** 85 percent matril, 15 percent otherwise 
+	
+* *********************************************************************
+* 2f - reduce + clean up   
 * **********************************************************************	
 	
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09
+						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09 matril
 		
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09, by (case_id year region district ea_id HHID y2_hhid)
+						miscexp totalexp (max) ssa_aez09 matril, by (case_id year region district ea_id HHID y2_hhid)
 	
 	rename 			* *12
 	rename 			case_id12 case_id
@@ -538,7 +562,7 @@ compress
 describe
 summarize
 	
- 	save 			"$fil\regression-ready\household-total_y2", replace	
+ 	save 			"$fil\regression-ready\household-total_y2.dta", replace	
 
 	
 * *********************************************************************
@@ -546,7 +570,7 @@ summarize
 * **********************************************************************	
 
 * append all 
-	use 			"$fil\regression-ready\household-total_y1", clear 
+	use 			"$fil\regression-ready\household-total_y1.dta", clear 
 	merge 			m:1 case_id ea_id region district HHID using "$fil\regression-ready\household-total_y2.dta"	
 	drop 			_merge 
 	*** 850 matched, 391 not matched from 2009, 118 not matched from 2012
@@ -558,7 +582,7 @@ compress
 describe
 summarize 
 
-	save 			"$fil\regression-ready\household-total_both", replace
+	save 			"$fil\regression-ready\household-total_both.dta", replace
 	
 * *********************************************************************
 * 4 - differencing / logs   
