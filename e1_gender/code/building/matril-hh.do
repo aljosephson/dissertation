@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: January 2022
 * Created by: alj
-* Last edit: 31 January 2022
+* Last edit: 1 February 2022
 * Stata v.16.1
 
 * does
