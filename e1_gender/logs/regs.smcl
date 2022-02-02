@@ -14878,4 +14878,641 @@ end of do-file
 . * open log
 .         cap log                 close
 {smcl}
-{com}{sf}{ul off}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/regs.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 2 Feb 2022, 14:09:56
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - data 
+. * *********************************************************************
+. clear 
+{txt}
+{com}. 
+. * read in data 
+. 
+.         use                     "$fil\regression-ready\reg_ready-final", replace        
+{txt}
+{com}.         
+. * **********************************************************************
+. * 2 - create consumption globals  
+. * *********************************************************************
+. 
+. * create consmption aggregates 
+. * consumption aggregates based on WB aggregates provided in LSMS downloads
+. 
+.         local aggconsume (dlnconsume_agg dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local foodconsume (dlnconsume_food dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local cigsal (dlnconsume_alctob dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local clothing (dlnconsume_clothfoot dtotalr i.ssa_aez09 i.ssa_aez12
+{txt}
+{com}.         local recconsume (dlnconsume_rec dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local educconsume (dlnconsume_educ dtotalr i.ssa_aez09 i.ssa_aez12)     
+{txt}
+{com}.         local healthconsume (dlnconsume_health dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local houseconsume (dlnconsume_houseutils dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local transpoconsume (dlnconsume_transpo dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local commconsume (dlnconsume_comm dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local hotresconsume (dlnconsume_hotres dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local miscconsume (dlnconsume_misc dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}. 
+.                 
+. * **********************************************************************
+. * 3 - unrestricted regressions 
+. * *********************************************************************
+. 
+.         reg `aggconsume', vce(cluster case_id) 
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1365
+                                                {txt}Root MSE          =    {res} 5.5712
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~g{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0023364{col 26}{space 2} .0002682{col 37}{space 1}    8.71{col 46}{space 3}0.000{col 54}{space 4} .0018099{col 67}{space 3} .0028628
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -5.76291{col 26}{space 2} .6526568{col 37}{space 1}   -8.83{col 46}{space 3}0.000{col 54}{space 4} -7.04392{col 67}{space 3}  -4.4819
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-.2243624{col 26}{space 2} 1.329102{col 37}{space 1}   -0.17{col 46}{space 3}0.866{col 54}{space 4}-2.833073{col 67}{space 3} 2.384348
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.881896{col 26}{space 2} .0887829{col 37}{space 1}  -21.20{col 46}{space 3}0.000{col 54}{space 4}-2.056156{col 67}{space 3}-1.707636
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.837681{col 26}{space 2} .4249052{col 37}{space 1}   11.39{col 46}{space 3}0.000{col 54}{space 4} 4.003694{col 67}{space 3} 5.671669
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .5334153{col 26}{space 2} 1.291685{col 37}{space 1}    0.41{col 46}{space 3}0.680{col 54}{space 4}-2.001856{col 67}{space 3} 3.068686
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .4865024{col 26}{space 2} 1.094696{col 37}{space 1}    0.44{col 46}{space 3}0.657{col 54}{space 4}-1.662125{col 67}{space 3} 2.635129
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.23014{col 26}{space 2} .3693898{col 37}{space 1}   30.40{col 46}{space 3}0.000{col 54}{space 4} 10.50511{col 67}{space 3} 11.95516
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INA
+{txt}
+{com}. 
+.         reg `foodconsume', vce(cluster case_id) 
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1281
+                                                {txt}Root MSE          =    {res} 6.0936
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~d{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0024718{col 26}{space 2} .0002741{col 37}{space 1}    9.02{col 46}{space 3}0.000{col 54}{space 4} .0019339{col 67}{space 3} .0030097
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-6.245046{col 26}{space 2} .6912229{col 37}{space 1}   -9.03{col 46}{space 3}0.000{col 54}{space 4}-7.601752{col 67}{space 3} -4.88834
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -.566825{col 26}{space 2} 1.686524{col 37}{space 1}   -0.34{col 46}{space 3}0.737{col 54}{space 4} -3.87707{col 67}{space 3}  2.74342
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.860838{col 26}{space 2} .0907125{col 37}{space 1}  -20.51{col 46}{space 3}0.000{col 54}{space 4}-2.038885{col 67}{space 3}-1.682791
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 5.459654{col 26}{space 2}  .455157{col 37}{space 1}   12.00{col 46}{space 3}0.000{col 54}{space 4} 4.566289{col 67}{space 3} 6.353019
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .8136367{col 26}{space 2} 1.634962{col 37}{space 1}    0.50{col 46}{space 3}0.619{col 54}{space 4}-2.395405{col 67}{space 3} 4.022678
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 2.033872{col 26}{space 2} .8726231{col 37}{space 1}    2.33{col 46}{space 3}0.020{col 54}{space 4} .3211209{col 67}{space 3} 3.746624
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 10.14472{col 26}{space 2} .3999493{col 37}{space 1}   25.37{col 46}{space 3}0.000{col 54}{space 4} 9.359717{col 67}{space 3} 10.92973
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INF
+{txt}
+{com}. 
+.         reg `cigsal', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0642
+                                                {txt}Root MSE          =    {res} 7.8738
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~b{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0016555{col 26}{space 2} .0003095{col 37}{space 1}    5.35{col 46}{space 3}0.000{col 54}{space 4} .0010479{col 67}{space 3}  .002263
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -8.18343{col 26}{space 2} .7665292{col 37}{space 1}  -10.68{col 46}{space 3}0.000{col 54}{space 4}-9.687945{col 67}{space 3}-6.678916
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 5.048361{col 26}{space 2} 3.296853{col 37}{space 1}    1.53{col 46}{space 3}0.126{col 54}{space 4}-1.422578{col 67}{space 3}  11.5193
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-10.60871{col 26}{space 2} .1024577{col 37}{space 1} -103.54{col 46}{space 3}0.000{col 54}{space 4}-10.80981{col 67}{space 3}-10.40761
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 9.438333{col 26}{space 2} .4246632{col 37}{space 1}   22.23{col 46}{space 3}0.000{col 54}{space 4}  8.60482{col 67}{space 3} 10.27185
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-4.300156{col 26}{space 2}  3.26682{col 37}{space 1}   -1.32{col 46}{space 3}0.188{col 54}{space 4}-10.71215{col 67}{space 3} 2.111833
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 9.341702{col 26}{space 2} .8573581{col 37}{space 1}   10.90{col 46}{space 3}0.000{col 54}{space 4} 7.658912{col 67}{space 3} 11.02449
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.059462{col 26}{space 2} .3869749{col 37}{space 1}    2.74{col 46}{space 3}0.006{col 54}{space 4} .2999218{col 67}{space 3} 1.819001
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INC
+{txt}
+{com}. 
+.         reg `clothing',  vce(cluster case_id)
+{err}invalid something: unmatched open parenthesis or bracket
+
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\tables\TableA1_unrestricted-overid-test.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: alj - intrahousehold mgmt of joint resources 
+. * Created on: ... 2016 
+. * Edited on: 2 February 2022
+. * Created by: alj
+. * Stata v.16
+. 
+. * does
+.         * "unrestricted" overidentification test
+.         * corresponds with table A1 
+.         
+. * assumes
+.         * reg_ready-final.dta 
+. 
+. * TO DO:
+.         * anonymize pre-submission 
+.         * update table numbers with new manuscript numbers  
+.         
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/regs.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 2 Feb 2022, 14:10:15
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - data 
+. * *********************************************************************
+. clear 
+{txt}
+{com}. 
+. * read in data 
+. 
+.         use                     "$fil\regression-ready\reg_ready-final", replace        
+{txt}
+{com}.         
+. * **********************************************************************
+. * 2 - create consumption globals  
+. * *********************************************************************
+. 
+. * create consmption aggregates 
+. * consumption aggregates based on WB aggregates provided in LSMS downloads
+. 
+.         local aggconsume (dlnconsume_agg dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local foodconsume (dlnconsume_food dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local cigsal (dlnconsume_alctob dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local clothing (dlnconsume_clothfoot dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local recconsume (dlnconsume_rec dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local educconsume (dlnconsume_educ dtotalr i.ssa_aez09 i.ssa_aez12)     
+{txt}
+{com}.         local healthconsume (dlnconsume_health dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local houseconsume (dlnconsume_houseutils dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local transpoconsume (dlnconsume_transpo dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local commconsume (dlnconsume_comm dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local hotresconsume (dlnconsume_hotres dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}.         local miscconsume (dlnconsume_misc dtotalr i.ssa_aez09 i.ssa_aez12)
+{txt}
+{com}. 
+.                 
+. * **********************************************************************
+. * 3 - unrestricted regressions 
+. * *********************************************************************
+. 
+.         reg `aggconsume', vce(cluster case_id) 
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1365
+                                                {txt}Root MSE          =    {res} 5.5712
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~g{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0023364{col 26}{space 2} .0002682{col 37}{space 1}    8.71{col 46}{space 3}0.000{col 54}{space 4} .0018099{col 67}{space 3} .0028628
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -5.76291{col 26}{space 2} .6526568{col 37}{space 1}   -8.83{col 46}{space 3}0.000{col 54}{space 4} -7.04392{col 67}{space 3}  -4.4819
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-.2243624{col 26}{space 2} 1.329102{col 37}{space 1}   -0.17{col 46}{space 3}0.866{col 54}{space 4}-2.833073{col 67}{space 3} 2.384348
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.881896{col 26}{space 2} .0887829{col 37}{space 1}  -21.20{col 46}{space 3}0.000{col 54}{space 4}-2.056156{col 67}{space 3}-1.707636
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.837681{col 26}{space 2} .4249052{col 37}{space 1}   11.39{col 46}{space 3}0.000{col 54}{space 4} 4.003694{col 67}{space 3} 5.671669
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .5334153{col 26}{space 2} 1.291685{col 37}{space 1}    0.41{col 46}{space 3}0.680{col 54}{space 4}-2.001856{col 67}{space 3} 3.068686
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} .4865024{col 26}{space 2} 1.094696{col 37}{space 1}    0.44{col 46}{space 3}0.657{col 54}{space 4}-1.662125{col 67}{space 3} 2.635129
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 11.23014{col 26}{space 2} .3693898{col 37}{space 1}   30.40{col 46}{space 3}0.000{col 54}{space 4} 10.50511{col 67}{space 3} 11.95516
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INA
+{txt}
+{com}. 
+.         reg `foodconsume', vce(cluster case_id) 
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1281
+                                                {txt}Root MSE          =    {res} 6.0936
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~d{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0024718{col 26}{space 2} .0002741{col 37}{space 1}    9.02{col 46}{space 3}0.000{col 54}{space 4} .0019339{col 67}{space 3} .0030097
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-6.245046{col 26}{space 2} .6912229{col 37}{space 1}   -9.03{col 46}{space 3}0.000{col 54}{space 4}-7.601752{col 67}{space 3} -4.88834
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -.566825{col 26}{space 2} 1.686524{col 37}{space 1}   -0.34{col 46}{space 3}0.737{col 54}{space 4} -3.87707{col 67}{space 3}  2.74342
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.860838{col 26}{space 2} .0907125{col 37}{space 1}  -20.51{col 46}{space 3}0.000{col 54}{space 4}-2.038885{col 67}{space 3}-1.682791
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 5.459654{col 26}{space 2}  .455157{col 37}{space 1}   12.00{col 46}{space 3}0.000{col 54}{space 4} 4.566289{col 67}{space 3} 6.353019
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .8136367{col 26}{space 2} 1.634962{col 37}{space 1}    0.50{col 46}{space 3}0.619{col 54}{space 4}-2.395405{col 67}{space 3} 4.022678
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 2.033872{col 26}{space 2} .8726231{col 37}{space 1}    2.33{col 46}{space 3}0.020{col 54}{space 4} .3211209{col 67}{space 3} 3.746624
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 10.14472{col 26}{space 2} .3999493{col 37}{space 1}   25.37{col 46}{space 3}0.000{col 54}{space 4} 9.359717{col 67}{space 3} 10.92973
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INF
+{txt}
+{com}. 
+.         reg `cigsal', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0642
+                                                {txt}Root MSE          =    {res} 7.8738
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~b{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0016555{col 26}{space 2} .0003095{col 37}{space 1}    5.35{col 46}{space 3}0.000{col 54}{space 4} .0010479{col 67}{space 3}  .002263
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} -8.18343{col 26}{space 2} .7665292{col 37}{space 1}  -10.68{col 46}{space 3}0.000{col 54}{space 4}-9.687945{col 67}{space 3}-6.678916
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 5.048361{col 26}{space 2} 3.296853{col 37}{space 1}    1.53{col 46}{space 3}0.126{col 54}{space 4}-1.422578{col 67}{space 3}  11.5193
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-10.60871{col 26}{space 2} .1024577{col 37}{space 1} -103.54{col 46}{space 3}0.000{col 54}{space 4}-10.80981{col 67}{space 3}-10.40761
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 9.438333{col 26}{space 2} .4246632{col 37}{space 1}   22.23{col 46}{space 3}0.000{col 54}{space 4}  8.60482{col 67}{space 3} 10.27185
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-4.300156{col 26}{space 2}  3.26682{col 37}{space 1}   -1.32{col 46}{space 3}0.188{col 54}{space 4}-10.71215{col 67}{space 3} 2.111833
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 9.341702{col 26}{space 2} .8573581{col 37}{space 1}   10.90{col 46}{space 3}0.000{col 54}{space 4} 7.658912{col 67}{space 3} 11.02449
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.059462{col 26}{space 2} .3869749{col 37}{space 1}    2.74{col 46}{space 3}0.006{col 54}{space 4} .2999218{col 67}{space 3} 1.819001
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INC
+{txt}
+{com}. 
+.         reg `clothing',  vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0611
+                                                {txt}Root MSE          =    {res}  8.537
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~t{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0019553{col 26}{space 2} .0003022{col 37}{space 1}    6.47{col 46}{space 3}0.000{col 54}{space 4} .0013623{col 67}{space 3} .0025484
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-10.50382{col 26}{space 2} .8314472{col 37}{space 1}  -12.63{col 46}{space 3}0.000{col 54}{space 4}-12.13575{col 67}{space 3}-8.871882
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 12.99994{col 26}{space 2} 1.849033{col 37}{space 1}    7.03{col 46}{space 3}0.000{col 54}{space 4} 9.370731{col 67}{space 3} 16.62916
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-22.07583{col 26}{space 2} .1000139{col 37}{space 1} -220.73{col 46}{space 3}0.000{col 54}{space 4}-22.27213{col 67}{space 3}-21.87952
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 10.63585{col 26}{space 2} .4723915{col 37}{space 1}   22.51{col 46}{space 3}0.000{col 54}{space 4} 9.708659{col 67}{space 3} 11.56304
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-12.48706{col 26}{space 2}   1.7786{col 37}{space 1}   -7.02{col 46}{space 3}0.000{col 54}{space 4}-15.97803{col 67}{space 3}-8.996096
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 21.96585{col 26}{space 2} 1.266125{col 37}{space 1}   17.35{col 46}{space 3}0.000{col 54}{space 4} 19.48075{col 67}{space 3} 24.45095
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.854715{col 26}{space 2} .4380382{col 37}{space 1}    6.52{col 46}{space 3}0.000{col 54}{space 4}  1.99495{col 67}{space 3} 3.714479
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INCL
+{txt}
+{com}. 
+.         reg `recconsume',  vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0484
+                                                {txt}Root MSE          =    {res} 6.3849
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsum~ec{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0013545{col 26}{space 2} .0002614{col 37}{space 1}    5.18{col 46}{space 3}0.000{col 54}{space 4} .0008415{col 67}{space 3} .0018675
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 8.000815{col 26}{space 2} .6419421{col 37}{space 1}   12.46{col 46}{space 3}0.000{col 54}{space 4} 6.740835{col 67}{space 3} 9.260794
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-3.185221{col 26}{space 2} 2.607114{col 37}{space 1}   -1.22{col 46}{space 3}0.222{col 54}{space 4}-8.302366{col 67}{space 3} 1.931924
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 17.14386{col 26}{space 2} .0865114{col 37}{space 1}  198.17{col 46}{space 3}0.000{col 54}{space 4} 16.97406{col 67}{space 3} 17.31366
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-8.344163{col 26}{space 2} .3499039{col 37}{space 1}  -23.85{col 46}{space 3}0.000{col 54}{space 4}-9.030941{col 67}{space 3}-7.657385
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 1.850172{col 26}{space 2} 2.596131{col 37}{space 1}    0.71{col 46}{space 3}0.476{col 54}{space 4}-3.245415{col 67}{space 3}  6.94576
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-16.93999{col 26}{space 2} .9938969{col 37}{space 1}  -17.04{col 46}{space 3}0.000{col 54}{space 4}-18.89077{col 67}{space 3}-14.98921
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.077958{col 26}{space 2} .3165608{col 37}{space 1}    3.41{col 46}{space 3}0.001{col 54}{space 4} .4566246{col 67}{space 3} 1.699292
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INR
+{txt}
+{com}. 
+.         reg `educconsume',  vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0582
+                                                {txt}Root MSE          =    {res} 6.1879
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsum~uc{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2}  .001467{col 26}{space 2}  .000233{col 37}{space 1}    6.30{col 46}{space 3}0.000{col 54}{space 4} .0010098{col 67}{space 3} .0019242
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 4.034133{col 26}{space 2} .5912426{col 37}{space 1}    6.82{col 46}{space 3}0.000{col 54}{space 4} 2.873664{col 67}{space 3} 5.194601
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}  4.36799{col 26}{space 2}  5.17602{col 37}{space 1}    0.84{col 46}{space 3}0.399{col 54}{space 4}-5.791307{col 67}{space 3} 14.52729
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 12.22245{col 26}{space 2} .0771066{col 37}{space 1}  158.51{col 46}{space 3}0.000{col 54}{space 4} 12.07111{col 67}{space 3} 12.37379
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-3.961193{col 26}{space 2} .3552854{col 37}{space 1}  -11.15{col 46}{space 3}0.000{col 54}{space 4}-4.658533{col 67}{space 3}-3.263852
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-4.360381{col 26}{space 2} 5.218177{col 37}{space 1}   -0.84{col 46}{space 3}0.404{col 54}{space 4}-14.60242{col 67}{space 3}  5.88166
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-11.30538{col 26}{space 2}  .967095{col 37}{space 1}  -11.69{col 46}{space 3}0.000{col 54}{space 4}-13.20356{col 67}{space 3}-9.407207
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 4.348474{col 26}{space 2}  .327415{col 37}{space 1}   13.28{col 46}{space 3}0.000{col 54}{space 4} 3.705837{col 67}{space 3} 4.991112
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INED
+{txt}
+{com}. 
+.         reg `healthconsume',  vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0545
+                                                {txt}Root MSE          =    {res} 8.1858
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~h{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0018493{col 26}{space 2} .0003032{col 37}{space 1}    6.10{col 46}{space 3}0.000{col 54}{space 4} .0012542{col 67}{space 3} .0024443
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-10.28506{col 26}{space 2} .7621783{col 37}{space 1}  -13.49{col 46}{space 3}0.000{col 54}{space 4}-11.78104{col 67}{space 3}-8.789086
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 3.276401{col 26}{space 2}   5.1838{col 37}{space 1}    0.63{col 46}{space 3}0.528{col 54}{space 4}-6.898165{col 67}{space 3} 13.45097
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} -17.6977{col 26}{space 2} .1003484{col 37}{space 1} -176.36{col 46}{space 3}0.000{col 54}{space 4}-17.89466{col 67}{space 3}-17.50074
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 10.39903{col 26}{space 2} .4630169{col 37}{space 1}   22.46{col 46}{space 3}0.000{col 54}{space 4} 9.490234{col 67}{space 3} 11.30782
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-1.583257{col 26}{space 2} 5.211467{col 37}{space 1}   -0.30{col 46}{space 3}0.761{col 54}{space 4}-11.81213{col 67}{space 3} 8.645612
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 19.14505{col 26}{space 2} 1.036383{col 37}{space 1}   18.47{col 46}{space 3}0.000{col 54}{space 4} 17.11088{col 67}{space 3} 21.17922
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .9378016{col 26}{space 2} .4256126{col 37}{space 1}    2.20{col 46}{space 3}0.028{col 54}{space 4} .1024253{col 67}{space 3} 1.773178
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INH
+{txt}
+{com}. 
+.         reg `houseconsume', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1361
+                                                {txt}Root MSE          =    {res} 3.7135
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsum~ls{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0013649{col 26}{space 2} .0001502{col 37}{space 1}    9.09{col 46}{space 3}0.000{col 54}{space 4}   .00107{col 67}{space 3} .0016597
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-2.862329{col 26}{space 2} .2900408{col 37}{space 1}   -9.87{col 46}{space 3}0.000{col 54}{space 4} -3.43161{col 67}{space 3}-2.293047
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-.1248545{col 26}{space 2} .4204561{col 37}{space 1}   -0.30{col 46}{space 3}0.767{col 54}{space 4}-.9501098{col 67}{space 3} .7004008
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.897629{col 26}{space 2} .0497202{col 37}{space 1}  -38.17{col 46}{space 3}0.000{col 54}{space 4}-1.995218{col 67}{space 3} -1.80004
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 2.792162{col 26}{space 2} .2865829{col 37}{space 1}    9.74{col 46}{space 3}0.000{col 54}{space 4} 2.229668{col 67}{space 3} 3.354656
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .4040471{col 26}{space 2} .3915009{col 37}{space 1}    1.03{col 46}{space 3}0.302{col 54}{space 4}-.3643762{col 67}{space 3}  1.17247
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-.3103544{col 26}{space 2} .9913272{col 37}{space 1}   -0.31{col 46}{space 3}0.754{col 54}{space 4}-2.256094{col 67}{space 3} 1.635385
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 10.95279{col 26}{space 2} .2522032{col 37}{space 1}   43.43{col 46}{space 3}0.000{col 54}{space 4} 10.45778{col 67}{space 3} 11.44781
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store INT
+{txt}
+{com}.         
+.         reg `transpoconsume', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0593
+                                                {txt}Root MSE          =    {res} 8.0391
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~o{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0019621{col 26}{space 2} .0002994{col 37}{space 1}    6.55{col 46}{space 3}0.000{col 54}{space 4} .0013745{col 67}{space 3} .0025498
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-11.83277{col 26}{space 2} .7687714{col 37}{space 1}  -15.39{col 46}{space 3}0.000{col 54}{space 4}-13.34168{col 67}{space 3}-10.32385
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-6.565481{col 26}{space 2} 2.445112{col 37}{space 1}   -2.69{col 46}{space 3}0.007{col 54}{space 4}-11.36465{col 67}{space 3}-1.766309
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-5.861408{col 26}{space 2} .0991033{col 37}{space 1}  -59.14{col 46}{space 3}0.000{col 54}{space 4}-6.055924{col 67}{space 3}-5.666892
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 11.07802{col 26}{space 2}  .454311{col 37}{space 1}   24.38{col 46}{space 3}0.000{col 54}{space 4} 10.18631{col 67}{space 3} 11.96972
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 4.608715{col 26}{space 2}  2.38402{col 37}{space 1}    1.93{col 46}{space 3}0.054{col 54}{space 4}-.0705483{col 67}{space 3} 9.287979
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 4.639313{col 26}{space 2} 1.216001{col 37}{space 1}    3.82{col 46}{space 3}0.000{col 54}{space 4} 2.252592{col 67}{space 3} 7.026034
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 2.581595{col 26}{space 2} .4143381{col 37}{space 1}    6.23{col 46}{space 3}0.000{col 54}{space 4} 1.768348{col 67}{space 3} 3.394842
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store ITS
+{txt}
+{com}.         
+.         reg `commconsume', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0153
+                                                {txt}Root MSE          =    {res} 7.2342
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsume~m{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0007711{col 26}{space 2} .0002865{col 37}{space 1}    2.69{col 46}{space 3}0.007{col 54}{space 4} .0002087{col 67}{space 3} .0013335
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-10.56555{col 26}{space 2} .7308979{col 37}{space 1}  -14.46{col 46}{space 3}0.000{col 54}{space 4}-12.00013{col 67}{space 3} -9.13097
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} -.796622{col 26}{space 2} 4.118754{col 37}{space 1}   -0.19{col 46}{space 3}0.847{col 54}{space 4}-8.880756{col 67}{space 3} 7.287512
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-1.131202{col 26}{space 2} .0948405{col 37}{space 1}  -11.93{col 46}{space 3}0.000{col 54}{space 4}-1.317351{col 67}{space 3}-.9450524
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 9.605914{col 26}{space 2} .3929541{col 37}{space 1}   24.45{col 46}{space 3}0.000{col 54}{space 4} 8.834638{col 67}{space 3} 10.37719
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-.6178364{col 26}{space 2} 4.145785{col 37}{space 1}   -0.15{col 46}{space 3}0.882{col 54}{space 4}-8.755025{col 67}{space 3} 7.519352
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.529968{col 26}{space 2} 1.052589{col 37}{space 1}    1.45{col 46}{space 3}0.146{col 54}{space 4}-.5360142{col 67}{space 3} 3.595951
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.900124{col 26}{space 2} .3595255{col 37}{space 1}    5.29{col 46}{space 3}0.000{col 54}{space 4} 1.194461{col 67}{space 3} 2.605787
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store ICC 
+{txt}
+{com}.         
+.         reg `hotresconsume', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.0497
+                                                {txt}Root MSE          =    {res} 7.4585
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsum~es{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0011759{col 26}{space 2} .0002841{col 37}{space 1}    4.14{col 46}{space 3}0.000{col 54}{space 4} .0006183{col 67}{space 3} .0017335
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-8.866964{col 26}{space 2} .6913743{col 37}{space 1}  -12.83{col 46}{space 3}0.000{col 54}{space 4}-10.22397{col 67}{space 3}-7.509961
+{txt}{space 8}322  {c |}{col 14}{res}{space 2}-6.358993{col 26}{space 2} 3.012333{col 37}{space 1}   -2.11{col 46}{space 3}0.035{col 54}{space 4}-12.27149{col 67}{space 3}-.4465007
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-2.164536{col 26}{space 2} .0940351{col 37}{space 1}  -23.02{col 46}{space 3}0.000{col 54}{space 4}-2.349104{col 67}{space 3}-1.979967
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 10.21075{col 26}{space 2} .4250025{col 37}{space 1}   24.03{col 46}{space 3}0.000{col 54}{space 4} 9.376575{col 67}{space 3} 11.04493
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} 5.642698{col 26}{space 2} 2.990953{col 37}{space 1}    1.89{col 46}{space 3}0.060{col 54}{space 4}-.2278318{col 67}{space 3} 11.51323
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 1.524383{col 26}{space 2} 1.055171{col 37}{space 1}    1.44{col 46}{space 3}0.149{col 54}{space 4}-.5466672{col 67}{space 3} 3.595434
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 1.513811{col 26}{space 2} .3878837{col 37}{space 1}    3.90{col 46}{space 3}0.000{col 54}{space 4} .7524874{col 67}{space 3} 2.275134
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store IHR
+{txt}
+{com}.         
+.         reg `miscconsume', vce(cluster case_id)
+
+{txt}Linear regression                               Number of obs     = {res}       850
+                                                {txt}{help j_robustsingular:F(5, 849) }        =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.1337
+                                                {txt}Root MSE          =    {res} 5.6617
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:850} clusters in case_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}dlnconsum~sc{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}dtotalr {c |}{col 14}{res}{space 2} .0024146{col 26}{space 2}  .000226{col 37}{space 1}   10.68{col 46}{space 3}0.000{col 54}{space 4} .0019709{col 67}{space 3} .0028582
+{txt}{space 12} {c |}
+{space 3}ssa_aez09 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2}-7.385036{col 26}{space 2}   .62108{col 37}{space 1}  -11.89{col 46}{space 3}0.000{col 54}{space 4}-8.604069{col 67}{space 3}-6.166004
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .4912641{col 26}{space 2} 2.169179{col 37}{space 1}    0.23{col 46}{space 3}0.821{col 54}{space 4}-3.766319{col 67}{space 3} 4.748847
+{txt}{space 8}323  {c |}{col 14}{res}{space 2}-2.213454{col 26}{space 2} .0748157{col 37}{space 1}  -29.59{col 46}{space 3}0.000{col 54}{space 4}-2.360299{col 67}{space 3}-2.066608
+{txt}{space 12} {c |}
+{space 3}ssa_aez12 {c |}
+{space 8}313  {c |}{col 14}{res}{space 2} 6.100176{col 26}{space 2} .3896055{col 37}{space 1}   15.66{col 46}{space 3}0.000{col 54}{space 4} 5.335474{col 67}{space 3} 6.864879
+{txt}{space 8}322  {c |}{col 14}{res}{space 2} .1755657{col 26}{space 2} 2.127688{col 37}{space 1}    0.08{col 46}{space 3}0.934{col 54}{space 4} -4.00058{col 67}{space 3} 4.351711
+{txt}{space 8}323  {c |}{col 14}{res}{space 2} 2.053239{col 26}{space 2} .9022238{col 37}{space 1}    2.28{col 46}{space 3}0.023{col 54}{space 4} .2823887{col 67}{space 3}  3.82409
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 6.646116{col 26}{space 2} .3472576{col 37}{space 1}   19.14{col 46}{space 3}0.000{col 54}{space 4} 5.964532{col 67}{space 3}   7.3277
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}.         est store IMS
+{txt}
+{com}. 
+. /*
+> esttab UPDATE using table_unconstrainted.tex, replace f ///
+>         label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+>         drop(3* _cons) ///
+>         star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+>         order() ///
+>         stats(F N r2, fmt(3 0 3) layout("\multicolumn{c -(}1{c )-}{c -(}c{c )-}{c -(}@{c )-}" "\multicolumn{c -(}1{c )-}{c -(}c{c )-}{c -(}@{c )-}" "\multicolumn{c -(}1{c )-}{c -(}c{c )-}{c -(}@{c )-}") labels(`"Joint Significance - F-Test"' `"Observations"' `"\(R^{c -(}2{c )-}\)"'))
+> */
+.         
+. ********************************************************************************************
+. 
+. /* END */
+. 
+{txt}end of do-file
+
+{com}. 
