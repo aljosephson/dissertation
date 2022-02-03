@@ -589,7 +589,7 @@ summarize
 	save 			"$fil\regression-ready\household-total_both.dta", replace
 	
 * *********************************************************************
-* 4 - differencing / logs   
+* 4 - differencing / logs / reconciling 
 * ********************************************************************** 
 
 * *********************************************************************
@@ -655,7 +655,31 @@ summarize
 	bys case_id HHID: gen dlnconsume_misc = asinh(dmiscexp)		
 						
 
-	save 			"$fil\regression-ready\household-total_both.dta", replace						
+	save 			"$fil\regression-ready\household-total_both.dta", replace	
+	
+* *********************************************************************
+* 4c - reconciling   
+* ********************************************************************** 
+
+	gen 				matri_change = matril12 - matril09
+	tab 				matri_change
+	*** 40 households say they BECOME matrilineal, 128 households say they become non-matrilineal 
+	*** will classify these households as non-matrilineal, going with most conservative evaluation 
+	
+	gen 				matril = 1 if matril09 == 1 & matril12 == 1
+	replace 			matril = 0 if matril == . 
+	*** 581 matrilineal, 778 non-matrilineal 
+	
+	gen 				headchange = femalehead12 - femalehead09
+	tab 				headchange
+	*** 40 households say they BECOME femaleheaded, 51 households say they become maleheaded 
+	*** will classify these households as non-female-headed, again, most conservative evaluation 
+	
+	gen 				femalehead = 1 if femalehead09 == 1 & femalehead12 == 1 
+	replace 			femalehead = 0 if femalehead == . 
+	*** 173 femaleheaded, 1186 non-femlaeheaded 
+	
+	drop 				femalehead09 femalehead12 matril09 matril12 
 						
 * *********************************************************************
 * 5 - end matter
@@ -667,12 +691,12 @@ summarize
 						dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
 						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
 						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
-						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead* matril* 
+						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead matril
 compress
 describe
 summarize
 	
- 	save 			"$fil\regression-ready\reg_ready-final", replace	
+ 	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
 
 * close the log
 	log	close	
