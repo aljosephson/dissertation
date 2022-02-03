@@ -2733,4 +2733,658 @@ Sorted by:
  {txt}closed on:  {res} 3 Feb 2022, 14:57:23
 {txt}{.-}
 {smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 3 Feb 2022, 14:59:52
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         *** 1613 identify through mother, 549 through father, 189 through both
+.         *** so 1613 = matril, 738 = otherwise 
+.         
+.         save                    "$fil\matril-hh\matril_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 1b - female headed  
+. * **********************************************************************
+. 
+.         use                     "$fil\household\hhbase_y1.dta"  
+{txt}
+{com}.         
+.         keep                    case_id region district ea_id sex rltn  
+{txt}
+{com}.         gen                     femalehead = 1 if rltn == 1 & sex == 2
+{txt}(7,226 missing values generated)
+
+{com}.         replace                 femalehead = 0 if femalehead == .
+{txt}(7,226 real changes made)
+
+{com}.         collapse                (max) femalehead, by (case_id region district ea_id)
+{txt}
+{com}.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,265       78.13       78.13
+{txt}          1 {c |}{res}        354       21.87      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,619      100.00
+{txt}
+{com}.         *** 354 female headed, 1265 otherwise 
+.         
+.         save                    "$fil\matril-hh\fhh_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y1.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 1c - merge  
+. * **********************************************************************
+.         
+.         merge                   m:1 ea_id using "$fil\matril-hh\matril_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             666
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             666{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,619{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(666 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** 1619 matched, 666 not matched from using 
+.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         compress
+  {txt}variable {bf}femalehead{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}matril{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (9,714 bytes saved)
+
+{com}.         describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y1.dta
+{txt}  obs:{res}         1,619                          
+{txt} vars:{res}             6                          3 Feb 2022 14:59
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:femalehead     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{p 0 48}{bind:matril         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}.         summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,619    2.42e+11    6.91e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      1,619    2.352069    .6814333          1          3
+{txt}{space 4}district {c |}{res}      1,619    242.2094    69.15723        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 2}femalehead {c |}{res}      1,619    .2186535    .4134607          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 6}matril {c |}{res}      1,603    .6350593    .4815638          0          1
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\mathh_y1", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\mathh_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 2\Community\COM_MOD_C.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(70 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+    in this {c |}
+  community {c |}
+trace their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+      their {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}         46       22.55       22.55
+{txt}     MOTHER {c |}{res}        134       65.69       88.24
+{txt}       BOTH {c |}{res}         24       11.76      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        204      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(70 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(0 real changes made)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         *** 446 identify through mother, 246 through father, 75 through both
+.         *** 446 = matril, 321 = otherwise 
+.         
+.         save                    "$fil\matril-hh\matril_y2", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y2.dta saved
+
+{com}.         
+.         
+. * **********************************************************************
+. * 2b - female headed  
+. * **********************************************************************
+. 
+.         use                     "$fil\household\hhbase_y2.dta"  
+{txt}
+{com}.         
+.         keep                    case_id region district ea_id sex rltn  
+{txt}
+{com}.         gen                     femalehead = 1 if rltn == 1 & sex == 2
+{txt}(9,577 missing values generated)
+
+{com}.         replace                 femalehead = 0 if femalehead == .
+{txt}(9,577 real changes made)
+
+{com}.         collapse                (max) femalehead, by (case_id region district ea_id)
+{txt}
+{com}.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,271       74.07       74.07
+{txt}          1 {c |}{res}        445       25.93      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,716      100.00
+{txt}
+{com}.         *** 445 female headed, 1271 otherwise 
+.         
+.         save                    "$fil\matril-hh\fhh_y2.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y2.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 1c - merge  
+. * **********************************************************************
+.         
+.         merge                   m:1 ea_id using "$fil\matril-hh\matril_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             101
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             101{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,716{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(101 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** 1716 matched, 101 not matched from using 
+.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         compress
+  {txt}variable {bf}femalehead{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}matril{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (10,296 bytes saved)
+
+{com}.         describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y2.dta
+{txt}  obs:{res}         1,716                          
+{txt} vars:{res}             6                          3 Feb 2022 14:59
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:femalehead     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{p 0 48}{bind:matril         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}.         summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,716    2.43e+11    6.88e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      1,716    2.351981     .682733          1          3
+{txt}{space 4}district {c |}{res}      1,716    242.0192    69.32353        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 2}femalehead {c |}{res}      1,716     .259324    .4383915          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 6}matril {c |}{res}      1,716    .7424242    .4374266          0          1
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\mathh_y2", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\mathh_y2.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+.         
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 3 Feb 2022, 14:59:52
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 3 Feb 2022, 15:02:27
+{txt}
+{com}. 
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 1\COM_CC.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(322 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+ here trace {c |}
+      their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+  mother or {c |}
+      both? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}        246       32.03       32.03
+{txt}     MOTHER {c |}{res}        446       58.07       90.10
+{txt}       BOTH {c |}{res}         75        9.77       99.87
+{txt}          . {c |}{res}          1        0.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        768      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(322 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(1 real change made, 1 to missing)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         *** 1613 identify through mother, 549 through father, 189 through both
+.         *** so 1613 = matril, 738 = otherwise 
+.         
+.         save                    "$fil\matril-hh\matril_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 1b - female headed  
+. * **********************************************************************
+. 
+.         use                     "$fil\household\hhbase_y1.dta"  
+{txt}
+{com}.         
+.         keep                    case_id region district ea_id sex rltn  
+{txt}
+{com}.         gen                     femalehead = 1 if rltn == 1 & sex == 2
+{txt}(7,226 missing values generated)
+
+{com}.         replace                 femalehead = 0 if femalehead == .
+{txt}(7,226 real changes made)
+
+{com}.         collapse                (max) femalehead, by (case_id region district ea_id)
+{txt}
+{com}.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,265       78.13       78.13
+{txt}          1 {c |}{res}        354       21.87      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,619      100.00
+{txt}
+{com}.         *** 354 female headed, 1265 otherwise 
+.         
+.         save                    "$fil\matril-hh\fhh_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y1.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 1c - merge  
+. * **********************************************************************
+.         
+.         merge                   m:1 ea_id using "$fil\matril-hh\matril_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             666
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             666{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,619{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(666 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** 1619 matched, 666 not matched from using 
+.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         compress
+  {txt}variable {bf}femalehead{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}matril{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (9,714 bytes saved)
+
+{com}.         describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y1.dta
+{txt}  obs:{res}         1,619                          
+{txt} vars:{res}             6                          3 Feb 2022 15:02
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:femalehead     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{p 0 48}{bind:matril         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}.         summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,619    2.42e+11    6.91e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      1,619    2.352069    .6814333          1          3
+{txt}{space 4}district {c |}{res}      1,619    242.2094    69.15723        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{space 2}femalehead {c |}{res}      1,619    .2186535    .4134607          0          1
+{txt}{hline 13}{c +}{hline 57}
+{space 6}matril {c |}{res}      1,603    .6350593    .4815638          0          1
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\mathh_y1", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\mathh_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - matrilineal 
+. * **********************************************************************
+. 
+.         use                     "$filb\Year 2\Community\COM_MOD_C.dta", clear
+{txt}
+{com}.         
+.         keep                    ea_id com_cc06
+{txt}
+{com}.         gen                     matril = 1 if com_cc06 == 2
+{txt}(70 missing values generated)
+
+{com}.         tab                     com_cc06, missing
+
+         {txt}Do {c |}
+individuals {c |}
+    in this {c |}
+  community {c |}
+trace their {c |}
+    descent {c |}
+    through {c |}
+      their {c |}
+    father, {c |}
+      their {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     FATHER {c |}{res}         46       22.55       22.55
+{txt}     MOTHER {c |}{res}        134       65.69       88.24
+{txt}       BOTH {c |}{res}         24       11.76      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        204      100.00
+{txt}
+{com}.         replace                 matril = 0 if matril == .
+{txt}(70 real changes made)
+
+{com}.         replace                 matril = . if com_cc06 == .     
+{txt}(0 real changes made)
+
+{com}.         drop                    com_cc06
+{txt}
+{com}.         
+.         *** 446 identify through mother, 246 through father, 75 through both
+.         *** 446 = matril, 321 = otherwise 
+.         
+.         save                    "$fil\matril-hh\matril_y2", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\matril_y2.dta saved
+
+{com}.         
+.         
+. * **********************************************************************
+. * 2b - female headed  
+. * **********************************************************************
+. 
+.         use                     "$fil\household\hhbase_y2.dta"  
+{txt}
+{com}.         
+.         keep                    case_id y2_hhid region district ea_id sex rltn  
+{txt}
+{com}.         gen                     femalehead = 1 if rltn == 1 & sex == 2
+{txt}(9,577 missing values generated)
+
+{com}.         replace                 femalehead = 0 if femalehead == .
+{txt}(9,577 real changes made)
+
+{com}.         collapse                (max) femalehead, by (case_id region district ea_id y2_hhid)
+{txt}
+{com}.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,532       76.98       76.98
+{txt}          1 {c |}{res}        458       23.02      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,990      100.00
+{txt}
+{com}.         *** 445 female headed, 1271 otherwise 
+.         
+.         save                    "$fil\matril-hh\fhh_y2.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y2.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 1c - merge  
+. * **********************************************************************
+.         
+.         merge                   m:1 ea_id using "$fil\matril-hh\matril_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             101
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             101{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,990{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(101 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** 1716 matched, 101 not matched from using 
+.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         compress
+  {txt}variable {bf}femalehead{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+  {txt}variable {bf}matril{sf} was {bf}{res}float{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (11,940 bytes saved)
+
+{com}.         describe
+
+{txt}Contains data from {res}C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\fhh_y2.dta
+{txt}  obs:{res}         1,990                          
+{txt} vars:{res}             7                          3 Feb 2022 15:02
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:y2_hhid        }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Unique Household Identification IHPS{p_end}
+{p 0 48}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:femalehead     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{p 0 48}{bind:matril         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}.         summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}y2_hhid {c |}{res}          0
+{txt}{space 5}case_id {c |}{res}      1,990    2.43e+11    6.74e+10   1.01e+11   3.16e+11
+{txt}{space 6}region {c |}{res}      1,990    2.355779    .6689661          1          3
+{txt}{space 4}district {c |}{res}      1,990    242.3673    67.88031        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 2}femalehead {c |}{res}      1,990    .2301508     .421035          0          1
+{txt}{space 6}matril {c |}{res}      1,990    .7482412    .4341325          0          1
+{txt}
+{com}.         
+.         save                    "$fil\matril-hh\mathh_y2", replace
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\matril-hh\mathh_y2.dta saved
+
+{com}.         
+. * *********************************************************************
+. * 5 - end matter
+. * **********************************************************************
+.         
+. * close the log
+.         log     close   
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file_matrilhh.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 3 Feb 2022, 15:02:27
+{txt}{.-}
+{smcl}
 {txt}{sf}{ul off}

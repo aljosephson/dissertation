@@ -78,7 +78,6 @@
 	*** 1619 matched, 666 not matched from using 
 	
 	destring 		case_id, replace
-	destring 		ea_id, replace
 	
 	compress
 	describe
@@ -115,10 +114,10 @@
 
 	use 			"$fil\household\hhbase_y2.dta"  
 	
-	keep 			case_id region district ea_id sex rltn 	
+	keep 			case_id y2_hhid region district ea_id sex rltn 	
 	gen 			femalehead = 1 if rltn == 1 & sex == 2
 	replace 		femalehead = 0 if femalehead == .
-	collapse 		(max) femalehead, by (case_id region district ea_id)
+	collapse 		(max) femalehead, by (case_id region district ea_id y2_hhid)
 	tab 			femalehead
 	*** 445 female headed, 1271 otherwise 
 	
@@ -134,7 +133,6 @@
 	*** 1716 matched, 101 not matched from using 
 	
 	destring 		case_id, replace
-	destring 		ea_id, replace
 	
 	compress
 	describe

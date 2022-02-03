@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 1 February 2022
+* Last edit: 3 February 2022
 * Stata v.16.1
 
 * does
@@ -260,13 +260,15 @@
 * 1e - matrilineal and head of household gender   
 * **********************************************************************	
 	
-	merge 			m:1 ea_id using "$fil\matril-hh\matril_y1.dta"
+	merge 			m:1 case_id ea_id using "$fil\matril-hh\mathh_y1.dta"
 	keep 			if _merge == 3
-	*** 1693 matched, 669 not matched from using 
+	*** 1693 matched, 378 not matched from using 
 	drop 			_merge 
 	
 	tab 			matril 
-	*** 69 percent matril, 31 percent otherwise 
+	*** 73 percent matril, 27 percent otherwise 
+	tab 			femalehead
+	*** 22 percent female headed, 78 percent otherwise 
 	
 * *********************************************************************
 * 1f - reduce + clean up   
@@ -275,12 +277,12 @@
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril 
+						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril femalehead
 	
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09 matril, by (case_id year region district ea_id HHID)
+						miscexp totalexp (max) ssa_aez09 matril femalehead, by (case_id year region district ea_id HHID)
 						
 	rename 			* *09
 	rename 			case_id09 case_id
@@ -521,13 +523,15 @@ summarize
 * 2e - matrilineal and head of household gender   
 * **********************************************************************	
 	
-	merge 			m:1 ea_id using "$fil\matril-hh\matril_y2.dta"
+	merge 			m:1 case_id ea_id y2_hhid using "$fil\matril-hh\mathh_y2.dta"
 	keep 			if _merge == 3
-	*** 2160 matched, 102 not matched from using 
+	*** 2160 matched, 1022 not matched from using 
 	drop 			_merge 
 	
 	tab 			matril 
 	*** 85 percent matril, 15 percent otherwise 
+	tab 			femalehead
+	*** 25 percent female headed, 75 percent otherwise 
 	
 * *********************************************************************
 * 2f - reduce + clean up   
@@ -536,12 +540,12 @@ summarize
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09 matril
+						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09 matril femalehead
 		
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
 						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
 						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09 matril, by (case_id year region district ea_id HHID y2_hhid)
+						miscexp totalexp (max) ssa_aez09 matril femalehead, by (case_id year region district ea_id HHID y2_hhid)
 	
 	rename 			* *12
 	rename 			case_id12 case_id
@@ -651,7 +655,7 @@ summarize
 	bys case_id HHID: gen dlnconsume_misc = asinh(dmiscexp)		
 						
 
-	save 			"$fil\regression-ready\household-total_both", replace						
+	save 			"$fil\regression-ready\household-total_both.dta", replace						
 						
 * *********************************************************************
 * 5 - end matter
@@ -663,7 +667,7 @@ summarize
 						dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
 						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
 						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
-						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid
+						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead* matril* 
 compress
 describe
 summarize
