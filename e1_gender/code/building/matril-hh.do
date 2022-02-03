@@ -3,12 +3,12 @@
 * Project: Joint Household Resources - Malawi 
 * Created: January 2022
 * Created by: alj
-* Last edit: 1 February 2022
+* Last edit: 3 February 2022
 * Stata v.16.1
 
 * does
 	* creates matrilineal variables 
-	* creates female / male headed household variables 
+	* creates female headed household variables 
 
 * assumes
 	* access to data file(s) previously created 
@@ -54,6 +54,32 @@
 	save 			"$fil\matril-hh\matril_y1.dta", replace 
 	
 * **********************************************************************
+* 1b - female headed  
+* **********************************************************************
+
+	use 			"$fil\household\hhbase_y1.dta"  
+	
+	keep 			case_id region district ea_id sex rltn 	
+	gen 			femalehead = 1 if rltn == 1 & sex == 2
+	replace 		femalehead = 0 if femalehead == .
+	collapse 		(max) femalehead, by (case_id region district ea_id)
+	tab 			femalehead
+	*** 354 female headed, 1265 otherwise 
+	
+	save 			"$fil\matril-hh\fhh_y1.dta", replace 
+
+* **********************************************************************
+* 1c - merge  
+* **********************************************************************
+	
+	merge 			m:1 ea_id using "$fil\matril-hh\matril_y1.dta"
+	keep			if _merge == 3
+	drop 			_merge 
+	*** 1619 matched, 666 not matched from using 
+	
+	save 			"$fil\matril-hh\mathh_y1", replace
+	
+* **********************************************************************
 * 2 - year 2
 * **********************************************************************
 
@@ -74,6 +100,33 @@
 	*** 446 = matril, 321 = otherwise 
 	
 	save 			"$fil\matril-hh\matril_y2", replace
+	
+	
+* **********************************************************************
+* 2b - female headed  
+* **********************************************************************
+
+	use 			"$fil\household\hhbase_y2.dta"  
+	
+	keep 			case_id region district ea_id sex rltn 	
+	gen 			femalehead = 1 if rltn == 1 & sex == 2
+	replace 		femalehead = 0 if femalehead == .
+	collapse 		(max) femalehead, by (case_id region district ea_id)
+	tab 			femalehead
+	*** 445 female headed, 1271 otherwise 
+	
+	save 			"$fil\matril-hh\fhh_y2.dta", replace 
+
+* **********************************************************************
+* 1c - merge  
+* **********************************************************************
+	
+	merge 			m:1 ea_id using "$fil\matril-hh\matril_y2.dta"
+	keep			if _merge == 3
+	drop 			_merge 
+	*** 1716 matched, 101 not matched from using 
+	
+	save 			"$fil\matril-hh\mathh_y2", replace
 	
 * *********************************************************************
 * 5 - end matter
