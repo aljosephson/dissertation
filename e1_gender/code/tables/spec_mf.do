@@ -18,8 +18,6 @@
 * TO DO:
 	* anonymize pre-submission 
 	* update table numbers with new manuscript numbers 
-	* mht ?? 
-
 	
 * **********************************************************************
 * 0 - setup
