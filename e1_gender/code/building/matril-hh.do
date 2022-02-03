@@ -77,6 +77,13 @@
 	drop 			_merge 
 	*** 1619 matched, 666 not matched from using 
 	
+	destring 		case_id, replace
+	destring 		ea_id, replace
+	
+	compress
+	describe
+	summarize
+	
 	save 			"$fil\matril-hh\mathh_y1", replace
 	
 * **********************************************************************
@@ -125,6 +132,13 @@
 	keep			if _merge == 3
 	drop 			_merge 
 	*** 1716 matched, 101 not matched from using 
+	
+	destring 		case_id, replace
+	destring 		ea_id, replace
+	
+	compress
+	describe
+	summarize
 	
 	save 			"$fil\matril-hh\mathh_y2", replace
 	
