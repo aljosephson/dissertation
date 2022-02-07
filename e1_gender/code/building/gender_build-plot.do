@@ -1,7 +1,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 16 October 2020
+* Last edit: 7 February 2022
 * Stata v.16.1
 
 * does
@@ -172,76 +172,6 @@ summarize
 	
 	save 			"$fil\production-and-sales\plot-with-managerid_y2", replace	
 	
-
-* **********************************************************************
-* 3 - year 3
-* **********************************************************************
-* merge sales decision with decision-maker information 
-
-	use 			"$fil\Cleaned_LSMS\rs_hh_lp3-plot.dta", clear
-
-	merge 			m:m y3_hhid year using ///
-						"$fil\decision-making\decision_wet_y3.dta"
-	keep 			if _merge == 3
-	*** drops 111 observations from using and 0 from master 
-	drop 			_merge 
-	
-	keep 			y3_hhid plotid plotsize mz_yield mz_yieldimp harvest_value harvest_valueimp harvest_valueha ///
-						harvest_valuehaimp year manager1 manager2 
-			
-	save 			"$fil\production-and-sales\production-with-manager_y3", replace	
-	*** 3931 observations 
-	
-* manager 1 
-	rename 			manager1 id_code 
-	merge 			m:m y3_hhid year id_code using "$fil\household\hhbase_y3-short.dta"
-	drop 			if _merge == 2
-	*** matched 3921 
-	*** drop unmatched from using = 10244
-	*** unmatched from master = 10
-	
-	rename 			id_code manager1
-	rename 			sex sex_manager1
-	rename			rltn rltn_manager1
-	rename 			age age_manager1
-	rename 			educ_years educ_years_manager1
-	drop 			_merge 
-
-* manager 2	
-* if no manager assume no one = 0
-	replace 		manager2 = 0 if manager2 == . 
-	rename 			manager2 id_code 
-	merge 			m:m case_id year id_code using "$fil\household\hhbase_y3-short.dta"
-	drop			if _merge == 2
-	*** matched 4358 
-	*** drop unmatched from using = 9454
-	*** keep unmatched from master = 41 
-	
-	rename 			id_code manager2
-	rename 			sex sex_manager2
-	rename			rltn rltn_manager2
-	rename 			age age_manager2
-	rename 			educ_years educ_years_manager2
-	drop 			_merge 
-	
-* determine management 
-	
-* determine primary manager 	
-	gen 			female_dec = 1 if sex_manager1 == 2 
-	replace 		female_dec = 0 if female_dec == .
-	gen 			male_dec = 1 if sex_manager1 == 1
-	replace 		male_dec = 0 if male_dec == .	
-	
-	gen 			joint_dec = 1 if sex_manager2 != . | sex_manager2 != 0 
-	
-	replace 		joint_dec = . if sex_manager1 == . & sex_manager2 == .
-	replace 		joint_dec = 0 if manager2 == 0 | sex_manager2 == . 
-	
-compress
-describe
-summarize 
-	
-	save 			"$fil\production-and-sales\plot-with-managerid_y3", replace	
 	
 * *********************************************************************
 * 4 - end matter
