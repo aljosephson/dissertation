@@ -4070,4 +4070,1083 @@ Sorted by: {res}joint
  {txt}closed on:  {res} 7 Feb 2022, 13:47:38
 {txt}{.-}
 {smcl}
-{txt}{sf}{ul off}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 7 Feb 2022, 13:57:34
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - y1
+. * **********************************************************************        
+. 
+.         use                     "$fil\Year 1\AG_MOD_B.dta", clear
+{txt}
+{com}.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         keep                    ag_b09a ag_b09b case_id ea_id ag_b0c
+{txt}
+{com}.         
+.         rename                  ag_b0c cropcode 
+{res}{txt}
+{com}.         rename                  ag_b09a id_code 
+{res}{txt}
+{com}.         merge                   m:1 ea_id case_id id_code using "$fil\_replication2020\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,577
+{txt}{col 9}from master{col 30}{res}           4,578{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,999{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             831{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,577 observations deleted)
+
+{com}.         *** 831 matched, 4578 not matched from master, 6999 not matched from using 
+.         drop                    _merge
+{txt}
+{com}.         
+.         keep                    case_id ea_id cropcode id_code ag_b09b region district sex 
+{txt}
+{com}.         
+. * determine management types    
+.         gen                     female = 1 if sex == 2 
+{txt}(650 missing values generated)
+
+{com}.         replace                 female = 0 if female == .
+{txt}(650 real changes made)
+
+{com}.         gen                     male = 1 if sex == 1
+{txt}(181 missing values generated)
+
+{com}.         replace                 male = 0 if male == .   
+{txt}(181 real changes made)
+
+{com}.         gen                     joint = 1 if ag_b09b != .
+{txt}(474 missing values generated)
+
+{com}.         replace                 joint = 0 if joint == .
+{txt}(474 real changes made)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}.         bys                     female: tab cropcode
+
+{txt}{hline}
+-> female = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         65       10.00       10.00
+{txt}             MAIZE HYBRID {c |}{res}        118       18.15       28.15
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.46       28.62
+{txt}           TOBACCO BURLEY {c |}{res}        163       25.08       53.69
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.31       54.00
+{txt}             TOBACCO NNDF {c |}{res}          2        0.31       54.31
+{txt}              TOBACCO SDF {c |}{res}          1        0.15       54.46
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        6.00       60.46
+{txt}            GROUNDNUT CG7 {c |}{res}         61        9.38       69.85
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          6        0.92       70.77
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.31       71.08
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          7        1.08       72.15
+{txt}               RICE LOCAL {c |}{res}          2        0.31       72.46
+{txt}                RICE FAYA {c |}{res}          3        0.46       72.92
+{txt}           RICE KILOMBERO {c |}{res}          8        1.23       74.15
+{txt}             SWEET POTATO {c |}{res}         14        2.15       76.31
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        0.92       77.23
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.62       77.85
+{txt}                  SORGHUM {c |}{res}          2        0.31       78.15
+{txt}                    BEANS {c |}{res}         14        2.15       80.31
+{txt}                 SOYABEAN {c |}{res}         32        4.92       85.23
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         48        7.38       92.62
+{txt}                   COTTON {c |}{res}         20        3.08       95.69
+{txt}                SUNFLOWER {c |}{res}          7        1.08       96.77
+{txt}                   TOMATO {c |}{res}         12        1.85       98.62
+{txt}                      PEA {c |}{res}          1        0.15       98.77
+{txt}                  PAPRIKA {c |}{res}          1        0.15       98.92
+{txt}          OTHER (SPECIFY) {c |}{res}          7        1.08      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        650      100.00
+
+{txt}{hline}
+-> female = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         30       16.57       16.57
+{txt}             MAIZE HYBRID {c |}{res}         22       12.15       28.73
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        2.21       30.94
+{txt}           TOBACCO BURLEY {c |}{res}         13        7.18       38.12
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19       10.50       48.62
+{txt}            GROUNDNUT CG7 {c |}{res}         15        8.29       56.91
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        1.66       58.56
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.55       59.12
+{txt}               RICE LOCAL {c |}{res}          2        1.10       60.22
+{txt}                RICE FAYA {c |}{res}          2        1.10       61.33
+{txt}           RICE KILOMBERO {c |}{res}          1        0.55       61.88
+{txt}             SWEET POTATO {c |}{res}          4        2.21       64.09
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        1.10       65.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        1.66       66.85
+{txt}                  SORGHUM {c |}{res}          2        1.10       67.96
+{txt}                    BEANS {c |}{res}          9        4.97       72.93
+{txt}                 SOYABEAN {c |}{res}         11        6.08       79.01
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         18        9.94       88.95
+{txt}                   COTTON {c |}{res}          5        2.76       91.71
+{txt}                SUNFLOWER {c |}{res}          6        3.31       95.03
+{txt}                   TOMATO {c |}{res}          5        2.76       97.79
+{txt}                      PEA {c |}{res}          2        1.10       98.90
+{txt}          OTHER (SPECIFY) {c |}{res}          2        1.10      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        181      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 7 February 2022
+. * Stata v.16.1
+. 
+. * does
+.         * determines crop code at the plot level 
+.         * for creating Table 1
+.         
+. * assumes
+.         * original data files from LSMS
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 7 Feb 2022, 14:04:48
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - y1
+. * **********************************************************************        
+. 
+.         use                     "$fil\Year 1\AG_MOD_B.dta", clear
+{txt}
+{com}.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         keep                    ag_b09a ag_b09b case_id ea_id ag_b0c
+{txt}
+{com}.         
+.         rename                  ag_b0c cropcode 
+{res}{txt}
+{com}.         rename                  ag_b09a id_code 
+{res}{txt}
+{com}.         merge                   m:1 ea_id case_id id_code using "$fil\_replication2020\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,577
+{txt}{col 9}from master{col 30}{res}           4,578{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,999{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             831{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,577 observations deleted)
+
+{com}.         *** 831 matched, 4578 not matched from master, 6999 not matched from using 
+.         drop                    _merge
+{txt}
+{com}.         
+.         keep                    case_id ea_id cropcode id_code ag_b09b region district sex 
+{txt}
+{com}.         
+. * determine management types    
+.         gen                     female = 1 if sex == 2 
+{txt}(650 missing values generated)
+
+{com}.         replace                 female = 0 if female == .
+{txt}(650 real changes made)
+
+{com}.         gen                     male = 1 if sex == 1
+{txt}(181 missing values generated)
+
+{com}.         replace                 male = 0 if male == .   
+{txt}(181 real changes made)
+
+{com}.         gen                     joint = 1 if ag_b09b != .
+{txt}(474 missing values generated)
+
+{com}.         replace                 joint = 0 if joint == .
+{txt}(474 real changes made)
+
+{com}.         
+. * look at crops 
+.         bys                     female: tab cropcode
+
+{txt}{hline}
+-> female = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         65       10.00       10.00
+{txt}             MAIZE HYBRID {c |}{res}        118       18.15       28.15
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.46       28.62
+{txt}           TOBACCO BURLEY {c |}{res}        163       25.08       53.69
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.31       54.00
+{txt}             TOBACCO NNDF {c |}{res}          2        0.31       54.31
+{txt}              TOBACCO SDF {c |}{res}          1        0.15       54.46
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        6.00       60.46
+{txt}            GROUNDNUT CG7 {c |}{res}         61        9.38       69.85
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          6        0.92       70.77
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.31       71.08
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          7        1.08       72.15
+{txt}               RICE LOCAL {c |}{res}          2        0.31       72.46
+{txt}                RICE FAYA {c |}{res}          3        0.46       72.92
+{txt}           RICE KILOMBERO {c |}{res}          8        1.23       74.15
+{txt}             SWEET POTATO {c |}{res}         14        2.15       76.31
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        0.92       77.23
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.62       77.85
+{txt}                  SORGHUM {c |}{res}          2        0.31       78.15
+{txt}                    BEANS {c |}{res}         14        2.15       80.31
+{txt}                 SOYABEAN {c |}{res}         32        4.92       85.23
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         48        7.38       92.62
+{txt}                   COTTON {c |}{res}         20        3.08       95.69
+{txt}                SUNFLOWER {c |}{res}          7        1.08       96.77
+{txt}                   TOMATO {c |}{res}         12        1.85       98.62
+{txt}                      PEA {c |}{res}          1        0.15       98.77
+{txt}                  PAPRIKA {c |}{res}          1        0.15       98.92
+{txt}          OTHER (SPECIFY) {c |}{res}          7        1.08      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        650      100.00
+
+{txt}{hline}
+-> female = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         30       16.57       16.57
+{txt}             MAIZE HYBRID {c |}{res}         22       12.15       28.73
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        2.21       30.94
+{txt}           TOBACCO BURLEY {c |}{res}         13        7.18       38.12
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19       10.50       48.62
+{txt}            GROUNDNUT CG7 {c |}{res}         15        8.29       56.91
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        1.66       58.56
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.55       59.12
+{txt}               RICE LOCAL {c |}{res}          2        1.10       60.22
+{txt}                RICE FAYA {c |}{res}          2        1.10       61.33
+{txt}           RICE KILOMBERO {c |}{res}          1        0.55       61.88
+{txt}             SWEET POTATO {c |}{res}          4        2.21       64.09
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        1.10       65.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        1.66       66.85
+{txt}                  SORGHUM {c |}{res}          2        1.10       67.96
+{txt}                    BEANS {c |}{res}          9        4.97       72.93
+{txt}                 SOYABEAN {c |}{res}         11        6.08       79.01
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         18        9.94       88.95
+{txt}                   COTTON {c |}{res}          5        2.76       91.71
+{txt}                SUNFLOWER {c |}{res}          6        3.31       95.03
+{txt}                   TOMATO {c |}{res}          5        2.76       97.79
+{txt}                      PEA {c |}{res}          2        1.10       98.90
+{txt}          OTHER (SPECIFY) {c |}{res}          2        1.10      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        181      100.00
+
+{txt}
+{com}.         bys                     male: tab cropcode
+
+{txt}{hline}
+-> male = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         30       16.57       16.57
+{txt}             MAIZE HYBRID {c |}{res}         22       12.15       28.73
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        2.21       30.94
+{txt}           TOBACCO BURLEY {c |}{res}         13        7.18       38.12
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19       10.50       48.62
+{txt}            GROUNDNUT CG7 {c |}{res}         15        8.29       56.91
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        1.66       58.56
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.55       59.12
+{txt}               RICE LOCAL {c |}{res}          2        1.10       60.22
+{txt}                RICE FAYA {c |}{res}          2        1.10       61.33
+{txt}           RICE KILOMBERO {c |}{res}          1        0.55       61.88
+{txt}             SWEET POTATO {c |}{res}          4        2.21       64.09
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        1.10       65.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        1.66       66.85
+{txt}                  SORGHUM {c |}{res}          2        1.10       67.96
+{txt}                    BEANS {c |}{res}          9        4.97       72.93
+{txt}                 SOYABEAN {c |}{res}         11        6.08       79.01
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         18        9.94       88.95
+{txt}                   COTTON {c |}{res}          5        2.76       91.71
+{txt}                SUNFLOWER {c |}{res}          6        3.31       95.03
+{txt}                   TOMATO {c |}{res}          5        2.76       97.79
+{txt}                      PEA {c |}{res}          2        1.10       98.90
+{txt}          OTHER (SPECIFY) {c |}{res}          2        1.10      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        181      100.00
+
+{txt}{hline}
+-> male = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         65       10.00       10.00
+{txt}             MAIZE HYBRID {c |}{res}        118       18.15       28.15
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.46       28.62
+{txt}           TOBACCO BURLEY {c |}{res}        163       25.08       53.69
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.31       54.00
+{txt}             TOBACCO NNDF {c |}{res}          2        0.31       54.31
+{txt}              TOBACCO SDF {c |}{res}          1        0.15       54.46
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        6.00       60.46
+{txt}            GROUNDNUT CG7 {c |}{res}         61        9.38       69.85
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          6        0.92       70.77
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.31       71.08
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          7        1.08       72.15
+{txt}               RICE LOCAL {c |}{res}          2        0.31       72.46
+{txt}                RICE FAYA {c |}{res}          3        0.46       72.92
+{txt}           RICE KILOMBERO {c |}{res}          8        1.23       74.15
+{txt}             SWEET POTATO {c |}{res}         14        2.15       76.31
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        0.92       77.23
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.62       77.85
+{txt}                  SORGHUM {c |}{res}          2        0.31       78.15
+{txt}                    BEANS {c |}{res}         14        2.15       80.31
+{txt}                 SOYABEAN {c |}{res}         32        4.92       85.23
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         48        7.38       92.62
+{txt}                   COTTON {c |}{res}         20        3.08       95.69
+{txt}                SUNFLOWER {c |}{res}          7        1.08       96.77
+{txt}                   TOMATO {c |}{res}         12        1.85       98.62
+{txt}                      PEA {c |}{res}          1        0.15       98.77
+{txt}                  PAPRIKA {c |}{res}          1        0.15       98.92
+{txt}          OTHER (SPECIFY) {c |}{res}          7        1.08      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        650      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}.         bys                     joint: tab cropcode
+
+{txt}{hline}
+-> joint = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         57       12.03       12.03
+{txt}             MAIZE HYBRID {c |}{res}         76       16.03       28.06
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        0.84       28.90
+{txt}           TOBACCO BURLEY {c |}{res}         91       19.20       48.10
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.42       48.52
+{txt}             TOBACCO NNDF {c |}{res}          1        0.21       48.73
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        8.23       56.96
+{txt}            GROUNDNUT CG7 {c |}{res}         37        7.81       64.77
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          5        1.05       65.82
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.21       66.03
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          2        0.42       66.46
+{txt}               RICE LOCAL {c |}{res}          3        0.63       67.09
+{txt}                RICE FAYA {c |}{res}          4        0.84       67.93
+{txt}           RICE KILOMBERO {c |}{res}          3        0.63       68.57
+{txt}             SWEET POTATO {c |}{res}          8        1.69       70.25
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        1.27       71.52
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.84       72.36
+{txt}                  SORGHUM {c |}{res}          2        0.42       72.78
+{txt}                    BEANS {c |}{res}         19        4.01       76.79
+{txt}                 SOYABEAN {c |}{res}         28        5.91       82.70
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         38        8.02       90.72
+{txt}                   COTTON {c |}{res}         17        3.59       94.30
+{txt}                SUNFLOWER {c |}{res}          9        1.90       96.20
+{txt}                   TOMATO {c |}{res}         11        2.32       98.52
+{txt}                      PEA {c |}{res}          2        0.42       98.95
+{txt}                  PAPRIKA {c |}{res}          1        0.21       99.16
+{txt}          OTHER (SPECIFY) {c |}{res}          4        0.84      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        474      100.00
+
+{txt}{hline}
+-> joint = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         38       10.64       10.64
+{txt}             MAIZE HYBRID {c |}{res}         64       17.93       28.57
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.84       29.41
+{txt}           TOBACCO BURLEY {c |}{res}         85       23.81       53.22
+{txt}             TOBACCO NNDF {c |}{res}          1        0.28       53.50
+{txt}              TOBACCO SDF {c |}{res}          1        0.28       53.78
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19        5.32       59.10
+{txt}            GROUNDNUT CG7 {c |}{res}         39       10.92       70.03
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          4        1.12       71.15
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.56       71.71
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          5        1.40       73.11
+{txt}               RICE LOCAL {c |}{res}          1        0.28       73.39
+{txt}                RICE FAYA {c |}{res}          1        0.28       73.67
+{txt}           RICE KILOMBERO {c |}{res}          6        1.68       75.35
+{txt}             SWEET POTATO {c |}{res}         10        2.80       78.15
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        0.56       78.71
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        0.84       79.55
+{txt}                  SORGHUM {c |}{res}          2        0.56       80.11
+{txt}                    BEANS {c |}{res}          4        1.12       81.23
+{txt}                 SOYABEAN {c |}{res}         15        4.20       85.43
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         28        7.84       93.28
+{txt}                   COTTON {c |}{res}          8        2.24       95.52
+{txt}                SUNFLOWER {c |}{res}          4        1.12       96.64
+{txt}                   TOMATO {c |}{res}          6        1.68       98.32
+{txt}                      PEA {c |}{res}          1        0.28       98.60
+{txt}          OTHER (SPECIFY) {c |}{res}          5        1.40      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        357      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 7 February 2022
+. * Stata v.16.1
+. 
+. * does
+.         * determines crop code at the plot level 
+.         * for creating Table 1
+.         
+. * assumes
+.         * original data files from LSMS
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/building_joint_variables-production_plot.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 7 Feb 2022, 14:12:32
+{txt}
+{com}.         
+.         
+. * **********************************************************************
+. * 1 - y1
+. * **********************************************************************        
+. 
+.         use                     "$fil\Year 1\AG_MOD_B.dta", clear
+{txt}
+{com}.         
+.         destring                case_id, replace
+{txt}case_id: all characters numeric; {res}replaced {txt}as {res}double
+{txt}
+{com}.         
+.         keep                    ag_b09a ag_b09b case_id ea_id ag_b0c
+{txt}
+{com}.         
+.         rename                  ag_b0c cropcode 
+{res}{txt}
+{com}.         rename                  ag_b09a id_code 
+{res}{txt}
+{com}.         merge                   m:1 ea_id case_id id_code using "$fil\_replication2020\household\hhbase_y1-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,577
+{txt}{col 9}from master{col 30}{res}           4,578{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           6,999{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             831{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,577 observations deleted)
+
+{com}.         *** 831 matched, 4578 not matched from master, 6999 not matched from using 
+.         drop                    _merge
+{txt}
+{com}.         
+.         keep                    case_id ea_id cropcode id_code ag_b09b region district sex 
+{txt}
+{com}.         
+. * determine management types    
+.         gen                     female = 1 if sex == 2 
+{txt}(650 missing values generated)
+
+{com}.         replace                 female = 0 if female == .
+{txt}(650 real changes made)
+
+{com}.         gen                     male = 1 if sex == 1
+{txt}(181 missing values generated)
+
+{com}.         replace                 male = 0 if male == .   
+{txt}(181 real changes made)
+
+{com}.         gen                     joint = 1 if ag_b09b != .
+{txt}(474 missing values generated)
+
+{com}.         replace                 joint = 0 if joint == .
+{txt}(474 real changes made)
+
+{com}.         
+. * look at crops 
+.         bys                     female: tab cropcode
+
+{txt}{hline}
+-> female = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         65       10.00       10.00
+{txt}             MAIZE HYBRID {c |}{res}        118       18.15       28.15
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.46       28.62
+{txt}           TOBACCO BURLEY {c |}{res}        163       25.08       53.69
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.31       54.00
+{txt}             TOBACCO NNDF {c |}{res}          2        0.31       54.31
+{txt}              TOBACCO SDF {c |}{res}          1        0.15       54.46
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        6.00       60.46
+{txt}            GROUNDNUT CG7 {c |}{res}         61        9.38       69.85
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          6        0.92       70.77
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.31       71.08
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          7        1.08       72.15
+{txt}               RICE LOCAL {c |}{res}          2        0.31       72.46
+{txt}                RICE FAYA {c |}{res}          3        0.46       72.92
+{txt}           RICE KILOMBERO {c |}{res}          8        1.23       74.15
+{txt}             SWEET POTATO {c |}{res}         14        2.15       76.31
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        0.92       77.23
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.62       77.85
+{txt}                  SORGHUM {c |}{res}          2        0.31       78.15
+{txt}                    BEANS {c |}{res}         14        2.15       80.31
+{txt}                 SOYABEAN {c |}{res}         32        4.92       85.23
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         48        7.38       92.62
+{txt}                   COTTON {c |}{res}         20        3.08       95.69
+{txt}                SUNFLOWER {c |}{res}          7        1.08       96.77
+{txt}                   TOMATO {c |}{res}         12        1.85       98.62
+{txt}                      PEA {c |}{res}          1        0.15       98.77
+{txt}                  PAPRIKA {c |}{res}          1        0.15       98.92
+{txt}          OTHER (SPECIFY) {c |}{res}          7        1.08      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        650      100.00
+
+{txt}{hline}
+-> female = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         30       16.57       16.57
+{txt}             MAIZE HYBRID {c |}{res}         22       12.15       28.73
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        2.21       30.94
+{txt}           TOBACCO BURLEY {c |}{res}         13        7.18       38.12
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19       10.50       48.62
+{txt}            GROUNDNUT CG7 {c |}{res}         15        8.29       56.91
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        1.66       58.56
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.55       59.12
+{txt}               RICE LOCAL {c |}{res}          2        1.10       60.22
+{txt}                RICE FAYA {c |}{res}          2        1.10       61.33
+{txt}           RICE KILOMBERO {c |}{res}          1        0.55       61.88
+{txt}             SWEET POTATO {c |}{res}          4        2.21       64.09
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        1.10       65.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        1.66       66.85
+{txt}                  SORGHUM {c |}{res}          2        1.10       67.96
+{txt}                    BEANS {c |}{res}          9        4.97       72.93
+{txt}                 SOYABEAN {c |}{res}         11        6.08       79.01
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         18        9.94       88.95
+{txt}                   COTTON {c |}{res}          5        2.76       91.71
+{txt}                SUNFLOWER {c |}{res}          6        3.31       95.03
+{txt}                   TOMATO {c |}{res}          5        2.76       97.79
+{txt}                      PEA {c |}{res}          2        1.10       98.90
+{txt}          OTHER (SPECIFY) {c |}{res}          2        1.10      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        181      100.00
+
+{txt}
+{com}.         bys                     male: tab cropcode
+
+{txt}{hline}
+-> male = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         30       16.57       16.57
+{txt}             MAIZE HYBRID {c |}{res}         22       12.15       28.73
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        2.21       30.94
+{txt}           TOBACCO BURLEY {c |}{res}         13        7.18       38.12
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19       10.50       48.62
+{txt}            GROUNDNUT CG7 {c |}{res}         15        8.29       56.91
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        1.66       58.56
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.55       59.12
+{txt}               RICE LOCAL {c |}{res}          2        1.10       60.22
+{txt}                RICE FAYA {c |}{res}          2        1.10       61.33
+{txt}           RICE KILOMBERO {c |}{res}          1        0.55       61.88
+{txt}             SWEET POTATO {c |}{res}          4        2.21       64.09
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        1.10       65.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        1.66       66.85
+{txt}                  SORGHUM {c |}{res}          2        1.10       67.96
+{txt}                    BEANS {c |}{res}          9        4.97       72.93
+{txt}                 SOYABEAN {c |}{res}         11        6.08       79.01
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         18        9.94       88.95
+{txt}                   COTTON {c |}{res}          5        2.76       91.71
+{txt}                SUNFLOWER {c |}{res}          6        3.31       95.03
+{txt}                   TOMATO {c |}{res}          5        2.76       97.79
+{txt}                      PEA {c |}{res}          2        1.10       98.90
+{txt}          OTHER (SPECIFY) {c |}{res}          2        1.10      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        181      100.00
+
+{txt}{hline}
+-> male = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         65       10.00       10.00
+{txt}             MAIZE HYBRID {c |}{res}        118       18.15       28.15
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.46       28.62
+{txt}           TOBACCO BURLEY {c |}{res}        163       25.08       53.69
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.31       54.00
+{txt}             TOBACCO NNDF {c |}{res}          2        0.31       54.31
+{txt}              TOBACCO SDF {c |}{res}          1        0.15       54.46
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        6.00       60.46
+{txt}            GROUNDNUT CG7 {c |}{res}         61        9.38       69.85
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          6        0.92       70.77
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.31       71.08
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          7        1.08       72.15
+{txt}               RICE LOCAL {c |}{res}          2        0.31       72.46
+{txt}                RICE FAYA {c |}{res}          3        0.46       72.92
+{txt}           RICE KILOMBERO {c |}{res}          8        1.23       74.15
+{txt}             SWEET POTATO {c |}{res}         14        2.15       76.31
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        0.92       77.23
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.62       77.85
+{txt}                  SORGHUM {c |}{res}          2        0.31       78.15
+{txt}                    BEANS {c |}{res}         14        2.15       80.31
+{txt}                 SOYABEAN {c |}{res}         32        4.92       85.23
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         48        7.38       92.62
+{txt}                   COTTON {c |}{res}         20        3.08       95.69
+{txt}                SUNFLOWER {c |}{res}          7        1.08       96.77
+{txt}                   TOMATO {c |}{res}         12        1.85       98.62
+{txt}                      PEA {c |}{res}          1        0.15       98.77
+{txt}                  PAPRIKA {c |}{res}          1        0.15       98.92
+{txt}          OTHER (SPECIFY) {c |}{res}          7        1.08      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        650      100.00
+
+{txt}
+{com}.         bys                     joint: tab cropcode
+
+{txt}{hline}
+-> joint = 0
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         57       12.03       12.03
+{txt}             MAIZE HYBRID {c |}{res}         76       16.03       28.06
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          4        0.84       28.90
+{txt}           TOBACCO BURLEY {c |}{res}         91       19.20       48.10
+{txt}       TOBACCO FLUE CURED {c |}{res}          2        0.42       48.52
+{txt}             TOBACCO NNDF {c |}{res}          1        0.21       48.73
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         39        8.23       56.96
+{txt}            GROUNDNUT CG7 {c |}{res}         37        7.81       64.77
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          5        1.05       65.82
+{txt}        GROUNDNUT MAWANGA {c |}{res}          1        0.21       66.03
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          2        0.42       66.46
+{txt}               RICE LOCAL {c |}{res}          3        0.63       67.09
+{txt}                RICE FAYA {c |}{res}          4        0.84       67.93
+{txt}           RICE KILOMBERO {c |}{res}          3        0.63       68.57
+{txt}             SWEET POTATO {c |}{res}          8        1.69       70.25
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          6        1.27       71.52
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          4        0.84       72.36
+{txt}                  SORGHUM {c |}{res}          2        0.42       72.78
+{txt}                    BEANS {c |}{res}         19        4.01       76.79
+{txt}                 SOYABEAN {c |}{res}         28        5.91       82.70
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         38        8.02       90.72
+{txt}                   COTTON {c |}{res}         17        3.59       94.30
+{txt}                SUNFLOWER {c |}{res}          9        1.90       96.20
+{txt}                   TOMATO {c |}{res}         11        2.32       98.52
+{txt}                      PEA {c |}{res}          2        0.42       98.95
+{txt}                  PAPRIKA {c |}{res}          1        0.21       99.16
+{txt}          OTHER (SPECIFY) {c |}{res}          4        0.84      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        474      100.00
+
+{txt}{hline}
+-> joint = 1
+
+                Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         38       10.64       10.64
+{txt}             MAIZE HYBRID {c |}{res}         64       17.93       28.57
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          3        0.84       29.41
+{txt}           TOBACCO BURLEY {c |}{res}         85       23.81       53.22
+{txt}             TOBACCO NNDF {c |}{res}          1        0.28       53.50
+{txt}              TOBACCO SDF {c |}{res}          1        0.28       53.78
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         19        5.32       59.10
+{txt}            GROUNDNUT CG7 {c |}{res}         39       10.92       70.03
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          4        1.12       71.15
+{txt}           GROUNDNUT JL24 {c |}{res}          2        0.56       71.71
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          5        1.40       73.11
+{txt}               RICE LOCAL {c |}{res}          1        0.28       73.39
+{txt}                RICE FAYA {c |}{res}          1        0.28       73.67
+{txt}           RICE KILOMBERO {c |}{res}          6        1.68       75.35
+{txt}             SWEET POTATO {c |}{res}         10        2.80       78.15
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          2        0.56       78.71
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          3        0.84       79.55
+{txt}                  SORGHUM {c |}{res}          2        0.56       80.11
+{txt}                    BEANS {c |}{res}          4        1.12       81.23
+{txt}                 SOYABEAN {c |}{res}         15        4.20       85.43
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         28        7.84       93.28
+{txt}                   COTTON {c |}{res}          8        2.24       95.52
+{txt}                SUNFLOWER {c |}{res}          4        1.12       96.64
+{txt}                   TOMATO {c |}{res}          6        1.68       98.32
+{txt}                      PEA {c |}{res}          1        0.28       98.60
+{txt}          OTHER (SPECIFY) {c |}{res}          5        1.40      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        357      100.00
+
+{txt}
+{com}.         *** comprise Table 1
+.         *** sum similar crops - ex. maize = 16.57+12.15+2.21 (includes hybrid, local, and recycled hybrid)
+.         *** table constructed by hand 
+.         
+.         save "$fil\_replication2020\production-and-sales\crop-code_manager_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\crop-code_manager_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 2 - y2
+. * **********************************************************************        
+. 
+.         use                     "$fil\Year 2\Agriculture\AG_MOD_BA.dta", clear
+{txt}
+{com}.         
+.         keep                    ag_b09a ag_b09b y2_hhid ag_b0c
+{txt}
+{com}.         
+.         rename                  ag_b0c cropcode 
+{res}{txt}
+{com}.         rename                  ag_b09a id_code 
+{res}{txt}
+{com}.         merge                   m:1 y2_hhid id_code using "$fil\_replication2020\household\hhbase_y2-short.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          14,850
+{txt}{col 9}from master{col 30}{res}           5,528{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,322{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,073{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(14,850 observations deleted)
+
+{com}.         *** 1073 matched, 5528 not matched from master, 9322 not matched from using 
+.         drop                    _merge
+{txt}
+{com}.         
+.         keep                    y2_hhid cropcode id_code ag_b09b region district sex 
+{txt}
+{com}.         
+. * determine management types    
+.         gen                     female = 1 if sex == 2 
+{txt}(826 missing values generated)
+
+{com}.         replace                 female = 0 if female == .
+{txt}(826 real changes made)
+
+{com}.         gen                     male = 1 if sex == 1
+{txt}(247 missing values generated)
+
+{com}.         replace                 male = 0 if male == .   
+{txt}(247 real changes made)
+
+{com}.         gen                     joint = 1 if ag_b09b != .
+{txt}(439 missing values generated)
+
+{com}.         replace                 joint = 0 if joint == .
+{txt}(439 real changes made)
+
+{com}.         
+. * look at crops 
+.         bys                     female: tab cropcode
+
+{txt}{hline}
+-> female = 0
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         89       10.79       10.79
+{txt}      MAIZE COMPOSITE/OPV {c |}{res}          1        0.12       10.91
+{txt}             MAIZE HYBRID {c |}{res}        113       13.70       24.61
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          8        0.97       25.58
+{txt}           TOBACCO BURLEY {c |}{res}         93       11.27       36.85
+{txt}       TOBACCO FLUE CURED {c |}{res}          6        0.73       37.58
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         75        9.09       46.67
+{txt}            GROUNDNUT CG7 {c |}{res}        105       12.73       59.39
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          8        0.97       60.36
+{txt}               RICE LOCAL {c |}{res}          3        0.36       60.73
+{txt}                RICE FAYA {c |}{res}          2        0.24       60.97
+{txt}           RICE KILOMBERO {c |}{res}         11        1.33       62.30
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          4        0.48       62.79
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          2        0.24       63.03
+{txt}             SWEET POTATO {c |}{res}         18        2.18       65.21
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          8        0.97       66.18
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          2        0.24       66.42
+{txt}                  SORGHUM {c |}{res}          8        0.97       67.39
+{txt}                    BEANS {c |}{res}         17        2.06       69.45
+{txt}                 SOYABEAN {c |}{res}         72        8.73       78.18
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         79        9.58       87.76
+{txt}                   COTTON {c |}{res}         52        6.30       94.06
+{txt}                SUNFLOWER {c |}{res}         11        1.33       95.39
+{txt}                  CABBAGE {c |}{res}          3        0.36       95.76
+{txt}                 TANAPOSI {c |}{res}          6        0.73       96.48
+{txt}                  NKHWANI {c |}{res}          5        0.61       97.09
+{txt}                   TOMATO {c |}{res}         12        1.45       98.55
+{txt}                    ONION {c |}{res}          1        0.12       98.67
+{txt}                      PEA {c |}{res}          5        0.61       99.27
+{txt}          OTHER (SPECIFY) {c |}{res}          6        0.73      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        825      100.00
+
+{txt}{hline}
+-> female = 1
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         31       12.60       12.60
+{txt}             MAIZE HYBRID {c |}{res}         25       10.16       22.76
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          6        2.44       25.20
+{txt}           TOBACCO BURLEY {c |}{res}         11        4.47       29.67
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         20        8.13       37.80
+{txt}            GROUNDNUT CG7 {c |}{res}         36       14.63       52.44
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          1        0.41       52.85
+{txt}           RICE KILOMBERO {c |}{res}          6        2.44       55.28
+{txt}           RICE MTUPATUPA {c |}{res}          1        0.41       55.69
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          1        0.41       56.10
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          2        0.81       56.91
+{txt}             SWEET POTATO {c |}{res}          7        2.85       59.76
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          1        0.41       60.16
+{txt}                  SORGHUM {c |}{res}          5        2.03       62.20
+{txt}                    BEANS {c |}{res}          4        1.63       63.82
+{txt}                 SOYABEAN {c |}{res}         12        4.88       68.70
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         50       20.33       89.02
+{txt}                   COTTON {c |}{res}          9        3.66       92.68
+{txt}                SUNFLOWER {c |}{res}          6        2.44       95.12
+{txt}                  NKHWANI {c |}{res}          2        0.81       95.93
+{txt}                   TOMATO {c |}{res}          6        2.44       98.37
+{txt}                      PEA {c |}{res}          1        0.41       98.78
+{txt}          OTHER (SPECIFY) {c |}{res}          3        1.22      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        246      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}.         bys                     male: tab cropcode
+
+{txt}{hline}
+-> male = 0
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         31       12.60       12.60
+{txt}             MAIZE HYBRID {c |}{res}         25       10.16       22.76
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          6        2.44       25.20
+{txt}           TOBACCO BURLEY {c |}{res}         11        4.47       29.67
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         20        8.13       37.80
+{txt}            GROUNDNUT CG7 {c |}{res}         36       14.63       52.44
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          1        0.41       52.85
+{txt}           RICE KILOMBERO {c |}{res}          6        2.44       55.28
+{txt}           RICE MTUPATUPA {c |}{res}          1        0.41       55.69
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          1        0.41       56.10
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          2        0.81       56.91
+{txt}             SWEET POTATO {c |}{res}          7        2.85       59.76
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          1        0.41       60.16
+{txt}                  SORGHUM {c |}{res}          5        2.03       62.20
+{txt}                    BEANS {c |}{res}          4        1.63       63.82
+{txt}                 SOYABEAN {c |}{res}         12        4.88       68.70
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         50       20.33       89.02
+{txt}                   COTTON {c |}{res}          9        3.66       92.68
+{txt}                SUNFLOWER {c |}{res}          6        2.44       95.12
+{txt}                  NKHWANI {c |}{res}          2        0.81       95.93
+{txt}                   TOMATO {c |}{res}          6        2.44       98.37
+{txt}                      PEA {c |}{res}          1        0.41       98.78
+{txt}          OTHER (SPECIFY) {c |}{res}          3        1.22      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        246      100.00
+
+{txt}{hline}
+-> male = 1
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         89       10.79       10.79
+{txt}      MAIZE COMPOSITE/OPV {c |}{res}          1        0.12       10.91
+{txt}             MAIZE HYBRID {c |}{res}        113       13.70       24.61
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          8        0.97       25.58
+{txt}           TOBACCO BURLEY {c |}{res}         93       11.27       36.85
+{txt}       TOBACCO FLUE CURED {c |}{res}          6        0.73       37.58
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         75        9.09       46.67
+{txt}            GROUNDNUT CG7 {c |}{res}        105       12.73       59.39
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          8        0.97       60.36
+{txt}               RICE LOCAL {c |}{res}          3        0.36       60.73
+{txt}                RICE FAYA {c |}{res}          2        0.24       60.97
+{txt}           RICE KILOMBERO {c |}{res}         11        1.33       62.30
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          4        0.48       62.79
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          2        0.24       63.03
+{txt}             SWEET POTATO {c |}{res}         18        2.18       65.21
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          8        0.97       66.18
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          2        0.24       66.42
+{txt}                  SORGHUM {c |}{res}          8        0.97       67.39
+{txt}                    BEANS {c |}{res}         17        2.06       69.45
+{txt}                 SOYABEAN {c |}{res}         72        8.73       78.18
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         79        9.58       87.76
+{txt}                   COTTON {c |}{res}         52        6.30       94.06
+{txt}                SUNFLOWER {c |}{res}         11        1.33       95.39
+{txt}                  CABBAGE {c |}{res}          3        0.36       95.76
+{txt}                 TANAPOSI {c |}{res}          6        0.73       96.48
+{txt}                  NKHWANI {c |}{res}          5        0.61       97.09
+{txt}                   TOMATO {c |}{res}         12        1.45       98.55
+{txt}                    ONION {c |}{res}          1        0.12       98.67
+{txt}                      PEA {c |}{res}          5        0.61       99.27
+{txt}          OTHER (SPECIFY) {c |}{res}          6        0.73      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        825      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}.         bys                     joint: tab cropcode
+
+{txt}{hline}
+-> joint = 0
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         53       12.13       12.13
+{txt}             MAIZE HYBRID {c |}{res}         52       11.90       24.03
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          7        1.60       25.63
+{txt}           TOBACCO BURLEY {c |}{res}         33        7.55       33.18
+{txt}       TOBACCO FLUE CURED {c |}{res}          1        0.23       33.41
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         38        8.70       42.11
+{txt}            GROUNDNUT CG7 {c |}{res}         53       12.13       54.23
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          3        0.69       54.92
+{txt}               RICE LOCAL {c |}{res}          1        0.23       55.15
+{txt}                RICE FAYA {c |}{res}          1        0.23       55.38
+{txt}           RICE KILOMBERO {c |}{res}          6        1.37       56.75
+{txt}           RICE MTUPATUPA {c |}{res}          1        0.23       56.98
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          1        0.23       57.21
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          3        0.69       57.89
+{txt}             SWEET POTATO {c |}{res}         11        2.52       60.41
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          4        0.92       61.33
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          1        0.23       61.56
+{txt}                  SORGHUM {c |}{res}          8        1.83       63.39
+{txt}                    BEANS {c |}{res}          8        1.83       65.22
+{txt}                 SOYABEAN {c |}{res}         27        6.18       71.40
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         70       16.02       87.41
+{txt}                   COTTON {c |}{res}         33        7.55       94.97
+{txt}                SUNFLOWER {c |}{res}          7        1.60       96.57
+{txt}                  NKHWANI {c |}{res}          1        0.23       96.80
+{txt}                   TOMATO {c |}{res}          7        1.60       98.40
+{txt}                      PEA {c |}{res}          3        0.69       99.08
+{txt}          OTHER (SPECIFY) {c |}{res}          4        0.92      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        437      100.00
+
+{txt}{hline}
+-> joint = 1
+
+                CROP CODE {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}         67       10.57       10.57
+{txt}      MAIZE COMPOSITE/OPV {c |}{res}          1        0.16       10.73
+{txt}             MAIZE HYBRID {c |}{res}         86       13.56       24.29
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}          7        1.10       25.39
+{txt}           TOBACCO BURLEY {c |}{res}         71       11.20       36.59
+{txt}       TOBACCO FLUE CURED {c |}{res}          5        0.79       37.38
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}         57        8.99       46.37
+{txt}            GROUNDNUT CG7 {c |}{res}         88       13.88       60.25
+{txt}      GROUNDNUT MANIPINTA {c |}{res}          5        0.79       61.04
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}          1        0.16       61.20
+{txt}               RICE LOCAL {c |}{res}          2        0.32       61.51
+{txt}                RICE FAYA {c |}{res}          1        0.16       61.67
+{txt}           RICE KILOMBERO {c |}{res}         11        1.74       63.41
+{txt}     OTHER RICE (SPECIFY) {c |}{res}          4        0.63       64.04
+{txt}       GROUND BEAN(NZAMA) {c |}{res}          1        0.16       64.20
+{txt}             SWEET POTATO {c |}{res}         14        2.21       66.40
+{txt}    IRISH [MALAWI] POTATO {c |}{res}          5        0.79       67.19
+{txt}    FINGER MILLET(MAWERE) {c |}{res}          1        0.16       67.35
+{txt}                  SORGHUM {c |}{res}          5        0.79       68.14
+{txt}                    BEANS {c |}{res}         13        2.05       70.19
+{txt}                 SOYABEAN {c |}{res}         57        8.99       79.18
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}         59        9.31       88.49
+{txt}                   COTTON {c |}{res}         28        4.42       92.90
+{txt}                SUNFLOWER {c |}{res}         10        1.58       94.48
+{txt}                  CABBAGE {c |}{res}          3        0.47       94.95
+{txt}                 TANAPOSI {c |}{res}          6        0.95       95.90
+{txt}                  NKHWANI {c |}{res}          6        0.95       96.85
+{txt}                   TOMATO {c |}{res}         11        1.74       98.58
+{txt}                    ONION {c |}{res}          1        0.16       98.74
+{txt}                      PEA {c |}{res}          3        0.47       99.21
+{txt}          OTHER (SPECIFY) {c |}{res}          5        0.79      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}        634      100.00
+
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. 

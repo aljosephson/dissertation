@@ -60,6 +60,8 @@
 	bys 			male: tab cropcode
 	bys 			joint: tab cropcode
 	*** comprise Table 1
+	*** sum similar crops - ex. maize = 16.57+12.15+2.21 (includes hybrid, local, and recycled hybrid)
+	*** table constructed by hand 
 	
 	save "$fil\_replication2020\production-and-sales\crop-code_manager_y1.dta", replace 
 	
@@ -93,6 +95,7 @@
 	bys 			male: tab cropcode
 	bys 			joint: tab cropcode
 	*** comprise Table 1
+	*** same procedure as described in y1
 	
 	save "$fil\_replication2020\production-and-sales\crop-code_manager_y2.dta"
 	
