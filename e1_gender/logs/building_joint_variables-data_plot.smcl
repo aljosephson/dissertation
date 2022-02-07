@@ -3894,4 +3894,112 @@ rltn_manag~2 {c |}{res}      2,457    1.428164    .6787764          1         10
 {com}. 
 {txt}end of do-file
 
+{com}. use "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\Year 1\AG_MOD_B.dta"
+
+. tab ag_b0c
+
+                {txt}Crop Code {c |}      Freq.     Percent        Cum.
+{hline 26}{c +}{hline 35}
+              MAIZE LOCAL {c |}{res}      1,449       28.48       28.48
+{txt}      CMAIZE OMPOSITE/OPV {c |}{res}         12        0.24       28.71
+{txt}             MAIZE HYBRID {c |}{res}      1,200       23.58       52.30
+{txt}    MAIZE HYBRID RECYCLED {c |}{res}         53        1.04       53.34
+{txt}           TOBACCO BURLEY {c |}{res}        354        6.96       60.30
+{txt}       TOBACCO FLUE CURED {c |}{res}         10        0.20       60.50
+{txt}             TOBACCO NNDF {c |}{res}          2        0.04       60.53
+{txt}              TOBACCO SDF {c |}{res}          1        0.02       60.55
+{txt}  OTHER TOBACCO (SPECIFY) {c |}{res}          3        0.06       60.61
+{txt}     GROUNDNUT CHALIMBANA {c |}{res}        308        6.05       66.67
+{txt}            GROUNDNUT CG7 {c |}{res}        277        5.44       72.11
+{txt}      GROUNDNUT MANIPINTA {c |}{res}         57        1.12       73.23
+{txt}        GROUNDNUT MAWANGA {c |}{res}          7        0.14       73.37
+{txt}           GROUNDNUT JL24 {c |}{res}         17        0.33       73.70
+{txt}OTHER GROUNDNUT (SPECIFY) {c |}{res}         29        0.57       74.27
+{txt}               RICE LOCAL {c |}{res}         26        0.51       74.78
+{txt}                RICE FAYA {c |}{res}         27        0.53       75.31
+{txt}               RICE PUSSA {c |}{res}          3        0.06       75.37
+{txt}               RICE TCG10 {c |}{res}          7        0.14       75.51
+{txt}     RICE IET4094 (SENGA) {c |}{res}          1        0.02       75.53
+{txt}           RICE KILOMBERO {c |}{res}         47        0.92       76.45
+{txt}           RICE MTUPATUPA {c |}{res}          2        0.04       76.49
+{txt}     OTHER RICE (SPECIFY) {c |}{res}         12        0.24       76.73
+{txt}       GROUND BEAN(NZAMA) {c |}{res}         13        0.26       76.99
+{txt}             SWEET POTATO {c |}{res}        115        2.26       79.25
+{txt}    IRISH [MALAWI] POTATO {c |}{res}         19        0.37       79.62
+{txt}                    WHEAT {c |}{res}          2        0.04       79.66
+{txt}    FINGER MILLET(MAWERE) {c |}{res}         40        0.79       80.44
+{txt}                  SORGHUM {c |}{res}        144        2.83       83.27
+{txt}   PEARL MILLET(MCHEWERE) {c |}{res}         22        0.43       83.71
+{txt}                    BEANS {c |}{res}        145        2.85       86.56
+{txt}                 SOYABEAN {c |}{res}        152        2.99       89.54
+{txt}       PIGEONPEA(NANDOLO) {c |}{res}        284        5.58       95.13
+{txt}                   COTTON {c |}{res}         84        1.65       96.78
+{txt}                SUNFLOWER {c |}{res}         21        0.41       97.19
+{txt}               SUGAR CANE {c |}{res}          1        0.02       97.21
+{txt}                 TANAPOSI {c |}{res}          3        0.06       97.27
+{txt}                  NKHWANI {c |}{res}         71        1.40       98.66
+{txt}             THERERE/OKRA {c |}{res}          4        0.08       98.74
+{txt}                   TOMATO {c |}{res}         23        0.45       99.19
+{txt}                    ONION {c |}{res}          1        0.02       99.21
+{txt}                      PEA {c |}{res}         12        0.24       99.45
+{txt}                  PAPRIKA {c |}{res}          3        0.06       99.51
+{txt}          OTHER (SPECIFY) {c |}{res}         25        0.49      100.00
+{txt}{hline 26}{c +}{hline 35}
+                    Total {c |}{res}      5,088      100.00
+
+{com}. tab ag_b0a
+
+ {txt}Did you or {c |}
+  anyone in {c |}
+    your HH {c |}
+  plant any {c |}
+      crops {c |}
+ during the {c |}
+  2008/2009 {c |}
+      rainy {c |}
+    season? {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+        Yes {c |}{res}      5,091       94.21       94.21
+{txt}         No {c |}{res}        313        5.79      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      5,404      100.00
+
+{com}. keep ag_b09a ag_b09b case_id  ea_id ag_b0c
+
+. save "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\crop-code_manager_y1.dta"
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\crop-code_manager_y1.dta saved
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STDcb8_000000.tmp"
+{txt}
+{com}. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 7 February 2022
+. * Stata v.16.1
+. 
+. * does
+.         * determines crop code at the plot level 
+.         * for creating table 1
+.         
+. * assumes
+.         * original data files from LSMS
+. 
+. * to do 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
 {com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}
