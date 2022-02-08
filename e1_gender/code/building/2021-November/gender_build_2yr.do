@@ -111,7 +111,7 @@
 	drop 			_merge
 	*** dropping 11030 from using 
 	
-	save 			"$fil\regression-ready\household-level_y1", replace	
+	save 			"$fil\regression-ready\household-level_y1.dta", replace	
 	
 * merge in geovars 
 
@@ -691,7 +691,14 @@ summarize
 						dlnvaluefemale_rspec dlnvaluemale_rspec dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
 						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
 						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
-						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead matril
+						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead matril /// 
+						valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
+						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12 valuemale_rspec09 valuemale_rspec12 /// 
+						valuefemale_rspec09 valuefemale_rspec12 foodexp12 foodexp09 alctobexp12 alctobexp09 clothexp12 clothexp09 /// 
+						houseutilsexp12 houseutilsexp09 healthexp12 healthexp09 transpoexp12 transpoexp09 commexp12 commexp09 /// 
+						recexp09 recexp12 eduexp09 eduexp12 hotelrestexp09 hotelrestexp12 miscexp09 miscexp12 totalexp09 totalexp12 /// 
+						totalr09 totalr12
+
 compress
 describe
 summarize
