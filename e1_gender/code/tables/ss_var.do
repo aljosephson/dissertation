@@ -32,6 +32,29 @@
 * **********************************************************************	
 
 	use 			"$fil\regression-ready\reg_ready-final.dta", clear
+	
+* panel 1 - income 
+
+* panel 1a - joint specification 
+	tabstat 		  valuefemale_jspec09 valuemale_jspec09 valuejoint_jspec09 /// 
+						 valuefemale_jspec12 valuemale_jspec12 valuejoint_jspec12, statistics(mean sd)
+* panel 1b - omitted specification 
+	tabstat 			valuefemale_ospec09 valuemale_ospec09 valuefemale_ospec12 valuemale_ospec12, statistics (mean sd)
+* panel 1c - realloated specification
+	tabstat 			valuefemale_rspec09 valuemale_rspec09 valuefemale_rspec12 valuemale_rspec12, statistics (mean sd)
+
+						  
+
+* panel 2 - expenditure 
+
+	tabstat 			foodexp09 foodexp12 alctobexp09 alctobexp12 clothexp09 clothexp12 houseutilsexp09 houseutilsexp12  ///
+						healthexp09 healthexp12 transpoexp09 transpoexp12 commexp09 commexp12 recexp09 recexp12 eduexp09 ///
+						eduexp12 hotelrestexp09 hotelrestexp12 miscexp09 miscexp12, statistics (mean sd)   
+						
+
+* panel 3 - rainfall 	
+
+	tabstat 			totalr09 totalr12, statistics (mean sd)
 
 
 * *********************************************************************
