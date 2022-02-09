@@ -100,7 +100,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	local transpoconsume (dlnconsume_transpo xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
-	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+*	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local commtransconsume (dlnconsume_commtrans xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local agrecconsume (dlnconsume_agrec xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 
@@ -204,15 +204,6 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
 						
-	reg `miscconsume'  
-	est store MISJ
-	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ MISJ, vce(cluster y2_hhid)
-	testnl ([AGCONJ_mean]xbmale = [MISJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [MISJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [MISJ_mean]xbjoint)
-					
 	reg `commtransconsume'  
 	est store COMTJ
 	test xbmale xbfemale xbjoint
@@ -232,14 +223,14 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	testnl ([AGCONJ_mean]xbmale = [RECAGJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECAGJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECAGJ_mean]xbjoint)
 					
 * version 1 - all components individually 	
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ MISJ using tab4_spec-mfj.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab4_spec-mfj_v1.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 
-* version 2 - aggregate groups, omit misc (will omit from both ultimately)
+* version 2 - aggregate groups
 esttab AGCONJ CONFOJ CIGSJ CLJ EDUCJ HEAJ HOUSEJ COMTJ RECAGJ using tab4_spec-mfj-v2.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
