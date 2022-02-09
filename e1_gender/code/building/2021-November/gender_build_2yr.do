@@ -593,10 +593,10 @@ summarize
 * ********************************************************************** 
 
 * *********************************************************************
-* 4a - differencing  
+* 4a - differencing + summing 
 * ********************************************************************** 
 
-* sales values by manager 
+* difference sales values by manager 
 	bys case_id HHID: gen dvaluejoint_jspec = valuejoint_jspec12 - valuejoint_jspec09 
 	bys case_id HHID: gen dvaluefemale_jspec = valuefemale_jspec12 - valuefemale_jspec09
 	bys case_id HHID: gen dvaluemale_jspec = valuemale_jspec12 - valuemale_jspec09 
@@ -605,12 +605,20 @@ summarize
 	bys case_id HHID: gen dvaluefemale_rspec = valuefemale_rspec12 - valuefemale_rspec09
 	bys case_id HHID: gen dvaluemale_rspec = valuemale_rspec12 - valuemale_rspec09 
 	
-* rainfall 
+* difference rainfall 
 	bys case_id HHID: gen dtotalr = totalr12 - totalr09
 	bys case_id HHID: gen dnoraindays = noraindays12 - noraindays09 
 	bys case_id HHID: gen ddryspell = dryspell12 - dryspell09 
 	
-* consumption categories 
+* aggregate consumption categories 
+* transportation and communication 
+	egen commtransexp09 = rsum (transpoexp09 commexp09)
+	egen commtransexp12 = rsum (transpoexp12 commexp12)
+* hotels, restaurants, recreation 
+	egen agrecexp09 = rsum (recexp09 hotelrestexp09)
+	egen agrecexp12 = rsum (recexp12 hotelrestexp12)
+
+* difference consumption categories 
 	bys case_id HHID: gen dfoodexp = foodexp12 - foodexp09
 	bys case_id HHID: gen dalctobexp = alctobexp12 - alctobexp09 
 	bys case_id HHID: gen dclothexp = clothexp12 - clothexp09 
@@ -623,7 +631,8 @@ summarize
 	bys case_id HHID: gen dhotelrestexp = hotelrestexp12 - hotelrestexp09 
 	bys case_id HHID: gen dmiscexp = miscexp12 - miscexp09 
 	bys case_id HHID: gen dtotalexp = totalexp12 - totalexp09 
-	
+	bys case_id HHID: gen dcommtransexp = commtransexp12 - commtransexp09
+	bys case_id HHID: gen dagrecexp = agrecexp12 - agrecexp09
 
 * *********************************************************************
 * 4b - logs  
@@ -653,8 +662,9 @@ summarize
 	bys case_id HHID: gen dlnconsume_educ = asinh(deduexp)
 	bys case_id HHID: gen dlnconsume_hotres = asinh(dhotelrestexp)
 	bys case_id HHID: gen dlnconsume_misc = asinh(dmiscexp)		
+	bys case_id HHID: gen dlnconsume_commtrans = asinh(dcommtransexp)
+	bys case_id HHID: gen dlnconsume_agrec = asinh(dagrecexp)
 						
-
 	save 			"$fil\regression-ready\household-total_both.dta", replace	
 	
 * *********************************************************************
@@ -697,8 +707,8 @@ summarize
 						valuefemale_rspec09 valuefemale_rspec12 foodexp12 foodexp09 alctobexp12 alctobexp09 clothexp12 clothexp09 /// 
 						houseutilsexp12 houseutilsexp09 healthexp12 healthexp09 transpoexp12 transpoexp09 commexp12 commexp09 /// 
 						recexp09 recexp12 eduexp09 eduexp12 hotelrestexp09 hotelrestexp12 miscexp09 miscexp12 totalexp09 totalexp12 /// 
-						totalr09 totalr12
-
+						totalr09 totalr12 dlnconsume_agrec dlnconsume_commtrans commtransexp12 commtransexp09 agrecexp12 agrecexp09
+					
 compress
 describe
 summarize

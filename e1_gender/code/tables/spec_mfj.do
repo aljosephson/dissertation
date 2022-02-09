@@ -17,6 +17,7 @@
 * TO DO:
 	* anonymize pre-submission 
 	* update table numbers with new manuscript numbers  
+	* update with final included categories 
 	
 * **********************************************************************
 * 0 - setup
@@ -67,15 +68,13 @@ clear
 
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
-
-/*
-esttab INJM INJF INJJ using table1.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+	order(dtotalr) ///
 	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
-*/
+
 
 	label variable xbmale "\hspace{0.1cm} Predicted change in male income"
 	label variable xbfemale "\hspace{0.1cm} Predicted change in female income"
@@ -102,6 +101,8 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	local commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	local commtransconsume (dlnconsume_commtrans xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+	local agrecconsume (dlnconsume_agrec xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -212,9 +213,34 @@ esttab INJM INJF INJJ using table1.tex, replace f ///
 	suest AGCONJ MISJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [MISJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [MISJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [MISJ_mean]xbjoint)
 					
-	
-/*	
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ MISJ using table3.tex, replace f ///
+	reg `commtransconsume'  
+	est store COMTJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ COMTJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [COMTJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [COMTJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [COMTJ_mean]xbjoint)
+					
+	reg `agrecconsume'  
+	est store RECAGJ
+	test xbmale xbfemale xbjoint
+	*qui: boottest xbmale, reps (10000)  
+	*qui: boottest xbfemale, reps (10000)  
+	*qui: boottest xbjoint, reps (10000) 
+	suest AGCONJ RECAGJ, vce(cluster y2_hhid)
+	testnl ([AGCONJ_mean]xbmale = [RECAGJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECAGJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECAGJ_mean]xbjoint)
+					
+* version 1 - all components individually 	
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ MISJ using tab4_spec-mfj.tex, replace f ///
+	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(xbmale xbfemale xbjoint) ///
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+
+* version 2 - aggregate groups, omit misc (will omit from both ultimately)
+esttab AGCONJ CONFOJ CIGSJ CLJ EDUCJ HEAJ HOUSEJ COMTJ RECAGJ using tab4_spec-mfj-v2.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
