@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 3 February 2022
+* Edited on: 8 February 2022
 * Created by: alj
 * Stata v.16
 
@@ -69,7 +69,7 @@
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
+esttab INJM INJF INJJ using tab_spec-mfj_nonmatri-rain.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
@@ -102,7 +102,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	local transpoconsume (dlnconsume_transpo xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
-	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+*	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -204,25 +204,13 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
 						
-	reg `miscconsume'  
-	est store MISJ
-	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ MISJ, vce(cluster y2_hhid)
-	testnl ([AGCONJ_mean]xbmale = [MISJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [MISJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [MISJ_mean]xbjoint)
-					
 
-/*
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using tableconsumptionmfjmatri0_1.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab7_spec-mfj_nonmatri.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-*/ 
-
 
 * **********************************************************************
 * 4 - data 
@@ -261,7 +249,7 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using tableconsumptionmfjm
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
+esttab INJM INJF INJJ using tab_spec-mfj_matri-rain.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
@@ -294,7 +282,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	local transpoconsume (dlnconsume_transpo xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
-	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
+*	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -395,24 +383,14 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	*qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
-						
-	reg `miscconsume'  
-	est store MISJ
-	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ MISJ, vce(cluster y2_hhid)
-	testnl ([AGCONJ_mean]xbmale = [MISJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [MISJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [MISJ_mean]xbjoint)
 
-/*
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using tableconsumptionmfjmatri0_1.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab7_spec-mfj_matri.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-*/ 
+
 
 ********************************************************************************************
 
