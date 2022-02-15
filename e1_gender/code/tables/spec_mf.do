@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 11 February 2022
+* Edited on: 15 February 2022
 * Created by: alj
 * Stata v.16
 
@@ -196,14 +196,14 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale) ///
+	order(xbmaleo xbfemaleo) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 	
 
 * **********************************************************************
 * 3 - REALLOCATE joint income
 * *********************************************************************
-*** ANNA BEGIN UPDATING CODE HERE
+
 * **********************************************************************
 * 3a - first stage 
 * *********************************************************************
@@ -226,18 +226,16 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
-/*
-esttab INJMr INJFr using table1.tex, replace f ///
+
+esttab INJMr INJFr using table5_spec_mfr_rain.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(davg_tot davg_wetq davg_wetqstart dlag1_tot dlag1_wetq dlag1_wetqstart dtot dwetq dwetqstart) ///
+	order(dtotalr) ///
 	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
-*/
 
 	label variable xbmaler "\hspace{0.1cm} Predicted change in male income"
 	label variable xbfemaler "\hspace{0.1cm} Predicted change in female income"
-
 	
 * **********************************************************************
 * 3b - second stage - TABLE XX 
@@ -259,7 +257,7 @@ esttab INJMr INJFr using table1.tex, replace f ///
 	local transpoconsumer (dlnconsume_transpo xbmaler xbfemaler i.ssa_aez09 i.ssa_aez12)
 	local commconsumer (dlnconsume_comm xbmaler xbfemaler i.ssa_aez09 i.ssa_aez12)
 	local hotresconsumer (dlnconsume_hotres xbmaler xbfemaler i.ssa_aez09 i.ssa_aez12)
-	local miscconsumer (dlnconsume_misc xbmaler xbfemaler i.ssa_aez09 i.ssa_aez12)
+*	local miscconsumer (dlnconsume_misc xbmaler xbfemaler i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -352,23 +350,14 @@ esttab INJMr INJFr using table1.tex, replace f ///
 	suest AGCONJr HRESJr, vce(cluster y2_hhid)
 	testnl ([AGCONJr_mean]xbmaler = [HRESJr_mean]xbmaler) ([AGCONJr_mean]xbfemaler = [HRESJr_mean]xbfemaler)
 						
-	reg `miscconsumer'  
-	est store MISJr
-	test xbmaler xbfemaler
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJr MISJr, vce(cluster y2_hhid)
-	testnl ([AGCONJr_mean]xbmaler = [MISJr_mean]xbmaler) ([AGCONJr_mean]xbfemaler = [MISJr_mean]xbfemaler) 
-	
 
-/*
-esttab *** NEED TO UPDATE *** using tableconsumptionmf_1.tex, replace f ///
+esttab AGCONJr CONFOJr CIGSJr CLJr RECJr EDUCJr HEAJr HOUSEJr TRANSJr COMJr HRESJr using table5_spec_mfr.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale) ///
+	order(xbmaler xbfemaler) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-*/	
+
 
 ********************************************************************************************
 
