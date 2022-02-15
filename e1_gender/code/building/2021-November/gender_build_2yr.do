@@ -161,16 +161,15 @@
 *** (2) omit 
 
 	gen 			female_ospec = female_decsale 
-	replace 		female_ospec = 1 if sex_salesmanager1 == 1 
 	gen 			male_ospec = male_decsale 
-	replace 		male_ospec = 1 if sex_salesmanager1 == 0 
 	*** in this specification, we reallocate things as though there were no joint specification 
 	
 *** (3) reallocate 	
 
 	gen 			female_rspec = female_decsale
+	replace			female_rspec = 0 if joint_decsale == 1
 	gen 			male_rspec = male_decsale 
-	replace			male_rspec = joint_decsale if male_rspec == 0 & joint_decsale == 1
+	replace			male_rspec = joint_decsale if joint_decsale == 1
 	*** in this specification, we assume that all joint labor is actually men's
 	*** which is a fair assumption, given above 
 	

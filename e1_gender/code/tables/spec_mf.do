@@ -176,7 +176,7 @@ esttab INJMo INJFo using table5_spec_mfo_rain.tex, replace f ///
 	suest AGCONJo TRANSJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [TRANSJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [TRANSJo_mean]xbfemaleo) 
 		
-	reg `transpoconsumeo'  
+	reg `commconsumeo'  
 	est store COMJo
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
@@ -184,7 +184,7 @@ esttab INJMo INJFo using table5_spec_mfo_rain.tex, replace f ///
 	suest AGCONJo COMJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [COMJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [COMJo_mean]xbfemaleo) 
 		
-	reg `transpoconsumeo'  
+	reg `hotresconsumeo'  
 	est store HRESJo
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
