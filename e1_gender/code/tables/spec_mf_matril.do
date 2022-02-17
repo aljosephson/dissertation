@@ -66,7 +66,7 @@ clear
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 
-esttab INJMo INJFo using table8_mfspec_o.tex, replace f ///
+esttab INJMo INJFo using table8_mfspec_o_rain.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
@@ -190,11 +190,11 @@ esttab INJMo INJFo using table8_mfspec_o.tex, replace f ///
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 						
 
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using tableconsumptionmfjmatri0_1.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale xbjoint) ///
+	order(xbmale xbfemale) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification Test"' `"Observations"' `"\(R^{2}\)"'))
 
 /*
