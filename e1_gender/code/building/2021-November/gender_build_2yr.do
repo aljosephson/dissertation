@@ -190,11 +190,12 @@
 	generate 		cropsales = rs_cropsales_valuei / 0.931 
 	summarize 		cropsales, detail	
 	*** mean = 24417.35, st. dev = 133560, small = 0, large = 2631579
+* create winsorized values 
+	winsor 			cropsales, p(.05) gen(cropsales_win)
 	
 * convert MWK to USD 
-* 1 USD = 123 MWK
 *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
-	gen 			cropsales_usd = cropsales / 123 
+	gen 			cropsales_usd = cropsales 
 	summarize 		cropsales_usd, detail
 	*** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
 
@@ -208,12 +209,26 @@
 	gen 			valuemale_jspec = cropsales if male_jspec == 1
 	replace 		valuemale_jspec = 0 if valuemale_jspec == . 
 	
+* winsorized
+	gen 			valuejoint_jspecw = cropsales_win if joint_jspec == 1
+	replace			valuejoint_jspecw = 0 if valuejoint_jspec == . 
+	gen 			valuefemale_jspecw = cropsales_win if female_jspec == 1
+	replace 		valuefemale_jspecw = 0 if valuefemale_jspec == .
+	gen 			valuemale_jspecw = cropsales_win if male_jspec == 1
+	replace 		valuemale_jspecw = 0 if valuemale_jspec == . 
+	
 *** (2) omit
 
 	gen 			valuefemale_ospec = cropsales if female_ospec == 1
 	replace 		valuefemale_ospec = 0 if valuefemale_ospec == .
 	gen 			valuemale_ospec = cropsales if male_ospec == 1
 	replace 		valuemale_ospec = 0 if valuemale_ospec == . 
+	
+* winsorized
+	gen 			valuefemale_ospecw = cropsales_win if female_ospec == 1
+	replace 		valuefemale_ospecw = 0 if valuefemale_ospec == .
+	gen 			valuemale_ospecw = cropsales_win if male_ospec == 1
+	replace 		valuemale_ospecw = 0 if valuemale_ospec == . 	
 
 *** (3) reallocate 
 
@@ -221,6 +236,13 @@
 	replace 		valuefemale_rspec = 0 if valuefemale_rspec == .
 	gen 			valuemale_rspec = cropsales if male_rspec == 1
 	replace 		valuemale_rspec = 0 if valuemale_rspec == . 
+	
+* winsorized 	
+
+	gen 			valuefemale_rspecw = cropsales_win if female_rspec == 1
+	replace 		valuefemale_rspecw = 0 if valuefemale_rspec == .
+	gen 			valuemale_rspecw = cropsales_win if male_rspec == 1
+	replace 		valuemale_rspecw = 0 if valuemale_rspec == . 
 	
 * *********************************************************************
 * 1c - weather 
@@ -274,14 +296,17 @@
 * **********************************************************************	
 	
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril femalehead
+						valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+						valuefemale_rspecw valuemale_rspecw valuefemale_rspec valuemale_rspec totalr noraindays ///
+						dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+						eduexp hotelrestexp miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril femalehead
 	
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09 matril femalehead, by (case_id year region district ea_id HHID)
+						valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+						valuefemale_rspecw valuemale_rspecw valuefemale_rspec valuemale_rspec totalr noraindays ///
+						dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+						eduexp hotelrestexp miscexp totalexp (max) ssa_aez09 matril femalehead, ///
+						by (case_id year region district ea_id HHID)
 						
 	rename 			* *09
 	rename 			case_id09 case_id
@@ -453,6 +478,8 @@ summarize
 	gen 			cropsales = rs_cropsales_valuei / 1.661 if year == 2012
 	summarize 		cropsales, detail	
 	*** mean = 27051.97, st. dev = 118475.6, small = 0, large = 2006823
+* winzorized values 
+	winsor 			cropsales, p(.05) gen(cropsales_win)
 	
 * convert MWK to USD 
 * 1 USD = 123 MWK
@@ -471,12 +498,26 @@ summarize
 	gen 			valuemale_jspec = cropsales if male_jspec == 1
 	replace 		valuemale_jspec = 0 if valuemale_jspec == . 
 	
+* winsorized
+	gen 			valuejoint_jspecw = cropsales_win if joint_jspec == 1
+	replace			valuejoint_jspecw = 0 if valuejoint_jspec == . 
+	gen 			valuefemale_jspecw = cropsales_win if female_jspec == 1
+	replace 		valuefemale_jspecw = 0 if valuefemale_jspec == .
+	gen 			valuemale_jspecw = cropsales_win if male_jspec == 1
+	replace 		valuemale_jspecw = 0 if valuemale_jspec == . 
+	
 *** (2) omit
 
 	gen 			valuefemale_ospec = cropsales if female_ospec == 1
 	replace 		valuefemale_ospec = 0 if valuefemale_ospec == .
 	gen 			valuemale_ospec = cropsales if male_ospec == 1
 	replace 		valuemale_ospec = 0 if valuemale_ospec == . 
+	
+* winsorized
+	gen 			valuefemale_ospecw = cropsales_win if female_ospec == 1
+	replace 		valuefemale_ospecw = 0 if valuefemale_ospec == .
+	gen 			valuemale_ospecw = cropsales_win if male_ospec == 1
+	replace 		valuemale_ospecw = 0 if valuemale_ospec == . 	
 
 *** (3) reallocate 
 
@@ -484,6 +525,14 @@ summarize
 	replace 		valuefemale_rspec = 0 if valuefemale_rspec == .
 	gen 			valuemale_rspec = cropsales if male_rspec == 1
 	replace 		valuemale_rspec = 0 if valuemale_rspec == . 
+	
+* winsorized 	
+
+	gen 			valuefemale_rspecw = cropsales_win if female_rspec == 1
+	replace 		valuefemale_rspecw = 0 if valuefemale_rspec == .
+	gen 			valuemale_rspecw = cropsales_win if male_rspec == 1
+	replace 		valuemale_rspecw = 0 if valuemale_rspec == . 
+	
 	
 * *********************************************************************
 * 2c - weather and aez 
@@ -537,14 +586,17 @@ summarize
 * **********************************************************************	
 	
 	keep 			valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp case_id year region district ea_id HHID y2_hhid ssa_aez09 matril femalehead
-		
+						valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+						valuefemale_rspecw valuemale_rspecw valuefemale_rspec valuemale_rspec totalr noraindays ///
+						dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+						eduexp hotelrestexp miscexp totalexp case_id year region district ea_id y2_hhid HHID ssa_aez09 matril femalehead
+	
 	collapse 		(sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
-						valuefemale_rspec valuemale_rspec totalr noraindays dryspell foodexp alctobexp ///
-						clothexp houseutilsexp healthexp transpoexp commexp recexp eduexp hotelrestexp ///
-						miscexp totalexp (max) ssa_aez09 matril femalehead, by (case_id year region district ea_id HHID y2_hhid)
+						valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+						valuefemale_rspecw valuemale_rspecw valuefemale_rspec valuemale_rspec totalr noraindays ///
+						dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+						eduexp hotelrestexp miscexp totalexp (max) ssa_aez09 matril femalehead, ///
+						by (case_id year y2_hhid region district ea_id HHID)
 	
 	rename 			* *12
 	rename 			case_id12 case_id
