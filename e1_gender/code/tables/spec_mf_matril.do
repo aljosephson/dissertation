@@ -31,6 +31,8 @@
 	cap log 		close
 	log using		"$logs/regs", append	
 	
+	set varabbrev off
+	
 * **********************************************************************
 * 1 - data 
 * *********************************************************************
@@ -190,14 +192,14 @@ esttab INJMo INJFo using table8_mfspec_o_rain.tex, replace f ///
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 						
 
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o_nm.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale) ///
+	order(xbmaleo xbfemaleo) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification Test"' `"Observations"' `"\(R^{2}\)"'))
 
-/*
+
 * **********************************************************************
 * 2 - data 
 * *********************************************************************
@@ -261,7 +263,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	local transpoconsumeo (dlnconsume_transpo xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local commconsumeo (dlnconsume_comm xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local hotresconsumeo (dlnconsume_hotres xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local miscconsumeo (dlnconsume_misc xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+*	local miscconsumeo (dlnconsume_misc xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -338,7 +340,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	suest AGCONJo TRANSJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [TRANSJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [TRANSJo_mean]xbfemaleo) 
 		
-	reg `transpoconsumeo'  
+	reg `commconsumeo'  
 	est store COMJo
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
@@ -346,7 +348,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	suest AGCONJo COMJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [COMJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [COMJo_mean]xbfemaleo) 
 		
-	reg `transpoconsumeo'  
+	reg `hotresconsumeo'  
 	est store HRESJo
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
@@ -354,25 +356,16 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	suest AGCONJo HRESJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 						
-	reg `miscconsumeo'  
-	est store MISJo
-	test xbmaleo xbfemaleo
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo MISJo, vce(cluster y2_hhid)
-	testnl ([AGCONJo_mean]xbmaleo = [MISJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [MISJo_mean]xbfemaleo) 
-				
 
-/*
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ TRANSJ using tableconsumptionmfjmatri0_1.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o_m.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale xbjoint) ///
+	order(xbmaleo xbfemaleo) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-*/ 
+ 
 
-
+/*
 * **********************************************************************
 * 3 - REALLOCATE joint income
 * *********************************************************************
