@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 3 February 2022
+* Last edit: 18 February 2022
 * Stata v.16.1
 
 * does
@@ -194,8 +194,9 @@
 	winsor 			cropsales, p(.05) gen(cropsales_win)
 	
 * convert MWK to USD 
+* 1$ = 123 MK
 *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
-	gen 			cropsales_usd = cropsales 
+	gen 			cropsales_usd = cropsales / 123
 	summarize 		cropsales_usd, detail
 	*** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
 
@@ -475,7 +476,7 @@ summarize
 	summarize 		rs_cropsales_valuei, detail
 	*** mean = 44933.32, st. dev = 196788, small = 0, large = 333333
 
-	gen 			cropsales = rs_cropsales_valuei / 1.661 if year == 2012
+	gen 			cropsales = rs_cropsales_valuei / 1.661 
 	summarize 		cropsales, detail	
 	*** mean = 27051.97, st. dev = 118475.6, small = 0, large = 2006823
 * winzorized values 
