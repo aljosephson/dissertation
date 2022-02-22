@@ -52848,4 +52848,42 @@ valuemale_.. {c |}{res}        968    27031.18    173326.9          0    4013646
  {res} 17065.18  49359.46
 {txt}{hline 9}{c BT}{hline 20}
 
+{com}. do "C:\Users\aljosephson\git\dissertation\e1_gender\code\tables\spec_mfj.do"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: alj - intrahousehold mgmt of joint resources 
+. * Created on: ... 2016 
+. * Edited on: 22 February 2022
+. * Created by: alj
+. * Stata v.16
+. 
+. * does
+.         * first stage rainfall estimates
+.         * second stage overidentification test for male, female, joint 
+.         * corresponds with tables 6 and 7 
+.         
+. * assumes
+.         * reg_ready-final.dta 
+. 
+. * TO DO:
+.         * anonymize pre-submission 
+.         * update table numbers with new manuscript numbers  
+.         * update with final included categories 
+.         
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
 {com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}

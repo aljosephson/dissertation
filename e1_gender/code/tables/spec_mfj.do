@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 8 February 2022
+* Edited on: 22 February 2022
 * Created by: alj
 * Stata v.16
 
@@ -203,26 +203,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	*qui: boottest xbjoint, reps (10000) 
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
-						
-	reg `commtransconsume'  
-	est store COMTJ
-	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ COMTJ, vce(cluster y2_hhid)
-	testnl ([AGCONJ_mean]xbmale = [COMTJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [COMTJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [COMTJ_mean]xbjoint)
-					
-	reg `agrecconsume'  
-	est store RECAGJ
-	test xbmale xbfemale xbjoint
-	*qui: boottest xbmale, reps (10000)  
-	*qui: boottest xbfemale, reps (10000)  
-	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJ RECAGJ, vce(cluster y2_hhid)
-	testnl ([AGCONJ_mean]xbmale = [RECAGJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [RECAGJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [RECAGJ_mean]xbjoint)
-					
-* version 1 - all components individually 	
+
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab4_spec-mfj_v1.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
@@ -230,14 +211,6 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using ta
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 
-* version 2 - aggregate groups
-esttab AGCONJ CONFOJ CIGSJ CLJ EDUCJ HEAJ HOUSEJ COMTJ RECAGJ using tab4_spec-mfj-v2.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
-	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(xbmale xbfemale xbjoint) ///
-	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
-	
 ********************************************************************************************
 
 /* END */
