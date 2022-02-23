@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 8 February 2022
+* Edited on: 23 February 2022
 * Created by: alj
 * Stata v.16
 
@@ -46,9 +46,9 @@
 
 * set local for male, female, and joint 
 
-	local jincome (dlnvaluejoint_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local fincome (dlnvaluefemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local mincome (dlnvaluemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
+	local jincome (dlnvaluejoint_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local fincome (dlnvaluefemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local mincome (dlnvaluemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
 
 * reg and F-test
 * save estimates and predict xb 
@@ -206,7 +206,7 @@ esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab9_spec-mfj_nonfh.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	star(* 0.05 ** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
  
@@ -225,9 +225,9 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using ta
 
 * set local for male, female, and joint 
 
-	local jincome (dlnvaluejoint_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local fincome (dlnvaluefemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local mincome (dlnvaluemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
+	local jincome (dlnvaluejoint_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local fincome (dlnvaluefemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local mincome (dlnvaluemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
 
 * reg and F-test
 * save estimates and predict xb 
@@ -386,7 +386,7 @@ esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab9_spec-mfj_fh.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	star(* 0.05 ** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 
