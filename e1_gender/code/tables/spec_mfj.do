@@ -45,6 +45,11 @@ clear
 * 2 - first stage - TABLE 6
 * *********************************************************************
 
+* **********************************************************************
+* 2a - normal 
+* *********************************************************************
+
+/*
 * set local for male, female, and joint 
 
 	local jincome (dlnvaluejoint_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
@@ -79,6 +84,45 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	label variable xbmale "\hspace{0.1cm} Predicted change in male income"
 	label variable xbfemale "\hspace{0.1cm} Predicted change in female income"
 	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
+*/
+	
+* **********************************************************************
+* 2b - winsorized
+* *********************************************************************
+
+* set local for male, female, and joint 
+
+	local jincome (dlnvaluejoint_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local fincome (dlnvaluefemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local mincome (dlnvaluemale_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
+
+* reg and F-test
+* save estimates and predict xb 
+
+	reg `jincome', vce (cluster case_id)
+	est store INJJ
+	predict xbjoint, xb
+
+	reg `fincome', vce (cluster case_id) 
+	est store INJF
+	predict xbfemale, xb
+	
+	reg `mincome', vce (cluster case_id)
+	est store INJM 
+	predict xbmale, xb
+
+* in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
+
+esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
+	drop(3* _cons) ///
+	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	order(dtotalr) ///
+	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
+
+	label variable xbmale "\hspace{0.1cm} Predicted change in male income"
+	label variable xbfemale "\hspace{0.1cm} Predicted change in female income"
+	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
 
 * **********************************************************************
 * 3 - second stage - TABLE 7
@@ -101,8 +145,6 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	local commconsume (dlnconsume_comm xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 *	local miscconsume (dlnconsume_misc xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
-	local commtransconsume (dlnconsume_commtrans xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
-	local agrecconsume (dlnconsume_agrec xbmale xbfemale xbjoint i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -204,7 +246,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
 
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab4_spec-mfj_v1.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab4_spec-mfj.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
