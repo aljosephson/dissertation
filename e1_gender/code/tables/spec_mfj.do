@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 22 February 2022
+* Edited on: 23 February 2022
 * Created by: alj
 * Stata v.16
 
@@ -45,51 +45,6 @@ clear
 * 2 - first stage - TABLE 6
 * *********************************************************************
 
-* **********************************************************************
-* 2a - normal 
-* *********************************************************************
-
-/*
-* set local for male, female, and joint 
-
-	local jincome (dlnvaluejoint_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local fincome (dlnvaluefemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-	local mincome (dlnvaluemale_jspec dtotalr i.ssa_aez09 i.ssa_aez12)
-
-* reg and F-test
-* save estimates and predict xb 
-
-	reg `jincome', vce (cluster case_id)
-	est store INJJ
-	predict xbjoint, xb
-
-	reg `fincome', vce (cluster case_id) 
-	est store INJF
-	predict xbfemale, xb
-	
-	reg `mincome', vce (cluster case_id)
-	est store INJM 
-	predict xbmale, xb
-
-* in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
-
-esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
-	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
-	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
-	order(dtotalr) ///
-	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
-
-
-	label variable xbmale "\hspace{0.1cm} Predicted change in male income"
-	label variable xbfemale "\hspace{0.1cm} Predicted change in female income"
-	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
-*/
-	
-* **********************************************************************
-* 2b - winsorized
-* *********************************************************************
-
 * set local for male, female, and joint 
 
 	local jincome (dlnvaluejoint_jspecw dtotalr i.ssa_aez09 i.ssa_aez12)
@@ -116,7 +71,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	star(* 0.05 ** 0.01) nogaps ///
 	order(dtotalr) ///
 	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
 
@@ -249,7 +204,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab4_spec-mfj.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
-	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
+	star(* 0.05 ** 0.01) nogaps ///
 	order(xbmale xbfemale xbjoint) ///
 	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 
