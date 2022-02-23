@@ -238,19 +238,22 @@
 * 1d - aggregates 
 * **********************************************************************	
 
-	rename 			rexp_cat01 foodexp
-	rename 			rexp_cat02 alctobexp
-	rename 			rexp_cat03 clothexp
+* adjusting for inflation 	
+
+	generate 		foodexp = rexp_cat01 / 0.931 
+	generate 		alctobexp = rexp_cat02 / 0.931 
+	generate		clothexp = rexp_cat03 / 0.931 
 	egen 			houseutilsexp = rsum (rexp_cat04 rexp_cat05)
 	*** adding housing and utilities with furnishings 
-	rename 			rexp_cat06 healthexp 
-	rename 			rexp_cat07 transpoexp
-	rename 			rexp_cat08 commexp
-	rename 			rexp_cat09 recexp
-	rename 			rexp_cat10 eduexp
-	rename 			rexp_cat11 hotelrestexp
-	rename 			rexp_cat12 miscexp 
-	rename 			rexpagg totalexp 
+	replace 		houseutilsexp = houseutilsexp / 0.931 
+	generate 		healthexp = rexp_cat06 / 0.931  
+	generate 		transpoexp = rexp_cat07 / 0.931 
+	generate 		commexp	= rexp_cat08 / 0.931 
+	generate 		recexp = rexp_cat09 / 0.931 
+	generate 		eduexp = rexp_cat10 / 0.931 
+	generate 		hotelrestexp = rexp_cat11 / 0.931 
+	generate 		miscexp	= rexp_cat12 / 0.931 
+	generate 		totalexp = rexpagg / 0.931 
 	
  	save 			"$fil\regression-ready\household-total_y1.dta", replace	
 
@@ -502,19 +505,22 @@ summarize
 * 2d - aggregates 
 * **********************************************************************	
 
-	rename 			rexp_cat01 foodexp
-	rename 			rexp_cat02 alctobexp
-	rename 			rexp_cat03 clothexp
+* adjusting for inflation 	
+
+	generate 		foodexp = rexp_cat01 / 1.661 
+	generate 		alctobexp = rexp_cat02 / 1.661 
+	generate		clothexp = rexp_cat03 / 1.661
 	egen 			houseutilsexp = rsum (rexp_cat04 rexp_cat05)
 	*** adding housing and utilities with furnishings 
-	rename 			rexp_cat06 healthexp 
-	rename 			rexp_cat07 transpoexp
-	rename 			rexp_cat08 commexp
-	rename 			rexp_cat09 recexp
-	rename 			rexp_cat10 eduexp
-	rename 			rexp_cat11 hotelrestexp
-	rename 			rexp_cat12 miscexp 
-	rename 			rexpagg totalexp 
+	replace 		houseutilsexp = houseutilsexp / 1.661
+	generate 		healthexp = rexp_cat06 / 1.661  
+	generate 		transpoexp = rexp_cat07 / 1.661
+	generate 		commexp	= rexp_cat08 / 1.661
+	generate 		recexp = rexp_cat09 / 1.661
+	generate 		eduexp = rexp_cat10 / 1.661
+	generate 		hotelrestexp = rexp_cat11 / 1.661
+	generate 		miscexp	= rexp_cat12 / 1.661
+	generate 		totalexp = rexpagg / 1.661
 	
  	save 			"$fil\regression-ready\household-total_y2.dta", replace	
 	
