@@ -2,14 +2,14 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 23 February 2022
+* Edited on: 24 February 2022
 * Created by: alj
 * Stata v.16
 
 * does
 	* first stage rainfall estimates
 	* second stage overidentification test for male, female, joint 
-	* corresponds with tables 6 and 7 
+	* corresponds with tables 3 and 4
 	
 * assumes
 	* reg_ready-final.dta 
@@ -42,7 +42,7 @@ clear
  	use 			"$fil\regression-ready\reg_ready-final", clear	
 	
 * **********************************************************************
-* 2 - first stage - TABLE 6
+* 2 - first stage - TABLE 3 (panel 1)
 * *********************************************************************
 
 * set local for male, female, and joint 
@@ -80,7 +80,7 @@ esttab INJM INJF INJJ using table3_rain-mfj.tex, replace f ///
 	label variable xbjoint "\hspace{0.1cm} Predicted change in joint income"
 
 * **********************************************************************
-* 3 - second stage - TABLE 7
+* 3 - second stage - table 4 (panel 1)
 * *********************************************************************
 
 * male, female, and joint 
