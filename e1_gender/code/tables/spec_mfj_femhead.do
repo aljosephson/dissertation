@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 23 February 2022
+* Edited on: 2 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -68,8 +68,8 @@
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJM INJF INJJ using table_app_asapp_mfj_nfemh.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
@@ -203,7 +203,7 @@ esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
 					
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab9_spec-mfj_nonfh.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab6_spec-mfj_nonfh.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
@@ -248,8 +248,8 @@ esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using ta
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJM INJF INJJ using table_app_asapp_mfj_femh.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
@@ -383,7 +383,7 @@ esttab INJM INJF INJJ using tableincomefh0_1.tex, replace f ///
 	suest AGCONJ HRESJ, vce(cluster y2_hhid)
 	testnl ([AGCONJ_mean]xbmale = [HRESJ_mean]xbmale) ([AGCONJ_mean]xbfemale = [HRESJ_mean]xbfemale) ([AGCONJ_mean]xbjoint = [HRESJ_mean]xbjoint)
 						
-esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab9_spec-mfj_fh.tex, replace f ///
+esttab AGCONJ CONFOJ CIGSJ CLJ RECJ EDUCJ HEAJ HOUSEJ TRANSJ COMJ HRESJ using tab6_spec-mfj_fh.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///

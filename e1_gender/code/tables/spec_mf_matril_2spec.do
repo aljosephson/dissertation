@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 23 February 2022
+* Edited on: 2 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -67,14 +67,15 @@ clear
 
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
-
-esttab INJMo INJFo using table8_mfspec_o_rain.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+/*
+esttab INJMo INJFo using table_app_asapp_mfmatril-nomatr.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
 	stats(r2, fmt(0 3) layout("\multicolumn{1}{c}{@}") labels(`"\(R^{2}\)"'))
-
+*/
+	
 	label variable xbmaleo "\hspace{0.1cm} Predicted change in male income"
 	label variable xbfemaleo "\hspace{0.1cm} Predicted change in female income"	
 	
@@ -192,7 +193,7 @@ esttab INJMo INJFo using table8_mfspec_o_rain.tex, replace f ///
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 						
 
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o_nm.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table5_mfspec_o_nm.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
@@ -232,8 +233,8 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJM INJF INJJ using table_app_asapp_mfmatril-matr.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
@@ -357,7 +358,7 @@ esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 						
 
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table8_mfspec_o_m.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table5_mfspec_o_m.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///

@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 23 February 2022
+* Edited on: 2 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -68,8 +68,8 @@ clear
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJM INJF INJJ using tableincomematri0_1.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJM INJF INJJ using table_app_asapp_mj_nofemh.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
@@ -233,8 +233,8 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 /*
-esttab INJMo INJFo using table10_mfspec_o_rain.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJMo INJFo using table_app_asapp_mj_femh.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.10 ** 0.05 *** 0.01) nogaps ///
 	order() ///
