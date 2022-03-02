@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 23 February 2022
+* Last edit: 2 March 2022
 * Stata v.16.1
 
 * does
@@ -731,6 +731,11 @@ summarize
 compress
 describe
 summarize
+
+* details for Table 2
+	tabstat 		totalexp09 totalexp12 foodexp09 foodexp12 alctobexp09 alctobexp12 clothexp09 clothexp12 recexp09 recexp12 ///
+						eduexp09 eduexp12 healthexp09 healthexp12 houseutilsexp09 houseutilsexp12 transpoexp09 transpoexp12 ///
+						commexp09 commexp12 hotelrestexp09 hotelrestexp12, statistics (mean sd)
 	
  	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
 

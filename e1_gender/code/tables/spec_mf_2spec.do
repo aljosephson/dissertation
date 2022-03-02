@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 28 February 2022
+* Edited on: 2 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -46,7 +46,7 @@ clear
 * *********************************************************************
 
 * **********************************************************************
-* 2a - first stage - OMIT joint income 
+* 2a - first stage - OMIT joint income - TABLE 3
 * *********************************************************************
 
 * set local for male and female
@@ -68,18 +68,17 @@ clear
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 
-esttab INJMo INJFo using table5_spec_mfo_rain.tex, replace f ///
-	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
+esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
+	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
 	stats(N r2, fmt(0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Observations"' `"\(R^{2}\)"'))
-
 
 	label variable xbmaleo "\hspace{0.1cm} Predicted change in male income"
 	label variable xbfemaleo "\hspace{0.1cm} Predicted change in female income"
 
 * **********************************************************************
-* 2b - second stage - TABLE XX
+* 2b - second stage - TABLE 4
 * *********************************************************************
 
 * male and female 
@@ -191,7 +190,7 @@ esttab INJMo INJFo using table5_spec_mfo_rain.tex, replace f ///
 	suest AGCONJo HRESJo, vce(cluster y2_hhid)
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 	
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table5_spec_mfo.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table4_spec_mfo.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
