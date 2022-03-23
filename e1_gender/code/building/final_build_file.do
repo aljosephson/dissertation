@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: THE IDES OF MARCH
+* Last edit: 23 March 2022
 * Stata v.16.1
 
 * does
@@ -733,9 +733,51 @@ describe
 summarize
 
 * details for Table 2
+* by 2010, 2013
+* income 
+	tabstat 		valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
+						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12, statistics (mean sd)
+* expenditure 	
 	tabstat 		totalexp09 totalexp12 foodexp09 foodexp12 alctobexp09 alctobexp12 clothexp09 clothexp12 recexp09 recexp12 ///
 						eduexp09 eduexp12 healthexp09 healthexp12 houseutilsexp09 houseutilsexp12 transpoexp09 transpoexp12 ///
 						commexp09 commexp12 hotelrestexp09 hotelrestexp12, statistics (mean sd)
+* rainfall 
+	tabstat 		totalr09 totalr12, statistics (mean sd)
+						
+* simplify - single stat 
+* income 
+	egen 			valuejoint_jspec = rmean(valuejoint_jspec09 valuejoint_jspec12)
+	egen 			valuefemale_jspec = rmean(valuefemale_jspec09 valuefemale_jspec12)
+	egen			valuemale_jspec = rmean(valuemale_jspec09 valuemale_jspec12)
+	egen 			valuefemale_ospec = rmean(valuefemale_ospec09 valuefemale_ospec12)
+	egen 			valuemale_ospec = rmean(valuemale_ospec09 valuemale_ospec12)
+
+	tabstat 		valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+	
+* expenditure 
+	egen 			totalexp = rmean(totalexp09 totalexp12)
+	egen 			foodexp = rmean(foodexp09 foodexp12)
+	egen 			alctobexp =rmean(alctobexp09 alctobexp12)
+	egen			clothexp = rmean(clothexp09 clothexp12)
+	egen 			recexp = rmean(recexp09 recexp12)
+	egen 			eduexp = rmean(eduexp09 eduexp12)
+	egen 			healthexp = rmean(healthexp09 healthexp12)
+	egen 			houseutilsexp = rmean(houseutilsexp09 houseutilsexp12)
+	egen 			transpoexp = rmean(transpoexp09 transpoexp12)
+	egen 			commexp = rmean(commexp09 commexp12)
+	egen 			hotelrestexp = rmean(hotelrestexp09 hotelrestexp12)
+	
+	tabstat 		totalexp foodexp alctobexp clothexp recexp eduexp healthexp houseutilsexp ///
+						transpoexp commexp hotelrestexp, statistics (mean sd)
+	
+* rainfall 
+	egen 			totalr = rmean(totalr09 totalr12)
+	
+	tabstat 		totalr, statistics (mean sd)
+
+* save and all that
+	isid case_id HHID year
 	
  	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
 
