@@ -74079,4 +74079,2584 @@ dlncons~grec {c |}{res}      1,359    .4357231    8.442956  -13.59345   13.52162
  {txt}closed on:  {res}23 Mar 2022, 10:20:42
 {txt}{.-}
 {smcl}
-{txt}{sf}{ul off}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}23 Mar 2022, 15:13:53
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab salesmanager
+{bf}{err}salesmanager{sf} ambiguous abbreviation
+{txt}{search r(111), local:r(111);}
+
+{com}. tab salesmanager1
+
+{txt}Who in your {c |}
+  household {c |}
+kept/decide {c |}
+  d what to {c |}
+do with the {c |}
+  earnings? {c |}
+   (ID CODE {c |}
+        #1) {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          1 {c |}{res}        763       91.49       91.49
+{txt}          2 {c |}{res}         66        7.91       99.40
+{txt}          3 {c |}{res}          4        0.48       99.88
+{txt}         12 {c |}{res}          1        0.12      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        834      100.00
+
+{com}. count rs_cropsales_value
+{err}varlist not allowed
+{txt}{search r(101), local:r(101);}
+
+{com}. count
+  {res}3,024
+
+{com}. tab rs_cropsales_value
+
+{txt}Self-report {c |}
+ed value of {c |}
+      rainy {c |}
+season crop {c |}
+sales (MWK) {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,365       53.26       53.26
+{txt}        100 {c |}{res}          3        0.12       53.37
+{txt}        200 {c |}{res}          2        0.08       53.45
+{txt}        300 {c |}{res}          5        0.20       53.65
+{txt}        350 {c |}{res}          2        0.08       53.73
+{txt}        360 {c |}{res}          3        0.12       53.84
+{txt}        370 {c |}{res}          2        0.08       53.92
+{txt}        400 {c |}{res}          4        0.16       54.08
+{txt}        420 {c |}{res}          1        0.04       54.12
+{txt}        450 {c |}{res}          1        0.04       54.16
+{txt}        470 {c |}{res}          1        0.04       54.19
+{txt}        500 {c |}{res}         19        0.74       54.94
+{txt}        600 {c |}{res}          6        0.23       55.17
+{txt}        700 {c |}{res}          1        0.04       55.21
+{txt}        740 {c |}{res}          3        0.12       55.33
+{txt}        750 {c |}{res}          1        0.04       55.36
+{txt}        800 {c |}{res}          6        0.23       55.60
+{txt}        900 {c |}{res}          9        0.35       55.95
+{txt}   999.9999 {c |}{res}          6        0.23       56.18
+{txt}       1000 {c |}{res}         32        1.25       57.43
+{txt}       1000 {c |}{res}          6        0.23       57.67
+{txt}       1100 {c |}{res}          3        0.12       57.78
+{txt}       1200 {c |}{res}         15        0.59       58.37
+{txt}       1250 {c |}{res}          2        0.08       58.45
+{txt}       1260 {c |}{res}          2        0.08       58.53
+{txt}       1300 {c |}{res}          3        0.12       58.64
+{txt}       1350 {c |}{res}          1        0.04       58.68
+{txt}       1470 {c |}{res}          7        0.27       58.95
+{txt}       1500 {c |}{res}         44        1.72       60.67
+{txt}       1550 {c |}{res}          1        0.04       60.71
+{txt}       1600 {c |}{res}          2        0.08       60.79
+{txt}       1750 {c |}{res}          9        0.35       61.14
+{txt}       1800 {c |}{res}          8        0.31       61.45
+{txt}       1850 {c |}{res}          3        0.12       61.57
+{txt}       1900 {c |}{res}          1        0.04       61.61
+{txt}       2000 {c |}{res}          3        0.12       61.72
+{txt}       2000 {c |}{res}         27        1.05       62.78
+{txt}       2000 {c |}{res}          8        0.31       63.09
+{txt}       2100 {c |}{res}          3        0.12       63.21
+{txt}       2165 {c |}{res}          2        0.08       63.29
+{txt}       2200 {c |}{res}          4        0.16       63.44
+{txt}       2250 {c |}{res}          2        0.08       63.52
+{txt}       2300 {c |}{res}          7        0.27       63.79
+{txt}       2350 {c |}{res}          3        0.12       63.91
+{txt}       2400 {c |}{res}          6        0.23       64.14
+{txt}       2420 {c |}{res}          2        0.08       64.22
+{txt}       2500 {c |}{res}          9        0.35       64.57
+{txt}       2550 {c |}{res}          2        0.08       64.65
+{txt}       2555 {c |}{res}          2        0.08       64.73
+{txt}       2600 {c |}{res}          2        0.08       64.81
+{txt}       2700 {c |}{res}          5        0.20       65.00
+{txt}       2800 {c |}{res}          4        0.16       65.16
+{txt}       2880 {c |}{res}          3        0.12       65.28
+{txt}       2950 {c |}{res}          2        0.08       65.35
+{txt}       3000 {c |}{res}         22        0.86       66.21
+{txt}       3080 {c |}{res}          5        0.20       66.41
+{txt}       3100 {c |}{res}          1        0.04       66.45
+{txt}       3200 {c |}{res}          7        0.27       66.72
+{txt}       3300 {c |}{res}          8        0.31       67.03
+{txt}       3400 {c |}{res}          1        0.04       67.07
+{txt}       3500 {c |}{res}         32        1.25       68.32
+{txt}       3600 {c |}{res}          6        0.23       68.55
+{txt}       4000 {c |}{res}         10        0.39       68.94
+{txt}       4000 {c |}{res}         22        0.86       69.80
+{txt}       4000 {c |}{res}          1        0.04       69.84
+{txt}       4500 {c |}{res}          8        0.31       70.15
+{txt}       4500 {c |}{res}          2        0.08       70.23
+{txt}       4600 {c |}{res}          6        0.23       70.46
+{txt}       4640 {c |}{res}          3        0.12       70.58
+{txt}       4750 {c |}{res}          2        0.08       70.66
+{txt}       4900 {c |}{res}          1        0.04       70.70
+{txt}       4980 {c |}{res}          3        0.12       70.82
+{txt}       5000 {c |}{res}         17        0.66       71.48
+{txt}       5200 {c |}{res}          3        0.12       71.60
+{txt}       5250 {c |}{res}          2        0.08       71.67
+{txt}       5400 {c |}{res}          3        0.12       71.79
+{txt}       5500 {c |}{res}          2        0.08       71.87
+{txt}       5800 {c |}{res}          4        0.16       72.02
+{txt}       6000 {c |}{res}          1        0.04       72.06
+{txt}       6000 {c |}{res}         14        0.55       72.61
+{txt}       6000 {c |}{res}          2        0.08       72.69
+{txt}       6250 {c |}{res}          3        0.12       72.81
+{txt}       6400 {c |}{res}          3        0.12       72.92
+{txt}       6500 {c |}{res}          5        0.20       73.12
+{txt}       6640 {c |}{res}          3        0.12       73.23
+{txt}       6650 {c |}{res}          3        0.12       73.35
+{txt}       6750 {c |}{res}          2        0.08       73.43
+{txt}       6800 {c |}{res}          1        0.04       73.47
+{txt}       7000 {c |}{res}          4        0.16       73.62
+{txt}       7000 {c |}{res}          7        0.27       73.90
+{txt}       7200 {c |}{res}          2        0.08       73.98
+{txt}       7500 {c |}{res}          9        0.35       74.33
+{txt}       7800 {c |}{res}          3        0.12       74.44
+{txt}       7850 {c |}{res}          3        0.12       74.56
+{txt}       8000 {c |}{res}         15        0.59       75.15
+{txt}       8100 {c |}{res}          3        0.12       75.26
+{txt}       8200 {c |}{res}          5        0.20       75.46
+{txt}       8450 {c |}{res}          3        0.12       75.58
+{txt}       8500 {c |}{res}          5        0.20       75.77
+{txt}       8600 {c |}{res}          2        0.08       75.85
+{txt}       9000 {c |}{res}         12        0.47       76.32
+{txt}       9075 {c |}{res}          4        0.16       76.47
+{txt}       9200 {c |}{res}          2        0.08       76.55
+{txt}       9500 {c |}{res}          5        0.20       76.75
+{txt}       9600 {c |}{res}          5        0.20       76.94
+{txt}       9750 {c |}{res}          5        0.20       77.14
+{txt}      10000 {c |}{res}         33        1.29       78.42
+{txt}      10240 {c |}{res}          1        0.04       78.46
+{txt}      10280 {c |}{res}          3        0.12       78.58
+{txt}      10500 {c |}{res}          9        0.35       78.93
+{txt}      10660 {c |}{res}          4        0.16       79.09
+{txt}      10800 {c |}{res}          6        0.23       79.32
+{txt}      10800 {c |}{res}          3        0.12       79.44
+{txt}      10990 {c |}{res}          7        0.27       79.71
+{txt}      11000 {c |}{res}          7        0.27       79.98
+{txt}      11200 {c |}{res}          3        0.12       80.10
+{txt}      11500 {c |}{res}          3        0.12       80.22
+{txt}      11550 {c |}{res}          3        0.12       80.34
+{txt}      11800 {c |}{res}          2        0.08       80.41
+{txt}      12000 {c |}{res}          6        0.23       80.65
+{txt}      13000 {c |}{res}          1        0.04       80.69
+{txt}      14000 {c |}{res}          3        0.12       80.80
+{txt}      14500 {c |}{res}          5        0.20       81.00
+{txt}      15000 {c |}{res}          2        0.08       81.08
+{txt}      15000 {c |}{res}         11        0.43       81.51
+{txt}      16300 {c |}{res}          3        0.12       81.62
+{txt}      16750 {c |}{res}          2        0.08       81.70
+{txt}      17000 {c |}{res}          7        0.27       81.97
+{txt}      17400 {c |}{res}          6        0.23       82.21
+{txt}      18000 {c |}{res}         24        0.94       83.14
+{txt}      19800 {c |}{res}          3        0.12       83.26
+{txt}      20000 {c |}{res}         11        0.43       83.69
+{txt}      20600 {c |}{res}          3        0.12       83.81
+{txt}      21000 {c |}{res}          1        0.04       83.85
+{txt}      21300 {c |}{res}          3        0.12       83.96
+{txt}      22000 {c |}{res}          3        0.12       84.08
+{txt}      22500 {c |}{res}          3        0.12       84.20
+{txt}      23000 {c |}{res}          7        0.27       84.47
+{txt}      24400 {c |}{res}          5        0.20       84.67
+{txt}      25000 {c |}{res}         17        0.66       85.33
+{txt}      25840 {c |}{res}          4        0.16       85.49
+{txt}      26000 {c |}{res}          2        0.08       85.56
+{txt}      26200 {c |}{res}          3        0.12       85.68
+{txt}      27200 {c |}{res}          3        0.12       85.80
+{txt}      28000 {c |}{res}          5        0.20       85.99
+{txt}      28000 {c |}{res}          2        0.08       86.07
+{txt}      28200 {c |}{res}          1        0.04       86.11
+{txt}      28600 {c |}{res}          1        0.04       86.15
+{txt}      29000 {c |}{res}          3        0.12       86.27
+{txt}      29400 {c |}{res}          3        0.12       86.38
+{txt}      30000 {c |}{res}          7        0.27       86.66
+{txt}      30400 {c |}{res}          3        0.12       86.77
+{txt}      31000 {c |}{res}          8        0.31       87.09
+{txt}      32000 {c |}{res}          3        0.12       87.20
+{txt}      32800 {c |}{res}          3        0.12       87.32
+{txt}      33000 {c |}{res}          4        0.16       87.48
+{txt}      33300 {c |}{res}          2        0.08       87.55
+{txt}      35000 {c |}{res}          8        0.31       87.87
+{txt}      35200 {c |}{res}          2        0.08       87.94
+{txt}      36000 {c |}{res}          4        0.16       88.10
+{txt}      36800 {c |}{res}          3        0.12       88.22
+{txt}      37900 {c |}{res}          2        0.08       88.29
+{txt}      38000 {c |}{res}          6        0.23       88.53
+{txt}      39500 {c |}{res}          8        0.31       88.84
+{txt}      40000 {c |}{res}          6        0.23       89.08
+{txt}      41000 {c |}{res}          5        0.20       89.27
+{txt}      42000 {c |}{res}          3        0.12       89.39
+{txt}      43000 {c |}{res}          2        0.08       89.47
+{txt}      43500 {c |}{res}          3        0.12       89.58
+{txt}      43750 {c |}{res}          6        0.23       89.82
+{txt}      43900 {c |}{res}          2        0.08       89.89
+{txt}      44000 {c |}{res}          3        0.12       90.01
+{txt}      44200 {c |}{res}          3        0.12       90.13
+{txt}      45000 {c |}{res}          6        0.23       90.36
+{txt}      45800 {c |}{res}          3        0.12       90.48
+{txt}      46000 {c |}{res}          7        0.27       90.75
+{txt}      50000 {c |}{res}         18        0.70       91.46
+{txt}      50500 {c |}{res}          3        0.12       91.57
+{txt}      52000 {c |}{res}          2        0.08       91.65
+{txt}      52100 {c |}{res}          3        0.12       91.77
+{txt}      53000 {c |}{res}          5        0.20       91.96
+{txt}      55000 {c |}{res}          2        0.08       92.04
+{txt}      55600 {c |}{res}          4        0.16       92.20
+{txt}      58500 {c |}{res}          3        0.12       92.31
+{txt}      60000 {c |}{res}         12        0.47       92.78
+{txt}      64500 {c |}{res}          1        0.04       92.82
+{txt}      65000 {c |}{res}          6        0.23       93.06
+{txt}      66000 {c |}{res}          1        0.04       93.09
+{txt}      67400 {c |}{res}          3        0.12       93.21
+{txt}      68000 {c |}{res}          2        0.08       93.29
+{txt}      68600 {c |}{res}          3        0.12       93.41
+{txt}      70000 {c |}{res}          2        0.08       93.48
+{txt}      75000 {c |}{res}          8        0.31       93.80
+{txt}      76000 {c |}{res}          2        0.08       93.87
+{txt}      80000 {c |}{res}          8        0.31       94.19
+{txt}      81010 {c |}{res}          3        0.12       94.30
+{txt}      82000 {c |}{res}          3        0.12       94.42
+{txt}      83000 {c |}{res}          5        0.20       94.62
+{txt}      83040 {c |}{res}          3        0.12       94.73
+{txt}      85000 {c |}{res}          4        0.16       94.89
+{txt}      86120 {c |}{res}          2        0.08       94.97
+{txt}      86740 {c |}{res}          3        0.12       95.08
+{txt}      87000 {c |}{res}          2        0.08       95.16
+{txt}      88000 {c |}{res}          3        0.12       95.28
+{txt}      90000 {c |}{res}          7        0.27       95.55
+{txt}      91000 {c |}{res}          1        0.04       95.59
+{txt}      93000 {c |}{res}          7        0.27       95.86
+{txt}      98000 {c |}{res}          4        0.16       96.02
+{txt}     100000 {c |}{res}          3        0.12       96.14
+{txt}     100100 {c |}{res}          2        0.08       96.22
+{txt}     103000 {c |}{res}          4        0.16       96.37
+{txt}     110000 {c |}{res}          3        0.12       96.49
+{txt}     111000 {c |}{res}          4        0.16       96.64
+{txt}     114500 {c |}{res}          3        0.12       96.76
+{txt}     130000 {c |}{res}          2        0.08       96.84
+{txt}     130800 {c |}{res}          3        0.12       96.96
+{txt}     134000 {c |}{res}          4        0.16       97.11
+{txt}     140000 {c |}{res}          2        0.08       97.19
+{txt}     142300 {c |}{res}          1        0.04       97.23
+{txt}     148240 {c |}{res}          5        0.20       97.42
+{txt}     150000 {c |}{res}         11        0.43       97.85
+{txt}     153000 {c |}{res}          3        0.12       97.97
+{txt}     158000 {c |}{res}          1        0.04       98.01
+{txt}     160000 {c |}{res}          2        0.08       98.09
+{txt}     161000 {c |}{res}          3        0.12       98.21
+{txt}     165000 {c |}{res}          2        0.08       98.28
+{txt}     170000 {c |}{res}          2        0.08       98.36
+{txt}     175800 {c |}{res}          3        0.12       98.48
+{txt}     180000 {c |}{res}          7        0.27       98.75
+{txt}     184000 {c |}{res}          3        0.12       98.87
+{txt}     203000 {c |}{res}          3        0.12       98.99
+{txt}     215000 {c |}{res}          3        0.12       99.10
+{txt}     234000 {c |}{res}          4        0.16       99.26
+{txt}     250000 {c |}{res}          2        0.08       99.34
+{txt}     330000 {c |}{res}          3        0.12       99.45
+{txt}     500000 {c |}{res}          4        0.16       99.61
+{txt}     600000 {c |}{res}          2        0.08       99.69
+{txt}     750000 {c |}{res}          2        0.08       99.77
+{txt}     960000 {c |}{res}          3        0.12       99.88
+{txt}    2700000 {c |}{res}          3        0.12      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,563      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD8458_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 23 March 2022
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for household-level 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}23 Mar 2022, 15:16:22
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(461 observations deleted)
+
+{com}.         *** drops 83 observations from using and 378 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}.  
+.         save                    "$fil\production-and-sales\sales-with-manager_y1", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta saved
+
+{com}.         *** 2563 observations 
+.         
+. * manager 1 - year 1
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,759
+{txt}{col 9}from master{col 30}{res}           1,748{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,011{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             815{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,011 observations deleted)
+
+{com}.         *** matched 815 
+.         *** drop unmatched from using = 7011
+.         *** unmatched from master = 1748 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,209 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,558
+{txt}{col 9}from master{col 30}{res}           2,210{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,348{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             353{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,348 observations deleted)
+
+{com}.         *** matched 353 
+.         *** drop unmatched from using = 7348
+.         *** keep unmatched from master = 2210 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(2,388 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(2,388 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(1,923 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(1,923 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,214 missing values generated)
+
+{com}.         
+.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,213 real changes made)
+
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y1", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y1.dta saved
+
+{com}.         
+. * bring in consumption variables 
+.         
+.         merge                   m:1 case_id year using "$fil\consumption\ihs3_summary_09.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+strata was 
+byte, now int to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,030
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          11,030{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,030 observations deleted)
+
+{com}.         drop                    _merge
+{txt}
+{com}.         *** dropping 11030 from using 
+.         
+.         save                    "$fil\regression-ready\household-level_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         
+. * merge in geovars 
+. 
+.         merge                   m:1 case_id year using "$fil\geovar\householdgeovariables_09.dta"
+{res}{txt}(label HH_A01 already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(378 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 378 not matched from using
+.         
+.         save                    "$fil\regression-ready\household-level_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         *** and now same number of observations = 2563                  
+. 
+.         
+. * merge in plot-level files 
+.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}.         duplicates drop 
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. /*
+> * not sure what I'm getting from this ... 
+>         merge                   1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+>         *** all matched 
+>         drop                    _merge 
+> */      
+.         replace                 sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+{txt}(447 real changes made)
+
+{com}.         replace                 sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+{txt}(129 real changes made)
+
+{com}.         label                   var sex_salesmanager1 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager1 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         replace                 sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+{txt}(2 real changes made)
+
+{com}.         replace                 sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+{txt}(227 real changes made)
+
+{com}.         label                   var sex_salesmanager2 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager2 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         summarize               sex_salesmanager1 sex_salesmanager2
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}        576    .2239583    .4172568          0          1
+{txt}sex_salesm~2 {c |}{res}        229    .9912664    .0932487          0          1
+{txt}
+{com}.         *** 22 percent of first manager women
+.         *** 99 percent of second manager women 
+.         
+. * define manager categories of interest
+. 
+. *** (1) joint 
+. 
+.         gen                     joint_jspec = joint_decsale
+{txt}(1 missing value generated)
+
+{com}.         gen                     female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 female_jspec = 0 if female_jspec == . 
+{txt}(1,568 real changes made)
+
+{com}.         gen                     male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 male_jspec = 0 if male_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         *** this is the new specification which this paper puts forward
+.         
+. *** (2) omit 
+. 
+.         gen                     female_ospec = female_decsale 
+{txt}
+{com}.         gen                     male_ospec = male_decsale 
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 1b - sales values
+. * **********************************************************************
+. 
+. * convert MKW to 2010 values
+. * 2009 = 93.1
+. *** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
+. 
+. * using rs_cropsales_valuei
+.         summarize               rs_cropsales_valuei, detail
+
+       {txt}Implied value of rainy season crop sales (MWK)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 22732.55
+                        {txt}Largest       Std. Dev.     {res} 124344.3
+{txt}75%    {res} 7472.501        1826797
+{txt}90%    {res}    44500        1826797       {txt}Variance      {res} 1.55e+10
+{txt}95%    {res} 84416.16        2450000       {txt}Skewness      {res} 13.87106
+{txt}99%    {res}   376881        2450000       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 22732.55, st. dev = 1243344.3, small = 0, large = 2340000
+. 
+.         generate                cropsales = rs_cropsales_valuei / 0.931 
+{txt}
+{com}.         summarize               cropsales, detail       
+
+                          {txt}cropsales
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 24417.35
+                        {txt}Largest       Std. Dev.     {res}   133560
+{txt}75%    {res} 8026.317        1962188
+{txt}90%    {res} 47798.07        1962188       {txt}Variance      {res} 1.78e+10
+{txt}95%    {res} 90672.57        2631579       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 404813.1        2631579       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 24417.35, st. dev = 133560, small = 0, large = 2631579
+. * create winsorized values 
+.         winsor                  cropsales, p(.05) gen(cropsales_win)
+{txt}
+{com}.         
+. * convert MWK to USD 
+. * 1$ = 123 MK
+. *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
+.         gen                     cropsales_usd = cropsales / 123
+{txt}
+{com}.         summarize               cropsales_usd, detail
+
+                        {txt}cropsales_usd
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res}  198.515
+                        {txt}Largest       Std. Dev.     {res} 1085.853
+{txt}75%    {res} 65.25461       15952.75
+{txt}90%    {res} 388.6022       15952.75       {txt}Variance      {res}  1179078
+{txt}95%    {res} 737.1754       21394.95       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 3291.164       21394.95       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
+. 
+. * determine values by sales manager
+. 
+. *** (1) joint 
+.         gen                     valuejoint_jspec = cropsales if joint_jspec == 1
+{txt}(1,464 missing values generated)
+
+{com}.         replace                 valuejoint_jspec = 0 if valuejoint_jspec == . 
+{txt}(1,464 real changes made)
+
+{com}.         gen                     valuefemale_jspec = cropsales if female_jspec == 1
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 valuefemale_jspec = 0 if valuefemale_jspec == .
+{txt}(1,568 real changes made)
+
+{com}.         gen                     valuemale_jspec = cropsales if male_jspec == 1
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 valuemale_jspec = 0 if valuemale_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         
+. * winsorized
+.         gen                     valuejoint_jspecw = cropsales_win if joint_jspec == 1
+{txt}(1,464 missing values generated)
+
+{com}.         replace                 valuejoint_jspecw = 0 if valuejoint_jspec == . 
+{txt}(0 real changes made)
+
+{com}.         gen                     valuefemale_jspecw = cropsales_win if female_jspec == 1
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 valuefemale_jspecw = 0 if valuefemale_jspec == .
+{txt}(0 real changes made)
+
+{com}.         gen                     valuemale_jspecw = cropsales_win if male_jspec == 1
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 valuemale_jspecw = 0 if valuemale_jspec == . 
+{txt}(0 real changes made)
+
+{com}.         
+. *** (2) omit
+. 
+.         gen                     valuefemale_ospec = cropsales if female_ospec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_ospec = 0 if valuefemale_ospec == .
+{txt}(1,564 real changes made)
+
+{com}.         gen                     valuemale_ospec = cropsales if male_ospec == 1
+{txt}(1,246 missing values generated)
+
+{com}.         replace                 valuemale_ospec = 0 if valuemale_ospec == . 
+{txt}(1,246 real changes made)
+
+{com}.         
+. * winsorized
+.         gen                     valuefemale_ospecw = cropsales_win if female_ospec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_ospecw = 0 if valuefemale_ospec == .
+{txt}(0 real changes made)
+
+{com}.         gen                     valuemale_ospecw = cropsales_win if male_ospec == 1
+{txt}(1,246 missing values generated)
+
+{com}.         replace                 valuemale_ospecw = 0 if valuemale_ospec == .    
+{txt}(0 real changes made)
+
+{com}. 
+. * *********************************************************************
+. * 1c - weather 
+. * **********************************************************************
+. 
+.         merge                   m:1 case_id ea_id year using "$fil\geovar\rain_2yr.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           4,482
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           4,482{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,693{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         *** matched = 3853
+.         keep if _merge == 3
+{txt}(4,482 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}.         
+.         rename                  total totalr 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 1d - aggregates 
+. * **********************************************************************        
+. 
+. * adjusting for inflation       
+. 
+.         generate                foodexp = rexp_cat01 / 0.931 
+{txt}
+{com}.         generate                alctobexp = rexp_cat02 / 0.931 
+{txt}
+{com}.         generate                clothexp = rexp_cat03 / 0.931 
+{txt}
+{com}.         egen                    houseutilsexp = rsum (rexp_cat04 rexp_cat05)
+{txt}
+{com}.         *** adding housing and utilities with furnishings 
+.         replace                 houseutilsexp = houseutilsexp / 0.931 
+{txt}(1,693 real changes made)
+
+{com}.         generate                healthexp = rexp_cat06 / 0.931  
+{txt}
+{com}.         generate                transpoexp = rexp_cat07 / 0.931 
+{txt}
+{com}.         generate                commexp = rexp_cat08 / 0.931 
+{txt}
+{com}.         generate                recexp = rexp_cat09 / 0.931 
+{txt}
+{com}.         generate                eduexp = rexp_cat10 / 0.931 
+{txt}
+{com}.         generate                hotelrestexp = rexp_cat11 / 0.931 
+{txt}
+{com}.         generate                miscexp = rexp_cat12 / 0.931 
+{txt}
+{com}.         generate                totalexp = rexpagg / 0.931 
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 1e - matrilineal and head of household gender   
+. * **********************************************************************        
+.         
+.         merge                   m:1 case_id ea_id using "$fil\matril-hh\mathh_y1.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,693{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(378 observations deleted)
+
+{com}.         *** 1693 matched, 378 not matched from using 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         tab                     matril 
+
+     {txt}matril {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        452       26.87       26.87
+{txt}          1 {c |}{res}      1,230       73.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,682      100.00
+{txt}
+{com}.         *** 73 percent matril, 27 percent otherwise 
+.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,316       77.73       77.73
+{txt}          1 {c |}{res}        377       22.27      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,693      100.00
+{txt}
+{com}.         *** 22 percent female headed, 78 percent otherwise 
+.         
+. * *********************************************************************
+. * 1f - reduce + clean up   
+. * **********************************************************************        
+.         
+.         keep                    valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+>                                                 totalr noraindays dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+>                                                 eduexp hotelrestexp miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril femalehead
+{txt}
+{com}.         
+.         collapse                (sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+>                                                 totalr noraindays dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+>                                                 eduexp hotelrestexp miscexp totalexp (max) ssa_aez09 matril femalehead, ///
+>                                                 by (case_id year region district ea_id HHID)
+{txt}
+{com}.                                                 
+.         rename                  * *09
+{res}{txt}
+{com}.         rename                  case_id09 case_id
+{res}{txt}
+{com}.         rename                  year09 year 
+{res}{txt}
+{com}.         rename                  region09 region 
+{res}{txt}
+{com}.         rename                  district09 district
+{res}{txt}
+{com}.         rename                  ea_id09 ea_id 
+{res}{txt}
+{com}.         rename                  HHID09 HHID
+{res}{txt}
+{com}.         rename                  ssa_aez0909 ssa_aez09
+{res}{txt}
+{com}.         
+.         duplicates              drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(0 observations are duplicates)
+
+{com}.                                                 
+.         isid                    case_id year region district ea_id HHID
+{txt}
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}totalr09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}noraindays09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}dryspell09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (26,061 bytes saved)
+
+{com}. describe
+
+{txt}Contains data
+  obs:{res}         1,241                          
+{txt} vars:{res}            34                          
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:valuejoint_~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefe~jspec09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_j~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefe~ospec09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_o~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuejoint_~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspecw{p_end}
+{p 0 48}{bind:valuef~jspecw09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspecw{p_end}
+{p 0 48}{bind:valuemale_j~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspecw{p_end}
+{p 0 48}{bind:valuef~ospecw09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospecw{p_end}
+{p 0 48}{bind:valuemale_o~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospecw{p_end}
+{p 0 48}{bind:totalr09       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays09   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell09     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp09   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp09 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{p 0 48}{bind:matril09       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) matril{p_end}
+{p 0 48}{bind:femalehead09   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{txt}{hline}
+Sorted by: {res}case_id  year  region  district  ea_id  HHID
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,241    2.44e+11    6.53e+10   1.01e+11   3.16e+11
+{txt}{space 8}year {c |}{res}      1,241        2009           0       2009       2009
+{txt}{space 6}region {c |}{res}      1,241    2.382756    .6470722          1          3
+{txt}{space 4}district {c |}{res}      1,241    244.3392     65.3424        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      1,241    1751.555    765.3623          1       3230
+{txt}valuejoi~c09 {c |}{res}      1,241    10612.18    103314.7          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1328.427    16678.57          0   489352.2
+{txt}valuemale_.. {c |}{res}      1,241    6289.391    45946.87          0   932073.7
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}{hline 13}{c +}{hline 57}
+valuemale_.. {c |}{res}      1,241    16855.33    112639.6          0    2631579
+{txt}valuejoi~w09 {c |}{res}      1,241    4343.815     16801.7          0   90672.57
+{txt}valuefemal.. {c |}{res}      1,241    839.1308    6686.468          0   90672.57
+{txt}valuemale_.. {c |}{res}      1,241    3443.683     15166.6          0   181345.1
+{txt}valuefemal.. {c |}{res}      1,241    843.7922    6686.926          0   90672.57
+{txt}{hline 13}{c +}{hline 57}
+valuemale_.. {c |}{res}      1,241    7741.253    22292.63          0   181345.1
+{txt}{space 4}totalr09 {c |}{res}      1,241    854.5359    368.4417        483       3292
+{txt}noraindays09 {c |}{res}      1,241    180.0008    71.24467         94        532
+{txt}{space 2}dryspell09 {c |}{res}      1,241    15.89686    7.943997          6         52
+{txt}{space 3}foodexp09 {c |}{res}      1,241    229098.8    212922.6   13201.47    1856993
+{txt}{hline 13}{c +}{hline 57}
+{space 1}alctobexp09 {c |}{res}      1,241    9015.926    29450.74          0   434112.2
+{txt}{space 2}clothexp09 {c |}{res}      1,241     13380.3    43289.75          0    1248970
+{txt}houseutil~09 {c |}{res}      1,241    68629.44    100391.8   3907.709    1287527
+{txt}{space 1}healthexp09 {c |}{res}      1,241    6107.371    16772.61          0     245655
+{txt}transpoexp09 {c |}{res}      1,241    17315.27     59724.4          0   848843.8
+{txt}{hline 13}{c +}{hline 57}
+{space 3}commexp09 {c |}{res}      1,241    13147.06    33080.98          0   432218.3
+{txt}{space 4}recexp09 {c |}{res}      1,241    3596.396    14579.87          0   219595.8
+{txt}{space 4}eduexp09 {c |}{res}      1,241    6446.867    30095.78          0   539755.7
+{txt}hotelrest~09 {c |}{res}      1,241    3721.343    10952.54          0   216773.7
+{txt}{space 3}miscexp09 {c |}{res}      1,241    10099.44    13382.83          0   165181.6
+{txt}{hline 13}{c +}{hline 57}
+{space 2}totalexp09 {c |}{res}      1,241    380558.2    404888.7   24436.32    3794894
+{txt}{space 3}ssa_aez09 {c |}{res}      1,241     313.838    3.594176        312        323
+{txt}{space 4}matril09 {c |}{res}      1,230    .7276423    .4453541          0          1
+{txt}femalehead09 {c |}{res}      1,241    .2320709    .4223242          0          1
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y2.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             641
+{txt}{col 9}from master{col 30}{res}             505{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             136{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,258{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+{txt}end of do-file
+
+{com}. tab rs_cropsales_value
+
+{txt}Self-report {c |}
+ed value of {c |}
+      rainy {c |}
+season crop {c |}
+sales (MWK) {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,531       47.09       47.09
+{txt}        150 {c |}{res}          1        0.03       47.12
+{txt}        200 {c |}{res}          3        0.09       47.22
+{txt}        250 {c |}{res}          3        0.09       47.31
+{txt}        360 {c |}{res}          3        0.09       47.40
+{txt}        500 {c |}{res}          2        0.06       47.46
+{txt}        580 {c |}{res}          2        0.06       47.52
+{txt}        600 {c |}{res}          3        0.09       47.62
+{txt}        700 {c |}{res}          2        0.06       47.68
+{txt}        750 {c |}{res}          4        0.12       47.80
+{txt}       1000 {c |}{res}         21        0.65       48.45
+{txt}       1000 {c |}{res}          2        0.06       48.51
+{txt}       1050 {c |}{res}          2        0.06       48.57
+{txt}       1100 {c |}{res}          1        0.03       48.60
+{txt}       1200 {c |}{res}          1        0.03       48.63
+{txt}       1350 {c |}{res}          2        0.06       48.69
+{txt}       1360 {c |}{res}          4        0.12       48.82
+{txt}       1500 {c |}{res}          8        0.25       49.06
+{txt}       1540 {c |}{res}          1        0.03       49.09
+{txt}       1550 {c |}{res}          2        0.06       49.15
+{txt}       1600 {c |}{res}          5        0.15       49.31
+{txt}       1750 {c |}{res}          3        0.09       49.40
+{txt}       1800 {c |}{res}          8        0.25       49.65
+{txt}       2000 {c |}{res}          4        0.12       49.77
+{txt}       2000 {c |}{res}         24        0.74       50.51
+{txt}       2100 {c |}{res}          1        0.03       50.54
+{txt}       2300 {c |}{res}          1        0.03       50.57
+{txt}       2400 {c |}{res}          1        0.03       50.60
+{txt}       2500 {c |}{res}         30        0.92       51.52
+{txt}       2550 {c |}{res}          2        0.06       51.58
+{txt}       2650 {c |}{res}          4        0.12       51.71
+{txt}       2800 {c |}{res}          2        0.06       51.77
+{txt}       3000 {c |}{res}         35        1.08       52.85
+{txt}       3100 {c |}{res}          1        0.03       52.88
+{txt}       3200 {c |}{res}          8        0.25       53.12
+{txt}       3500 {c |}{res}          5        0.15       53.28
+{txt}       3500 {c |}{res}          4        0.12       53.40
+{txt}       3600 {c |}{res}          1        0.03       53.43
+{txt}       3630 {c |}{res}          4        0.12       53.55
+{txt}       3800 {c |}{res}          8        0.25       53.80
+{txt}       3800 {c |}{res}          1        0.03       53.83
+{txt}       4000 {c |}{res}         11        0.34       54.17
+{txt}       4000 {c |}{res}         12        0.37       54.54
+{txt}       4300 {c |}{res}          7        0.22       54.75
+{txt}       4500 {c |}{res}         38        1.17       55.92
+{txt}       4900 {c |}{res}          1        0.03       55.95
+{txt}       5000 {c |}{res}         51        1.57       57.52
+{txt}       5200 {c |}{res}          2        0.06       57.58
+{txt}       5300 {c |}{res}          1        0.03       57.61
+{txt}       5500 {c |}{res}          6        0.18       57.80
+{txt}       5800 {c |}{res}          3        0.09       57.89
+{txt}       6000 {c |}{res}         25        0.77       58.66
+{txt}       6000 {c |}{res}          2        0.06       58.72
+{txt}       6500 {c |}{res}          3        0.09       58.81
+{txt}       6600 {c |}{res}          3        0.09       58.90
+{txt}       6800 {c |}{res}          7        0.22       59.12
+{txt}       7000 {c |}{res}         26        0.80       59.92
+{txt}       7000 {c |}{res}          2        0.06       59.98
+{txt}       7200 {c |}{res}          1        0.03       60.01
+{txt}       7200 {c |}{res}          1        0.03       60.04
+{txt}       7500 {c |}{res}          4        0.12       60.17
+{txt}       7500 {c |}{res}         10        0.31       60.47
+{txt}       7500 {c |}{res}          3        0.09       60.57
+{txt}       7800 {c |}{res}          2        0.06       60.63
+{txt}       8000 {c |}{res}         11        0.34       60.97
+{txt}       8000 {c |}{res}         26        0.80       61.77
+{txt}       8100 {c |}{res}          2        0.06       61.83
+{txt}       8500 {c |}{res}         10        0.31       62.13
+{txt}       8800 {c |}{res}          5        0.15       62.29
+{txt}       9000 {c |}{res}         26        0.80       63.09
+{txt}   9399.999 {c |}{res}          1        0.03       63.12
+{txt}       9500 {c |}{res}          5        0.15       63.27
+{txt}       9600 {c |}{res}          3        0.09       63.37
+{txt}       9900 {c |}{res}          5        0.15       63.52
+{txt}      10000 {c |}{res}         34        1.05       64.56
+{txt}      10300 {c |}{res}          1        0.03       64.60
+{txt}      10500 {c |}{res}          8        0.25       64.84
+{txt}      10600 {c |}{res}          3        0.09       64.93
+{txt}      10850 {c |}{res}          3        0.09       65.03
+{txt}      11000 {c |}{res}          8        0.25       65.27
+{txt}      11200 {c |}{res}          3        0.09       65.36
+{txt}      11300 {c |}{res}          4        0.12       65.49
+{txt}      11500 {c |}{res}          5        0.15       65.64
+{txt}      11500 {c |}{res}          2        0.06       65.70
+{txt}      12000 {c |}{res}         41        1.26       66.96
+{txt}      12200 {c |}{res}          3        0.09       67.06
+{txt}      12500 {c |}{res}         10        0.31       67.36
+{txt}      12500 {c |}{res}          2        0.06       67.43
+{txt}      12750 {c |}{res}          4        0.12       67.55
+{txt}      12800 {c |}{res}          1        0.03       67.58
+{txt}      13000 {c |}{res}          9        0.28       67.86
+{txt}      13500 {c |}{res}          2        0.06       67.92
+{txt}      13500 {c |}{res}          4        0.12       68.04
+{txt}      13800 {c |}{res}          1        0.03       68.07
+{txt}      14000 {c |}{res}          4        0.12       68.19
+{txt}      14200 {c |}{res}          2        0.06       68.26
+{txt}      14500 {c |}{res}          4        0.12       68.38
+{txt}      15000 {c |}{res}          1        0.03       68.41
+{txt}      15000 {c |}{res}         31        0.95       69.36
+{txt}      15400 {c |}{res}          2        0.06       69.42
+{txt}      15500 {c |}{res}          2        0.06       69.49
+{txt}      16000 {c |}{res}          4        0.12       69.61
+{txt}      16000 {c |}{res}         11        0.34       69.95
+{txt}      16200 {c |}{res}          1        0.03       69.98
+{txt}      16500 {c |}{res}          8        0.25       70.22
+{txt}      17000 {c |}{res}          6        0.18       70.41
+{txt}      17160 {c |}{res}          1        0.03       70.44
+{txt}      17500 {c |}{res}          2        0.06       70.50
+{txt}      18000 {c |}{res}         19        0.58       71.09
+{txt}      18500 {c |}{res}          6        0.18       71.27
+{txt}      19000 {c |}{res}         10        0.31       71.58
+{txt}      19200 {c |}{res}          3        0.09       71.67
+{txt}      19300 {c |}{res}          1        0.03       71.70
+{txt}      19600 {c |}{res}          2        0.06       71.76
+{txt}      19800 {c |}{res}          1        0.03       71.79
+{txt}      20000 {c |}{res}         34        1.05       72.84
+{txt}      20300 {c |}{res}          2        0.06       72.90
+{txt}      20500 {c |}{res}          3        0.09       72.99
+{txt}      21000 {c |}{res}         18        0.55       73.55
+{txt}      21300 {c |}{res}          3        0.09       73.64
+{txt}      21500 {c |}{res}          3        0.09       73.73
+{txt}      22000 {c |}{res}          7        0.22       73.95
+{txt}      22500 {c |}{res}         20        0.62       74.56
+{txt}      22600 {c |}{res}          6        0.18       74.75
+{txt}      23000 {c |}{res}          8        0.25       74.99
+{txt}      23250 {c |}{res}          4        0.12       75.12
+{txt}      23800 {c |}{res}          2        0.06       75.18
+{txt}      24000 {c |}{res}         20        0.62       75.79
+{txt}      24800 {c |}{res}          2        0.06       75.85
+{txt}      25000 {c |}{res}         22        0.68       76.53
+{txt}      25200 {c |}{res}          1        0.03       76.56
+{txt}      25300 {c |}{res}          3        0.09       76.65
+{txt}      25600 {c |}{res}          5        0.15       76.81
+{txt}      26400 {c |}{res}          2        0.06       76.87
+{txt}      26500 {c |}{res}          3        0.09       76.96
+{txt}      26800 {c |}{res}          4        0.12       77.08
+{txt}      27000 {c |}{res}          4        0.12       77.21
+{txt}      28000 {c |}{res}         10        0.31       77.51
+{txt}      28500 {c |}{res}          2        0.06       77.58
+{txt}      28600 {c |}{res}          2        0.06       77.64
+{txt}      29500 {c |}{res}          1        0.03       77.67
+{txt}      30000 {c |}{res}         20        0.62       78.28
+{txt}      30000 {c |}{res}          3        0.09       78.38
+{txt}      30125 {c |}{res}          2        0.06       78.44
+{txt}      31000 {c |}{res}         14        0.43       78.87
+{txt}      31600 {c |}{res}          1        0.03       78.90
+{txt}      32000 {c |}{res}          5        0.15       79.05
+{txt}      33000 {c |}{res}          8        0.25       79.30
+{txt}      34400 {c |}{res}          3        0.09       79.39
+{txt}      34500 {c |}{res}          3        0.09       79.48
+{txt}      34700 {c |}{res}          1        0.03       79.51
+{txt}      35000 {c |}{res}          7        0.22       79.73
+{txt}      36000 {c |}{res}         19        0.58       80.31
+{txt}      37000 {c |}{res}         10        0.31       80.62
+{txt}      38000 {c |}{res}         19        0.58       81.21
+{txt}      39410 {c |}{res}          4        0.12       81.33
+{txt}      40000 {c |}{res}         14        0.43       81.76
+{txt}      40500 {c |}{res}          2        0.06       81.82
+{txt}      41000 {c |}{res}          8        0.25       82.07
+{txt}      41600 {c |}{res}          2        0.06       82.13
+{txt}      42000 {c |}{res}          6        0.18       82.31
+{txt}      42500 {c |}{res}          4        0.12       82.44
+{txt}      42600 {c |}{res}          5        0.15       82.59
+{txt}      45000 {c |}{res}         15        0.46       83.05
+{txt}      46000 {c |}{res}          4        0.12       83.17
+{txt}      47650 {c |}{res}          2        0.06       83.24
+{txt}      47900 {c |}{res}          3        0.09       83.33
+{txt}      48000 {c |}{res}          8        0.25       83.57
+{txt}      49000 {c |}{res}          5        0.15       83.73
+{txt}      50000 {c |}{res}         20        0.62       84.34
+{txt}      51000 {c |}{res}         14        0.43       84.77
+{txt}      51060 {c |}{res}          4        0.12       84.90
+{txt}      51500 {c |}{res}          2        0.06       84.96
+{txt}      53000 {c |}{res}          6        0.18       85.14
+{txt}      53600 {c |}{res}          2        0.06       85.20
+{txt}      55000 {c |}{res}          3        0.09       85.30
+{txt}      56000 {c |}{res}          8        0.25       85.54
+{txt}      56200 {c |}{res}          2        0.06       85.60
+{txt}      57800 {c |}{res}          4        0.12       85.73
+{txt}      58000 {c |}{res}          9        0.28       86.00
+{txt}      58500 {c |}{res}          4        0.12       86.13
+{txt}      58800 {c |}{res}          2        0.06       86.19
+{txt}      59000 {c |}{res}          3        0.09       86.28
+{txt}      60000 {c |}{res}          4        0.12       86.40
+{txt}      60000 {c |}{res}          1        0.03       86.43
+{txt}      60500 {c |}{res}          4        0.12       86.56
+{txt}      62000 {c |}{res}          6        0.18       86.74
+{txt}      64600 {c |}{res}          3        0.09       86.83
+{txt}      64800 {c |}{res}          5        0.15       86.99
+{txt}      67200 {c |}{res}          3        0.09       87.08
+{txt}      68000 {c |}{res}          3        0.09       87.17
+{txt}      68800 {c |}{res}          1        0.03       87.20
+{txt}      69000 {c |}{res}          1        0.03       87.23
+{txt}      69260 {c |}{res}          7        0.22       87.45
+{txt}      69300 {c |}{res}          3        0.09       87.54
+{txt}      70000 {c |}{res}         13        0.40       87.94
+{txt}      71900 {c |}{res}          4        0.12       88.07
+{txt}      72000 {c |}{res}          5        0.15       88.22
+{txt}      74500 {c |}{res}          3        0.09       88.31
+{txt}      75000 {c |}{res}          2        0.06       88.37
+{txt}      77000 {c |}{res}          4        0.12       88.50
+{txt}      79000 {c |}{res}          4        0.12       88.62
+{txt}      80000 {c |}{res}          5        0.15       88.77
+{txt}      81000 {c |}{res}          1        0.03       88.80
+{txt}      82000 {c |}{res}          7        0.22       89.02
+{txt}      83000 {c |}{res}          4        0.12       89.14
+{txt}      83600 {c |}{res}          5        0.15       89.30
+{txt}      85000 {c |}{res}          5        0.15       89.45
+{txt}      86100 {c |}{res}          4        0.12       89.57
+{txt}      86400 {c |}{res}          2        0.06       89.63
+{txt}      87000 {c |}{res}          3        0.09       89.73
+{txt}      89700 {c |}{res}          5        0.15       89.88
+{txt}      90000 {c |}{res}          4        0.12       90.00
+{txt}      91000 {c |}{res}          7        0.22       90.22
+{txt}      93500 {c |}{res}          3        0.09       90.31
+{txt}      98000 {c |}{res}          2        0.06       90.37
+{txt}      98270 {c |}{res}          2        0.06       90.43
+{txt}     100000 {c |}{res}          9        0.28       90.71
+{txt}     100500 {c |}{res}          5        0.15       90.86
+{txt}     105400 {c |}{res}          2        0.06       90.93
+{txt}     107500 {c |}{res}          4        0.12       91.05
+{txt}     108000 {c |}{res}          2        0.06       91.11
+{txt}     109000 {c |}{res}          8        0.25       91.36
+{txt}     112000 {c |}{res}          2        0.06       91.42
+{txt}     118000 {c |}{res}          3        0.09       91.51
+{txt}     119500 {c |}{res}          2        0.06       91.57
+{txt}     120000 {c |}{res}          7        0.22       91.79
+{txt}     121000 {c |}{res}          3        0.09       91.88
+{txt}     121600 {c |}{res}          1        0.03       91.91
+{txt}     126000 {c |}{res}          5        0.15       92.06
+{txt}     128000 {c |}{res}          2        0.06       92.13
+{txt}     129200 {c |}{res}          6        0.18       92.31
+{txt}     130000 {c |}{res}          2        0.06       92.37
+{txt}     131900 {c |}{res}          2        0.06       92.43
+{txt}     140000 {c |}{res}          8        0.25       92.68
+{txt}     140200 {c |}{res}          5        0.15       92.83
+{txt}     145000 {c |}{res}          3        0.09       92.93
+{txt}     150000 {c |}{res}          8        0.25       93.17
+{txt}     152000 {c |}{res}          4        0.12       93.29
+{txt}     152500 {c |}{res}          3        0.09       93.39
+{txt}     156000 {c |}{res}          3        0.09       93.48
+{txt}     159000 {c |}{res}          5        0.15       93.63
+{txt}     160000 {c |}{res}         11        0.34       93.97
+{txt}     163000 {c |}{res}          2        0.06       94.03
+{txt}     165000 {c |}{res}          2        0.06       94.09
+{txt}     165900 {c |}{res}          1        0.03       94.12
+{txt}     166000 {c |}{res}          3        0.09       94.22
+{txt}     167000 {c |}{res}          3        0.09       94.31
+{txt}     168000 {c |}{res}          1        0.03       94.34
+{txt}     171600 {c |}{res}          2        0.06       94.40
+{txt}     172000 {c |}{res}          3        0.09       94.49
+{txt}     175000 {c |}{res}          4        0.12       94.62
+{txt}     180000 {c |}{res}          2        0.06       94.68
+{txt}     184500 {c |}{res}          2        0.06       94.74
+{txt}     194000 {c |}{res}          3        0.09       94.83
+{txt}     195000 {c |}{res}          4        0.12       94.96
+{txt}     196000 {c |}{res}          4        0.12       95.08
+{txt}     200000 {c |}{res}          1        0.03       95.11
+{txt}     204000 {c |}{res}          4        0.12       95.23
+{txt}     205000 {c |}{res}          6        0.18       95.42
+{txt}     210000 {c |}{res}          2        0.06       95.48
+{txt}     212000 {c |}{res}          2        0.06       95.54
+{txt}     217000 {c |}{res}          7        0.22       95.76
+{txt}     220000 {c |}{res}          6        0.18       95.94
+{txt}     221000 {c |}{res}          2        0.06       96.00
+{txt}     223000 {c |}{res}          5        0.15       96.16
+{txt}     229000 {c |}{res}          3        0.09       96.25
+{txt}     230000 {c |}{res}          2        0.06       96.31
+{txt}     233000 {c |}{res}          3        0.09       96.40
+{txt}     233700 {c |}{res}          5        0.15       96.55
+{txt}     236000 {c |}{res}          2        0.06       96.62
+{txt}     240000 {c |}{res}          4        0.12       96.74
+{txt}     241000 {c |}{res}          3        0.09       96.83
+{txt}     250000 {c |}{res}          3        0.09       96.92
+{txt}     260000 {c |}{res}          1        0.03       96.95
+{txt}     265000 {c |}{res}          3        0.09       97.05
+{txt}     275550 {c |}{res}          2        0.06       97.11
+{txt}     283600 {c |}{res}          2        0.06       97.17
+{txt}     286000 {c |}{res}          3        0.09       97.26
+{txt}     290500 {c |}{res}          3        0.09       97.35
+{txt}     295000 {c |}{res}          4        0.12       97.48
+{txt}     298000 {c |}{res}          3        0.09       97.57
+{txt}     302600 {c |}{res}          2        0.06       97.63
+{txt}     304500 {c |}{res}          4        0.12       97.75
+{txt}     305000 {c |}{res}          2        0.06       97.82
+{txt}     313000 {c |}{res}          2        0.06       97.88
+{txt}     367750 {c |}{res}          3        0.09       97.97
+{txt}     390000 {c |}{res}          4        0.12       98.09
+{txt}     402500 {c |}{res}          3        0.09       98.19
+{txt}     410000 {c |}{res}          5        0.15       98.34
+{txt}     420000 {c |}{res}          4        0.12       98.46
+{txt}     421000 {c |}{res}          2        0.06       98.52
+{txt}     470000 {c |}{res}          3        0.09       98.62
+{txt}     526000 {c |}{res}          3        0.09       98.71
+{txt}     550000 {c |}{res}          3        0.09       98.80
+{txt}     589000 {c |}{res}          3        0.09       98.89
+{txt}     647000 {c |}{res}          1        0.03       98.92
+{txt}     650000 {c |}{res}          1        0.03       98.95
+{txt}     667000 {c |}{res}          2        0.06       99.02
+{txt}     745000 {c |}{res}          4        0.12       99.14
+{txt}     900000 {c |}{res}          2        0.06       99.20
+{txt}    1025000 {c |}{res}          4        0.12       99.32
+{txt}    1149750 {c |}{res}          1        0.03       99.35
+{txt}    1261300 {c |}{res}          5        0.15       99.51
+{txt}    2000000 {c |}{res}          1        0.03       99.54
+{txt}    3100000 {c |}{res}          4        0.12       99.66
+{txt}    3161813 {c |}{res}          4        0.12       99.78
+{txt}    4162000 {c |}{res}          3        0.09       99.88
+{txt}    6000000 {c |}{res}          4        0.12      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      3,251      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD8458_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 23 March 2022
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for household-level 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}23 Mar 2022, 15:24:07
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(461 observations deleted)
+
+{com}.         *** drops 83 observations from using and 378 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}.  
+.         save                    "$fil\production-and-sales\sales-with-manager_y1", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta saved
+
+{com}.         *** 2563 observations 
+.         
+. * manager 1 - year 1
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,759
+{txt}{col 9}from master{col 30}{res}           1,748{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,011{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             815{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,011 observations deleted)
+
+{com}.         *** matched 815 
+.         *** drop unmatched from using = 7011
+.         *** unmatched from master = 1748 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,209 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,558
+{txt}{col 9}from master{col 30}{res}           2,210{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,348{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             353{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,348 observations deleted)
+
+{com}.         *** matched 353 
+.         *** drop unmatched from using = 7348
+.         *** keep unmatched from master = 2210 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         *** 4 changes made in both cases 
+. 
+{txt}end of do-file
+
+{com}. tab sex_salesmanager2
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}          4        1.15        1.15
+{txt}     Female {c |}{res}        345       98.85      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        349      100.00
+
+{com}. bys sex_salesmanager1: tab sex_salesmanager2
+
+{txt}{hline}
+-> sex_salesmanager1 = Male
+
+     Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     Female {c |}{res}        341      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        341      100.00
+
+{txt}{hline}
+-> sex_salesmanager1 = Female
+
+     Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}          4       57.14       57.14
+{txt}     Female {c |}{res}          3       42.86      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}          7      100.00
+
+{txt}{hline}
+-> sex_salesmanager1 = .
+
+     Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+     Female {c |}{res}          1      100.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}          1      100.00
+
+
+{com}. tab sex_salesmanager1
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       Male {c |}{res}        640       78.53       78.53
+{txt}     Female {c |}{res}        175       21.47      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        815      100.00
+
+{com}. do "C:\Users\ALJOSE~1\AppData\Local\Temp\STD8458_000000.tmp"
+{txt}
+{com}. /* BEGIN */
+. 
+. * Project: Joint Household Resources - Malawi 
+. * Created: October 2020
+. * Created by: alj
+. * Last edit: 23 March 2022
+. * Stata v.16.1
+. 
+. * does
+.         * combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
+.         * for household-level 
+. 
+. * assumes
+.         * access to data file(s) previously created 
+. 
+. * to do 
+.         * clean up data files 
+.         * code and data can be made available on github and googledrive 
+. 
+. * **********************************************************************
+. * 0 - setup
+. * **********************************************************************
+. 
+. * define
+.         global  fil             =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
+{txt}
+{com}.         global  filb    =       "C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\"
+{txt}
+{com}.         global  code    =       "C:\Users\aljosephson\git\dissertation\e1_gender\code"
+{txt}
+{com}.         global  logs    =       "C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+{txt}
+{com}. 
+. * open log
+.         cap log                 close
+{smcl}
+{com}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\aljosephson\git\dissertation\e1_gender\logs/build_file.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}23 Mar 2022, 15:27:56
+{txt}
+{com}.         
+. * **********************************************************************
+. * 1 - year 1
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 1a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y1.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m case_id ea_id year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y1.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             461
+{txt}{col 9}from master{col 30}{res}             378{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              83{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(461 observations deleted)
+
+{com}.         *** drops 83 observations from using and 378 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}.  
+.         save                    "$fil\production-and-sales\sales-with-manager_y1", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y1.dta saved
+
+{com}.         *** 2563 observations 
+.         
+. * manager 1 - year 1
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           8,759
+{txt}{col 9}from master{col 30}{res}           1,748{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,011{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             815{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,011 observations deleted)
+
+{com}.         *** matched 815 
+.         *** drop unmatched from using = 7011
+.         *** unmatched from master = 1748 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2     - year 1
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,209 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code using "$fil\household\hhbase_y1-short.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label strata already defined)
+(label district already defined)
+(label rltn already defined)
+(label sex already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           9,558
+{txt}{col 9}from master{col 30}{res}           2,210{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,348{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             353{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(7,348 observations deleted)
+
+{com}.         *** matched 353 
+.         *** drop unmatched from using = 7348
+.         *** keep unmatched from master = 2210 - perhaps no id code TO match - fewer observations here
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         *** 4 changes made in both cases 
+.         
+. * determine primary manager     
+.         gen                     female_decsale = 1 if sex_salesmanager1 == 2 
+{txt}(2,388 missing values generated)
+
+{com}.         replace                 female_decsale = 0 if female_decsale == .
+{txt}(2,388 real changes made)
+
+{com}.         gen                     male_decsale = 1 if sex_salesmanager1 == 1
+{txt}(1,923 missing values generated)
+
+{com}.         replace                 male_decsale = 0 if male_decsale == .   
+{txt}(1,923 real changes made)
+
+{com}.         
+.         gen                     joint_decsale = 1 if sex_salesmanager2 != .
+{txt}(2,214 missing values generated)
+
+{com}.         
+.         replace                 joint_decsale = . if sex_salesmanager1 == . & sex_salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         replace                 joint_decsale = 0 if salesmanager2 == 0 | salesmanager2 == . 
+{txt}(2,213 real changes made)
+
+{com}.         
+.         save                    "$fil\production-and-sales\sales-with-managerid_y1", replace    
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-managerid_y1.dta saved
+
+{com}.         
+. * bring in consumption variables 
+.         
+.         merge                   m:1 case_id year using "$fil\consumption\ihs3_summary_09.dta"
+{res}{txt}{p 0 7 2}
+(note: variable
+strata was 
+byte, now int to accommodate using data's values)
+{p_end}
+(label urban already defined)
+(label region already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,030
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}          11,030{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(11,030 observations deleted)
+
+{com}.         drop                    _merge
+{txt}
+{com}.         *** dropping 11030 from using 
+.         
+.         save                    "$fil\regression-ready\household-level_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         
+. * merge in geovars 
+. 
+.         merge                   m:1 case_id year using "$fil\geovar\householdgeovariables_09.dta"
+{res}{txt}(label HH_A01 already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           2,563{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(378 observations deleted)
+
+{com}.         drop                    _merge 
+{txt}
+{com}.         *** drops 378 not matched from using
+.         
+.         save                    "$fil\regression-ready\household-level_y1", replace     
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-level_y1.dta saved
+
+{com}.         *** and now same number of observations = 2563                  
+. 
+.         
+. * merge in plot-level files 
+.         use                     "$fil\regression-ready\household-level_y1", clear       
+{txt}
+{com}.         duplicates drop 
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(870 observations deleted)
+
+{com}. /*
+> * not sure what I'm getting from this ... 
+>         merge                   1:m case_id ea_id using "$fil\production-and-sales\plot-with-managerid_y1"      
+>         *** all matched 
+>         drop                    _merge 
+> */      
+.         replace                 sex_salesmanager1 = 0 if sex_salesmanager1 == 1
+{txt}(447 real changes made)
+
+{com}.         replace                 sex_salesmanager1 = 1 if sex_salesmanager1 == 2
+{txt}(129 real changes made)
+
+{com}.         label                   var sex_salesmanager1 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager1 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         replace                 sex_salesmanager2 = 0 if sex_salesmanager2 == 1
+{txt}(2 real changes made)
+
+{com}.         replace                 sex_salesmanager2 = 1 if sex_salesmanager2 == 2
+{txt}(227 real changes made)
+
+{com}.         label                   var sex_salesmanager2 "0 = male,  = 1 female"
+{txt}
+{com}.         label                   define sex_salesmanager2 0 "male" 1 "female"    
+{txt}
+{com}.         
+.         summarize               sex_salesmanager1 sex_salesmanager2
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+sex_salesm~1 {c |}{res}        576    .2239583    .4172568          0          1
+{txt}sex_salesm~2 {c |}{res}        229    .9912664    .0932487          0          1
+{txt}
+{com}.         *** 22 percent of first manager women
+.         *** 99 percent of second manager women 
+.         
+. * define manager categories of interest
+. 
+. *** (1) joint 
+. 
+.         gen                     joint_jspec = joint_decsale
+{txt}(1 missing value generated)
+
+{com}.         gen                     female_jspec = female_decsale if female_decsale == 1 & joint_jspec == 0 
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 female_jspec = 0 if female_jspec == . 
+{txt}(1,568 real changes made)
+
+{com}.         gen                     male_jspec = male_decsale if male_decsale == 1 & joint_jspec == 0 
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 male_jspec = 0 if male_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         *** this is the new specification which this paper puts forward
+.         
+. *** (2) omit 
+. 
+.         gen                     female_ospec = female_decsale 
+{txt}
+{com}.         gen                     male_ospec = male_decsale 
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}.         
+. * **********************************************************************
+. * 1b - sales values
+. * **********************************************************************
+. 
+. * convert MKW to 2010 values
+. * 2009 = 93.1
+. *** from World Bank Indicators: https://databank.worldbank.org/source/world-development-indicators
+. 
+. * using rs_cropsales_valuei
+.         summarize               rs_cropsales_valuei, detail
+
+       {txt}Implied value of rainy season crop sales (MWK)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 22732.55
+                        {txt}Largest       Std. Dev.     {res} 124344.3
+{txt}75%    {res} 7472.501        1826797
+{txt}90%    {res}    44500        1826797       {txt}Variance      {res} 1.55e+10
+{txt}95%    {res} 84416.16        2450000       {txt}Skewness      {res} 13.87106
+{txt}99%    {res}   376881        2450000       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 22732.55, st. dev = 1243344.3, small = 0, large = 2340000
+. 
+.         generate                cropsales = rs_cropsales_valuei / 0.931 
+{txt}
+{com}.         summarize               cropsales, detail       
+
+                          {txt}cropsales
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res} 24417.35
+                        {txt}Largest       Std. Dev.     {res}   133560
+{txt}75%    {res} 8026.317        1962188
+{txt}90%    {res} 47798.07        1962188       {txt}Variance      {res} 1.78e+10
+{txt}95%    {res} 90672.57        2631579       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 404813.1        2631579       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 24417.35, st. dev = 133560, small = 0, large = 2631579
+. * create winsorized values 
+.         winsor                  cropsales, p(.05) gen(cropsales_win)
+{txt}
+{com}.         
+. * convert MWK to USD 
+. * 1$ = 123 MK
+. *** from https://www.exchangerates.org.uk/USD-MWK-spot-exchange-rates-history-2010.html 
+.         gen                     cropsales_usd = cropsales / 123
+{txt}
+{com}.         summarize               cropsales_usd, detail
+
+                        {txt}cropsales_usd
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}        0              0
+{txt}10%    {res}        0              0       {txt}Obs         {res}      1,693
+{txt}25%    {res}        0              0       {txt}Sum of Wgt. {res}      1,693
+
+{txt}50%    {res}        0                      {txt}Mean          {res}  198.515
+                        {txt}Largest       Std. Dev.     {res} 1085.853
+{txt}75%    {res} 65.25461       15952.75
+{txt}90%    {res} 388.6022       15952.75       {txt}Variance      {res}  1179078
+{txt}95%    {res} 737.1754       21394.95       {txt}Skewness      {res} 13.87106
+{txt}99%    {res} 3291.164       21394.95       {txt}Kurtosis      {res} 233.7007
+{txt}
+{com}.         *** mean = 198.52, st. dev = 1085.85, small = 0, large = 21394.95 
+. 
+. * determine values by sales manager
+. 
+. *** (1) joint 
+.         gen                     valuejoint_jspec = cropsales if joint_jspec == 1
+{txt}(1,464 missing values generated)
+
+{com}.         replace                 valuejoint_jspec = 0 if valuejoint_jspec == . 
+{txt}(1,464 real changes made)
+
+{com}.         gen                     valuefemale_jspec = cropsales if female_jspec == 1
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 valuefemale_jspec = 0 if valuefemale_jspec == .
+{txt}(1,568 real changes made)
+
+{com}.         gen                     valuemale_jspec = cropsales if male_jspec == 1
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 valuemale_jspec = 0 if valuemale_jspec == . 
+{txt}(1,471 real changes made)
+
+{com}.         
+. * winsorized
+.         gen                     valuejoint_jspecw = cropsales_win if joint_jspec == 1
+{txt}(1,464 missing values generated)
+
+{com}.         replace                 valuejoint_jspecw = 0 if valuejoint_jspec == . 
+{txt}(0 real changes made)
+
+{com}.         gen                     valuefemale_jspecw = cropsales_win if female_jspec == 1
+{txt}(1,568 missing values generated)
+
+{com}.         replace                 valuefemale_jspecw = 0 if valuefemale_jspec == .
+{txt}(0 real changes made)
+
+{com}.         gen                     valuemale_jspecw = cropsales_win if male_jspec == 1
+{txt}(1,471 missing values generated)
+
+{com}.         replace                 valuemale_jspecw = 0 if valuemale_jspec == . 
+{txt}(0 real changes made)
+
+{com}.         
+. *** (2) omit
+. 
+.         gen                     valuefemale_ospec = cropsales if female_ospec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_ospec = 0 if valuefemale_ospec == .
+{txt}(1,564 real changes made)
+
+{com}.         gen                     valuemale_ospec = cropsales if male_ospec == 1
+{txt}(1,246 missing values generated)
+
+{com}.         replace                 valuemale_ospec = 0 if valuemale_ospec == . 
+{txt}(1,246 real changes made)
+
+{com}.         
+. * winsorized
+.         gen                     valuefemale_ospecw = cropsales_win if female_ospec == 1
+{txt}(1,564 missing values generated)
+
+{com}.         replace                 valuefemale_ospecw = 0 if valuefemale_ospec == .
+{txt}(0 real changes made)
+
+{com}.         gen                     valuemale_ospecw = cropsales_win if male_ospec == 1
+{txt}(1,246 missing values generated)
+
+{com}.         replace                 valuemale_ospecw = 0 if valuemale_ospec == .    
+{txt}(0 real changes made)
+
+{com}. 
+. * *********************************************************************
+. * 1c - weather 
+. * **********************************************************************
+. 
+.         merge                   m:1 case_id ea_id year using "$fil\geovar\rain_2yr.dta"
+{res}{txt}(label urban already defined)
+(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}           4,482
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           4,482{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,693{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         *** matched = 3853
+.         keep if _merge == 3
+{txt}(4,482 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}.         
+.         rename                  total totalr 
+{res}{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 1d - aggregates 
+. * **********************************************************************        
+. 
+. * adjusting for inflation       
+. 
+.         generate                foodexp = rexp_cat01 / 0.931 
+{txt}
+{com}.         generate                alctobexp = rexp_cat02 / 0.931 
+{txt}
+{com}.         generate                clothexp = rexp_cat03 / 0.931 
+{txt}
+{com}.         egen                    houseutilsexp = rsum (rexp_cat04 rexp_cat05)
+{txt}
+{com}.         *** adding housing and utilities with furnishings 
+.         replace                 houseutilsexp = houseutilsexp / 0.931 
+{txt}(1,693 real changes made)
+
+{com}.         generate                healthexp = rexp_cat06 / 0.931  
+{txt}
+{com}.         generate                transpoexp = rexp_cat07 / 0.931 
+{txt}
+{com}.         generate                commexp = rexp_cat08 / 0.931 
+{txt}
+{com}.         generate                recexp = rexp_cat09 / 0.931 
+{txt}
+{com}.         generate                eduexp = rexp_cat10 / 0.931 
+{txt}
+{com}.         generate                hotelrestexp = rexp_cat11 / 0.931 
+{txt}
+{com}.         generate                miscexp = rexp_cat12 / 0.931 
+{txt}
+{com}.         generate                totalexp = rexpagg / 0.931 
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * *********************************************************************
+. * 1e - matrilineal and head of household gender   
+. * **********************************************************************        
+.         
+.         merge                   m:1 case_id ea_id using "$fil\matril-hh\mathh_y1.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             378
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             378{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,693{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(378 observations deleted)
+
+{com}.         *** 1693 matched, 378 not matched from using 
+.         drop                    _merge 
+{txt}
+{com}.         
+.         tab                     matril 
+
+     {txt}matril {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        452       26.87       26.87
+{txt}          1 {c |}{res}      1,230       73.13      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,682      100.00
+{txt}
+{com}.         *** 73 percent matril, 27 percent otherwise 
+.         tab                     femalehead
+
+      {txt}(max) {c |}
+ femalehead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}      1,316       77.73       77.73
+{txt}          1 {c |}{res}        377       22.27      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,693      100.00
+{txt}
+{com}.         *** 22 percent female headed, 78 percent otherwise 
+.         
+. * *********************************************************************
+. * 1f - reduce + clean up   
+. * **********************************************************************        
+.         
+.         keep                    valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+>                                                 totalr noraindays dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+>                                                 eduexp hotelrestexp miscexp totalexp case_id year region district ea_id HHID ssa_aez09 matril femalehead
+{txt}
+{com}.         
+.         collapse                (sum) valuejoint_jspec valuefemale_jspec valuemale_jspec valuefemale_ospec valuemale_ospec ///
+>                                                 valuejoint_jspecw valuefemale_jspecw valuemale_jspecw valuefemale_ospecw valuemale_ospecw /// 
+>                                                 totalr noraindays dryspell foodexp alctobexp clothexp houseutilsexp healthexp transpoexp commexp recexp ///
+>                                                 eduexp hotelrestexp miscexp totalexp (max) ssa_aez09 matril femalehead, ///
+>                                                 by (case_id year region district ea_id HHID)
+{txt}
+{com}.                                                 
+.         rename                  * *09
+{res}{txt}
+{com}.         rename                  case_id09 case_id
+{res}{txt}
+{com}.         rename                  year09 year 
+{res}{txt}
+{com}.         rename                  region09 region 
+{res}{txt}
+{com}.         rename                  district09 district
+{res}{txt}
+{com}.         rename                  ea_id09 ea_id 
+{res}{txt}
+{com}.         rename                  HHID09 HHID
+{res}{txt}
+{com}.         rename                  ssa_aez0909 ssa_aez09
+{res}{txt}
+{com}.         
+.         duplicates              drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(0 observations are duplicates)
+
+{com}.                                                 
+.         isid                    case_id year region district ea_id HHID
+{txt}
+{com}.         
+. compress
+  {txt}variable {bf}year{sf} was {bf}{res}float{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}totalr09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}noraindays09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}int{sf}
+  {txt}variable {bf}dryspell09{sf} was {bf}{res}double{sf}{txt} now {bf}{res}byte{sf}
+{txt}  (26,061 bytes saved)
+
+{com}. describe
+
+{txt}Contains data
+  obs:{res}         1,241                          
+{txt} vars:{res}            34                          
+                                              (_dta has notes)
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:case_id        }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}IHS3 Baseline case_id as in IHS3 Public Data{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:region         }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:region   }{bind:  }{res}{res}Region{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%13.0g    }{space 1}{bind:district }{bind:  }{res}{res}District{p_end}
+{p 0 48}{bind:ea_id          }{txt}{bind: str8    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Baseline EA Identifier{p_end}
+{p 0 48}{bind:HHID           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Assigned Unique Serial Number for IHS3 Baseline Household{p_end}
+{p 0 48}{bind:valuejoint_~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspec{p_end}
+{p 0 48}{bind:valuefe~jspec09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspec{p_end}
+{p 0 48}{bind:valuemale_j~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspec{p_end}
+{p 0 48}{bind:valuefe~ospec09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospec{p_end}
+{p 0 48}{bind:valuemale_o~c09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospec{p_end}
+{p 0 48}{bind:valuejoint_~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuejoint_jspecw{p_end}
+{p 0 48}{bind:valuef~jspecw09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_jspecw{p_end}
+{p 0 48}{bind:valuemale_j~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_jspecw{p_end}
+{p 0 48}{bind:valuef~ospecw09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuefemale_ospecw{p_end}
+{p 0 48}{bind:valuemale_o~w09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) valuemale_ospecw{p_end}
+{p 0 48}{bind:totalr09       }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalr{p_end}
+{p 0 48}{bind:noraindays09   }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) noraindays{p_end}
+{p 0 48}{bind:dryspell09     }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) dryspell{p_end}
+{p 0 48}{bind:foodexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) foodexp{p_end}
+{p 0 48}{bind:alctobexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) alctobexp{p_end}
+{p 0 48}{bind:clothexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) clothexp{p_end}
+{p 0 48}{bind:houseutilsexp09}{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) houseutilsexp{p_end}
+{p 0 48}{bind:healthexp09    }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) healthexp{p_end}
+{p 0 48}{bind:transpoexp09   }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) transpoexp{p_end}
+{p 0 48}{bind:commexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) commexp{p_end}
+{p 0 48}{bind:recexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) recexp{p_end}
+{p 0 48}{bind:eduexp09       }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) eduexp{p_end}
+{p 0 48}{bind:hotelrestexp09 }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) hotelrestexp{p_end}
+{p 0 48}{bind:miscexp09      }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) miscexp{p_end}
+{p 0 48}{bind:totalexp09     }{txt}{bind: double  }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(sum) totalexp{p_end}
+{p 0 48}{bind:ssa_aez09      }{txt}{bind: int     }{bind:{txt}%24.0g    }{space 1}{bind:         }{bind:  }{res}{res}(max) ssa_aez09{p_end}
+{p 0 48}{bind:matril09       }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) matril{p_end}
+{p 0 48}{bind:femalehead09   }{txt}{bind: byte    }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}(max) femalehead{p_end}
+{txt}{hline}
+Sorted by: {res}case_id  year  region  district  ea_id  HHID
+     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}case_id {c |}{res}      1,241    2.44e+11    6.53e+10   1.01e+11   3.16e+11
+{txt}{space 8}year {c |}{res}      1,241        2009           0       2009       2009
+{txt}{space 6}region {c |}{res}      1,241    2.382756    .6470722          1          3
+{txt}{space 4}district {c |}{res}      1,241    244.3392     65.3424        101        315
+{txt}{space 7}ea_id {c |}{res}          0
+{txt}{hline 13}{c +}{hline 57}
+{space 8}HHID {c |}{res}      1,241    1751.555    765.3623          1       3230
+{txt}valuejoi~c09 {c |}{res}      1,241    10612.18    103314.7          0    2631579
+{txt}valuefemal.. {c |}{res}      1,241    1328.427    16678.57          0   489352.2
+{txt}valuemale_.. {c |}{res}      1,241    6289.391    45946.87          0   932073.7
+{txt}valuefemal.. {c |}{res}      1,241    1333.089    16678.62          0   489352.2
+{txt}{hline 13}{c +}{hline 57}
+valuemale_.. {c |}{res}      1,241    16855.33    112639.6          0    2631579
+{txt}valuejoi~w09 {c |}{res}      1,241    4343.815     16801.7          0   90672.57
+{txt}valuefemal.. {c |}{res}      1,241    839.1308    6686.468          0   90672.57
+{txt}valuemale_.. {c |}{res}      1,241    3443.683     15166.6          0   181345.1
+{txt}valuefemal.. {c |}{res}      1,241    843.7922    6686.926          0   90672.57
+{txt}{hline 13}{c +}{hline 57}
+valuemale_.. {c |}{res}      1,241    7741.253    22292.63          0   181345.1
+{txt}{space 4}totalr09 {c |}{res}      1,241    854.5359    368.4417        483       3292
+{txt}noraindays09 {c |}{res}      1,241    180.0008    71.24467         94        532
+{txt}{space 2}dryspell09 {c |}{res}      1,241    15.89686    7.943997          6         52
+{txt}{space 3}foodexp09 {c |}{res}      1,241    229098.8    212922.6   13201.47    1856993
+{txt}{hline 13}{c +}{hline 57}
+{space 1}alctobexp09 {c |}{res}      1,241    9015.926    29450.74          0   434112.2
+{txt}{space 2}clothexp09 {c |}{res}      1,241     13380.3    43289.75          0    1248970
+{txt}houseutil~09 {c |}{res}      1,241    68629.44    100391.8   3907.709    1287527
+{txt}{space 1}healthexp09 {c |}{res}      1,241    6107.371    16772.61          0     245655
+{txt}transpoexp09 {c |}{res}      1,241    17315.27     59724.4          0   848843.8
+{txt}{hline 13}{c +}{hline 57}
+{space 3}commexp09 {c |}{res}      1,241    13147.06    33080.98          0   432218.3
+{txt}{space 4}recexp09 {c |}{res}      1,241    3596.396    14579.87          0   219595.8
+{txt}{space 4}eduexp09 {c |}{res}      1,241    6446.867    30095.78          0   539755.7
+{txt}hotelrest~09 {c |}{res}      1,241    3721.343    10952.54          0   216773.7
+{txt}{space 3}miscexp09 {c |}{res}      1,241    10099.44    13382.83          0   165181.6
+{txt}{hline 13}{c +}{hline 57}
+{space 2}totalexp09 {c |}{res}      1,241    380558.2    404888.7   24436.32    3794894
+{txt}{space 3}ssa_aez09 {c |}{res}      1,241     313.838    3.594176        312        323
+{txt}{space 4}matril09 {c |}{res}      1,230    .7276423    .4453541          0          1
+{txt}femalehead09 {c |}{res}      1,241    .2320709    .4223242          0          1
+{txt}
+{com}.         
+.         save                    "$fil\regression-ready\household-total_y1.dta", replace 
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\regression-ready\household-total_y1.dta saved
+
+{com}. 
+. * **********************************************************************
+. * 2 - year 2
+. * **********************************************************************
+. 
+. * **********************************************************************
+. * 2a - household and gender details 
+. * **********************************************************************
+. 
+. * merge sales decision with decision-maker information 
+. 
+.         use                     "$fil\Cleaned_LSMS\rs_hh_sales_y2.dta", clear
+{txt}
+{com}. 
+.         merge                   1:m y2_hhid year using ///
+>                                                 "$fil\decision-making\decision-sales_wet_y2.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}             641
+{txt}{col 9}from master{col 30}{res}             505{txt}  (_merge==1)
+{col 9}from using{col 30}{res}             136{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           3,258{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         keep                    if _merge == 3
+{txt}(641 observations deleted)
+
+{com}.         *** drops 136 observations from using and 505 from master (no sales)
+.         drop                    _merge 
+{txt}
+{com}. 
+.         save                    "$fil\production-and-sales\sales-with-manager_y2", replace      
+{txt}file C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020\production-and-sales\sales-with-manager_y2.dta saved
+
+{com}.         *** 3258 observations 
+.         
+. * manager 1 
+. * reduce sample significantly at this point - if do not identify a manager, not included 
+.         rename                  salesmanager1 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
+{res}{txt}(label region already defined)
+(label district already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          11,529
+{txt}{col 9}from master{col 30}{res}           2,198{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,331{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}           1,060{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,331 observations deleted)
+
+{com}.         *** matched 1060 
+.         *** drop unmatched from using = 9331
+.         *** unmatched from master = 2198 - okay, can drop later, as needed 
+.         
+.         rename                  id_code salesmanager1
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager1
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager1
+{res}{txt}
+{com}.         rename                  age age_salesmanager1
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager1
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * manager 2
+. * if no manager assume no one = 0
+.         replace                 salesmanager2 = 0 if salesmanager2 == . 
+{txt}(2,632 real changes made)
+
+{com}.         rename                  salesmanager2 id_code 
+{res}{txt}
+{com}.         merge                   m:1 case_id year id_code y2_hhid using "$fil\household\hhbase_y2-short.dta"
+{res}{txt}(label sex already defined)
+(label rltn already defined)
+(label splitoff already defined)
+(label region already defined)
+(label district already defined)
+(label strata already defined)
+(label urban already defined)
+
+{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}          12,280
+{txt}{col 9}from master{col 30}{res}           2,633{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           9,647{txt}  (_merge==2)
+
+{col 5}matched{col 30}{res}             625{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop                    if _merge == 2
+{txt}(9,647 observations deleted)
+
+{com}.         *** matched 625 
+.         *** drop unmatched from using = 9647
+.         *** keep unmatched from master = 2633 
+.         
+.         rename                  id_code salesmanager2
+{res}{txt}
+{com}.         rename                  sex sex_salesmanager2
+{res}{txt}
+{com}.         rename                  rltn rltn_salesmanager2
+{res}{txt}
+{com}.         rename                  age age_salesmanager2
+{res}{txt}
+{com}.         rename                  educ_years educ_years_salesmanager2
+{res}{txt}
+{com}.         drop                    _merge 
+{txt}
+{com}.         
+. * determine management 
+.         
+.         replace                 salesmanager2 = . if salesmanager1 == salesmanager2
+{txt}(2 real changes made, 2 to missing)
+
+{com}.         replace                 sex_salesmanager2 = . if salesmanager2 == .
+{txt}(0 real changes made)
+
+{com}.         *** 2 changes made in first case 
+. 
+{txt}end of do-file
+
+{com}. tab sex_salesmanager1
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       MALE {c |}{res}        816       76.98       76.98
+{txt}     FEMALE {c |}{res}        244       23.02      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      1,060      100.00
+
+{com}. tab sex_salesmanager2
+
+     {txt}Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       MALE {c |}{res}         20        3.20        3.20
+{txt}     FEMALE {c |}{res}        605       96.80      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        625      100.00
+
+{com}. bys sex_salesmanager1: tab sex_salesmanager2
+
+{txt}{hline}
+-> sex_salesmanager1 = MALE
+
+     Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       MALE {c |}{res}          1        0.17        0.17
+{txt}     FEMALE {c |}{res}        596       99.83      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        597      100.00
+
+{txt}{hline}
+-> sex_salesmanager1 = FEMALE
+
+     Sex of {c |}
+ individual {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+       MALE {c |}{res}         19       67.86       67.86
+{txt}     FEMALE {c |}{res}          9       32.14      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}         28      100.00
+
+{txt}{hline}
+-> sex_salesmanager1 = .
+no observations
+
+
+{com}. 

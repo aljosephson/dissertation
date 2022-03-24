@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 23 March 2022
+* Last edit: 24 March 2022
 * Stata v.16.1
 
 * does
@@ -90,6 +90,11 @@
 	replace 		salesmanager2 = . if salesmanager1 == salesmanager2
 	replace 		sex_salesmanager2 = . if salesmanager2 == .
 	*** 4 changes made in both cases 
+	
+* determine sex of managers / mix 
+	tab 			sex_salesmanager1
+	tab 			sex_salesmanager2
+	bys 			sex_salesmanager1: tab sex_salesmanager2
 	
 * determine primary manager 	
 	gen 			female_decsale = 1 if sex_salesmanager1 == 2 
@@ -410,6 +415,11 @@ summarize
 	summarize 		sex_salesmanager1 sex_salesmanager2
 	*** 23 percent of first manager women
 	*** 97 percent of second manager women 
+	
+* determine sex of managers / mix 
+	tab 			sex_salesmanager1
+	tab 			sex_salesmanager2
+	bys 			sex_salesmanager1: tab sex_salesmanager2
 
 * define manager categories of interest
 
