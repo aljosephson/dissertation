@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 14 March 2022
+* Edited on: 28 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -60,7 +60,7 @@ clear
 *	local miscconsume (dlnconsume_misc dtotalr i.ssa_aez09 i.ssa_aez12)
 		
 * **********************************************************************
-* 3 - unrestricted regressions 
+* 3 - unrestricted regressions - Appendix Table A1
 * *********************************************************************
 
 	reg `aggconsume', vce(cluster case_id) 
