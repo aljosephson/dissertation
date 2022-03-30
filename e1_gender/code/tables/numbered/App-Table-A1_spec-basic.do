@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 28 March 2022
+* Edited on: 30 March 2022
 * Created by: alj
 * Stata v.16
 
@@ -14,8 +14,7 @@
 	* reg_ready-final.dta 
 
 * TO DO:
-	* anonymize pre-submission 
-	* update table numbers with new manuscript numbers  
+	* done 
 	
 * **********************************************************************
 * 0 - setup
@@ -40,7 +39,7 @@ clear
  	use 			"$fil\regression-ready\reg_ready-final", replace	
 	
 * **********************************************************************
-* 2 - create consumption lcoals  
+* 2 - create consumption locals  
 * *********************************************************************
 
 * create consmption aggregates 
@@ -57,7 +56,6 @@ clear
 	local transpoconsume (dlnconsume_transpo dtotalr i.ssa_aez09 i.ssa_aez12)
 	local commconsume (dlnconsume_comm dtotalr i.ssa_aez09 i.ssa_aez12)
 	local hotresconsume (dlnconsume_hotres dtotalr i.ssa_aez09 i.ssa_aez12)
-*	local miscconsume (dlnconsume_misc dtotalr i.ssa_aez09 i.ssa_aez12)
 		
 * **********************************************************************
 * 3 - unrestricted regressions - Appendix Table A1
@@ -100,7 +98,8 @@ esttab INA INF INC INCL INR INED INH INT ITS ICC IHR using app_a1.tex, replace f
 	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
-	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") ///
+	labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
 
 ********************************************************************************************
 
