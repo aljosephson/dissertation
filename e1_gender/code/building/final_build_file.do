@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 24 March 2022
+* Last edit: 31 March 2022
 * Stata v.16.1
 
 * does
@@ -14,8 +14,7 @@
 	* access to data file(s) previously created 
 
 * to do 
-	* clean up data files 
-	* code and data can be made available on github and googledrive 
+	* done 
 
 * **********************************************************************
 * 0 - setup
