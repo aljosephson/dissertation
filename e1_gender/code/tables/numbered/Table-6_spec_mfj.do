@@ -2,20 +2,20 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 7 March 2022
+* Edited on: 6 April 2022
 * Created by: alj
 * Stata v.16
 
 * does
-	* first stage rainfall estimates for preferred specification 
-	* second stage overidentification test for for preferred specification 
-	* considers if houeshold is female-headed or not 
+	* first stage rainfall estimates for extended specification 
+	* second stage overidentification test for for extended specification 
+	* includes female headed in specification 
 	
 * assumes
 	* reg_ready-final.dta 
 
 * TO DO:
-	* anonymize pre-submission 
+	* done 
 
 * **********************************************************************
 * 0 - setup
