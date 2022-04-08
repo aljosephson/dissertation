@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 3 March 2022
+* Edited on: 8 April 2022
 * Created by: alj
 * Stata v.16
 
@@ -16,8 +16,7 @@
 	* data_reallocatetest.dta 
 
 * TO DO:
-	* anonymize pre-submission 
-	* update table numbers with new manuscript numbers 
+	* done 
 	
 * **********************************************************************
 * 0 - setup
@@ -97,7 +96,6 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	local transpoconsumeo (dlnconsume_transpo xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local commconsumeo (dlnconsume_comm xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local hotresconsumeo (dlnconsume_hotres xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-*	local miscconsumeo (dlnconsume_misc xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
