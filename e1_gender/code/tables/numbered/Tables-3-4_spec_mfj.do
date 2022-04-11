@@ -2,22 +2,20 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 3 March 2022
+* Edited on: 11 April 2022
 * Created by: alj
 * Stata v.16
 
 * does
 	* first stage rainfall estimates
 	* second stage overidentification test for male, female, joint 
-	* corresponds with tables 3 and 4
+	* corresponds with Tables 3 and 4
 	
 * assumes
 	* reg_ready-final.dta 
 
 * TO DO:
-	* anonymize pre-submission 
-	* update table numbers with new manuscript numbers  
-	* update with final included categories 
+	* done
 	
 * **********************************************************************
 * 0 - setup
