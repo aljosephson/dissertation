@@ -98,7 +98,6 @@ esttab INJMo INJFo using table_app_asapp_mfmatril-nomatr.tex, replace f ///
 	local transpoconsumeo (dlnconsume_transpo xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local commconsumeo (dlnconsume_comm xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 	local hotresconsumeo (dlnconsume_hotres xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-*	local miscconsumeo (dlnconsume_misc xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -197,7 +196,8 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
 	order(xbmaleo xbfemaleo) ///
-	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification Test"' `"Observations"' `"\(R^{2}\)"'))
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") ///
+	labels(`"Overidentification Test"' `"Observations"' `"\(R^{2}\)"'))
 
 
 * **********************************************************************
@@ -362,7 +362,8 @@ esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRES
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
 	order(xbmaleo xbfemaleo) ///
-	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
+	stats(F N r2, fmt(3 0 3) layout("\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}" "\multicolumn{1}{c}{@}") ///
+	labels(`"Overidentification - F-Test"' `"Observations"' `"\(R^{2}\)"'))
  
 ********************************************************************************************
 
