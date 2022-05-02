@@ -1,5 +1,7 @@
 # dissertation
-Repo for alj dissertation essay code, for replication purposes. 
+Repo for Anna Josephson dissertation essay code, for replication purposes. 
+
+Dissertation originally submitted in 2017, available through Purdue: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
 
 # essay 1: Intra-Household Management of Resources: Evidence from Malawi
 current in review 
