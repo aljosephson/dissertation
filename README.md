@@ -2,7 +2,7 @@
 
 Repo for Anna Josephson dissertation essay code, for replication purposes. 
 
-Last update: 19 May 2022.
+Last update: 3 Feburary 2023.
 
 Dissertation originally submitted in 2017, available through Purdue: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
 
