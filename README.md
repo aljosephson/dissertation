@@ -2,12 +2,12 @@
 
 Repo for Anna Josephson dissertation essay code, for replication purposes. 
 
-Last update: 3 Feburary 2023.
+Last update: 6 March 2023.
 
-Dissertation originally submitted in 2017, available through Purdue: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
+Dissertation originally submitted in 2017, available through Purdue University: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
 
 # essay 1: Intra-Household Management of Resources: Evidence from Malawi
-current in second round review at World Development
+currently in first round review
 
 # essay 2: Preferences and crop choice during Zimbabwe’s macroeconomic crisis
 with Jacob Ricker-Gilbert, published in African Journal of Agricultural and Resource Economics
