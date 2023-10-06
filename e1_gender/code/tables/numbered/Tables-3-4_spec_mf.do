@@ -38,7 +38,7 @@ clear
 
 * read in data 
 
- 	use 			"$fil\regression-ready\reg_ready-final", replace		
+ 	use 			"$fil\regression-ready\householdstack-reg-ready", replace		
 	
 * **********************************************************************
 * 2 - OMIT joint income
@@ -50,8 +50,8 @@ clear
 
 * set local for male and female
 
-	local fincomeo (dlnvaluefemale_ospecw dtotalr i.ssa_aez09 i.ssa_aez12)
-	local mincomeo (dlnvaluemale_ospecw dtotalr i.ssa_aez09 i.ssa_aez12)
+	local fincomeo (lnvaluefemale_ospecw totalr i.ssa_aez)
+	local mincomeo (lnvaluemale_ospecw totalr i.ssa_aez)
 
 * reg and F-test
 * save estimates and predict xb 
@@ -67,7 +67,7 @@ clear
 * in paper: not reporting F tests, in line with (https://www.nber.org/econometrics_minicourse_2018/2018si_methods.pdf)
 
 
-esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
+esttab INJMo INJFo using table3_spec_mfo_rain-pool.tex, replace f ///
 	label booktabs b(5) se(5) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///
@@ -85,17 +85,17 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 * create consmption aggregates - same process as for unrestricted test (Table A1)
 * consumption aggregates based on WB aggregates provided in LSMS downloads
 
-	local aggconsumeo (dlnconsume_agg xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local foodconsumeo (dlnconsume_food xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local cigsalo (dlnconsume_alctob xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local clothingo (dlnconsume_clothfoot xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local recconsumeo (dlnconsume_rec xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local educconsumeo (dlnconsume_educ xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)	
-	local healthconsumeo (dlnconsume_health xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local houseconsumeo (dlnconsume_houseutils xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local transpoconsumeo (dlnconsume_transpo xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local commconsumeo (dlnconsume_comm xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
-	local hotresconsumeo (dlnconsume_hotres xbmaleo xbfemaleo i.ssa_aez09 i.ssa_aez12)
+	local aggconsumeo (lnconsume_agg xbmaleo xbfemaleo i.ssa_aez)
+	local foodconsumeo (lnconsume_food xbmaleo xbfemaleo i.ssa_aez)
+	local cigsalo (lnconsume_alctob xbmaleo xbfemaleo i.ssa_aez)
+	local clothingo (lnconsume_clothfoot xbmaleo xbfemaleo i.ssa_aez)
+	local recconsumeo (lnconsume_rec xbmaleo xbfemaleo i.ssa_aez)
+	local educconsumeo (lnconsume_educ xbmaleo xbfemaleo i.ssa_aez)	
+	local healthconsumeo (lnconsume_health xbmaleo xbfemaleo i.ssa_aez)
+	local houseconsumeo (lnconsume_houseutils xbmaleo xbfemaleo i.ssa_aez)
+	local transpoconsumeo (lnconsume_transpo xbmaleo xbfemaleo i.ssa_aez)
+	local commconsumeo (lnconsume_comm xbmaleo xbfemaleo i.ssa_aez)
+	local hotresconsumeo (lnconsume_hotres xbmaleo xbfemaleo i.ssa_aez)
 
 * regressions and wald tests 	
 * nl tests: compare specific consumption with aggregate 
@@ -111,7 +111,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	est store CONFOJo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo CONFOJo, vce(cluster y2_hhid)
+	suest AGCONJo CONFOJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [CONFOJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [CONFOJo_mean]xbfemaleo) 
 
 	reg `cigsalo'	
@@ -119,7 +119,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo CIGSJo, vce(cluster y2_hhid)
+	suest AGCONJo CIGSJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [CIGSJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [CIGSJo_mean]xbfemaleo)
 	
 	reg `clothingo'
@@ -127,7 +127,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo CLJo, vce(cluster y2_hhid)
+	suest AGCONJo CLJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [CLJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [CLJo_mean]xbfemaleo) 
 
 	reg `recconsumeo' 
@@ -136,7 +136,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJo RECJo, vce(cluster y2_hhid)
+	suest AGCONJo RECJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [RECJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [RECJo_mean]xbfemaleo) 
 
 	reg `educconsumeo'
@@ -145,7 +145,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
 	*qui: boottest xbjoint, reps (10000) 
-	suest AGCONJo EDUCJo, vce(cluster y2_hhid)
+	suest AGCONJo EDUCJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [EDUCJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [EDUCJo_mean]xbfemaleo) 
 
 	reg `healthconsumeo' 
@@ -153,7 +153,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo HEAJo, vce(cluster y2_hhid)
+	suest AGCONJo HEAJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [HEAJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HEAJo_mean]xbfemaleo) 
 
 	reg `houseconsumeo'  
@@ -161,7 +161,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo HOUSEJo, vce(cluster y2_hhid)
+	suest AGCONJo HOUSEJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [HOUSEJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HOUSEJo_mean]xbfemaleo)
 	
 	reg `transpoconsumeo'  
@@ -169,7 +169,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo TRANSJo, vce(cluster y2_hhid)
+	suest AGCONJo TRANSJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [TRANSJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [TRANSJo_mean]xbfemaleo) 
 		
 	reg `commconsumeo'  
@@ -177,7 +177,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo COMJo, vce(cluster y2_hhid)
+	suest AGCONJo COMJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [COMJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [COMJo_mean]xbfemaleo) 
 		
 	reg `hotresconsumeo'  
@@ -185,10 +185,10 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	test xbmaleo xbfemaleo
 	*qui: boottest xbmale, reps (10000)  
 	*qui: boottest xbfemale, reps (10000)  
-	suest AGCONJo HRESJo, vce(cluster y2_hhid)
+	suest AGCONJo HRESJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 	
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table4_spec_mfo.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table4_spec_mfo-pooled.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///

@@ -726,13 +726,13 @@ summarize
 
 	use 			"$fil\regression-ready\household-total_both.dta", clear 	
 
-	keep 				case_id year region district ea_id HHID *09
+	keep 				case_id year y2_hhid region district ea_id HHID *09
 	rename 				*09 *
 	save 			"$fil\regression-ready\householdstack09.dta", replace	
 	
 	use 			"$fil\regression-ready\household-total_both.dta", clear	
 
-	keep 				case_id year region district ea_id HHID *12
+	keep 				case_id year y2_hhid region district ea_id HHID *12
 	rename 				*12 *
 	save 			 "$fil\regression-ready\householdstack12.dta", replace	
 
@@ -771,7 +771,7 @@ summarize
 	bys case_id HHID: gen lnconsume_commtrans = asinh(commtransexp)
 	bys case_id HHID: gen lnconsume_agrec = asinh(agrecexp)	
 
-	save 			 "$fil\regression-ready\householdstack.dta", replace	
+	save 			 "$fil\regression-ready\householdstack-reg-ready.dta", replace	
 
 
 /*						
