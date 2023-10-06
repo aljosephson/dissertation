@@ -4,7 +4,7 @@
 * Created: October 2020
 * Created by: alj
 * Last edit: 6 October 2023
-* Stata v.18.1
+* Stata v.18.0
 
 * does
 	* combines files on (1) production, (2) decision making, (3) consumption, (4) geovars, (5) household  
@@ -757,6 +757,7 @@ summarize
 						
 * simplify - single stat 
 * income 
+* USED FOR TABLE 2
 	egen 			valuejoint_jspec = rmean(valuejoint_jspec09 valuejoint_jspec12)
 	egen 			valuefemale_jspec = rmean(valuefemale_jspec09 valuefemale_jspec12)
 	egen			valuemale_jspec = rmean(valuemale_jspec09 valuemale_jspec12)
@@ -765,6 +766,13 @@ summarize
 
 	tabstat 		valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
 						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+						
+	bys matril: 		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+						
+	bys femalehead:		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+
 	
 * expenditure 
 	egen 			totalexp = rmean(totalexp09 totalexp12)
