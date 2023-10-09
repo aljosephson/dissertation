@@ -717,69 +717,12 @@ summarize
 	*** 173 femaleheaded, 1186 non-femlaeheaded 
 	
 	drop 				femalehead09 femalehead12 matril09 matril12 
-	
-	save 			"$fil\regression-ready\household-total_both.dta", replace	
-
-* *********************************************************************
-* 5 - attempts at appended 09 / 12 for pooled analysis    
-* ********************************************************************** 
-
-	use 			"$fil\regression-ready\household-total_both.dta", clear 	
-
-	keep 				case_id year y2_hhid region district ea_id HHID *09
-	rename 				*09 *
-	save 			"$fil\regression-ready\householdstack09.dta", replace	
-	
-	use 			"$fil\regression-ready\household-total_both.dta", clear	
-
-	keep 				case_id year y2_hhid region district ea_id HHID *12
-	rename 				*12 *
-	save 			 "$fil\regression-ready\householdstack12.dta", replace	
-
-	append 			using "$fil\regression-ready\householdstack09.dta"
-	save 			 "$fil\regression-ready\householdstack.dta", replace	
-
-* sales values by manager 
-	bys case_id HHID: gen lnvaluejoint_jspec = asinh(valuejoint_jspec)
-	bys case_id HHID: gen lnvaluefemale_jspec = asinh(valuefemale_jspec)
-	bys case_id HHID: gen lnvaluemale_jspec = asinh(valuemale_jspec)
-	bys case_id HHID: gen lnvaluefemale_ospec = asinh(valuefemale_ospec)
-	bys case_id HHID: gen lnvaluemale_ospec = asinh(valuemale_ospec)
-	
-* sales values by manager, winsorized 
-	bys case_id HHID: gen lnvaluejoint_jspecw = asinh(valuejoint_jspecw)
-	bys case_id HHID: gen lnvaluefemale_jspecw = asinh(valuefemale_jspecw)
-	bys case_id HHID: gen lnvaluemale_jspecw = asinh(valuemale_jspecw)
-	bys case_id HHID: gen lnvaluefemale_ospecw = asinh(valuefemale_ospecw)
-	bys case_id HHID: gen lnvaluemale_ospecw = asinh(valuemale_ospecw)
-	
-* do not log rainfall 
-	
-* consumption categories 
-	bys case_id HHID: gen lnconsume_agg = asinh(totalexp)
-	bys case_id HHID: gen lnconsume_food = asinh(foodexp)
-	bys case_id HHID: gen lnconsume_alctob = asinh(alctobexp)
-	bys case_id HHID: gen lnconsume_clothfoot = asinh(clothexp)
-	bys case_id HHID: gen lnconsume_houseutils = asinh(houseutilsexp)
-	bys case_id HHID: gen lnconsume_health = asinh(healthexp)
-	bys case_id HHID: gen lnconsume_transpo = asinh(transpoexp)
-	bys case_id HHID: gen lnconsume_comm = asinh(commexp)
-	bys case_id HHID: gen lnconsume_rec = asinh(recexp)
-	bys case_id HHID: gen lnconsume_educ = asinh(eduexp)
-	bys case_id HHID: gen lnconsume_hotres = asinh(hotelrestexp)
-	bys case_id HHID: gen lnconsume_misc = asinh(miscexp)		
-	bys case_id HHID: gen lnconsume_commtrans = asinh(commtransexp)
-	bys case_id HHID: gen lnconsume_agrec = asinh(agrecexp)	
-
-	save 			 "$fil\regression-ready\householdstack-reg-ready.dta", replace	
-
-
-/*						
+					
 * *********************************************************************
 * 5 - end matter
 * **********************************************************************
 
-	isid 			case_id HHID year
+	*isid 			case_id y2_hhi HHID year
 	
 	keep 			dlnvaluejoint_jspec dlnvaluefemale_jspec dlnvaluemale_jspec dlnvaluefemale_ospec dlnvaluemale_ospec ///
 						dlnvaluejoint_jspecw dlnvaluefemale_jspecw dlnvaluemale_jspecw dlnvaluefemale_ospecw dlnvaluemale_ospecw ///
@@ -853,11 +796,65 @@ summarize
 	tabstat 		totalr, statistics (mean sd)
 
 * save and all that
-	isid case_id HHID year
-	
+	*isid case_id HHID year
+**** THIS IS THE FILE FOR MAIN ANALYSIS ****
  	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
+	
+	
+* *********************************************************************
+* 6 - pooled data 
+* **********************************************************************
 
+	use 			"$fil\regression-ready\household-total_both.dta", clear 	
+
+	keep 				case_id year y2_hhid region district ea_id HHID *09
+	rename 				*09 *
+	save 			"$fil\regression-ready\householdstack09.dta", replace	
+	
+	use 			"$fil\regression-ready\household-total_both.dta", clear	
+
+	keep 				case_id year y2_hhid region district ea_id HHID *12
+	rename 				*12 *
+	save 			 "$fil\regression-ready\householdstack12.dta", replace	
+
+	append 			using "$fil\regression-ready\householdstack09.dta"
+	save 			 "$fil\regression-ready\householdstack.dta", replace	
+
+* sales values by manager 
+	bys case_id HHID: gen lnvaluejoint_jspec = asinh(valuejoint_jspec)
+	bys case_id HHID: gen lnvaluefemale_jspec = asinh(valuefemale_jspec)
+	bys case_id HHID: gen lnvaluemale_jspec = asinh(valuemale_jspec)
+	bys case_id HHID: gen lnvaluefemale_ospec = asinh(valuefemale_ospec)
+	bys case_id HHID: gen lnvaluemale_ospec = asinh(valuemale_ospec)
+	
+* sales values by manager, winsorized 
+	bys case_id HHID: gen lnvaluejoint_jspecw = asinh(valuejoint_jspecw)
+	bys case_id HHID: gen lnvaluefemale_jspecw = asinh(valuefemale_jspecw)
+	bys case_id HHID: gen lnvaluemale_jspecw = asinh(valuemale_jspecw)
+	bys case_id HHID: gen lnvaluefemale_ospecw = asinh(valuefemale_ospecw)
+	bys case_id HHID: gen lnvaluemale_ospecw = asinh(valuemale_ospecw)
+	
+* do not log rainfall 
+	
+* consumption categories 
+	bys case_id HHID: gen lnconsume_agg = asinh(totalexp)
+	bys case_id HHID: gen lnconsume_food = asinh(foodexp)
+	bys case_id HHID: gen lnconsume_alctob = asinh(alctobexp)
+	bys case_id HHID: gen lnconsume_clothfoot = asinh(clothexp)
+	bys case_id HHID: gen lnconsume_houseutils = asinh(houseutilsexp)
+	bys case_id HHID: gen lnconsume_health = asinh(healthexp)
+	bys case_id HHID: gen lnconsume_transpo = asinh(transpoexp)
+	bys case_id HHID: gen lnconsume_comm = asinh(commexp)
+	bys case_id HHID: gen lnconsume_rec = asinh(recexp)
+	bys case_id HHID: gen lnconsume_educ = asinh(eduexp)
+	bys case_id HHID: gen lnconsume_hotres = asinh(hotelrestexp)
+	bys case_id HHID: gen lnconsume_misc = asinh(miscexp)		
+	bys case_id HHID: gen lnconsume_commtrans = asinh(commtransexp)
+	bys case_id HHID: gen lnconsume_agrec = asinh(agrecexp)	
+
+	save 			 "$fil\regression-ready\householdstack-reg-ready.dta", replace	
+	
 * close the log
-	log	close	
+	log	close		
 	
 /* END */	

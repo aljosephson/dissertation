@@ -40,7 +40,7 @@ clear
 
 * read in data 
 
- 	use 			"$fil\regression-ready\householdstack-reg-ready", replace		
+ 	use 			"$fil\regression-ready\householdstack-reg-ready", clear		
 	
 * **********************************************************************
 * 2 - OMIT joint income

@@ -717,12 +717,93 @@ summarize
 	*** 173 femaleheaded, 1186 non-femlaeheaded 
 	
 	drop 				femalehead09 femalehead12 matril09 matril12 
-	
-	save 			"$fil\regression-ready\household-total_both.dta", replace	
-
+					
 * *********************************************************************
-* 5 - attempts at appended 09 / 12 for pooled analysis    
-* ********************************************************************** 
+* 5 - end matter
+* **********************************************************************
+
+	*isid 			case_id y2_hhi HHID year
+	
+	keep 			dlnvaluejoint_jspec dlnvaluefemale_jspec dlnvaluemale_jspec dlnvaluefemale_ospec dlnvaluemale_ospec ///
+						dlnvaluejoint_jspecw dlnvaluefemale_jspecw dlnvaluemale_jspecw dlnvaluefemale_ospecw dlnvaluemale_ospecw ///
+						dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
+						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
+						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
+						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead matril /// 
+						valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
+						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12 ///
+						valuejoint_jspecw09 valuejoint_jspecw12 valuefemale_jspecw09 valuefemale_jspecw12 valuemale_jspecw09 valuemale_jspecw12 ///
+						valuemale_ospecw09 valuemale_ospecw12 valuefemale_ospecw09 valuefemale_ospecw12 /// 
+						foodexp12 foodexp09 alctobexp12 alctobexp09 clothexp12 clothexp09 /// 
+						houseutilsexp12 houseutilsexp09 healthexp12 healthexp09 transpoexp12 transpoexp09 commexp12 commexp09 /// 
+						recexp09 recexp12 eduexp09 eduexp12 hotelrestexp09 hotelrestexp12 miscexp09 miscexp12 totalexp09 totalexp12 /// 
+						totalr09 totalr12 dlnconsume_agrec dlnconsume_commtrans commtransexp12 commtransexp09 agrecexp12 agrecexp09
+					
+compress
+describe
+summarize
+
+* details for Table 2
+* by 2010, 2013
+* income 
+	tabstat 		valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
+						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12, statistics (mean sd)
+* expenditure 	
+	tabstat 		totalexp09 totalexp12 foodexp09 foodexp12 alctobexp09 alctobexp12 clothexp09 clothexp12 recexp09 recexp12 ///
+						eduexp09 eduexp12 healthexp09 healthexp12 houseutilsexp09 houseutilsexp12 transpoexp09 transpoexp12 ///
+						commexp09 commexp12 hotelrestexp09 hotelrestexp12, statistics (mean sd)
+* rainfall 
+	tabstat 		totalr09 totalr12, statistics (mean sd)
+						
+* simplify - single stat 
+* income 
+* USED FOR TABLE 2
+	egen 			valuejoint_jspec = rmean(valuejoint_jspec09 valuejoint_jspec12)
+	egen 			valuefemale_jspec = rmean(valuefemale_jspec09 valuefemale_jspec12)
+	egen			valuemale_jspec = rmean(valuemale_jspec09 valuemale_jspec12)
+	egen 			valuefemale_ospec = rmean(valuefemale_ospec09 valuefemale_ospec12)
+	egen 			valuemale_ospec = rmean(valuemale_ospec09 valuemale_ospec12)
+
+	tabstat 		valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+						
+	bys matril: 		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+						
+	bys femalehead:		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
+
+	
+* expenditure 
+	egen 			totalexp = rmean(totalexp09 totalexp12)
+	egen 			foodexp = rmean(foodexp09 foodexp12)
+	egen 			alctobexp =rmean(alctobexp09 alctobexp12)
+	egen			clothexp = rmean(clothexp09 clothexp12)
+	egen 			recexp = rmean(recexp09 recexp12)
+	egen 			eduexp = rmean(eduexp09 eduexp12)
+	egen 			healthexp = rmean(healthexp09 healthexp12)
+	egen 			houseutilsexp = rmean(houseutilsexp09 houseutilsexp12)
+	egen 			transpoexp = rmean(transpoexp09 transpoexp12)
+	egen 			commexp = rmean(commexp09 commexp12)
+	egen 			hotelrestexp = rmean(hotelrestexp09 hotelrestexp12)
+	
+	tabstat 		totalexp foodexp alctobexp clothexp recexp eduexp healthexp houseutilsexp ///
+						transpoexp commexp hotelrestexp, statistics (mean sd)
+	
+* rainfall 
+	egen 			totalr = rmean(totalr09 totalr12)
+	
+	tabstat 		totalr, statistics (mean sd)
+
+* save and all that
+	*isid case_id HHID year
+**** THIS IS THE FILE FOR MAIN ANALYSIS ****
+ 	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
+	
+	
+* *********************************************************************
+* 6 - pooled data 
+* **********************************************************************
 
 	use 			"$fil\regression-ready\household-total_both.dta", clear 	
 
@@ -772,92 +853,8 @@ summarize
 	bys case_id HHID: gen lnconsume_agrec = asinh(agrecexp)	
 
 	save 			 "$fil\regression-ready\householdstack-reg-ready.dta", replace	
-
-
-/*						
-* *********************************************************************
-* 5 - end matter
-* **********************************************************************
-
-	isid 			case_id HHID year
 	
-	keep 			dlnvaluejoint_jspec dlnvaluefemale_jspec dlnvaluemale_jspec dlnvaluefemale_ospec dlnvaluemale_ospec ///
-						dlnvaluejoint_jspecw dlnvaluefemale_jspecw dlnvaluemale_jspecw dlnvaluefemale_ospecw dlnvaluemale_ospecw ///
-						dtotalr dnoraindays ddryspell dlnconsume_agg dlnconsume_food /// 
-						dlnconsume_alctob dlnconsume_clothfoot dlnconsume_houseutils dlnconsume_health dlnconsume_health ///
-						dlnconsume_transpo dlnconsume_comm dlnconsume_rec dlnconsume_educ dlnconsume_hotres dlnconsume_misc ///
-						ssa_aez09 ssa_aez12 case_id year region district ea_id HHID y2_hhid femalehead matril /// 
-						valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
-						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12 ///
-						valuejoint_jspecw09 valuejoint_jspecw12 valuefemale_jspecw09 valuefemale_jspecw12 valuemale_jspecw09 valuemale_jspecw12 ///
-						valuemale_ospecw09 valuemale_ospecw12 valuefemale_ospecw09 valuefemale_ospecw12 /// 
-						foodexp12 foodexp09 alctobexp12 alctobexp09 clothexp12 clothexp09 /// 
-						houseutilsexp12 houseutilsexp09 healthexp12 healthexp09 transpoexp12 transpoexp09 commexp12 commexp09 /// 
-						recexp09 recexp12 eduexp09 eduexp12 hotelrestexp09 hotelrestexp12 miscexp09 miscexp12 totalexp09 totalexp12 /// 
-						totalr09 totalr12 dlnconsume_agrec dlnconsume_commtrans commtransexp12 commtransexp09 agrecexp12 agrecexp09
-					
-compress
-describe
-summarize
-
-* details for Table 2
-* by 2010, 2013
-* income 
-	tabstat 		valuejoint_jspec09 valuejoint_jspec12 valuefemale_jspec09 valuefemale_jspec12 valuemale_jspec09 valuemale_jspec12 ///
-						valuemale_ospec09 valuemale_ospec12 valuefemale_ospec09 valuefemale_ospec12, statistics (mean sd)
-* expenditure 	
-	tabstat 		totalexp09 totalexp12 foodexp09 foodexp12 alctobexp09 alctobexp12 clothexp09 clothexp12 recexp09 recexp12 ///
-						eduexp09 eduexp12 healthexp09 healthexp12 houseutilsexp09 houseutilsexp12 transpoexp09 transpoexp12 ///
-						commexp09 commexp12 hotelrestexp09 hotelrestexp12, statistics (mean sd)
-* rainfall 
-	tabstat 		totalr09 totalr12, statistics (mean sd)
-						
-* simplify - single stat 
-* income 
-* USED FOR TABLE 2
-	egen 			valuejoint_jspec = rmean(valuejoint_jspec09 valuejoint_jspec12)
-	egen 			valuefemale_jspec = rmean(valuefemale_jspec09 valuefemale_jspec12)
-	egen			valuemale_jspec = rmean(valuemale_jspec09 valuemale_jspec12)
-	egen 			valuefemale_ospec = rmean(valuefemale_ospec09 valuefemale_ospec12)
-	egen 			valuemale_ospec = rmean(valuemale_ospec09 valuemale_ospec12)
-
-	tabstat 		valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
-						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
-						
-	bys matril: 		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
-						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
-						
-	bys femalehead		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
-						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
-
-	
-* expenditure 
-	egen 			totalexp = rmean(totalexp09 totalexp12)
-	egen 			foodexp = rmean(foodexp09 foodexp12)
-	egen 			alctobexp =rmean(alctobexp09 alctobexp12)
-	egen			clothexp = rmean(clothexp09 clothexp12)
-	egen 			recexp = rmean(recexp09 recexp12)
-	egen 			eduexp = rmean(eduexp09 eduexp12)
-	egen 			healthexp = rmean(healthexp09 healthexp12)
-	egen 			houseutilsexp = rmean(houseutilsexp09 houseutilsexp12)
-	egen 			transpoexp = rmean(transpoexp09 transpoexp12)
-	egen 			commexp = rmean(commexp09 commexp12)
-	egen 			hotelrestexp = rmean(hotelrestexp09 hotelrestexp12)
-	
-	tabstat 		totalexp foodexp alctobexp clothexp recexp eduexp healthexp houseutilsexp ///
-						transpoexp commexp hotelrestexp, statistics (mean sd)
-	
-* rainfall 
-	egen 			totalr = rmean(totalr09 totalr12)
-	
-	tabstat 		totalr, statistics (mean sd)
-
-* save and all that
-	isid case_id HHID year
-	
- 	save 			"$fil\regression-ready\reg_ready-final.dta", replace	
-
 * close the log
-	log	close	
+	log	close		
 	
 /* END */	
