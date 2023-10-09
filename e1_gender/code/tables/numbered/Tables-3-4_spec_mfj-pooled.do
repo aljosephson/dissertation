@@ -2,9 +2,9 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 11 April 2022
+* Edited on: 9 Octoer 2023
 * Created by: alj
-* Stata v.16
+* Stata v.18.0
 
 * does
 	* first stage rainfall estimates
