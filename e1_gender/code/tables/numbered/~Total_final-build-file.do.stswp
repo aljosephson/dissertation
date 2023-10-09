@@ -3,7 +3,7 @@
 * Project: Joint Household Resources - Malawi 
 * Created: October 2020
 * Created by: alj
-* Last edit: 6 October 2023
+* Last edit: 9 October 2023
 * Stata v.18.0
 
 * does
@@ -770,7 +770,7 @@ summarize
 	bys matril: 		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
 						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
 						
-	bys femalehead		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
+	bys femalehead:		tabstat valuefemale_jspec valuemale_jspec valuejoint_jspec /// 
 						valuefemale_ospec valuemale_ospec, statistics (mean sd)  
 
 	

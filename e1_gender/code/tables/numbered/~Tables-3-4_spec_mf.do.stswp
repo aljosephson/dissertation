@@ -4,7 +4,7 @@
 * Created on: ... 2016 
 * Edited on: 9 October 2023
 * Created by: alj
-* Stata v.16
+* Stata v.18.0
 
 * does
 	* first stage rainfall estimates for OMIT joint income & REALLOCATE joint income 
@@ -188,7 +188,7 @@ esttab INJMo INJFo using table3_spec_mfo_rain.tex, replace f ///
 	suest AGCONJo HRESJo, vce(cluster case_id)
 	testnl ([AGCONJo_mean]xbmaleo = [HRESJo_mean]xbmaleo) ([AGCONJo_mean]xbfemaleo = [HRESJo_mean]xbfemaleo)
 	
-esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table4_spec_mfo-pooled.tex, replace f ///
+esttab AGCONJo CONFOJo CIGSJo CLJo RECJo EDUCJo HEAJo HOUSEJo TRANSJo COMJo HRESJo using table4_spec_mfo.tex, replace f ///
 	label booktabs b(3) se(3) eqlabels(none) alignment(S)  ///
 	drop(3* _cons) ///
 	star(* 0.05 ** 0.01) nogaps ///

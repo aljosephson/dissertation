@@ -13,6 +13,7 @@
 	
 * assumes
 	* reg_ready-final.dta 
+	
 * TO DO:
 	* done
 	
@@ -36,7 +37,7 @@ clear
 
 * read in data 
 
- 	use 			"$fil\regression-ready\reg_ready-final", clear	
+ 	use 			"$fil\regression-ready\householdstack-reg-ready", clear		
 	
 * **********************************************************************
 * 2 - first stage - TABLE 3 (panel 1)

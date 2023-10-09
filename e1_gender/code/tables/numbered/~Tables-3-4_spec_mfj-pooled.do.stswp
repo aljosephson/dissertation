@@ -2,9 +2,9 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 11 April 2022
+* Edited on: 9 Octoer 2023
 * Created by: alj
-* Stata v.16
+* Stata v.18.0
 
 * does
 	* first stage rainfall estimates
@@ -14,8 +14,6 @@
 * assumes
 	* reg_ready-final.dta 
 	
-	* NEED TO RESTORE ORIGINAL
-
 * TO DO:
 	* done
 	
@@ -39,7 +37,7 @@ clear
 
 * read in data 
 
- 	use 			"$fil\regression-ready\reg_ready-final", clear	
+ 	use 			"$fil\regression-ready\householdstack-reg-ready", clear		
 	
 * **********************************************************************
 * 2 - first stage - TABLE 3 (panel 1)
