@@ -2,9 +2,9 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 8 April 2022
+* Edited on: 10 October 2023
 * Created by: alj
-* Stata v.16
+* Stata v.18.0
 
 * does
 	* first stage rainfall estimates for OMIT joint income & REALLOCATE joint income 
@@ -15,8 +15,6 @@
 	* data_jointtest.dta 
 	* data_reallocatetest.dta 
 	
-	* NEED TO RESTORE ORIGINAL
-
 * TO DO:
 	* done 
 	
