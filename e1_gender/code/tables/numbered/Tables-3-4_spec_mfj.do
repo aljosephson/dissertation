@@ -2,7 +2,7 @@
 
 * Project: alj - intrahousehold mgmt of joint resources 
 * Created on: ... 2016 
-* Edited on: 13 October 2023
+* Edited on: 18 October 2023
 * Created by: alj
 * Stata v.18.0
 
@@ -25,6 +25,9 @@
 	global	fil		=	"C:\Users\aljosephson\Dropbox\Out for Review\Dissertation\Data - LSMS Malawi\_replication2020" 
 	global	code	=	"C:\Users\aljosephson\git\dissertation\e1_gender\code"
 	global	logs	=	"C:\Users\aljosephson\git\dissertation\e1_gender\logs" 
+	
+	cd "C:/Users/aljosephson/Dropbox/Out for Review/Dissertation/DISE1_Gender/Draft/table-export"
+	
 	
 * open log
 	cap log 		close
