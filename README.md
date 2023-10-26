@@ -2,7 +2,7 @@
 
 GitHub repository for Anna Josephson dissertation essays and relevant code, for replication purposes. 
 
-Last update: 14 March 2023.
+Last update: 26 October 2023.
 
 Dissertation submitted in 2017, available through Purdue University: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
 
