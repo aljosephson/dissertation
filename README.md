@@ -8,6 +8,7 @@ Dissertation submitted in 2017, available through Purdue University: https://doc
 
 # Essay 1: Intra-Household Management of Resources: Evidence from Malawi
 currently in first round review
+[issues with this repo - detached head: 31 October 2023]
 
 # Essay 2: Preferences and crop choice during Zimbabwe’s macroeconomic crisis
 with Jacob Ricker-Gilbert, published in African Journal of Agricultural and Resource Economics
