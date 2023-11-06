@@ -2,9 +2,9 @@
 
 GitHub repository for Anna Josephson dissertation (Purdue, December 2017) essays and relevant code, for replication purposes. 
 
-Last update: 1 November 2023.
+Last update: 6 November 2023.
 
-Dissertation submitted in 2017, available through Purdue University: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
+Dissertation submitted in December 2017, available through Purdue University: https://docs.lib.purdue.edu/dissertations/AAI10637205/. 
 
 # Essay 1: Intra-Household Management of Resources: Evidence from Malawi
 currently in first round review
