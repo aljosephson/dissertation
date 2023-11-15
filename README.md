@@ -1,6 +1,6 @@
 # Anna Josephson: Dissertation Replication
 
-GitHub repository for Anna Josephson dissertation (Purdue, December 2017) essays and relevant code, for replication purposes. 
+GitHub repository for Anna Josephson dissertation (Purdue, December 2017) essays and relevant code. 
 
 Last update: 6 November 2023.
 
