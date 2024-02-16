@@ -5,7 +5,10 @@ GitHub repository for Anna Josephson dissertation (Purdue University, December 2
 Last update: 6 November 2023.
 
 # Essay 1: Intra-Household Management of Resources: Evidence from Malawi.
-currently in first round review
+published in the Review of Economics of the Household
+
+Available: https://trebuchet.public.springernature.app/get_content/6ec6ab2a-872f-43d5-9939-7f2ec1e87604
+
 [issues with this repo - detached head: 31 October 2023]
 
 # Essay 2: Preferences and crop choice during Zimbabwe’s macroeconomic crisis.
